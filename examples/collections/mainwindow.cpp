@@ -1,5 +1,6 @@
 #include <QHBoxLayout>
-#include <QPushButton>u
+#include <QPushButton>
+#include <QDebug>
 
 #include <libdui/dslider.h>
 #include <libdui/dthememanager.h>
@@ -27,7 +28,12 @@ MainWindow::MainWindow(QWidget *parent)
     layout->addWidget(button);
 
     connect(button, &QPushButton::clicked, [=] {
-        themeManager->setTheme("light");
+
+        if (themeManager->theme() == "light") {
+            themeManager->setTheme("dark");
+        } else {
+            themeManager->setTheme("light");
+        }
     });
 }
 

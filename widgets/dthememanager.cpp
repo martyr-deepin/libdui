@@ -1,8 +1,8 @@
-#include <QApplication>
 #include <QFile>
 #include <QDebug>
 
 #include "dthememanager.h"
+#include "dapplication.h"
 
 DUI_BEGIN_NAMESPACE
 
@@ -18,15 +18,24 @@ DThemeManager * DThemeManager::instance()
     return DThemeManagerStatic;
 }
 
-void DThemeManager::setTheme(QString theme) const
+QString DThemeManager::theme() const
 {
-    QApplication * app = qobject_cast<QApplication*>(QApplication::instance());
+    return m_theme;
+}
+
+void DThemeManager::setTheme(const QString theme)
+{
+
+
+    DApplication * app = qobject_cast<DApplication*>(DApplication::instance());
     if (app != NULL) {
         QFile themeFile(QString(":/%1/%1.theme").arg(theme));
 
         if (themeFile.open(QIODevice::ReadOnly | QIODevice::Text)) {
-            QString theme = themeFile.readAll();
-            app->setStyleSheet(theme);
+            m_theme = theme;
+
+            QString style = themeFile.readAll();
+            app->setStyleSheet(style);
 
             themeFile.close();
         }
@@ -39,5 +48,6 @@ DThemeManager::DThemeManager() :
 {
     this->setTheme("dark");
 }
+
 
 DUI_END_NAMESPACE

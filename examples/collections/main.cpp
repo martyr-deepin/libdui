@@ -1,9 +1,14 @@
 #include "mainwindow.h"
-#include <QApplication>
+
+#include <libdui/dapplication.h>
+
+DUI_USE_NAMESPACE
 
 int main(int argc, char *argv[])
 {
-    QApplication a(argc, argv);
+    DApplication a(argc, argv);
+    a.setTheme("light");
+
     MainWindow w;
     w.show();
 

@@ -2,6 +2,7 @@
 #define DTHEMEMANAGER_H
 
 #include <QObject>
+#include <QString>
 #include <QGlobalStatic>
 
 #include "libdui_global.h"
@@ -15,10 +16,13 @@ class DThemeManager : public QObject
 public:
     static DThemeManager * instance();
 
-    void setTheme(QString theme) const;
+    QString theme() const;
+    void setTheme(const QString theme);
 
 protected:
     DThemeManager();
+
+    QString m_theme;
 };
 
 DUI_END_NAMESPACE

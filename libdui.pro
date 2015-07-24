@@ -12,12 +12,16 @@ TEMPLATE = lib
 
 DEFINES += LIBDUI_LIBRARY
 
+CONFIG += c++11
+
 SOURCES += widgets/dslider.cpp \
-    widgets/dthememanager.cpp
+    widgets/dthememanager.cpp \
+    widgets/dapplication.cpp
 
 HEADERS += widgets/dslider.h\
         libdui_global.h \
-    widgets/dthememanager.h
+    widgets/dthememanager.h \
+    widgets/dapplication.h
 
 unix {
     target.path = /usr/lib
