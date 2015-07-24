@@ -22,7 +22,7 @@ void DThemeManager::setTheme(QString theme) const
 {
     QApplication * app = qobject_cast<QApplication*>(QApplication::instance());
     if (app != NULL) {
-        QFile themeFile(QString(":/%1/theme.qss").arg(theme));
+        QFile themeFile(QString(":/%1/%1.theme").arg(theme));
 
         if (themeFile.open(QIODevice::ReadOnly | QIODevice::Text)) {
             QString theme = themeFile.readAll();
