@@ -1,19 +1,19 @@
-DSlider::groove {
+DUI--DSlider::groove {
     background: red;
     position: absolute; /* absolutely position 4px from the left and right of the widget. setting margins on the widget should work too... */
     left: 4px; right: 4px;
 }
 
-DSlider::handle {
+DUI--DSlider::handle {
     height: 10px;
     background: green;
     margin: 0 -4px; /* expand outside the groove */
 }
 
-DSlider::add-page {
+DUI--DSlider::add-page {
     background: white;
 }
 
-DSlider::sub-page {
+DUI--DSlider::sub-page {
     background: pink;
 }

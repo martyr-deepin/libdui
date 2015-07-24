@@ -2,8 +2,11 @@
 
 #include <libdui/dslider.h>
 #include <libdui/dthememanager.h>
+#include <libdui/libdui_global.h>
 
 #include "mainwindow.h"
+
+DUI_USE_NAMESPACE
 
 MainWindow::MainWindow(QWidget *parent)
     : QWidget(parent)

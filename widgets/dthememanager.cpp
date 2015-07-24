@@ -3,6 +3,8 @@
 
 #include "dthememanager.h"
 
+DUI_BEGIN_NAMESPACE
+
 DThemeManager::DThemeManager(QObject *parent) :
     QObject(parent)
 {
@@ -11,8 +13,12 @@ DThemeManager::DThemeManager(QObject *parent) :
         QFile themeFile(":/dark/theme.qss");
 
         if (themeFile.open(QIODevice::ReadOnly | QIODevice::Text)) {
-            app->setStyleSheet(themeFile.readAll());
+            QString theme = themeFile.readAll();
+            app->setStyleSheet(theme);
+
             themeFile.close();
         }
     }
 }
+
+DUI_END_NAMESPACE
