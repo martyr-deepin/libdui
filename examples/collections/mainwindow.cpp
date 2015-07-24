@@ -1,4 +1,5 @@
 #include <QHBoxLayout>
+#include <QPushButton>u
 
 #include <libdui/dslider.h>
 #include <libdui/dthememanager.h>
@@ -11,7 +12,7 @@ DUI_USE_NAMESPACE
 MainWindow::MainWindow(QWidget *parent)
     : QWidget(parent)
 {
-    DThemeManager::instance();
+    DThemeManager * themeManager = DThemeManager::instance();
 
     QHBoxLayout * layout = new QHBoxLayout(this);
 
@@ -20,6 +21,14 @@ MainWindow::MainWindow(QWidget *parent)
     layout->addStretch();
     layout->addWidget(slider);
     layout->addStretch();
+
+    QPushButton * button = new QPushButton("theme");
+
+    layout->addWidget(button);
+
+    connect(button, &QPushButton::clicked, [=] {
+        themeManager->setTheme("light");
+    });
 }
 
 MainWindow::~MainWindow()

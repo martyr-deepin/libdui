@@ -18,11 +18,11 @@ DThemeManager * DThemeManager::instance()
     return DThemeManagerStatic;
 }
 
-void DThemeManager::setTheme(QString) const
+void DThemeManager::setTheme(QString theme) const
 {
     QApplication * app = qobject_cast<QApplication*>(QApplication::instance());
     if (app != NULL) {
-        QFile themeFile(":/dark/theme.qss");
+        QFile themeFile(QString(":/%1/theme.qss").arg(theme));
 
         if (themeFile.open(QIODevice::ReadOnly | QIODevice::Text)) {
             QString theme = themeFile.readAll();
@@ -37,7 +37,7 @@ void DThemeManager::setTheme(QString) const
 DThemeManager::DThemeManager() :
     QObject()
 {
-    this->setTheme("");
+    this->setTheme("dark");
 }
 
 DUI_END_NAMESPACE
