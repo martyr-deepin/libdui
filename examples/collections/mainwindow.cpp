@@ -11,7 +11,7 @@ DUI_USE_NAMESPACE
 MainWindow::MainWindow(QWidget *parent)
     : QWidget(parent)
 {
-    DThemeManager themeManager;
+    DThemeManager::instance();
 
     QHBoxLayout * layout = new QHBoxLayout(this);
 
