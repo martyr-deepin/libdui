@@ -5,8 +5,8 @@
 #include <QLabel>
 #include <QHBoxLayout>
 
-#include <libdui/dconstants.h>
 #include "libdui_global.h"
+#include "dconstants.h"
 
 DUI_BEGIN_NAMESPACE
 

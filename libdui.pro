@@ -21,6 +21,7 @@ SOURCES += widgets/dslider.cpp \
     widgets/dseparatorvertical.cpp \
     widgets/dbaseline.cpp \
     widgets/dheaderline.cpp
+    widgets/private/dthemehelper.cpp
 
 HEADERS += widgets/dslider.h\
         libdui_global.h \
@@ -31,6 +32,7 @@ HEADERS += widgets/dslider.h\
     widgets/dseparatorvertical.h \
     widgets/dbaseline.h \
     widgets/dheaderline.h
+    widgets/private/dthemehelper.h
 
 unix {
     target.path = /usr/lib

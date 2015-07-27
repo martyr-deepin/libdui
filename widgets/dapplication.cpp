@@ -2,6 +2,7 @@
 
 #include "dapplication.h"
 #include "dthememanager.h"
+#include "private/dthemehelper.h"
 
 DUI_BEGIN_NAMESPACE
 
@@ -31,7 +32,8 @@ void DApplication::setStyleSheet(const QString &sheet)
 {
     QString old = styleSheet();
 
-    qDebug() << sheet;
+    DThemeHelper helper;
+    old = helper.trimThemeContents(old);
 
     QApplication::setStyleSheet(old + sheet);
 }
