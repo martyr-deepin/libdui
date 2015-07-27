@@ -41,3 +41,7 @@ QWidget#DSeparatorRightRec {
     min-width: 0;
     max-width: 0;
 }
+
+DUI--DBaseLine {
+    background-color: #fafafa
+}

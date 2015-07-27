@@ -2,6 +2,7 @@
 #define MAINWINDOW_H
 
 #include <QWidget>
+#include <QLabel>
 
 class MainWindow : public QWidget
 {
