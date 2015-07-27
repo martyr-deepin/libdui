@@ -5,7 +5,6 @@ DUI_BEGIN_NAMESPACE
 DBaseLine::DBaseLine(QWidget *parent) : QLabel(parent)
 {
     this->setFixedHeight(DUI::EXPAND_HEADER_HEIGHT);
-    this->setFixedWidth(200);
     m_leftLayout = new QHBoxLayout();
     m_leftLayout->setMargin(0);
     m_leftLayout->setSpacing(0);

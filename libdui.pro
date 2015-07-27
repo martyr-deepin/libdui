@@ -19,7 +19,8 @@ SOURCES += widgets/dslider.cpp \
     widgets/dapplication.cpp \
     widgets/dseparatorhorizontal.cpp \
     widgets/dseparatorvertical.cpp \
-    widgets/dbaseline.cpp
+    widgets/dbaseline.cpp \
+    widgets/dheaderline.cpp
 
 HEADERS += widgets/dslider.h\
         libdui_global.h \
@@ -28,7 +29,8 @@ HEADERS += widgets/dslider.h\
     widgets/dconstants.h \
     widgets/dseparatorhorizontal.h \
     widgets/dseparatorvertical.h \
-    widgets/dbaseline.h
+    widgets/dbaseline.h \
+    widgets/dheaderline.h
 
 unix {
     target.path = /usr/lib

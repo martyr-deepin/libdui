@@ -3,6 +3,7 @@
 #include <QDebug>
 
 #include <libdui/dslider.h>
+#include <libdui/dheaderline.h>
 #include <libdui/dbaseline.h>
 #include <libdui/dseparatorhorizontal.h>
 #include <libdui/dseparatorvertical.h>
@@ -47,6 +48,7 @@ MainWindow::MainWindow(QWidget *parent)
     dsVertical->setFixedSize(2,200);
     dsVertical->move(10,5);
 
+    //////////////////////////////////////////////////////////////--DBaseLine
     DBaseLine * baseLine = new DBaseLine(this);
     baseLine->setFixedSize(400,30);
     baseLine->move(20,30);
@@ -54,6 +56,12 @@ MainWindow::MainWindow(QWidget *parent)
     QPushButton *bbb = new QPushButton("Test button",this);
     bbb->setStyleSheet("background-color: red");
     baseLine->setRightContent(bbb);
+
+    //////////////////////////////////////////////////////////////--DHeaderLine
+    DHeaderLine *headerLine = new DHeaderLine(this);
+    headerLine->setFixedSize(400, 30);
+    headerLine->move(20,70);
+    headerLine->setTitle("控件库");
 
     this->setFixedSize(500,500);
 }
