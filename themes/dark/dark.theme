@@ -17,3 +17,27 @@ DUI--DSlider::add-page {
 DUI--DSlider::sub-page {
     background: pink;
 }
+
+QWidget#DSeparatorTopRec {
+    background-color: #99000000;
+    min-height: 1;
+    max-height: 1;
+}
+
+QWidget#DSeparatorBottomRec {
+    background-color: #0cffffff;
+    min-height: 1;
+    max-height: 1;
+}
+
+QWidget#DSeparatorLeftRec {
+    background-color: #99000000;
+    min-width: 1;
+    max-width: 1;
+}
+
+QWidget#DSeparatorRightRec {
+    background-color: #0cffffff;
+    min-width: 1;
+    max-width: 1;
+}

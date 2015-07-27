@@ -3,6 +3,8 @@
 #include <QDebug>
 
 #include <libdui/dslider.h>
+#include <libdui/dseparatorhorizontal.h>
+#include <libdui/dseparatorvertical.h>
 #include <libdui/dthememanager.h>
 #include <libdui/libdui_global.h>
 
@@ -35,6 +37,16 @@ MainWindow::MainWindow(QWidget *parent)
             themeManager->setTheme("light");
         }
     });
+
+
+    DSeparatorHorizontal *dsHorizontal = new DSeparatorHorizontal(this);
+    dsHorizontal->setFixedSize(200,2);
+    dsHorizontal->move(1,5);
+    DSeparatorVertical *dsVertical = new DSeparatorVertical(this);
+    dsVertical->setFixedSize(2,200);
+    dsVertical->move(10,5);
+
+    this->setFixedSize(500,500);
 }
 
 MainWindow::~MainWindow()
