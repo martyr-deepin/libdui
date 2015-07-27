@@ -21,7 +21,8 @@ SOURCES += widgets/dslider.cpp \
 HEADERS += widgets/dslider.h\
         libdui_global.h \
     widgets/dthememanager.h \
-    widgets/dapplication.h
+    widgets/dapplication.h \
+    widgets/dconstants.h
 
 unix {
     target.path = /usr/lib
