@@ -11,11 +11,15 @@ ArrowButtonIcon::ArrowButtonIcon(QWidget *parent) :
 void ArrowButtonIcon::setArrowDirection(int direction)
 {
     m_direction = direction;
+    style()->unpolish(this);
+    style()->polish(this);// force a stylesheet recomputation
 }
 
 void ArrowButtonIcon::setButtonState(int state)
 {
     m_buttonState = state;
+    style()->unpolish(this);
+    style()->polish(this);// force a stylesheet recomputation
 }
 
 int ArrowButtonIcon::arrowDirection() const
@@ -57,9 +61,6 @@ void DArrowButton::setArrowDirection(ArrowDirection direction)
 {
     m_arrowDirection = direction;
     updateIconDirection(direction);
-
-    style()->unpolish(this);
-    style()->polish(this);// force a stylesheet recomputation
 }
 
 int DArrowButton::arrowDirection() const
@@ -71,9 +72,6 @@ void DArrowButton::setButtonState(ArrowButtonState state)
 {
     m_buttonState = state;
     updateIconState(state);
-
-    style()->unpolish(this);
-    style()->polish(this);// force a stylesheet recomputation
 }
 
 int DArrowButton::buttonState() const

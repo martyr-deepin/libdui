@@ -23,7 +23,8 @@ SOURCES += widgets/dslider.cpp \
     widgets/dheaderline.cpp \
     widgets/dbaseexpand.cpp \
     widgets/private/dthemehelper.cpp \
-    widgets/darrowbutton.cpp
+    widgets/darrowbutton.cpp \
+    widgets/darrowlineexpand.cpp
 
 HEADERS += widgets/dslider.h\
         libdui_global.h \
@@ -36,7 +37,8 @@ HEADERS += widgets/dslider.h\
     widgets/dheaderline.h \
     widgets/dbaseexpand.h \
     widgets/private/dthemehelper.h \
-    widgets/darrowbutton.h
+    widgets/darrowbutton.h \
+    widgets/darrowlineexpand.h
 
 unix {
     target.path = /usr/lib

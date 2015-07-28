@@ -27,7 +27,7 @@ LineTab::LineTab(QWidget *parent) : QLabel(parent)
 
         //////////////////////////////////////////////////////////////--DBaseExpand
         DBaseExpand *baseExpand = new DBaseExpand(this);
-        baseExpand->setFixedWidth(400);
+        baseExpand->setFixedWidth(300);
         baseExpand->setHeader(baseLine);
         connect(bbb, &QPushButton::clicked, [=]{
             baseExpand->setExpand(!baseExpand->expand());
@@ -40,5 +40,15 @@ LineTab::LineTab(QWidget *parent) : QLabel(parent)
         baseExpand->setContent(expandLabel);
         baseExpand->move(20,70);
         dsHorizontal2->move(baseExpand->x(),baseExpand->y() - 2);
+
+        /////////////////////////////////////////////////////////////--DArrowLineExpand
+        DArrowLineExpand *arrowLineExpand = new DArrowLineExpand(this);
+        arrowLineExpand->setFixedWidth(300);
+        arrowLineExpand->setTitle("Arrow Line Expand");
+        QLabel *expandLabel2 = new QLabel("Arrow Expand content");
+        expandLabel2->setAlignment(Qt::AlignHCenter | Qt::AlignVCenter);
+        expandLabel2->setFixedSize(200,50);
+        arrowLineExpand->setContent(expandLabel2);
+        arrowLineExpand->move(350, 70);
 }
 

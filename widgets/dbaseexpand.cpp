@@ -50,6 +50,7 @@ void DBaseExpand::setContent(QWidget *content)
     if (!content)
         return;
 
+    m_hSeparator->setFixedWidth(width());
     QLayoutItem *child;
     while ((child = m_contentLayout->takeAt(0)) != 0) {
         m_contentLayout->removeItem(child);

@@ -8,6 +8,7 @@
 #include <libdui/dseparatorhorizontal.h>
 #include <libdui/dseparatorvertical.h>
 #include <libdui/dbaseexpand.h>
+#include <libdui/darrowlineexpand.h>
 
 DUI_USE_NAMESPACE
 
