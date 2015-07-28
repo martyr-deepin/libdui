@@ -20,7 +20,8 @@ SOURCES += widgets/dslider.cpp \
     widgets/dseparatorhorizontal.cpp \
     widgets/dseparatorvertical.cpp \
     widgets/dbaseline.cpp \
-    widgets/dheaderline.cpp
+    widgets/dheaderline.cpp \
+    widgets/dbaseexpand.cpp \
     widgets/private/dthemehelper.cpp
 
 HEADERS += widgets/dslider.h\
@@ -31,7 +32,8 @@ HEADERS += widgets/dslider.h\
     widgets/dseparatorhorizontal.h \
     widgets/dseparatorvertical.h \
     widgets/dbaseline.h \
-    widgets/dheaderline.h
+    widgets/dheaderline.h \
+    widgets/dbaseexpand.h \
     widgets/private/dthemehelper.h
 
 unix {

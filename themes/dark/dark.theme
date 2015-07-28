@@ -22,6 +22,10 @@ DUI--DBaseLine {
     background-color: #252627
 }
 
+DUI--ContentLoader {
+    background-color: #1A1B1B
+}
+
 QWidget#DSeparatorTopRec {
     background-color: #99000000;
     min-height: 1;

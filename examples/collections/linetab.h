@@ -7,10 +7,11 @@
 #include <libdui/dbaseline.h>
 #include <libdui/dseparatorhorizontal.h>
 #include <libdui/dseparatorvertical.h>
+#include <libdui/dbaseexpand.h>
 
 DUI_USE_NAMESPACE
 
-class LineTab : public QWidget
+class LineTab : public QLabel
 {
     Q_OBJECT
 public:
