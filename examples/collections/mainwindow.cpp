@@ -3,10 +3,6 @@
 #include <QDebug>
 
 #include <libdui/dslider.h>
-#include <libdui/dheaderline.h>
-#include <libdui/dbaseline.h>
-#include <libdui/dseparatorhorizontal.h>
-#include <libdui/dseparatorvertical.h>
 #include <libdui/dthememanager.h>
 #include <libdui/libdui_global.h>
 
@@ -17,53 +13,59 @@ DUI_USE_NAMESPACE
 MainWindow::MainWindow(QWidget *parent)
     : QWidget(parent)
 {
+    this->setFixedSize(700, 500);
+
     DThemeManager * themeManager = DThemeManager::instance();
 
-    QHBoxLayout * layout = new QHBoxLayout(this);
+    initTabWidget();
 
-    DSlider * slider = new DSlider(Qt::Horizontal);
+    QVBoxLayout * mainLayout = new QVBoxLayout();
+    mainLayout->setMargin(0);
+    mainLayout->addWidget(m_mainTab);
 
-    layout->addStretch();
-    layout->addWidget(slider);
-    layout->addStretch();
-
-    QPushButton * button = new QPushButton("theme");
-
-    layout->addWidget(button);
-
-    connect(button, &QPushButton::clicked, [=] {
-
-        if (themeManager->theme() == "light") {
-            themeManager->setTheme("dark");
-        } else {
-            themeManager->setTheme("light");
-        }
+    QHBoxLayout * styleLayout = new QHBoxLayout();
+    QPushButton *darkButton = new QPushButton("Dark",this);
+    QPushButton *lightBUtton = new QPushButton("Light",this);
+    connect(darkButton, &QPushButton::clicked, [=]{
+        themeManager->setTheme("dark");
     });
+    connect(lightBUtton, &QPushButton::clicked, [=]{
+        themeManager->setTheme("light");
+    });
+    styleLayout->addWidget(darkButton);
+    styleLayout->addWidget(lightBUtton);
+    styleLayout->addStretch();
 
+    mainLayout->addLayout(styleLayout);
 
-    DSeparatorHorizontal *dsHorizontal = new DSeparatorHorizontal(this);
-    dsHorizontal->setFixedSize(200,2);
-    dsHorizontal->move(1,5);
-    DSeparatorVertical *dsVertical = new DSeparatorVertical(this);
-    dsVertical->setFixedSize(2,200);
-    dsVertical->move(10,5);
+    this->setLayout(mainLayout);
+}
 
-    //////////////////////////////////////////////////////////////--DBaseLine
-    DBaseLine * baseLine = new DBaseLine(this);
-    baseLine->setFixedSize(400,30);
-    baseLine->move(20,30);
-    baseLine->setLeftContent(new QLabel("DBaseLine"));
-    QPushButton *bbb = new QPushButton("Test button",this);
-    bbb->setStyleSheet("background-color: red");
-    baseLine->setRightContent(bbb);
+void MainWindow::initTabWidget()
+{
+    m_mainTab = new QTabWidget(this);
+    m_mainTab->setFixedSize(this->width(), 450);
 
-    //////////////////////////////////////////////////////////////--DHeaderLine
-    DHeaderLine *headerLine = new DHeaderLine(this);
-    headerLine->setFixedSize(400, 30);
-    headerLine->move(20,70);
-    headerLine->setTitle("控件库");
+    LineTab * lineTab = new LineTab(this);
+    lineTab->setFixedSize(m_mainTab->size());
 
-    this->setFixedSize(500,500);
+    BarTab * barTab = new BarTab(this);
+    barTab->setFixedSize(m_mainTab->size());
+
+    ButtonTab * buttonTab = new ButtonTab(this);
+    buttonTab->setFixedSize(m_mainTab->size());
+
+    InputTab * inputTab = new InputTab(this);
+    inputTab->setFixedSize(m_mainTab->size());
+
+    SliderTab * sliderTab = new SliderTab(this);
+    sliderTab->setFixedSize(m_mainTab->size());
+
+    m_mainTab->addTab(lineTab,"Line");
+    m_mainTab->addTab(barTab,"Bar");
+    m_mainTab->addTab(buttonTab,"Button");
+    m_mainTab->addTab(inputTab,"Input");
+    m_mainTab->addTab(sliderTab,"Slider");
 }
 
 MainWindow::~MainWindow()

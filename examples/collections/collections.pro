@@ -7,8 +7,18 @@ TEMPLATE = app
 CONFIG += c++11
 
 SOURCES += main.cpp\
-        mainwindow.cpp
+        mainwindow.cpp \
+    buttontab.cpp \
+    linetab.cpp \
+    bartab.cpp \
+    inputtab.cpp \
+    slidertab.cpp
 
-HEADERS  += mainwindow.h
+HEADERS  += mainwindow.h \
+    buttontab.h \
+    linetab.h \
+    bartab.h \
+    inputtab.h \
+    slidertab.h
 
 LIBS += -ldui
