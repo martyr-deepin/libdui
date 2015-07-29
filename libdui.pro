@@ -16,12 +16,14 @@ CONFIG += c++11
 
 SOURCES += widgets/dslider.cpp \
     widgets/dthememanager.cpp \
-    widgets/dapplication.cpp
+    widgets/dapplication.cpp \
+    widgets/dsegmentedcontrol.cpp
 
 HEADERS += widgets/dslider.h\
         libdui_global.h \
     widgets/dthememanager.h \
-    widgets/dapplication.h
+    widgets/dapplication.h \
+    widgets/dsegmentedcontrol.h
 
 unix {
     target.path = /usr/lib
