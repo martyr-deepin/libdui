@@ -4,8 +4,8 @@
 #include <QWidget>
 #include <QLabel>
 
-#include <dheaderline.h>
-#include <darrowbutton.h>
+#include <libdui/dheaderline.h>
+#include <libdui/darrowbutton.h>
 
 DUI_USE_NAMESPACE
 

@@ -3,12 +3,12 @@
 
 #include <QWidget>
 #include <QPushButton>
-#include <dheaderline.h>
-#include <dbaseline.h>
-#include <dseparatorhorizontal.h>
-#include <dseparatorvertical.h>
-#include <dbaseexpand.h>
-#include <darrowlineexpand.h>
+#include <libdui/dheaderline.h>
+#include <libdui/dbaseline.h>
+#include <libdui/dseparatorhorizontal.h>
+#include <libdui/dseparatorvertical.h>
+#include <libdui/dbaseexpand.h>
+#include <libdui/darrowlineexpand.h>
 
 DUI_USE_NAMESPACE
 
