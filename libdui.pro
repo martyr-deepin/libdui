@@ -14,33 +14,9 @@ DEFINES += LIBDUI_LIBRARY
 
 CONFIG += c++11
 
-SOURCES += widgets/dslider.cpp \
-    widgets/dthememanager.cpp \
-    widgets/dapplication.cpp \
-    widgets/dsegmentedcontrol.cpp
-    widgets/dseparatorhorizontal.cpp \
-    widgets/dseparatorvertical.cpp \
-    widgets/dbaseline.cpp \
-    widgets/dheaderline.cpp \
-    widgets/dbaseexpand.cpp \
-    widgets/private/dthemehelper.cpp \
-    widgets/darrowbutton.cpp \
-    widgets/darrowlineexpand.cpp
+include(widgets/widgets.pri)
 
-HEADERS += widgets/dslider.h\
-        libdui_global.h \
-    widgets/dthememanager.h \
-    widgets/dapplication.h \
-    widgets/dsegmentedcontrol.h
-    widgets/dconstants.h \
-    widgets/dseparatorhorizontal.h \
-    widgets/dseparatorvertical.h \
-    widgets/dbaseline.h \
-    widgets/dheaderline.h \
-    widgets/dbaseexpand.h \
-    widgets/private/dthemehelper.h \
-    widgets/darrowbutton.h \
-    widgets/darrowlineexpand.h
+HEADERS += libdui_global.h
 
 unix {
     target.path = /usr/lib
@@ -51,7 +27,3 @@ unix {
 
     INSTALLS += includes
 }
-
-RESOURCES += \
-    themes/dark.qrc \
-    themes/light.qrc

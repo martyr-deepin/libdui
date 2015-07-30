@@ -1,4 +1,5 @@
 #include "darrowlineexpand.h"
+#include "dthememanager.h"
 
 DUI_BEGIN_NAMESPACE
 

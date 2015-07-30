@@ -1,9 +1,12 @@
 #include "dseparatorhorizontal.h"
+#include "dthememanager.h"
 
 DUI_BEGIN_NAMESPACE
 
 DSeparatorHorizontal::DSeparatorHorizontal(QWidget *parent) : QWidget(parent)
 {
+    D_THEME_INIT_WIDGET(DSeparatorHorizontal);
+
     this->setFixedWidth(parent->width());
     m_topRec = new QWidget(this);
     m_topRec->setObjectName("DSeparatorTopRec");

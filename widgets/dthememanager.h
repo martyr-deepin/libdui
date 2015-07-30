@@ -19,6 +19,11 @@ public:
     QString theme() const;
     void setTheme(const QString theme);
 
+    QString getQssForWidget(QString className);
+
+signals:
+    void themeChanged(QString theme);
+
 protected:
     DThemeManager();
 

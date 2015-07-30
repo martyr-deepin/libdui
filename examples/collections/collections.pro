@@ -6,6 +6,9 @@ TARGET = collections
 TEMPLATE = app
 CONFIG += c++11
 
+INCLUDEPATH += $$(_PRO_FILE_PWD_)../../ $$(_PRO_FILE_PWD_)../../widgets
+include($$(_PRO_FILE_PWD_)../../widgets/widgets.pri)
+
 SOURCES += main.cpp\
         mainwindow.cpp \
     buttontab.cpp \
@@ -20,5 +23,3 @@ HEADERS  += mainwindow.h \
     bartab.h \
     inputtab.h \
     slidertab.h
-
-LIBS += -ldui

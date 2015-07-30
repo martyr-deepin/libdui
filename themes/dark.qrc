@@ -1,6 +1,12 @@
 <RCC>
     <qresource prefix="/">
-        <file>dark/dark.theme</file>
+        <file>dark/DArrowButton.theme</file>
+        <file>dark/DBaseLine.theme</file>
+        <file>dark/DBaseExpand.theme</file>
+        <file>dark/DHeaderLine.theme</file>
+        <file>dark/DSeparatorHorizontal.theme</file>
+        <file>dark/DSeparatorVertical.theme</file>
+        <file>dark/DSlider.theme</file>
     </qresource>
     <qresource prefix="/images">
         <file>dark/images/add_hover.png</file>
