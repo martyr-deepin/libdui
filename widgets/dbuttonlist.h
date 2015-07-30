@@ -2,7 +2,7 @@
 #define DBUTTONLIST_H
 
 #include <QListWidget>
-#include <libdui/libdui_global.h>
+#include "libdui_global.h"
 
 class QButtonGroup;
 

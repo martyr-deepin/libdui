@@ -2,9 +2,9 @@
 #include <QPushButton>
 #include <QDebug>
 
-#include <libdui/dslider.h>
-#include <libdui/dthememanager.h>
-#include <libdui/libdui_global.h>
+#include "dslider.h"
+#include "dthememanager.h"
+#include "libdui_global.h"
 
 #include "mainwindow.h"
 #include "buttonlisttab.h"
