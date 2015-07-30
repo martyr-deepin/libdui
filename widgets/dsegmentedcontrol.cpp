@@ -8,25 +8,12 @@
 DUI_BEGIN_NAMESPACE
 
 DSegmentedHighlight::DSegmentedHighlight(QWidget *parent) :
-    QWidget(parent)
+    QFrame(parent)
 {
-}
-
-
-void DSegmentedHighlight::paintEvent(QPaintEvent *e)
-{
-    QStyleOption opt;
-
-    opt.init(this);
-
-    QPainter p(this);
-    style()->drawPrimitive(QStyle::PE_Widget, &opt, &p, this);
-
-    QWidget::paintEvent(e);
 }
 
 DSegmentedControl::DSegmentedControl(QWidget *parent) :
-    QWidget(parent),
+    QFrame(parent),
     m_highlight(new DSegmentedHighlight(this)),
     m_hLayout(new QHBoxLayout(this)),
     m_currentIndex(-1),
@@ -164,18 +151,6 @@ void DSegmentedControl::setAnimationDuration(int animationDuration)
 void DSegmentedControl::setAnimationType(QEasingCurve::Type animationType)
 {
     m_highlightMoveAnimation->setEasingCurve(animationType);
-}
-
-void DSegmentedControl::paintEvent(QPaintEvent *e)
-{
-    QStyleOption opt;
-
-    opt.init(this);
-
-    QPainter p(this);
-    style()->drawPrimitive(QStyle::PE_Widget, &opt, &p, this);
-
-    QWidget::paintEvent(e);
 }
 
 bool DSegmentedControl::eventFilter(QObject *obj, QEvent *e)
