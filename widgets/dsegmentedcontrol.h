@@ -1,7 +1,7 @@
 #ifndef DSEGMENTEDCONTROL_H
 #define DSEGMENTEDCONTROL_H
 
-#include <QWidget>
+#include <QFrame>
 #include <QHBoxLayout>
 #include <QToolButton>
 #include <QPropertyAnimation>
@@ -12,7 +12,7 @@
 
 DUI_BEGIN_NAMESPACE
 
-class DSegmentedHighlight : public QWidget
+class DSegmentedHighlight : public QFrame
 {
     Q_OBJECT
 
@@ -23,15 +23,11 @@ public Q_SLOTS:
 
 Q_SIGNALS:
 
-
-protected:
-    void paintEvent(QPaintEvent*);
-
 private:
 
 };
 
-class DSegmentedControl : public QWidget
+class DSegmentedControl : public QFrame
 {
     Q_OBJECT
 
@@ -71,7 +67,6 @@ private:
     QList<QToolButton*> m_tabList;
 
 protected:
-    void paintEvent(QPaintEvent*);
     bool eventFilter(QObject *, QEvent *);
 
 private Q_SLOTS:
