@@ -7,7 +7,8 @@ DSeparatorVertical::DSeparatorVertical(QWidget *parent) : QWidget(parent)
 {
     D_THEME_INIT_WIDGET(DSeparatorVertical);
 
-    this->setFixedWidth(parent->width());
+    this->setFixedWidth(2);
+
     m_leftRec = new QWidget(this);
     m_leftRec->setObjectName("DSeparatorLeftRec");
     m_rightRec = new QWidget(this);
