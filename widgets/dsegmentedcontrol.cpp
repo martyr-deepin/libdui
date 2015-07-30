@@ -3,7 +3,7 @@
 #include <QPainter>
 #include <QPaintEvent>
 #include <QApplication>
-#include <QStyleOption>
+#include "dthememanager.h"
 
 DUI_BEGIN_NAMESPACE
 
@@ -24,6 +24,9 @@ DSegmentedControl::DSegmentedControl(QWidget *parent) :
     setObjectName("DSegmentedControl");
     m_hLayout->setObjectName("TabBar");
     m_highlight->setObjectName("Highlight");
+
+    D_THEME_INIT_WIDGET(DSegmentedControl);
+
     m_highlightMoveAnimation->setDuration(50);
     m_highlightMoveAnimation->setEasingCurve(QEasingCurve::InCubic);
 }
