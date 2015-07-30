@@ -34,7 +34,7 @@ DSegmentedControl::DSegmentedControl(QWidget *parent) :
 {
     m_hLayout->setSpacing(0);
     m_hLayout->setMargin(0);
-
+    setObjectName("DSegmentedControl");
     m_hLayout->setObjectName("TabBar");
     m_highlight->setObjectName("Highlight");
     m_highlightMoveAnimation->setDuration(50);
@@ -112,7 +112,7 @@ void DSegmentedControl::insertSegmented(int index, const QIcon &icon, const QStr
 
     m_tabList.insert(index, button);
 
-    button->setObjectName("Segmented"+QString::number(index));
+    button->setObjectName("Segmented");
     button->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
     button->setText(title);
     button->setIcon(icon);

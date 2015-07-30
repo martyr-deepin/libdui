@@ -18,7 +18,7 @@ DUI--DSlider::sub-page {
     background: pink;
 }
 
-DUI--DSegmentedControl{
+DUI--DSegmentedControl#DSegmentedControl{
     border: 1px inset black;
     border-radius: 3px;
     border-bottom: 2px;
@@ -42,15 +42,15 @@ DUI--DSegmentedControl  DUI--DSegmentedHighlight#Highlight{
     margin-bottom: 1px;
 }
 
-DUI--DSegmentedControl QToolButton:focus{
+DUI--DSegmentedControl QToolButton#Segmented:enabled{
+    background: transparent;
+    color: white;
+    font-size: 12px;
+}
+
+DUI--DSegmentedControl QToolButton#Segmented{
     background: transparent;
     color: #19A9F9;
     font-size: 12px;
     border: none;
-}
-
-DUI--DSegmentedControl QToolButton{
-    background: transparent;
-    color: white;
-    font-size: 12px;
 }
