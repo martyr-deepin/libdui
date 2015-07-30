@@ -7,6 +7,8 @@
         <file>dark/DSeparatorHorizontal.theme</file>
         <file>dark/DSeparatorVertical.theme</file>
         <file>dark/DSlider.theme</file>
+        <file>dark/DSwitchButton.theme</file>
+        <file>dark/DSegmentedControl.theme</file>
     </qresource>
     <qresource prefix="/images">
         <file>dark/images/add_hover.png</file>
@@ -123,5 +125,7 @@
         <file>dark/images/window_unmax_hover.png</file>
         <file>dark/images/window_unmax_normal.png</file>
         <file>dark/images/window_unmax_press.png</file>
+        <file>dark/images/switch_inner_insensitive.png</file>
+        <file>dark/images/switch_inner.png</file>
     </qresource>
 </RCC>

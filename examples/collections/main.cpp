@@ -1,6 +1,6 @@
 #include "mainwindow.h"
 
-#include <libdui/dapplication.h>
+#include <dapplication.h>
 
 DUI_USE_NAMESPACE
 

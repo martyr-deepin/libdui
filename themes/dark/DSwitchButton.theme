@@ -1,0 +1,13 @@
+DUI--DSwitchButton#DSwitchButton{
+    qproperty-enabledImageSource: ":/images/dark/images/switch_inner.png";
+    qproperty-disabledImageSource: ":/images/dark/images/switch_inner_insensitive.png";
+
+    max-width: 44;
+    max-height: 20;
+
+    qproperty-animationStartValue: -25;
+    qproperty-animationEndValue: 0;
+
+    qproperty-animationDuration: 150;
+    qproperty-animationType: InOutQuad;
+}

@@ -7,7 +7,6 @@
 #include <QPropertyAnimation>
 #include <QList>
 #include <QEasingCurve>
-
 #include "libdui_global.h"
 
 DUI_BEGIN_NAMESPACE
