@@ -1,9 +1,12 @@
 #include "dbaseline.h"
+#include "dthememanager.h"
 
 DUI_BEGIN_NAMESPACE
 
 DBaseLine::DBaseLine(QWidget *parent) : QLabel(parent)
 {
+    D_THEME_INIT_WIDGET(DBaseLine);
+
     this->setFixedHeight(DUI::EXPAND_HEADER_HEIGHT);
     m_leftLayout = new QHBoxLayout();
     m_leftLayout->setMargin(0);

@@ -23,19 +23,4 @@ void DApplication::setTheme(const QString & theme)
     themeManager->setTheme(theme);
 }
 
-QString DApplication::styleSheet() const
-{
-    return QApplication::styleSheet();
-}
-
-void DApplication::setStyleSheet(const QString &sheet)
-{
-    QString old = styleSheet();
-
-    DThemeHelper helper;
-    old = helper.trimThemeContents(old);
-
-    QApplication::setStyleSheet(old + sheet);
-}
-
 DUI_END_NAMESPACE

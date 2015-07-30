@@ -26,26 +26,28 @@ QString DThemeManager::theme() const
 
 void DThemeManager::setTheme(const QString theme)
 {
+    if (m_theme != theme) {
+        m_theme = theme;
 
-
-    DApplication * app = qobject_cast<DApplication*>(DApplication::instance());
-    if (app != NULL) {
-        QFile themeFile(QString(":/%1/%1.theme").arg(theme));
-
-        if (themeFile.open(QIODevice::ReadOnly | QIODevice::Text)) {
-            m_theme = theme;
-
-            QString style = themeFile.readAll();
-
-            DThemeHelper helper;
-            app->setStyleSheet(helper.themeToQss(style));
-
-            themeFile.close();
-        }
+        emit themeChanged(theme);
     }
 }
 
-// private methods
+QString DThemeManager::getQssForWidget(QString className)
+{
+    QString qss;
+
+    QFile themeFile(QString(":/%1/%2.theme").arg(m_theme).arg(className));
+
+    if (themeFile.open(QIODevice::ReadOnly | QIODevice::Text)) {
+        qss = themeFile.readAll();
+
+        themeFile.close();
+    }
+
+    return qss;
+}
+
 DThemeManager::DThemeManager() :
     QObject()
 {

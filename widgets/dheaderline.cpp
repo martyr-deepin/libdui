@@ -1,9 +1,12 @@
 #include "dheaderline.h"
+#include "dthememanager.h"
 
 DUI_BEGIN_NAMESPACE
 
 DHeaderLine::DHeaderLine(QWidget *parent) : DBaseLine(parent)
 {
+    D_THEME_INIT_WIDGET(DHeaderLine);
+
     m_titleLabel = new QLabel(this);
     setAlignment(Qt::AlignVCenter | Qt::AlignLeft);
     m_titleLabel->setObjectName("DHeaderLineTitle");

@@ -1,4 +1,5 @@
 #include "darrowbutton.h"
+#include "dthememanager.h"
 
 DUI_BEGIN_NAMESPACE
 
@@ -35,6 +36,8 @@ int ArrowButtonIcon::buttonState() const
 DArrowButton::DArrowButton(QWidget *parent)
     : QLabel(parent)
 {
+    D_THEME_INIT_WIDGET(DArrowButton);
+
     setFixedSize(DUI::IMAGE_BUTTON_WIDTH, DUI::BUTTON_HEIGHT);
 
     m_normalLabel = new ArrowButtonIcon(this);

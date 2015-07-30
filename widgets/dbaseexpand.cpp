@@ -1,9 +1,12 @@
 #include "dbaseexpand.h"
+#include "dthememanager.h"
 
 DUI_BEGIN_NAMESPACE
 
 DBaseExpand::DBaseExpand(QWidget *parent) : QWidget(parent)
 {
+    D_THEME_INIT_WIDGET(DBaseExpand);
+
     QVBoxLayout * mainLayout = new QVBoxLayout(this);
     mainLayout->setMargin(0);
     mainLayout->setSpacing(0);

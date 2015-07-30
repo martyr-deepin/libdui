@@ -15,9 +15,6 @@ public:
 
     QString theme() const;
     void setTheme(const QString & theme);
-
-    QString styleSheet() const;
-    void setStyleSheet(const QString &sheet);
 };
 
 DUI_END_NAMESPACE

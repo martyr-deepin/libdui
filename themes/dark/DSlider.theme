@@ -1,0 +1,19 @@
+DUI--DSlider::groove {
+    background: red;
+    position: absolute; 
+    left: 4px; right: 4px;
+}
+
+DUI--DSlider::handle {
+    height: 10px;
+    background: green;
+    margin: 0 -4px; /* expand outside the groove */
+}
+
+DUI--DSlider::add-page {
+    background: white;
+}
+
+DUI--DSlider::sub-page {
+    background: pink;
+}
