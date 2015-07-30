@@ -7,6 +7,7 @@
         <file>dark/DSeparatorHorizontal.theme</file>
         <file>dark/DSeparatorVertical.theme</file>
         <file>dark/DSlider.theme</file>
+        <file>dark/DButtonList.theme</file>
     </qresource>
     <qresource prefix="/images">
         <file>dark/images/add_hover.png</file>

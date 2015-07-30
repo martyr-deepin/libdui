@@ -7,6 +7,7 @@
 #include <libdui/libdui_global.h>
 
 #include "mainwindow.h"
+#include "buttonlisttab.h"
 
 DUI_USE_NAMESPACE
 
@@ -61,11 +62,15 @@ void MainWindow::initTabWidget()
     SliderTab * sliderTab = new SliderTab(this);
     sliderTab->setFixedSize(m_mainTab->size());
 
+    ButtonListTab* buttonListGroupTab = new ButtonListTab(this);
+    buttonListGroupTab->setFixedSize(m_mainTab->size());
+
     m_mainTab->addTab(lineTab,"Line");
     m_mainTab->addTab(barTab,"Bar");
     m_mainTab->addTab(buttonTab,"Button");
     m_mainTab->addTab(inputTab,"Input");
     m_mainTab->addTab(sliderTab,"Slider");
+    m_mainTab->addTab(buttonListGroupTab, "ButtonListGroup");
 }
 
 MainWindow::~MainWindow()

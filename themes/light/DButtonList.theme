@@ -1,0 +1,14 @@
+DButtonList QPushButton{
+    background-color: transparent;
+    border: none;
+    color: white
+}
+DButtonList QPushButton:checked{
+    background-image: url(:/images/dark/images/tick_hover.png);
+    background-repeat: no-repeat;
+    background-attachment:fixed;
+    background-position: left center;
+    background-color: lightblack;
+    border-left:20px solid lightblack;
+    color: green
+}

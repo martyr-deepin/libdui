@@ -15,11 +15,13 @@ SOURCES += main.cpp\
     linetab.cpp \
     bartab.cpp \
     inputtab.cpp \
-    slidertab.cpp
+    slidertab.cpp \
+    buttonlisttab.cpp
 
 HEADERS  += mainwindow.h \
     buttontab.h \
     linetab.h \
     bartab.h \
     inputtab.h \
-    slidertab.h
+    slidertab.h \
+    buttonlisttab.h

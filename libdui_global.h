@@ -2,7 +2,6 @@
 #define LIBDUI_GLOBAL_H
 
 #include <QtCore/qglobal.h>
-#include <QDebug>
 
 #if defined(LIBDUI_LIBRARY)
 #  define LIBDUISHARED_EXPORT Q_DECL_EXPORT
