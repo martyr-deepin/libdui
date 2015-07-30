@@ -17,3 +17,91 @@ DUI--DSlider::add-page {
 DUI--DSlider::sub-page {
     background: cyan;
 }
+
+DUI--DBaseLine {
+    background-color: #fafafa
+}
+
+DUI--ContentLoader {
+    background-color: #ffffff
+}
+
+QWidget#DSeparatorTopRec {
+    background-color: #19000000;
+    min-height: 1;
+    max-height: 1;
+}
+
+QWidget#DSeparatorBottomRec {
+    background-color: #19000000;
+    min-height: 0;
+    max-height: 0;
+}
+
+QWidget#DSeparatorLeftRec {
+    background-color: #19000000;
+    min-width: 1;
+    max-width: 1;
+}
+
+QWidget#DSeparatorRightRec {
+    background-color: #19000000;
+    min-width: 0;
+    max-width: 0;
+}
+
+QLabel#DHeaderLineTitle {
+    color: #474747;
+    font-size: 12px
+}
+
+/***********************************DArrowButton***************************/
+DUI--ArrowButtonIcon {
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+QLabel#ArrowButtonIconNormal[arrowButtonDirection="0"] {
+    background-image: url(:/images/light/images/arrow_up_normal.png);
+}
+QLabel#ArrowButtonIconNormal[arrowButtonDirection="1"] {
+    background-image: url(:/images/light/images/arrow_down_normal.png);
+}
+QLabel#ArrowButtonIconNormal[arrowButtonDirection="2"] {
+    background-image: url(:/images/light/images/arrow_left_normal.png);
+}
+QLabel#ArrowButtonIconNormal[arrowButtonDirection="3"] {
+    background-image: url(:/images/light/images/arrow_right_normal.png);
+}
+
+QLabel#ArrowButtonIconHover[arrowButtonDirection="0"] {
+    background-image: url(:/images/light/images/arrow_up_hover.png);
+}
+
+QLabel#ArrowButtonIconHover[arrowButtonDirection="1"] {
+    background-image: url(:/images/light/images/arrow_down_hover.png);
+}
+
+QLabel#ArrowButtonIconHover[arrowButtonDirection="2"] {
+    background-image: url(:/images/light/images/arrow_left_hover.png);
+}
+
+QLabel#ArrowButtonIconHover[arrowButtonDirection="3"] {
+    background-image: url(:/images/light/images/arrow_right_hover.png);
+}
+
+QLabel#ArrowButtonIconPress[arrowButtonDirection="0"] {
+    background-image: url(:/images/light/images/arrow_up_press.png);
+}
+
+QLabel#ArrowButtonIconPress[arrowButtonDirection="1"] {
+    background-image: url(:/images/light/images/arrow_down_press.png);
+}
+
+QLabel#ArrowButtonIconPress[arrowButtonDirection="2"] {
+    background-image: url(:/images/light/images/arrow_left_press.png);
+}
+
+QLabel#ArrowButtonIconPress[arrowButtonDirection="3"] {
+    background-image: url(:/images/light/images/arrow_right_press.png);
+}

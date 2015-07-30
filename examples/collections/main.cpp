@@ -7,7 +7,7 @@ DUI_USE_NAMESPACE
 int main(int argc, char *argv[])
 {
     DApplication a(argc, argv);
-    a.setTheme("light");
+    a.setTheme("dark");
 
     MainWindow w;
     w.show();

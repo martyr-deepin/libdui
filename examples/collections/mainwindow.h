@@ -2,6 +2,15 @@
 #define MAINWINDOW_H
 
 #include <QWidget>
+#include <QLabel>
+#include <QTabWidget>
+#include <QVBoxLayout>
+
+#include "bartab.h"
+#include "buttontab.h"
+#include "inputtab.h"
+#include "linetab.h"
+#include "slidertab.h"
 
 class MainWindow : public QWidget
 {
@@ -10,6 +19,12 @@ class MainWindow : public QWidget
 public:
     MainWindow(QWidget *parent = 0);
     ~MainWindow();
+
+private:
+    void initTabWidget();
+
+private:
+    QTabWidget * m_mainTab = NULL;
 };
 
 #endif // MAINWINDOW_H

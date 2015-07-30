@@ -3,6 +3,7 @@
 
 #include "dthememanager.h"
 #include "dapplication.h"
+#include "private/dthemehelper.h"
 
 DUI_BEGIN_NAMESPACE
 
@@ -35,7 +36,9 @@ void DThemeManager::setTheme(const QString theme)
             m_theme = theme;
 
             QString style = themeFile.readAll();
-            app->setStyleSheet(style);
+
+            DThemeHelper helper;
+            app->setStyleSheet(helper.themeToQss(style));
 
             themeFile.close();
         }
