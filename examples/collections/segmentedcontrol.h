@@ -3,6 +3,9 @@
 
 #include <QFrame>
 #include "dsegmentedcontrol.h"
+#include "libdui_global.h"
+
+DUI_USE_NAMESPACE
 
 class Segmentedcontrol : public QFrame
 {
@@ -11,7 +14,7 @@ public:
     explicit Segmentedcontrol(QWidget *parent = 0);
 
 private:
-    DUI::DSegmentedControl *segmentedControl;
+    DSegmentedControl *segmentedControl;
 };
 
 #endif // SEGMENTEDCONTROL_H

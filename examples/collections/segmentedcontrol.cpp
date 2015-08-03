@@ -3,7 +3,7 @@
 
 Segmentedcontrol::Segmentedcontrol(QWidget *parent) :
     QFrame(parent),
-    segmentedControl(new DUI::DSegmentedControl(this))
+    segmentedControl(new DSegmentedControl(this))
 {
     setStyleSheet("Segmentedcontrol{background: #1e1e1e;}");
 
@@ -19,7 +19,7 @@ Segmentedcontrol::Segmentedcontrol(QWidget *parent) :
     label->move(100, 150);
     label->setText(QString("current paga %1").arg(segmentedControl->currentIndex()+1));
 
-    connect(segmentedControl, &DUI::DSegmentedControl::currentChanged, [=](){
+    connect(segmentedControl, &DSegmentedControl::currentChanged, [=](){
         label->setText(QString("current paga %1").arg(segmentedControl->currentIndex()+1));
     });
 }

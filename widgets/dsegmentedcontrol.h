@@ -17,13 +17,6 @@ class DSegmentedHighlight : public QFrame
 
 public:
     explicit DSegmentedHighlight(QWidget *parent = 0);
-
-public Q_SLOTS:
-
-Q_SIGNALS:
-
-private:
-
 };
 
 class DSegmentedControl : public QFrame
