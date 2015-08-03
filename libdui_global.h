@@ -21,9 +21,6 @@
 #   define DUI_USE_NAMESPACE using namespace DUI_NAMESPACE;
 #endif
 
-// for D_THEME_INIT_WIDGET macro
-#include "widgets/dthememanager.h"
-
 #define D_THEME_INIT_WIDGET(className) \
     DThemeManager * manager = DThemeManager::instance(); \
     this->setStyleSheet(this->styleSheet() + manager->getQssForWidget(#className)); \
