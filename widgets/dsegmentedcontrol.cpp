@@ -27,7 +27,7 @@ DSegmentedControl::DSegmentedControl(QWidget *parent) :
 
     D_THEME_INIT_WIDGET(DSegmentedControl);
 
-    m_highlightMoveAnimation->setDuration(50);
+    m_highlightMoveAnimation->setDuration(100);
     m_highlightMoveAnimation->setEasingCurve(QEasingCurve::InCubic);
 }
 

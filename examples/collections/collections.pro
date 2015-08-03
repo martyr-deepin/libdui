@@ -17,6 +17,7 @@ SOURCES += main.cpp\
     inputtab.cpp \
     slidertab.cpp \
     buttonlisttab.cpp
+    segmentedcontrol.cpp
 
 HEADERS  += mainwindow.h \
     buttontab.h \
@@ -25,3 +26,4 @@ HEADERS  += mainwindow.h \
     inputtab.h \
     slidertab.h \
     buttonlisttab.h
+    segmentedcontrol.h

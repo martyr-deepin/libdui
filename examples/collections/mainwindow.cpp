@@ -5,6 +5,8 @@
 #include "dslider.h"
 #include "dthememanager.h"
 #include "libdui_global.h"
+#include "dswitchbutton.h"
+#include "segmentedcontrol.h"
 
 #include "mainwindow.h"
 #include "buttonlisttab.h"
@@ -65,12 +67,19 @@ void MainWindow::initTabWidget()
     ButtonListTab* buttonListGroupTab = new ButtonListTab(this);
     buttonListGroupTab->setFixedSize(m_mainTab->size());
 
+    DSwitchButton *switchButton = new DSwitchButton(this);
+
+    Segmentedcontrol *segmentedControl = new Segmentedcontrol(this);
+    segmentedControl->setFixedSize(m_mainTab->size());
+
     m_mainTab->addTab(lineTab,"Line");
     m_mainTab->addTab(barTab,"Bar");
     m_mainTab->addTab(buttonTab,"Button");
     m_mainTab->addTab(inputTab,"Input");
     m_mainTab->addTab(sliderTab,"Slider");
     m_mainTab->addTab(buttonListGroupTab, "ButtonListGroup");
+    m_mainTab->addTab(switchButton, "Switch Button");
+    m_mainTab->addTab(segmentedControl, "Segmented Control");
 }
 
 MainWindow::~MainWindow()
