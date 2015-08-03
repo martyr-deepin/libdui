@@ -13,7 +13,10 @@ HEADERS += $$PWD/dslider.h\
     $$PWD/darrowlineexpand.h \
     $$PWD/dbuttonlist.h \
     $$PWD/dswitchbutton.h \
-    $$PWD/dsegmentedcontrol.h
+    $$PWD/dsegmentedcontrol.h \
+    $$PWD/dimagebutton.h \
+    $$PWD/dtextbutton.h \
+    $$PWD/dloadingindicator.h
 
 SOURCES += $$PWD/dslider.cpp \
     $$PWD/dthememanager.cpp \
@@ -27,7 +30,10 @@ SOURCES += $$PWD/dslider.cpp \
     $$PWD/darrowlineexpand.cpp \
     $$PWD/dbuttonlist.cpp \
     $$PWD/dswitchbutton.cpp \
-    $$PWD/dsegmentedcontrol.cpp
+    $$PWD/dsegmentedcontrol.cpp \
+    $$PWD/dimagebutton.cpp \
+    $$PWD/dtextbutton.cpp \
+    $$PWD/dloadingindicator.cpp
 
 RESOURCES += \
     $$PWD/../themes/dark.qrc \

@@ -64,6 +64,10 @@ void MainWindow::initTabWidget()
     SliderTab * sliderTab = new SliderTab(this);
     sliderTab->setFixedSize(m_mainTab->size());
 
+    IndicatorTab * indicatorTab = new IndicatorTab(this);
+    indicatorTab->setFixedSize(m_mainTab->size());
+
+    m_mainTab->addTab(indicatorTab, "Indicator");
     ButtonListTab* buttonListGroupTab = new ButtonListTab(this);
     buttonListGroupTab->setFixedSize(m_mainTab->size());
 
@@ -77,6 +81,7 @@ void MainWindow::initTabWidget()
     m_mainTab->addTab(buttonTab,"Button");
     m_mainTab->addTab(inputTab,"Input");
     m_mainTab->addTab(sliderTab,"Slider");
+
     m_mainTab->addTab(buttonListGroupTab, "ButtonListGroup");
     m_mainTab->addTab(switchButton, "Switch Button");
     m_mainTab->addTab(segmentedControl, "Segmented Control");

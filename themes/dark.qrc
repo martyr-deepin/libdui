@@ -7,6 +7,9 @@
         <file>dark/DSeparatorHorizontal.theme</file>
         <file>dark/DSeparatorVertical.theme</file>
         <file>dark/DSlider.theme</file>
+        <file>dark/DTextButton.theme</file>
+        <file>dark/DImageButton.theme</file>
+        <file>dark/DLoadingIndicator.theme</file>
         <file>dark/DButtonList.theme</file>
         <file>dark/DSwitchButton.theme</file>
         <file>dark/DSegmentedControl.theme</file>

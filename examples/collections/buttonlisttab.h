@@ -14,11 +14,6 @@ public:
     void initData();
     void initUI();
     void initConnect();
-
-signals:
-
-public slots:
-
 private:
     QStringList m_buttons;
 };

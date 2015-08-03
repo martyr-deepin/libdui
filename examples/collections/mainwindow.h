@@ -11,6 +11,7 @@
 #include "inputtab.h"
 #include "linetab.h"
 #include "slidertab.h"
+#include "indicatortab.h"
 
 class MainWindow : public QWidget
 {

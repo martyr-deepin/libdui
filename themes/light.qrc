@@ -7,6 +7,9 @@
         <file>light/DSeparatorHorizontal.theme</file>
         <file>light/DSeparatorVertical.theme</file>
         <file>light/DSlider.theme</file>
+        <file>light/DTextButton.theme</file>
+        <file>light/DImageButton.theme</file>
+        <file>light/DLoadingIndicator.theme</file>
     </qresource>
     <qresource prefix="/images">
         <file>light/images/arrow_down_hover.png</file>
