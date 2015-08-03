@@ -17,10 +17,10 @@ Segmentedcontrol::Segmentedcontrol(QWidget *parent) :
     pa.setColor(QPalette::Foreground, Qt::white);
     label->setPalette(pa);
     label->move(100, 150);
-    label->setText(QString("current paga %1").arg(segmentedControl->currentIndex())+1);
+    label->setText(QString("current paga %1").arg(segmentedControl->currentIndex()+1));
 
     connect(segmentedControl, &DUI::DSegmentedControl::currentChanged, [=](){
-        label->setText(QString("current paga %1").arg(segmentedControl->currentIndex())+1);
+        label->setText(QString("current paga %1").arg(segmentedControl->currentIndex()+1));
     });
 }
 
