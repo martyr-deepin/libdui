@@ -11,7 +11,7 @@ HEADERS += $$PWD/dslider.h\
     $$PWD/dbaseexpand.h \
     $$PWD/darrowbutton.h \
     $$PWD/darrowlineexpand.h \
-    $$PWD/dbuttonlist.h
+    $$PWD/dbuttonlist.h \
     $$PWD/dswitchbutton.h \
     $$PWD/dsegmentedcontrol.h
 
@@ -25,7 +25,7 @@ SOURCES += $$PWD/dslider.cpp \
     $$PWD/dbaseexpand.cpp \
     $$PWD/darrowbutton.cpp \
     $$PWD/darrowlineexpand.cpp \
-    $$PWD/dbuttonlist.cpp
+    $$PWD/dbuttonlist.cpp \
     $$PWD/dswitchbutton.cpp \
     $$PWD/dsegmentedcontrol.cpp
 
