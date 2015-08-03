@@ -3,15 +3,14 @@
 
 #include <QWidget>
 
+#include "dpasswordedit.h"
+#include "dsearchedit.h"
+
 class InputTab : public QWidget
 {
     Q_OBJECT
 public:
     explicit InputTab(QWidget *parent = 0);
-
-signals:
-
-public slots:
 };
 
 #endif // INPUTTAB_H

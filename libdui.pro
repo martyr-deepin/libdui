@@ -27,3 +27,5 @@ unix {
 
     INSTALLS += includes
 }
+
+DISTFILES +=

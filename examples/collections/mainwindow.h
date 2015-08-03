@@ -12,6 +12,7 @@
 #include "linetab.h"
 #include "slidertab.h"
 #include "indicatortab.h"
+#include "widgetstab.h"
 
 class MainWindow : public QWidget
 {

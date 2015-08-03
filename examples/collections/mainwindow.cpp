@@ -76,6 +76,10 @@ void MainWindow::initTabWidget()
     Segmentedcontrol *segmentedControl = new Segmentedcontrol(this);
     segmentedControl->setFixedSize(m_mainTab->size());
 
+    WidgetsTab *widgetsTab = new WidgetsTab(this);
+    widgetsTab->setFixedSize(m_mainTab->size());
+
+
     m_mainTab->addTab(lineTab,"Line");
     m_mainTab->addTab(barTab,"Bar");
     m_mainTab->addTab(buttonTab,"Button");
@@ -85,6 +89,7 @@ void MainWindow::initTabWidget()
     m_mainTab->addTab(buttonListGroupTab, "ButtonListGroup");
     m_mainTab->addTab(switchButton, "Switch Button");
     m_mainTab->addTab(segmentedControl, "Segmented Control");
+    m_mainTab->addTab(widgetsTab, "Widgets");
 }
 
 MainWindow::~MainWindow()

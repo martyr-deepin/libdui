@@ -36,9 +36,9 @@ public:
     bool isCheckable();
 
     void setNormalPic(const QPixmap & normalPicPixmap);
-    void setHoverPic(QPixmap & hoverPicPixmap);
-    void setPressPic(QPixmap & pressPicPixmap);
-    void setCheckedPic(QPixmap & checkedPicPixmap);
+    void setHoverPic(const QPixmap & hoverPicPixmap);
+    void setPressPic(const QPixmap & pressPicPixmap);
+    void setCheckedPic(const QPixmap & checkedPicPixmap);
 
 signals:
     void clicked();

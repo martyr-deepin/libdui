@@ -1,0 +1,26 @@
+DUI--DCalendar {
+    qproperty-backgroundColor:#242526;
+    qproperty-backgroundCircleColor:#00b1e9;
+    qproperty-defaultTextColor:#eee;
+    qproperty-defaultLunarColor:#00f2e9;
+    qproperty-weekendsTextColor:cyan;
+}
+
+DUI--DCalendar QPushButton{
+    background-color:#242526;
+    color:white;
+}
+
+DUI--DCalendar QLineEdit{
+    background-color:#242526;
+    color:white;
+}
+
+DUI--DCalendar QLabel{
+    color:white;
+}
+
+DUI--DCalendar QHeaderView::section{
+    background-color:#272829;
+    color:#eee;
+}

@@ -8,6 +8,7 @@ DSeparatorHorizontal::DSeparatorHorizontal(QWidget *parent) : QWidget(parent)
     D_THEME_INIT_WIDGET(DSeparatorHorizontal);
 
     this->setFixedHeight(2);
+    this->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
 
     m_topRec = new QWidget(this);
     m_topRec->setObjectName("DSeparatorTopRec");

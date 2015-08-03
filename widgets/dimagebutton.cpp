@@ -2,6 +2,8 @@
 #include "dconstants.h"
 #include "dthememanager.h"
 
+#include "dthememanager.h"
+
 DUI_BEGIN_NAMESPACE
 
 DImageButton::DImageButton(QWidget *parent)
@@ -104,7 +106,7 @@ void DImageButton::changeState()
     switch (m_state) {
     case Hover:     if (!m_hoverPic.isNull()) setPixmap(m_hoverPic);      break;
     case Press:     if (!m_pressPic.isNull()) setPixmap(m_pressPic);      break;
-    case Checked:   if (!m_checkedPic.isNull()) setPixmap(m_checkedPic);   break;
+    case Checked:   if (!m_checkedPic.isNull()) setPixmap(m_checkedPic);  break;
     default:        if (!m_normalPic.isNull()) setPixmap(m_normalPic);    break;
     }
 
@@ -152,19 +154,19 @@ void DImageButton::setNormalPic(const QPixmap &normalPicPixmap)
     changeState();
 }
 
-void DImageButton::setHoverPic(QPixmap &hoverPicPixmap)
+void DImageButton::setHoverPic(const QPixmap &hoverPicPixmap)
 {
     m_hoverPic = hoverPicPixmap;
     changeState();
 }
 
-void DImageButton::setPressPic(QPixmap &pressPicPixmap)
+void DImageButton::setPressPic(const QPixmap &pressPicPixmap)
 {
     m_pressPic = pressPicPixmap;
     changeState();
 }
 
-void DImageButton::setCheckedPic(QPixmap &checkedPicPixmap)
+void DImageButton::setCheckedPic(const QPixmap &checkedPicPixmap)
 {
     m_checkedPic = checkedPicPixmap;
     changeState();

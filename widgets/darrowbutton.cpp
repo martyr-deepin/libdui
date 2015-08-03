@@ -84,6 +84,8 @@ int DArrowButton::buttonState() const
 
 void DArrowButton::mousePressEvent(QMouseEvent *event)
 {
+    Q_UNUSED(event)
+
     emit mousePress();
     m_normalLabel->setVisible(false);
     m_hoverLabel->setVisible(false);
@@ -94,6 +96,8 @@ void DArrowButton::mousePressEvent(QMouseEvent *event)
 
 void DArrowButton::mouseReleaseEvent(QMouseEvent *event)
 {
+    Q_UNUSED(event)
+
     emit mouseRelease();
     m_normalLabel->setVisible(true);
     m_hoverLabel->setVisible(false);
