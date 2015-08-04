@@ -1,4 +1,5 @@
 #include "dsearchedit.h"
+#include "dthememanager.h"
 
 #include <QHBoxLayout>
 #include <QSpacerItem>

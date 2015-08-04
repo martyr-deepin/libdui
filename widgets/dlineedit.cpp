@@ -1,4 +1,5 @@
 #include "dlineedit.h"
+#include "dthememanager.h"
 
 DUI_USE_NAMESPACE
 
