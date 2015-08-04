@@ -69,6 +69,9 @@ void DBaseExpand::setExpand(bool value)
 {
     m_expand = value;
 
+    if (!m_content)
+        return;
+
     if (value)
     {
         m_animation->setStartValue(0);
@@ -102,8 +105,9 @@ void DBaseExpand::setAnimationEasingCurve(QEasingCurve curve)
 void DBaseExpand::resizeEvent(QResizeEvent *e)
 {
     m_hSeparator->setFixedWidth(e->size().width());
-    m_content->setFixedWidth(e->size().width());
     m_contentLoader->setFixedWidth(e->size().width());
+    if (m_content)
+        m_content->setFixedWidth(e->size().width());
 
     QWidget::resizeEvent(e);
 }
