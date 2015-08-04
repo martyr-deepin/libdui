@@ -19,7 +19,8 @@ HEADERS += $$PWD/dslider.h\
     $$PWD/dpasswordedit.h \
     $$PWD/dsearchedit.h \
     $$PWD/dswitchbutton.h \
-    $$PWD/dsegmentedcontrol.h
+    $$PWD/dsegmentedcontrol.h \
+    $$PWD/dlineedit.h
 
 SOURCES += $$PWD/dslider.cpp \
     $$PWD/dthememanager.cpp \
@@ -39,7 +40,8 @@ SOURCES += $$PWD/dslider.cpp \
     $$PWD/dpasswordedit.cpp \
     $$PWD/dsearchedit.cpp \
     $$PWD/dswitchbutton.cpp\
-    $$PWD/dsegmentedcontrol.cpp
+    $$PWD/dsegmentedcontrol.cpp \
+    $$PWD/dlineedit.cpp
 
 RESOURCES += \
     $$PWD/../themes/dark.qrc \
