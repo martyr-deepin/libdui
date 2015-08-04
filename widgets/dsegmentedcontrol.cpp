@@ -8,7 +8,7 @@
 DUI_BEGIN_NAMESPACE
 
 DSegmentedHighlight::DSegmentedHighlight(QWidget *parent) :
-    QFrame(parent)
+    QToolButton(parent)
 {
 }
 
@@ -171,7 +171,16 @@ void DSegmentedControl::updateHighlightGeometry()
 {
     if(m_currentIndex>=0){
         m_highlightMoveAnimation->setStartValue(m_highlight->geometry());
-        m_highlightMoveAnimation->setEndValue(at(m_currentIndex)->geometry());
+        QRect tmp = at(m_currentIndex)->geometry();
+        tmp.setHeight(tmp.height()-1);
+        if(m_currentIndex==0){
+            tmp.setX(0);
+            tmp.setWidth(tmp.width()+1);
+        }else if(m_currentIndex == count()-1){
+            tmp.setWidth(tmp.width()+1);
+        }
+        tmp.setY(0);
+        m_highlightMoveAnimation->setEndValue(tmp);
         m_highlightMoveAnimation->start();
     }
 }
