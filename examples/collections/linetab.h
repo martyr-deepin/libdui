@@ -18,10 +18,6 @@ class LineTab : public QLabel
     Q_OBJECT
 public:
     explicit LineTab(QWidget *parent = 0);
-
-signals:
-
-public slots:
 };
 
 #endif // LINETAB_H

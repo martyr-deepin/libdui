@@ -1,0 +1,4 @@
+DUI--DLoadingIndicator {
+    qproperty-backgroundColor: #CCC;
+    border: 0px;
+}

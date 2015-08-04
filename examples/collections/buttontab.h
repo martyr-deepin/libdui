@@ -4,6 +4,9 @@
 #include <QWidget>
 #include <QLabel>
 
+#include "libdui_global.h"
+#include "dtextbutton.h"
+#include "dimagebutton.h"
 #include "dheaderline.h"
 #include "darrowbutton.h"
 
@@ -15,9 +18,8 @@ class ButtonTab : public QLabel
 public:
     explicit ButtonTab(QWidget *parent = 0);
 
-signals:
-
 public slots:
+    void buttonClickTest();
 };
 
 #endif // BUTTONTAB_H

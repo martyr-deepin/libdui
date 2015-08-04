@@ -17,7 +17,9 @@ SOURCES += main.cpp\
     inputtab.cpp \
     slidertab.cpp \
     buttonlisttab.cpp \
-    segmentedcontrol.cpp
+    segmentedcontrol.cpp\
+    indicatortab.cpp \
+    widgetstab.cpp
 
 HEADERS  += mainwindow.h \
     buttontab.h \
@@ -26,4 +28,9 @@ HEADERS  += mainwindow.h \
     inputtab.h \
     slidertab.h \
     buttonlisttab.h \
-    segmentedcontrol.h
+    segmentedcontrol.h \
+    indicatortab.h \
+    widgetstab.h
+
+RESOURCES += \
+    images.qrc
