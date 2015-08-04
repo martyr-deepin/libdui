@@ -33,6 +33,7 @@ public:
     bool expand() const;
     void setAnimationDuration(int duration);
     void setAnimationEasingCurve(QEasingCurve curve);
+    void resizeEvent(QResizeEvent *e);
 
 private:
     QWidget *m_content = NULL;

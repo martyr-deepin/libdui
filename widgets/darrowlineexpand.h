@@ -39,6 +39,7 @@ public:
 
 private:
     void setHeader(QWidget *header);
+    void resizeEvent(QResizeEvent *e);
 
 private:
     ArrowHeaderLine *m_headerLine = NULL;
