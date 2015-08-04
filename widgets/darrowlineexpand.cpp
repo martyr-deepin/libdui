@@ -1,6 +1,8 @@
 #include "darrowlineexpand.h"
 #include "dthememanager.h"
 
+#include <QResizeEvent>
+
 DUI_BEGIN_NAMESPACE
 
 ArrowHeaderLine::ArrowHeaderLine(QWidget *parent) :
@@ -44,7 +46,6 @@ DArrowLineExpand::DArrowLineExpand(QWidget *parent) : DBaseExpand(parent)
 
 void DArrowLineExpand::setTitle(const QString &title)
 {
-    m_headerLine->setFixedWidth(width());
     m_headerLine->setTitle(title);
 }
 
@@ -58,6 +59,13 @@ void DArrowLineExpand::setExpand(bool value)
 void DArrowLineExpand::setHeader(QWidget *header)
 {
     DBaseExpand::setHeader(header);
+}
+
+void DArrowLineExpand::resizeEvent(QResizeEvent *e)
+{
+    m_headerLine->setFixedWidth(e->size().width());
+
+    DBaseExpand::resizeEvent(e);
 }
 
 DUI_END_NAMESPACE

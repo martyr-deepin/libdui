@@ -1,6 +1,8 @@
 #include "dbaseexpand.h"
 #include "dthememanager.h"
 
+#include <QResizeEvent>
+
 DUI_BEGIN_NAMESPACE
 
 DBaseExpand::DBaseExpand(QWidget *parent) : QWidget(parent)
@@ -53,7 +55,6 @@ void DBaseExpand::setContent(QWidget *content)
     if (!content)
         return;
 
-    m_hSeparator->setFixedWidth(width());
     QLayoutItem *child;
     while ((child = m_contentLayout->takeAt(0)) != 0) {
         m_contentLayout->removeItem(child);
@@ -96,6 +97,15 @@ void DBaseExpand::setAnimationDuration(int duration)
 void DBaseExpand::setAnimationEasingCurve(QEasingCurve curve)
 {
     m_animation->setEasingCurve(curve);
+}
+
+void DBaseExpand::resizeEvent(QResizeEvent *e)
+{
+    m_hSeparator->setFixedWidth(e->size().width());
+    m_content->setFixedWidth(e->size().width());
+    m_contentLoader->setFixedWidth(e->size().width());
+
+    QWidget::resizeEvent(e);
 }
 
 DUI_END_NAMESPACE
