@@ -1,5 +1,5 @@
 DUI--DSegmentedControl#DSegmentedControl{
-    border: 1px inset black;
+    border: 1px double black;
     border-radius: 3px;
     border-bottom: 2px;
 
@@ -12,15 +12,7 @@ DUI--DSegmentedControl#DSegmentedControl{
 }
 
 DUI--DSegmentedControl  DUI--DSegmentedHighlight#Highlight{
-    background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
-                                stop: 0 #1e1e1e, stop: 0.8 #080808,
-                                stop: 0.95 #0e0e0e, stop: 1.0 #2b2b2b);
-    border: 1px inset black;
-    border-radius: 3px;
-
-    font-size: 12px;
-
-    margin-bottom: 1px;
+    background-color: #101010;
 }
 
 DUI--DSegmentedControl QToolButton#Segmented:enabled{

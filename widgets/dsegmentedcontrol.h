@@ -11,7 +11,7 @@
 
 DUI_BEGIN_NAMESPACE
 
-class DSegmentedHighlight : public QFrame
+class DSegmentedHighlight : public QToolButton
 {
     Q_OBJECT
 
