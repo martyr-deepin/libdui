@@ -20,7 +20,7 @@ DColorPicker::DColorPicker(int row, int column, int cellSize,
     m_selectedColor(Qt::white)
 {
     setObjectName("DColorPicker");
-    setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
+    setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Minimum);
     setMouseTracking(true);
 
     D_THEME_INIT_WIDGET(DColorPicker);
@@ -193,8 +193,11 @@ void DColorPicker::paintEvent(QPaintEvent *e)
 
         for(int i=0; i<row; ++i){
             for(int j=0; j<column; ++j){
-                QRect rect(m_margin+(j+gradient.begin.y()-1)*(m_cellSize+m_spacing),
-                           m_margin+(i+gradient.begin.x()-1)*(m_cellSize+m_spacing),
+                int top_margin = (height()-m_row*(m_cellSize+m_spacing)-m_spacing)/2;
+                int left_margin = (width()-m_column*(m_cellSize+m_spacing)-m_spacing)/2;
+
+                QRect rect(left_margin+(j+gradient.begin.y()-1)*(m_cellSize+m_spacing),
+                           top_margin+(i+gradient.begin.x()-1)*(m_cellSize+m_spacing),
                            m_cellSize, m_cellSize);
 
                 QColor c = gradient.startColor.toRgb();
@@ -255,7 +258,7 @@ void DColorPicker::mouseReleaseEvent(QMouseEvent *e)
 
 void DColorPicker::resize()
 {
-    setFixedSize((m_column-1)*(m_cellSize+m_spacing)+m_cellSize+m_margin*2,
+    setMinimumSize((m_column-1)*(m_cellSize+m_spacing)+m_cellSize+m_margin*2,
                  (m_row-1)*(m_cellSize+m_spacing)+m_cellSize+m_margin*2);
 }
 
