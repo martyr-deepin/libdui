@@ -20,7 +20,7 @@ HEADERS += $$PWD/dslider.h\
     $$PWD/dsearchedit.h \
     $$PWD/dswitchbutton.h \
     $$PWD/dsegmentedcontrol.h \
-    $$PWD/dcolorpicker.h
+    $$PWD/dcolorpicker.h \
     $$PWD/dlineedit.h
 
 SOURCES += $$PWD/dslider.cpp \
@@ -42,7 +42,7 @@ SOURCES += $$PWD/dslider.cpp \
     $$PWD/dsearchedit.cpp \
     $$PWD/dswitchbutton.cpp\
     $$PWD/dsegmentedcontrol.cpp \
-    $$PWD/dcolorpicker.cpp
+    $$PWD/dcolorpicker.cpp \
     $$PWD/dlineedit.cpp
 
 RESOURCES += \
