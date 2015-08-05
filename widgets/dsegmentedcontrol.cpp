@@ -19,6 +19,8 @@ DSegmentedControl::DSegmentedControl(QWidget *parent) :
     m_currentIndex(-1),
     m_highlightMoveAnimation(new QPropertyAnimation(m_highlight, "geometry", this))
 {
+    setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+
     m_hLayout->setSpacing(0);
     m_hLayout->setMargin(0);
     setObjectName("DSegmentedControl");

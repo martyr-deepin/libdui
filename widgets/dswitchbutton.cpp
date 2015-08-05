@@ -15,6 +15,7 @@ DSwitchButton::DSwitchButton(QWidget *parent) :
     m_animationEndValue(0)
 {
     setObjectName("DSwitchButton");
+    setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
 
     D_THEME_INIT_WIDGET(DSwitchButton);
 

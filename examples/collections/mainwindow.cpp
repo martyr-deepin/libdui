@@ -7,6 +7,7 @@
 #include "libdui_global.h"
 #include "dswitchbutton.h"
 #include "segmentedcontrol.h"
+#include "dcolorpicker.h"
 
 #include "mainwindow.h"
 #include "buttonlisttab.h"
@@ -74,11 +75,18 @@ void MainWindow::initTabWidget()
     DSwitchButton *switchButton = new DSwitchButton(this);
 
     Segmentedcontrol *segmentedControl = new Segmentedcontrol(this);
-    segmentedControl->setFixedSize(m_mainTab->size());
 
     WidgetsTab *widgetsTab = new WidgetsTab(this);
     widgetsTab->setFixedSize(m_mainTab->size());
 
+    DColorPicker *picker = new DColorPicker(12, 19, 12, 1, 1, this);
+    picker->addColorGradient(QPoint(1, 1), QPoint(12, 1), Qt::black, Qt::white);
+    picker->addColorGradient(QPoint(1, 2), QPoint(6, 7), "#000011", "#00FFFF");
+    picker->addColorGradient(QPoint(1, 8), QPoint(6, 13), "#330000", "#33FFFF");
+    picker->addColorGradient(QPoint(1, 14), QPoint(6, 19), "#660000", "#66FFFF");
+    picker->addColorGradient(QPoint(7, 2), QPoint(12, 7), "#990000", "#99FFFF");
+    picker->addColorGradient(QPoint(7, 8), QPoint(12, 13), "#CC0000", "#CCFFFF");
+    picker->addColorGradient(QPoint(7, 14), QPoint(12, 19), "#FF0000", "#FFFFFF");
 
     m_mainTab->addTab(lineTab,"Line");
     m_mainTab->addTab(barTab,"Bar");
@@ -90,6 +98,7 @@ void MainWindow::initTabWidget()
     m_mainTab->addTab(switchButton, "Switch Button");
     m_mainTab->addTab(segmentedControl, "Segmented Control");
     m_mainTab->addTab(widgetsTab, "Widgets");
+    m_mainTab->addTab(picker, "Color Picker");
 }
 
 MainWindow::~MainWindow()
