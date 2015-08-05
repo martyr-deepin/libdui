@@ -1,0 +1,7 @@
+
+DUI--DLineEdit {
+    background-color:#0e0e0e;
+    color:#fff;
+    border:1px solid #cde;
+    border-radius:3px;
+}

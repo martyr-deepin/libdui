@@ -2,11 +2,11 @@
 #define DSEARCHEDIT_H
 
 #include <QWidget>
-#include <QLineEdit>
 #include <QSize>
 
 #include "libdui_global.h"
 #include "dimagebutton.h"
+#include "dlineedit.h"
 
 DUI_BEGIN_NAMESPACE
 
@@ -29,7 +29,7 @@ public slots:
 
 private:
     QSize m_size;
-    QLineEdit m_edt;
+    DLineEdit m_edt;
     DImageButton m_btn;
 
     const int animationDuration = 400;

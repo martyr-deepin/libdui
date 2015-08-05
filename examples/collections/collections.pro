@@ -34,5 +34,3 @@ HEADERS  += mainwindow.h \
 
 RESOURCES += \
     images.qrc
-
-LIBS += -ldui

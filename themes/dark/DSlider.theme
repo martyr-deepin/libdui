@@ -1,19 +1,35 @@
+DSlider {
+    height: 40px;
+}
+
 DUI--DSlider::groove {
-    background: red;
-    position: absolute; 
-    left: 4px; right: 4px;
+    border: 1px solid #bbb;
+    background: #222;
+    height: 6px;
+    border-radius: 4px;
 }
 
-DUI--DSlider::handle {
-    height: 10px;
-    background: green;
-    margin: 0 -4px; /* expand outside the groove */
+DUI--DSlider::handle:horizontal {
+    background: qlineargradient(x1:0, y1:0, x2:0.6, y2:1,
+        stop:0 #CCC, stop: 0.4 #333, stop:1 #222);
+    border: 1px solid #111;
+    width: 16px;
+    margin-top: -6px;   /* it seems that the height is about 2px and can't ben set */
+    margin-bottom: -6px;
+    border-radius: 8px;
 }
 
-DUI--DSlider::add-page {
-    background: white;
+DUI--DSlider::add-page:horizontal {
+    background: #111;
+    border: 1px solid #222;
+    height: 6px;
+    border-radius: 3px;
 }
 
 DUI--DSlider::sub-page {
-    background: pink;
+    background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
+        stop: 0 #003399, stop: 0.8 #0066CC, stop: 1 #BBB);
+    border: 1px solid #222;
+    height: 6px;
+    border-radius: 3px;
 }

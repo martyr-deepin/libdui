@@ -4,6 +4,8 @@
 
 InputTab::InputTab(QWidget *parent) : QWidget(parent)
 {
+    setStyleSheet("InputTab{background-color: #252627;}");
+
     DUI::DPasswordEdit *pwdEdit = new DUI::DPasswordEdit(this);
     pwdEdit->setNormalIcon(QPixmap(":/images/button.png"));
     pwdEdit->setHoverIcon(QPixmap(":/images/buttonHover.png"));
@@ -14,4 +16,8 @@ InputTab::InputTab(QWidget *parent) : QWidget(parent)
     DUI::DSearchEdit *searchEdit = new DUI::DSearchEdit(this);
     searchEdit->setSearchIcon(QPixmap(":/images/button.png"));
     searchEdit->move(20, 50);
+
+    DUI::DLineEdit *lineEdit = new DUI::DLineEdit(this);
+    lineEdit->setText("LineEdit");
+    lineEdit->move(20, 80);
 }

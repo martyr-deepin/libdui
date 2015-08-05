@@ -2,11 +2,11 @@
 #define DPASSWORDEDIT_H
 
 #include <QWidget>
-#include <QLineEdit>
 #include <QSize>
 #include <QPixmap>
 
 #include "dimagebutton.h"
+#include "dlineedit.h"
 
 DUI_BEGIN_NAMESPACE
 
@@ -24,7 +24,7 @@ public slots:
     void setPassword(const QString & password) {m_edit.setText(password);}
 
 private:
-    QLineEdit m_edit;
+    DLineEdit m_edit;
     DUI::DImageButton m_btn;
 };
 

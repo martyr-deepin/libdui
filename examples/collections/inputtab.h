@@ -5,6 +5,7 @@
 
 #include "dpasswordedit.h"
 #include "dsearchedit.h"
+#include "dlineedit.h"
 
 class InputTab : public QWidget
 {

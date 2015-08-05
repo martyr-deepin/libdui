@@ -1,4 +1,5 @@
 #include "dsearchedit.h"
+#include "dthememanager.h"
 
 #include <QHBoxLayout>
 #include <QSpacerItem>
@@ -11,6 +12,8 @@ DSearchEdit::DSearchEdit(QWidget *parent)
     : QWidget(parent),
       m_btn(this)
 {
+    D_THEME_INIT_WIDGET(DSearchEdit);
+
     m_size = QSize(m_btn.sizeHint().width() + m_edt.sizeHint().width(), qMax(m_btn.sizeHint().height(), m_edt.sizeHint().height()));
     setFixedSize(m_size);
     m_edt.setFixedWidth(0);

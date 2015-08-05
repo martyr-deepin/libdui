@@ -21,6 +21,7 @@ HEADERS += $$PWD/dslider.h\
     $$PWD/dswitchbutton.h \
     $$PWD/dsegmentedcontrol.h \
     $$PWD/dcolorpicker.h
+    $$PWD/dlineedit.h
 
 SOURCES += $$PWD/dslider.cpp \
     $$PWD/dthememanager.cpp \
@@ -42,6 +43,7 @@ SOURCES += $$PWD/dslider.cpp \
     $$PWD/dswitchbutton.cpp\
     $$PWD/dsegmentedcontrol.cpp \
     $$PWD/dcolorpicker.cpp
+    $$PWD/dlineedit.cpp
 
 RESOURCES += \
     $$PWD/../themes/dark.qrc \
