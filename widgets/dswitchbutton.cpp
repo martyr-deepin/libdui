@@ -9,8 +9,8 @@ DUI_BEGIN_NAMESPACE
 
 DSwitchButton::DSwitchButton(QWidget *parent) :
     QFrame(parent),
-    m_innerAnimation(new QVariantAnimation(this)),
     m_checked(false),
+    m_innerAnimation(new QVariantAnimation(this)),
     m_animationStartValue(0),
     m_animationEndValue(0)
 {
