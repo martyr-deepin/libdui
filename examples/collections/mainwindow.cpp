@@ -79,14 +79,7 @@ void MainWindow::initTabWidget()
     WidgetsTab *widgetsTab = new WidgetsTab(this);
     widgetsTab->setFixedSize(m_mainTab->size());
 
-    DColorPicker *picker = new DColorPicker(12, 19, 12, 1, 1, this);
-    picker->addColorGradient(QPoint(1, 1), QPoint(12, 1), Qt::black, Qt::white);
-    picker->addColorGradient(QPoint(1, 2), QPoint(6, 7), "#000011", "#00FFFF");
-    picker->addColorGradient(QPoint(1, 8), QPoint(6, 13), "#330000", "#33FFFF");
-    picker->addColorGradient(QPoint(1, 14), QPoint(6, 19), "#660000", "#66FFFF");
-    picker->addColorGradient(QPoint(7, 2), QPoint(12, 7), "#990000", "#99FFFF");
-    picker->addColorGradient(QPoint(7, 8), QPoint(12, 13), "#CC0000", "#CCFFFF");
-    picker->addColorGradient(QPoint(7, 14), QPoint(12, 19), "#FF0000", "#FFFFFF");
+    DColorPicker *picker = new DColorPicker(1, this);
 
     m_mainTab->addTab(comboBoxTab, "ComboBox");
     m_mainTab->addTab(indicatorTab, "Indicator");

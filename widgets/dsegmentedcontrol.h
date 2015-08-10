@@ -37,15 +37,19 @@ public:
     QString getText(int index) const;
     QIcon getIcon(int index) const;
     int animationDuration() const;
+    int indexByTitle(const QString &title) const;
 
     QEasingCurve::Type animationType() const;
 
 public Q_SLOTS:
     int addSegmented(const QString &title);
     int addSegmented(const QIcon &icon, const QString &title);
+    void addSegmented(const QStringList &titleList);
+    void addSegmented(const QList<QIcon> &iconList, const QStringList &titleList);
     void insertSegmented(int index, const QString &title);
     void insertSegmented(int index, const QIcon &icon, const QString &title);
-    void setCurrentIndex(int currentIndex);
+    bool setCurrentIndex(int currentIndex);
+    bool setCurrentIndexByTitle(const QString &title);
     void setText(int index, const QString &title);
     void setIcon(int index, const QIcon &icon);
     void setAnimationDuration(int animationDuration);
@@ -67,6 +71,7 @@ private Q_SLOTS:
 
 Q_SIGNALS:
     void currentChanged(int index);
+    void currentTitleChanged(QString title);
     void animationDurationChanged(int animationDuration);
 };
 

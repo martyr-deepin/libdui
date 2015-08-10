@@ -35,7 +35,7 @@ DSegmentedControl::DSegmentedControl(QWidget *parent) :
 
 int DSegmentedControl::count() const
 {
-    return m_hLayout->count();
+    return m_tabList.count();
 }
 
 const DSegmentedHighlight *DSegmentedControl::highlight() const
@@ -74,6 +74,18 @@ int DSegmentedControl::animationDuration() const
     return m_highlightMoveAnimation->duration();
 }
 
+int DSegmentedControl::indexByTitle(const QString &title) const
+{
+    int i=0;
+    foreach (QToolButton *button, m_tabList) {
+        if(button->text() == title)
+            return i;
+        ++i;
+    }
+
+    return -1;
+}
+
 QEasingCurve::Type DSegmentedControl::animationType() const
 {
     return m_highlightMoveAnimation->easingCurve().type();
@@ -91,6 +103,20 @@ int DSegmentedControl::addSegmented(const QIcon &icon, const QString &title)
     insertSegmented(m_hLayout->count(), icon, title);
 
     return m_hLayout->count()-1;
+}
+
+void DSegmentedControl::addSegmented(const QStringList &titleList)
+{
+    foreach (const QString &title, titleList) {
+        addSegmented(title);
+    }
+}
+
+void DSegmentedControl::addSegmented(const QList<QIcon> &iconList, const QStringList &titleList)
+{
+    for(int i=0;i<titleList.count();++i){
+        addSegmented(iconList[i], titleList[i]);
+    }
 }
 
 void DSegmentedControl::insertSegmented(int index, const QString &title)
@@ -119,10 +145,15 @@ void DSegmentedControl::insertSegmented(int index, const QIcon &icon, const QStr
     button->installEventFilter(this);
 }
 
-void DSegmentedControl::setCurrentIndex(int currentIndex)
+bool DSegmentedControl::setCurrentIndex(int currentIndex)
 {
     if(currentIndex == m_currentIndex)
-        return;
+        return true;
+
+    if(currentIndex<0||currentIndex>count()-1){
+        qErrnoWarning("index range over!");
+        return false;
+    }
 
     m_currentIndex = currentIndex;
 
@@ -136,6 +167,14 @@ void DSegmentedControl::setCurrentIndex(int currentIndex)
     updateHighlightGeometry();
 
     emit currentChanged(currentIndex);
+    emit currentTitleChanged(at(currentIndex)->text());
+
+    return true;
+}
+
+bool DSegmentedControl::setCurrentIndexByTitle(const QString &title)
+{
+    return setCurrentIndex(indexByTitle(title));
 }
 
 void DSegmentedControl::setText(int index, const QString &title)

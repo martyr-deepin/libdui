@@ -7,8 +7,6 @@ DUI--DSegmentedControl#DSegmentedControl{
                     stop: 0 #191919, stop: 0.2 #1e1e1e, stop: 0.97 #1e1e1e, stop: 1.0 white);
     min-height: 24px;
     max-height: 24px;
-
-    color: white;
 }
 
 DUI--DSegmentedControl  DUI--DSegmentedHighlight#Highlight{
@@ -16,9 +14,11 @@ DUI--DSegmentedControl  DUI--DSegmentedHighlight#Highlight{
 }
 
 DUI--DSegmentedControl QToolButton#Segmented:enabled{
-    background: transparent;
+    color: #C0C0C0;
+}
+
+DUI--DSegmentedControl QToolButton#Segmented:hover{
     color: white;
-    font-size: 12px;
 }
 
 DUI--DSegmentedControl QToolButton#Segmented{

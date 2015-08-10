@@ -17,15 +17,40 @@ DColorPicker::DColorPicker(int row, int column, int cellSize,
     m_spacing(spacing),
     m_margin(margin),
     m_mousePressPos(-1, -1),
-    m_selectedColor(Qt::white)
+    m_selectedBorderColor(Qt::white)
 {
     setObjectName("DColorPicker");
     setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Minimum);
-    setMouseTracking(true);
 
     D_THEME_INIT_WIDGET(DColorPicker);
 
     resize();
+}
+
+DColorPicker::DColorPicker(int margin, QWidget *parent):
+    QFrame(parent),
+    m_row(12),
+    m_column(19),
+    m_cellSize(12),
+    m_spacing(2),
+    m_margin(margin),
+    m_mousePressPos(-1, -1),
+    m_selectedBorderColor(Qt::white)
+{
+    setObjectName("DColorPicker");
+    setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Minimum);
+
+    D_THEME_INIT_WIDGET(DColorPicker);
+
+    resize();
+
+    addColorGradient(QPoint(1, 1), QPoint(12, 1), Qt::black, Qt::white);
+    addColorGradient(QPoint(1, 2), QPoint(6, 7), "#000011", "#00FFFF");
+    addColorGradient(QPoint(1, 8), QPoint(6, 13), "#330000", "#33FFFF");
+    addColorGradient(QPoint(1, 14), QPoint(6, 19), "#660000", "#66FFFF");
+    addColorGradient(QPoint(7, 2), QPoint(12, 7), "#990000", "#99FFFF");
+    addColorGradient(QPoint(7, 8), QPoint(12, 13), "#CC0000", "#CCFFFF");
+    addColorGradient(QPoint(7, 14), QPoint(12, 19), "#FF0000", "#FFFFFF");
 }
 
 QColor DColorPicker::currentColor() const
@@ -77,9 +102,9 @@ const DColorPicker::Gradient &DColorPicker::colorGradient(int index) const
     return m_gradientList[index];
 }
 
-QColor DColorPicker::selectedColor() const
+QColor DColorPicker::selectedBorderColor() const
 {
-    return m_selectedColor;
+    return m_selectedBorderColor;
 }
 
 void DColorPicker::setCurrentColor(QColor currentColor)
@@ -172,15 +197,15 @@ void DColorPicker::setColorGradient(int index, const QPoint &begin, const QPoint
     update();
 }
 
-void DColorPicker::setSelectedColor(QColor selectedColor)
+void DColorPicker::setSelectedBorderColor(QColor selectedColor)
 {
-    if (m_selectedColor == selectedColor)
+    if (m_selectedBorderColor == selectedColor)
         return;
 
-    m_selectedColor = selectedColor;
+    m_selectedBorderColor = selectedColor;
     update();
 
-    emit selectedColorChanged(selectedColor);
+    emit selectedBorderColorChanged(selectedColor);
 }
 
 void DColorPicker::paintEvent(QPaintEvent *e)
@@ -220,7 +245,7 @@ void DColorPicker::paintEvent(QPaintEvent *e)
                 pa.fillRect(rect, c);
 
                 if(m_currentColor.isValid()&&c.name() == m_currentColor.name()){
-                    pa.setPen(m_selectedColor);
+                    pa.setPen(m_selectedBorderColor);
                     rect.setX(rect.x()-1);
                     rect.setY(rect.y()-1);
                     rect.setWidth(m_cellSize+1);

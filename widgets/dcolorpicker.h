@@ -18,7 +18,7 @@ class DColorPicker : public QFrame
     Q_PROPERTY(int cellSize READ cellSize WRITE setCellSize NOTIFY cellSizeChanged)
     Q_PROPERTY(int spacing READ spacing WRITE setSpacing NOTIFY spacingChanged)
     Q_PROPERTY(int margin READ margin WRITE setMargin NOTIFY marginChanged)
-    Q_PROPERTY(QColor selectedColor READ selectedColor WRITE setSelectedColor NOTIFY selectedColorChanged)
+    Q_PROPERTY(QColor selectedBorderColor READ selectedBorderColor WRITE setSelectedBorderColor NOTIFY selectedBorderColorChanged)
 
 public:
     struct Gradient{
@@ -31,6 +31,7 @@ public:
     explicit DColorPicker(int row, int column, int cellSize,
                           int spacing = 1, int margin = 0,
                           QWidget *parent = 0);
+    explicit DColorPicker(int margin = 0, QWidget *parent = 0);
 
     QColor currentColor() const;
     QColor at(int r, int c);
@@ -41,7 +42,7 @@ public:
     int spacing() const;
     int margin() const;
     const Gradient &colorGradient(int index) const;
-    QColor selectedColor() const;
+    QColor selectedBorderColor() const;
 
 public Q_SLOTS:
     void setCurrentColor(QColor currentColor);
@@ -55,7 +56,7 @@ public Q_SLOTS:
     void setColorGradient(int index, const QPoint &begin, const QPoint &end,
                           const QColor &startColor, const QColor &endColor);
 
-    void setSelectedColor(QColor selectedColor);
+    void setSelectedBorderColor(QColor selectedBorderColor);
 
 Q_SIGNALS:
     void currentColorChanged(QColor currentColor);
@@ -66,7 +67,7 @@ Q_SIGNALS:
     void startColorChanged(QColor startColor);
     void endColorChanged(QColor endColor);
     void marginChanged(int margin);
-    void selectedColorChanged(QColor selectedColor);
+    void selectedBorderColorChanged(QColor selectedBorderColor);
 
 protected:
     void paintEvent(QPaintEvent *e);
@@ -85,7 +86,7 @@ private:
     int m_margin;
     QList<Gradient> m_gradientList;
     QPoint m_mousePressPos;
-    QColor m_selectedColor;
+    QColor m_selectedBorderColor;
 };
 
 DUI_END_NAMESPACE
