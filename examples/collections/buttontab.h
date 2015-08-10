@@ -9,6 +9,7 @@
 #include "dimagebutton.h"
 #include "dheaderline.h"
 #include "darrowbutton.h"
+#include "dswitchbutton.h"
 
 DUI_USE_NAMESPACE
 

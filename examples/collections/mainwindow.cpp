@@ -50,6 +50,9 @@ void MainWindow::initTabWidget()
     m_mainTab = new QTabWidget(this);
     m_mainTab->setFixedSize(this->width(), 450);
 
+    ComboBoxTab * comboBoxTab = new ComboBoxTab(this);
+    comboBoxTab->setFixedSize(m_mainTab->size());
+
     LineTab * lineTab = new LineTab(this);
     lineTab->setFixedSize(m_mainTab->size());
 
@@ -68,11 +71,8 @@ void MainWindow::initTabWidget()
     IndicatorTab * indicatorTab = new IndicatorTab(this);
     indicatorTab->setFixedSize(m_mainTab->size());
 
-    m_mainTab->addTab(indicatorTab, "Indicator");
     ButtonListTab* buttonListGroupTab = new ButtonListTab(this);
     buttonListGroupTab->setFixedSize(m_mainTab->size());
-
-    DSwitchButton *switchButton = new DSwitchButton(this);
 
     Segmentedcontrol *segmentedControl = new Segmentedcontrol(this);
 
@@ -88,6 +88,8 @@ void MainWindow::initTabWidget()
     picker->addColorGradient(QPoint(7, 8), QPoint(12, 13), "#CC0000", "#CCFFFF");
     picker->addColorGradient(QPoint(7, 14), QPoint(12, 19), "#FF0000", "#FFFFFF");
 
+    m_mainTab->addTab(comboBoxTab, "ComboBox");
+    m_mainTab->addTab(indicatorTab, "Indicator");
     m_mainTab->addTab(lineTab,"Line");
     m_mainTab->addTab(barTab,"Bar");
     m_mainTab->addTab(buttonTab,"Button");
@@ -95,12 +97,11 @@ void MainWindow::initTabWidget()
     m_mainTab->addTab(sliderTab,"Slider");
 
     m_mainTab->addTab(buttonListGroupTab, "ButtonListGroup");
-    m_mainTab->addTab(switchButton, "Switch Button");
     m_mainTab->addTab(segmentedControl, "Segmented Control");
     m_mainTab->addTab(widgetsTab, "Widgets");
     m_mainTab->addTab(picker, "Color Picker");
 
-    m_mainTab->setCurrentIndex(5);
+    m_mainTab->setCurrentIndex(0);
 }
 
 MainWindow::~MainWindow()

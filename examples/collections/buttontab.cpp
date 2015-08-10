@@ -31,6 +31,10 @@ ButtonTab::ButtonTab(QWidget *parent) : QLabel(parent)
     DImageButton *checkableImageButton = new DImageButton(":/images/button.png", ":/images/buttonHover.png", ":/images/buttonPress.png", ":/images/buttonChecked.png", this);
     checkableImageButton->move(85, 100);
     connect(checkableImageButton, SIGNAL(clicked()), this, SLOT(buttonClickTest()));
+
+
+    DSwitchButton *switchButton = new DSwitchButton(this);
+    switchButton->move(85, 200);
 }
 
 void ButtonTab::buttonClickTest()

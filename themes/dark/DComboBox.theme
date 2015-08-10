@@ -1,0 +1,48 @@
+DUI--DComboBox {
+    border: 1px solid;
+    border-color: #19ffffff #0cffffff #0cffffff #0cffffff;
+    border-radius: 3px;
+    padding: 1px 18px 1px 3px;
+    min-width: 6em;
+}
+
+DUI--DComboBox:editable {
+    background: white;
+}
+
+DUI--DComboBox:!editable, DComboBox::drop-down:editable {
+     background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
+                                 stop: 0 #272727,
+                                 stop: 1.0 #191919);
+}
+
+/* DComboBox gets the "on" state when the popup is open */
+DUI--DComboBox:!editable:on, DComboBox::drop-down:editable:on {
+    background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
+                                stop: 0 #181818,
+                                stop: 1.0 #282828);
+}
+/*
+QAbstractItemView {
+     border: 2px solid #32435E;
+     selection-background-color: red;
+     background: yellow;
+}
+*/
+DUI--DComboBox::drop-down {
+    subcontrol-origin: padding;
+    subcontrol-position: center right;
+    width: 16px;
+
+    margin-right: 3;
+    border-top-right-radius: 3px; /* same radius as the DComboBox */
+    border-bottom-right-radius: 3px;
+}
+
+DUI--DComboBox::down-arrow {
+    image: url(:/images/dark/images/arrow_down_normal.png);
+}
+
+DUI--DComboBox::down-arrow:hover {
+    image: url(:/images/dark/images/arrow_down_hover.png);
+}

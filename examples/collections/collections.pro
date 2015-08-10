@@ -19,7 +19,8 @@ SOURCES += main.cpp\
     buttonlisttab.cpp \
     segmentedcontrol.cpp\
     indicatortab.cpp \
-    widgetstab.cpp
+    widgetstab.cpp \
+    comboboxtab.cpp
 
 HEADERS  += mainwindow.h \
     buttontab.h \
@@ -30,7 +31,8 @@ HEADERS  += mainwindow.h \
     buttonlisttab.h \
     segmentedcontrol.h \
     indicatortab.h \
-    widgetstab.h
+    widgetstab.h \
+    comboboxtab.h
 
 RESOURCES += \
     images.qrc

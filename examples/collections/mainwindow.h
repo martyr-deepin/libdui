@@ -13,6 +13,7 @@
 #include "slidertab.h"
 #include "indicatortab.h"
 #include "widgetstab.h"
+#include "comboboxtab.h"
 
 class MainWindow : public QWidget
 {

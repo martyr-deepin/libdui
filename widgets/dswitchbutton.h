@@ -65,6 +65,6 @@ private:
     QString m_enabledImageSource;
 };
 
+DUI_END_NAMESPACE
 #endif // DSWITCHBUTTON_H
 
-DUI_END_NAMESPACE
