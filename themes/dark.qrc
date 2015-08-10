@@ -135,5 +135,7 @@
         <file>dark/images/window_unmax_press.png</file>
         <file>dark/images/switch_inner_insensitive.png</file>
         <file>dark/images/switch_inner.png</file>
+        <file>dark/images/slider_bg.png</file>
+        <file>dark/images/slider_bg_active.png</file>
     </qresource>
 </RCC>

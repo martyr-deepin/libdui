@@ -2,8 +2,9 @@
 #define SLIDERTAB_H
 
 #include <QWidget>
+#include <QLabel>
 
-class SliderTab : public QWidget
+class SliderTab : public QLabel
 {
     Q_OBJECT
 public:

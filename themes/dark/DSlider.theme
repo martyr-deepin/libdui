@@ -1,35 +1,55 @@
-DSlider {
-    height: 40px;
+/*************************************For Round Handle***************************************/
+DUI--DSlider::groove[handleType="1"] {
+    margin-left: 10px;
+    margin-right: 10px;
+    border-width: 0px 2px 1px 2px;
+    border-image: url(:/images/dark/images/slider_bg.png)  0 2 1 2 stretch;
+    height: 8px;
 }
 
-DUI--DSlider::groove {
-    border: 1px solid #bbb;
-    background: #222;
+DUI--DSlider::handle[handleType="1"] {
+    background: url(:/images/dark/images/slider_handle.svg);
+    width: 18px;
+    height: 18px;
+    margin-top: -5px;
+    margin-bottom: -5px;
+    margin-left: -10px;
+    margin-right: -10px;
+    border-radius: 6px;
+}
+
+DUI--DSlider::add-page:horizontal[handleType="1"] {
+    border-width: 0px 2px 1px 2px;
+    border-image: url(:/images/dark/images/slider_bg.png)  0 2 1 2 stretch;
+    margin-right: 10px;
+    height: 8px;
+}
+
+DUI--DSlider::sub-page[handleType="1"] {
+    border-width: 0px 2px 0px 2px;
+    border-image: url(:/images/dark/images/slider_bg_active.png)  0 2 0 2 stretch;
+    margin-top: 1px;
+    margin-bottom: 2px;
+    margin-left: 10;
     height: 6px;
-    border-radius: 4px;
 }
 
-DUI--DSlider::handle:horizontal {
-    background: qlineargradient(x1:0, y1:0, x2:0.6, y2:1,
-        stop:0 #CCC, stop: 0.4 #333, stop:1 #222);
-    border: 1px solid #111;
+/*************************************For Sharp Handle***************************************/
+DUI--DSlider::groove[handleType="0"] {
+    margin-left: 9px;
+    margin-right: 9px;
+    border-width: 0px 2px 1px 2px;
+    border-image: url(:/images/dark/images/slider_bg.png)  0 2 1 2 stretch;
+    height: 8px;
+}
+
+DUI--DSlider::handle[handleType="0"] {
+    background: url(:/images/dark/images/slider_balance.png);
     width: 16px;
-    margin-top: -6px;   /* it seems that the height is about 2px and can't ben set */
+    height: 20px;
+    margin-top: -6px;
     margin-bottom: -6px;
-    border-radius: 8px;
+    margin-left: -9px;
+    margin-right: -9px;
 }
 
-DUI--DSlider::add-page:horizontal {
-    background: #111;
-    border: 1px solid #222;
-    height: 6px;
-    border-radius: 3px;
-}
-
-DUI--DSlider::sub-page {
-    background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
-        stop: 0 #003399, stop: 0.8 #0066CC, stop: 1 #BBB);
-    border: 1px solid #222;
-    height: 6px;
-    border-radius: 3px;
-}

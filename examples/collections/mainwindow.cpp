@@ -99,6 +99,8 @@ void MainWindow::initTabWidget()
     m_mainTab->addTab(segmentedControl, "Segmented Control");
     m_mainTab->addTab(widgetsTab, "Widgets");
     m_mainTab->addTab(picker, "Color Picker");
+
+    m_mainTab->setCurrentIndex(5);
 }
 
 MainWindow::~MainWindow()

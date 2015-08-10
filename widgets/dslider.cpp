@@ -21,4 +21,15 @@ DSlider::~DSlider()
 
 }
 
+int DSlider::handleType() const
+{
+    return m_handleType;
+}
+
+void DSlider::setHandleType(HandleType handleType)
+{
+    m_handleType = handleType;
+}
+
+
 DUI_END_NAMESPACE

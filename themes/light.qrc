@@ -79,5 +79,9 @@
         <file>light/images/window_unmax_hover.png</file>
         <file>light/images/window_unmax_normal.png</file>
         <file>light/images/window_unmax_press.png</file>
+        <file>light/images/slider_bg_active.png</file>
+        <file>light/images/slider_bg.png</file>
+        <file>light/images/slider_round.png</file>
+        <file>light/images/slider_sharp.png</file>
     </qresource>
 </RCC>
