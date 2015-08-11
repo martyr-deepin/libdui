@@ -1,16 +1,16 @@
 #ifndef DSEARCHEDIT_H
 #define DSEARCHEDIT_H
 
-#include <QWidget>
+#include <QFrame>
 #include <QSize>
+#include <QLineEdit>
 
 #include "libdui_global.h"
 #include "dimagebutton.h"
-#include "dlineedit.h"
 
 DUI_BEGIN_NAMESPACE
 
-class LIBDUISHARED_EXPORT DSearchEdit : public QWidget
+class LIBDUISHARED_EXPORT DSearchEdit : public QFrame
 {
     Q_OBJECT
 public:
@@ -25,12 +25,12 @@ public:
     void leaveEvent(QEvent *);
 
 public slots:
-    void setSearchIcon(const QPixmap & icon) {m_btn.setNormalPic(icon);}
+    void setSearchIcon(const QPixmap & icon) {if (m_btn) m_btn->setNormalPic(icon);}
 
 private:
     QSize m_size;
-    DLineEdit m_edt;
-    DImageButton m_btn;
+    QLineEdit *m_edt;
+    DImageButton *m_btn;
 
     const int animationDuration = 400;
 };

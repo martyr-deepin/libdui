@@ -2,7 +2,7 @@
 
 #include <QPixmap>
 
-InputTab::InputTab(QWidget *parent) : QWidget(parent)
+InputTab::InputTab(QWidget *parent) : QLabel(parent)
 {
     setStyleSheet("InputTab{background-color: #252627;}");
 

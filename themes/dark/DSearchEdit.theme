@@ -1,3 +1,15 @@
 
 DUI--DSearchEdit {
+    background-color:#410303;
+    border-radius:5px;
+}
+
+DUI--DSearchEdit #Icon {
+    background-color:transparent;
+}
+
+DUI--DSearchEdit #Edit {
+    background-color:transparent;
+    border-radius:0;
+    color:#fff;
 }

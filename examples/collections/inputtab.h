@@ -7,7 +7,7 @@
 #include "dsearchedit.h"
 #include "dlineedit.h"
 
-class InputTab : public QWidget
+class InputTab : public QLabel
 {
     Q_OBJECT
 public:
