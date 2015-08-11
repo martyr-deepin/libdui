@@ -22,13 +22,19 @@ DUI--DComboBox:!editable:on, DComboBox::drop-down:editable:on {
                                 stop: 0 #181818,
                                 stop: 1.0 #282828);
 }
-/*
-QAbstractItemView {
-     border: 2px solid #32435E;
-     selection-background-color: red;
-     background: yellow;
+
+QAbstractItemView#DComboBoxItemView {
+     border: 1px solid;
+     border-color: #19ffffff #0cffffff #0cffffff #0cffffff;
+     selection-background-color: #1d1d1d;
+     background: #1A1B1B;
+     margin: 0;
 }
-*/
+
+QAbstractItemView#DComboBoxItemView::item {
+    min-height: 22;
+}
+
 DUI--DComboBox::drop-down {
     subcontrol-origin: padding;
     subcontrol-position: center right;
@@ -45,4 +51,9 @@ DUI--DComboBox::down-arrow {
 
 DUI--DComboBox::down-arrow:hover {
     image: url(:/images/dark/images/arrow_down_hover.png);
+}
+
+DUI--FontDelegateItem {
+    qproperty-fontColor: #b4b4b4;
+    qproperty-fontPixelSize: 12;
 }

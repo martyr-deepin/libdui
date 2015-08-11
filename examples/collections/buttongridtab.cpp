@@ -29,7 +29,7 @@ void ButtonGridTab::initUI(){
 
 
     DButtonGrid* buttonGridGroup = new DButtonGrid(3, 4, this);
-    buttonGridGroup->setShowGrid(true);
+//    buttonGridGroup->setShowGrid(true);
     connect(buttonGridGroup, SIGNAL(buttonChecked(QString)), this, SLOT(handleClicked(QString)));
 
 
@@ -41,9 +41,6 @@ void ButtonGridTab::initUI(){
     setLayout(layout);
     buttonGridGroup->addButtons(m_buttons);
     buttonGridGroup->setItemSize(60, 40);
-
-    buttonGridGroup->setRowCount(5);
-    buttonGridGroup->setColumnCount(6);
 }
 
 

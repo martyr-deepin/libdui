@@ -3,7 +3,11 @@
 
 #include <QWidget>
 #include <QLabel>
+#include <QJsonObject>
+#include <QAbstractItemView>
 #include "dcombobox.h"
+#include "dcomboboxfontdelegate.h"
+#include "dcomboboxmodel.h"
 
 DUI_USE_NAMESPACE
 
@@ -16,6 +20,10 @@ public:
 signals:
 
 public slots:
+
+private:
+    DComboBox *cb;
+    DComboBoxModel * model;
 };
 
 #endif // COMBOBOXTAB_H
