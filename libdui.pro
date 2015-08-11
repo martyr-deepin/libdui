@@ -28,4 +28,5 @@ unix {
     INSTALLS += includes
 }
 
-DISTFILES +=
+DISTFILES += \
+    themes/DButtonGrid.theme

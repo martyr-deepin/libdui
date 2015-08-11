@@ -18,6 +18,7 @@
         <file>dark/DPasswordEdit.theme</file>
         <file>dark/DSearchEdit.theme</file>
         <file>dark/DComboBox.theme</file>
+        <file>dark/DButtonGrid.theme</file>
     </qresource>
     <qresource prefix="/images">
         <file>dark/images/add_hover.png</file>

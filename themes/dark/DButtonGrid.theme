@@ -1,0 +1,27 @@
+DUI--DButtonGrid {
+    background-color: transparent;
+}
+
+DUI--DButtonGrid QFrame{
+    background-color: transparent;
+}
+
+DUI--DButtonGrid QFrame QPushButton{
+    background-color: rgba(0, 0, 0, 0);
+    color: white;
+    border:0px solid transprent;
+}
+
+DUI--DButtonGrid QFrame QPushButton:hover{
+    color: gray;
+}
+
+DUI--DButtonGrid QFrame QPushButton:pressed{
+    color: green;
+}
+
+DUI--DButtonGrid QFrame QPushButton:checked{
+    color: green;
+    background-color: rgba(0, 0, 0, 1);
+    border-radius: 2px;
+}

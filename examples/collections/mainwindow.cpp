@@ -11,6 +11,7 @@
 
 #include "mainwindow.h"
 #include "buttonlisttab.h"
+#include "buttongridtab.h"
 
 DUI_USE_NAMESPACE
 
@@ -74,6 +75,9 @@ void MainWindow::initTabWidget()
     ButtonListTab* buttonListGroupTab = new ButtonListTab(this);
     buttonListGroupTab->setFixedSize(m_mainTab->size());
 
+    ButtonGridTab* buttonGridTab = new ButtonGridTab(this);
+    buttonGridTab->setFixedSize(m_mainTab->size());
+
     Segmentedcontrol *segmentedControl = new Segmentedcontrol(this);
 
     WidgetsTab *widgetsTab = new WidgetsTab(this);
@@ -89,7 +93,8 @@ void MainWindow::initTabWidget()
     m_mainTab->addTab(inputTab,"Input");
     m_mainTab->addTab(sliderTab,"Slider");
 
-    m_mainTab->addTab(buttonListGroupTab, "ButtonListGroup");
+    m_mainTab->addTab(buttonListGroupTab, "ButtonList");
+    m_mainTab->addTab(buttonGridTab, "ButtonGrid");
     m_mainTab->addTab(segmentedControl, "Segmented Control");
     m_mainTab->addTab(widgetsTab, "Widgets");
     m_mainTab->addTab(picker, "Color Picker");

@@ -1,14 +1,24 @@
-DButtonList QPushButton{
-    background-color: transparent;
-    border: none;
-    color: white
+DUI--DButtonList {
+    background-color: grey;
 }
-DButtonList QPushButton:checked{
+
+DUI--DButtonList QPushButton{
+    background-color: transparent;
+    color: white;
+    border: none;
+    border-left:20px solid transparent;
+    text-align: left center;
+    padding-left: 20px;
+}
+
+DUI--DButtonList QPushButton:checked{
     background-image: url(:/images/dark/images/tick_hover.png);
     background-repeat: no-repeat;
-    background-attachment:fixed;
+    background-attachment: fixed;
     background-position: left center;
     background-color: lightblack;
     border-left:20px solid lightblack;
-    color: green
+    text-align: left center;
+    padding-left: 20px;
+    color: lightblue;
 }

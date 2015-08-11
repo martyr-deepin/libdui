@@ -1,6 +1,6 @@
 #include "dbuttonlist.h"
 #include "dthememanager.h"
-
+#include "dconstants.h"
 #include <QListWidget>
 #include <QButtonGroup>
 #include <QPushButton>
@@ -17,7 +17,7 @@ DButtonList::DButtonList(QWidget *parent) : QListWidget(parent)
     setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     setVerticalScrollMode(ScrollPerItem);
     setResizeMode(Adjust);
-    setItemSize(200, 30);
+    setItemSize(200, BUTTON_HEIGHT);
 
     m_buttonGroup = new QButtonGroup(this);
     m_buttonGroup->setExclusive(true);
