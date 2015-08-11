@@ -22,7 +22,9 @@ HEADERS += $$PWD/dslider.h\
     $$PWD/dsegmentedcontrol.h \
     $$PWD/dcolorpicker.h \
     $$PWD/dlineedit.h \
-    $$PWD/dcombobox.h
+    $$PWD/dcombobox.h \
+    $$PWD/dcomboboxfontdelegate.h \
+    $$PWD/dcomboboxmodel.h
 
 SOURCES += $$PWD/dslider.cpp \
     $$PWD/dthememanager.cpp \
@@ -45,7 +47,9 @@ SOURCES += $$PWD/dslider.cpp \
     $$PWD/dsegmentedcontrol.cpp \
     $$PWD/dcolorpicker.cpp \
     $$PWD/dlineedit.cpp \
-    $$PWD/dcombobox.cpp
+    $$PWD/dcombobox.cpp \
+    $$PWD/dcomboboxfontdelegate.cpp \
+    $$PWD/dcomboboxmodel.cpp
 
 RESOURCES += \
     $$PWD/../themes/dark.qrc \

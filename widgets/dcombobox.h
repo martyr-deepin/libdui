@@ -1,11 +1,15 @@
 #ifndef DCOMBOBOX_H
 #define DCOMBOBOX_H
 
+#include <QLabel>
 #include <QWidget>
+#include <QPixmap>
 #include <QComboBox>
+#include <QAbstractItemView>
 
 #include "libdui_global.h"
 #include "dconstants.h"
+#include "dcomboboxmodel.h"
 
 DUI_BEGIN_NAMESPACE
 
@@ -15,9 +19,11 @@ class LIBDUISHARED_EXPORT DComboBox : public QComboBox
 public:
     explicit DComboBox(QWidget *parent = 0);
 
-signals:
+private slots:
+    void slotCurrentIndexChange(int index);
 
-public slots:
+private:
+    QLabel *m_maskLabel = NULL;    //mask label
 };
 
 DUI_END_NAMESPACE
