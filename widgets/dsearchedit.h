@@ -21,8 +21,8 @@ public:
     void setFixedSize(const QSize & size) {m_size = size;}
     void setMinimumSize(const QSize & size) {m_size = size;}
 
-    void enterEvent(QEvent *);
-    void leaveEvent(QEvent *);
+    void mousePressEvent(QMouseEvent *);
+    bool eventFilter(QObject *o, QEvent *e);
 
 public slots:
     void setSearchIcon(const QPixmap & icon) {if (m_btn) m_btn->setNormalPic(icon);}

@@ -5,6 +5,7 @@
 #include <QSpacerItem>
 #include <QPropertyAnimation>
 #include <QDebug>
+#include <QEvent>
 
 DUI_USE_NAMESPACE
 
@@ -38,9 +39,11 @@ DSearchEdit::DSearchEdit(QWidget *parent)
     layout->setMargin(0);
 
     setLayout(layout);
+
+    m_edt->installEventFilter(this);
 }
 
-void DSearchEdit::enterEvent(QEvent *)
+void DSearchEdit::mousePressEvent(QMouseEvent *)
 {
     //m_edt.setFixedWidth(m_size.width() - m_btn.width());
 
@@ -51,17 +54,23 @@ void DSearchEdit::enterEvent(QEvent *)
     animation->setEasingCurve(QEasingCurve::OutCubic);
     animation->start();
 
+    m_edt->show();
     m_edt->setFocus();
 }
 
-void DSearchEdit::leaveEvent(QEvent *)
+bool DSearchEdit::eventFilter(QObject *o, QEvent *e)
 {
-    //m_edt.setFixedWidth(0);
+    if (o == m_edt && e->type() == QEvent::FocusOut && m_edt->text().isEmpty())
+    {
+        //m_edt.setFixedWidth(0);
 
-    QPropertyAnimation *animation = new QPropertyAnimation(m_edt, "maximumWidth");
-    animation->setEndValue(0);
-    animation->setStartValue(m_edt->width());
-    animation->setDuration(animationDuration);
-    animation->setEasingCurve(QEasingCurve::InCubic);
-    animation->start();
+        QPropertyAnimation *animation = new QPropertyAnimation(m_edt, "maximumWidth");
+        animation->setStartValue(m_edt->width());
+        animation->setEndValue(0);
+        animation->setDuration(animationDuration);
+        animation->setEasingCurve(QEasingCurve::InCubic);
+        animation->start();
+    }
+
+    return QFrame::eventFilter(o, e);
 }
