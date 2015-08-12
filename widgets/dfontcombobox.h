@@ -1,5 +1,5 @@
-#ifndef DCOMBOBOXFONTDELEGATE_H
-#define DCOMBOBOXFONTDELEGATE_H
+#ifndef DFONTCOMBOBOX_H
+#define DFONTCOMBOBOX_H
 
 #include <QLabel>
 #include <QObject>
@@ -14,11 +14,11 @@
 #include <QColor>
 
 #include "libdui_global.h"
-#include "dconstants.h"
+#include "dcombobox.h"
 
 DUI_BEGIN_NAMESPACE
 
-class LIBDUISHARED_EXPORT FontDelegateItem : public QLabel
+class FontDelegateItem : public QLabel
 {
     Q_OBJECT
     Q_PROPERTY(QColor fontColor READ fontColor WRITE setFontColor)
@@ -44,7 +44,7 @@ private:
 
 };
 
-class LIBDUISHARED_EXPORT DComboBoxFontDelegate : public QStyledItemDelegate
+class DComboBoxFontDelegate : public QStyledItemDelegate
 {
     Q_OBJECT
 public:
@@ -58,6 +58,23 @@ public:
 
 };
 
+class LIBDUISHARED_EXPORT DFontComboBox : public DComboBox
+{
+    Q_OBJECT
+public:
+    explicit DFontComboBox(QWidget *parent = 0);
+    void addFontName(const QString &name);
+
+signals:
+    void currentFontNameChange(QString name);
+
+private slots:
+    void onCurrentIndexChange(int index);
+
+private:
+    DComboBoxModel *m_fontModel = NULL;
+};
+
 DUI_END_NAMESPACE
 
-#endif // DCOMBOBOXFONTDELEGATE_H
+#endif // DFONTCOMBOBOX_H

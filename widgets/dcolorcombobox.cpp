@@ -1,4 +1,4 @@
-#include "dcomboboxcolordelegate.h"
+#include "dcolorcombobox.h"
 
 DUI_USE_NAMESPACE
 
@@ -91,4 +91,43 @@ void DComboBoxColorDelegate::updateEditorGeometry(QWidget *editor, const QStyleO
     editor->setGeometry(option.rect);
 }
 
+DColorComboBox::DColorComboBox(QWidget *parent) : DComboBox(parent)
+{
+    DComboBoxColorDelegate *d = new DComboBoxColorDelegate();
+    setItemDelegate(d);
+
+    m_colorModel = new DComboBoxModel(this);
+    setModel(m_colorModel);
+
+    connect(this, SIGNAL(currentIndexChanged(int)), this, SLOT(onCurrentIndexChange(int)));
+}
+
+void DColorComboBox::addData(const QColor &color, const QString &title)
+{
+    QJsonObject colorObj;
+    colorObj.insert("itemTitle", QJsonValue(title));
+    colorObj.insert("itemColor", color.name(QColor::HexArgb));
+
+    m_colorModel->append(colorObj);
+    // Make the combo boxes always displayed.
+    view()->openPersistentEditor(m_colorModel->getModelIndex(m_colorModel->count() - 1));
+}
+
+void DColorComboBox::addData(const QString &color, const QString &title)
+{
+    QJsonObject colorObj;
+    colorObj.insert("itemTitle", QJsonValue(title));
+    colorObj.insert("itemColor", color);
+
+    m_colorModel->append(colorObj);
+    // Make the combo boxes always displayed.
+    view()->openPersistentEditor(m_colorModel->getModelIndex(m_colorModel->count() - 1));
+}
+
+void DColorComboBox::onCurrentIndexChange(int index)
+{
+    QJsonObject colorObj = m_colorModel->getJsonData(index);
+
+    emit currentColorChange(QColor(colorObj["itemColor"].toString()));
+}
 

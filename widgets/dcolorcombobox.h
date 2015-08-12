@@ -1,5 +1,5 @@
-#ifndef DCOMBOBOXCOLORDELEGATE_H
-#define DCOMBOBOXCOLORDELEGATE_H
+#ifndef DCOLORCOMBOBOX_H
+#define DCOLORCOMBOBOX_H
 
 #include <QLabel>
 #include <QObject>
@@ -11,15 +11,14 @@
 #include <QAbstractItemModel>
 #include <QModelIndex>
 #include <QColor>
-#include <QDebug>
-#include <QPushButton>
 
 #include "libdui_global.h"
-#include "dconstants.h"
+#include "dcomboboxmodel.h"
+#include "dcombobox.h"
 
 DUI_BEGIN_NAMESPACE
 
-class LIBDUISHARED_EXPORT ColorDelegateItem : public QLabel
+class ColorDelegateItem : public QLabel
 {
     Q_OBJECT
     Q_PROPERTY(QColor fontColor READ fontColor WRITE setFontColor)
@@ -46,7 +45,7 @@ private:
     const int COLOR_BLOCK_HEIGHT = 10;
 };
 
-class LIBDUISHARED_EXPORT DComboBoxColorDelegate : public QStyledItemDelegate
+class DComboBoxColorDelegate : public QStyledItemDelegate
 {
     Q_OBJECT
 public:
@@ -56,5 +55,24 @@ public:
     void setEditorData(QWidget *editor, const QModelIndex &index) const;
 };
 
+class LIBDUISHARED_EXPORT DColorComboBox : public DComboBox
+{
+    Q_OBJECT
+public:
+    explicit DColorComboBox(QWidget *parent = 0);
+    void addData(const QColor &color, const QString &title);
+    void addData(const QString &color, const QString &title);
+
+signals:
+    void currentColorChange(QColor color);
+
+public slots:
+    void onCurrentIndexChange(int index);
+
+private:
+    DComboBoxModel *m_colorModel = NULL;
+};
+
 DUI_END_NAMESPACE
-#endif // DCOMBOBOXCOLORDELEGATE_H
+
+#endif // DCOLORCOMBOBOX_H

@@ -1,4 +1,4 @@
-#include "dcomboboxfontdelegate.h"
+#include "dfontcombobox.h"
 
 DUI_USE_NAMESPACE
 
@@ -48,8 +48,6 @@ void FontDelegateItem::setFontPointSize(int fontPixelSize)
     m_fontPointSize = fontPixelSize;
 }
 
-
-
 DComboBoxFontDelegate::DComboBoxFontDelegate(QObject *parent) : QStyledItemDelegate(parent)
 {
 
@@ -78,5 +76,33 @@ void DComboBoxFontDelegate::setEditorData(QWidget *editor, const QModelIndex &in
 void DComboBoxFontDelegate::updateEditorGeometry(QWidget *editor, const QStyleOptionViewItem &option, const QModelIndex &index) const
 {
     editor->setGeometry(option.rect);
+}
+
+DFontComboBox::DFontComboBox(QWidget *parent) : DComboBox(parent)
+{
+    DComboBoxFontDelegate *dbfb = new DComboBoxFontDelegate();
+    setItemDelegate(dbfb);
+
+    m_fontModel = new DComboBoxModel(this);
+    setModel(m_fontModel);
+
+    connect(this, SIGNAL(currentIndexChanged(int)), this, SLOT(onCurrentIndexChange(int)));
+}
+
+void DFontComboBox::addFontName(const QString &name)
+{
+    QJsonObject nameObj;
+    nameObj.insert("itemFont", QJsonValue(name));
+
+    m_fontModel->append(nameObj);
+    // Make the combo boxes always displayed.
+    view()->openPersistentEditor(m_fontModel->getModelIndex(m_fontModel->count() - 1));
+}
+
+void DFontComboBox::onCurrentIndexChange(int index)
+{
+    QJsonObject nameObj = m_fontModel->getJsonData(index);
+
+    emit currentFontNameChange(nameObj["itemFont"].toString());
 }
 

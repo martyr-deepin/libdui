@@ -6,6 +6,7 @@ DUI_USE_NAMESPACE
 DComboBox::DComboBox(QWidget *parent) : QComboBox(parent)
 {
     D_THEME_INIT_WIDGET(DComboBox);
+    //TODO, just work on ediable
     setMaxVisibleItems(MAX_VISIBLE_ITEMS);
 
     view()->setObjectName("DComboBoxItemView");
