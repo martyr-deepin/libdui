@@ -15,10 +15,24 @@ DComboBox::DComboBox(QWidget *parent) : QComboBox(parent)
     m_maskLabel = new QLabel(this);
     m_maskLabel->setAttribute(Qt::WA_TranslucentBackground);
     m_maskLabel->setObjectName("DComboBoxTitleMask");
-    m_maskLabel->setFixedSize(size());
-    m_maskLabel->move(0, 0);
 
     connect(this, SIGNAL(currentIndexChanged(int)), this, SLOT(slotCurrentIndexChange(int)));
+}
+
+void DComboBox::setFixedSize(int w, int h)
+{
+    QComboBox::setFixedSize(w, h);
+
+    m_maskLabel->setFixedSize(size());
+    m_maskLabel->move(-DUI::MENU_ITEM_LEFT_MARGIN + DUI::HEADER_LEFT_MARGIN, 0);
+}
+
+void DComboBox::setFixedSize(QSize size)
+{
+    QComboBox::setFixedSize(size);
+
+    m_maskLabel->setFixedSize(size);
+    m_maskLabel->move(-DUI::MENU_ITEM_LEFT_MARGIN + DUI::HEADER_LEFT_MARGIN, 0);
 }
 
 void DComboBox::slotCurrentIndexChange(int index)

@@ -18,7 +18,7 @@ ComboBoxTab::ComboBoxTab(QWidget *parent) : QLabel(parent)
 
     /////////////////////////////////////////////Color ComboBox
     DColorComboBox *colorcb = new DColorComboBox(this);
-    colorcb->setFixedSize(200, DUI::BUTTON_HEIGHT);
+    colorcb->setFixedSize(200,50);
     colorcb->move(230, 100);
     for (int i = 0; i < 10; i ++){
         colorcb->addData(QString("#%1%2%3%4FF").arg(i).arg(i).arg(i).arg(i), QString::number(i));//support RRGGBB or AARRGGBB or color-name
