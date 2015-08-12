@@ -24,8 +24,10 @@ HEADERS += $$PWD/dslider.h\
     $$PWD/dlineedit.h \
     $$PWD/dcombobox.h \
     $$PWD/dbuttongrid.h\
-    $$PWD/dcomboboxfontdelegate.h \
-    $$PWD/dcomboboxmodel.h
+    $$PWD/dcomboboxmodel.h \
+    $$PWD/dcolorcombobox.h \
+    $$PWD/dfontcombobox.h \
+    $$PWD/dsimplecombobox.h
 
 SOURCES += $$PWD/dslider.cpp \
     $$PWD/dthememanager.cpp \
@@ -50,8 +52,10 @@ SOURCES += $$PWD/dslider.cpp \
     $$PWD/dlineedit.cpp \
     $$PWD/dcombobox.cpp \
     $$PWD/dbuttongrid.cpp\
-    $$PWD/dcomboboxfontdelegate.cpp \
-    $$PWD/dcomboboxmodel.cpp
+    $$PWD/dcomboboxmodel.cpp \
+    $$PWD/dcolorcombobox.cpp \
+    $$PWD/dfontcombobox.cpp \
+    $$PWD/dsimplecombobox.cpp
 
 RESOURCES += \
     $$PWD/../themes/dark.qrc \

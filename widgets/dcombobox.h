@@ -18,12 +18,15 @@ class LIBDUISHARED_EXPORT DComboBox : public QComboBox
     Q_OBJECT
 public:
     explicit DComboBox(QWidget *parent = 0);
-
+    void setFixedSize(int w, int h);
+    void setFixedSize(QSize size);
 private slots:
     void slotCurrentIndexChange(int index);
 
 private:
     QLabel *m_maskLabel = NULL;    //mask label
+
+    const int MAX_VISIBLE_ITEMS = 16;
 };
 
 DUI_END_NAMESPACE

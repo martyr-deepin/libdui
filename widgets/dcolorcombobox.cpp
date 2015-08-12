@@ -1,0 +1,133 @@
+#include "dcolorcombobox.h"
+
+DUI_USE_NAMESPACE
+
+ColorDelegateItem::ColorDelegateItem(QWidget *parent) : QLabel(parent)
+{
+    setAttribute(Qt::WA_TransparentForMouseEvents);
+    setAttribute(Qt::WA_TranslucentBackground);
+}
+
+void ColorDelegateItem::setData(const QString &color, const QString &title)
+{
+    m_color.setNamedColor(color);
+    m_title = title;
+
+    repaint();
+}
+
+void ColorDelegateItem::paintEvent(QPaintEvent *)
+{
+    QPainter painter(this);
+    painter.setRenderHint(QPainter::Antialiasing);
+
+    QRect colorRect(DUI::MENU_ITEM_LEFT_MARGIN, (DUI::MENU_ITEM_HEIGHT - 10) / 2, COLOR_BLOCK_WIDTH, COLOR_BLOCK_HEIGHT);
+    QBrush b(m_color);
+    painter.fillRect(colorRect, b);    //draw header color
+
+    QRect textRect(colorRect.x() + colorRect.width() + DUI::TEXT_LEFT_MARGIN, 0, width(), height());
+    QFont f;
+    f.setPointSize(m_fontPointSize);
+    painter.setFont(f);
+    QPen p(m_fontColor);
+    painter.setPen(p);
+    painter.drawText(textRect, Qt::AlignVCenter | Qt::AlignLeft, m_title);  //draw title
+}
+int ColorDelegateItem::fontPointSize() const
+{
+    return m_fontPointSize;
+}
+
+void ColorDelegateItem::setFontPointSize(int fontPointSize)
+{
+    m_fontPointSize = fontPointSize;
+}
+
+QColor ColorDelegateItem::fontColor() const
+{
+    return m_fontColor;
+}
+
+void ColorDelegateItem::setFontColor(const QColor &fontColor)
+{
+    m_fontColor = fontColor;
+}
+
+
+DComboBoxColorDelegate::DComboBoxColorDelegate(QObject *parent) : QStyledItemDelegate(parent)
+{
+
+}
+
+QWidget * DComboBoxColorDelegate::createEditor(QWidget *parent, const QStyleOptionViewItem &option, const QModelIndex &index) const
+{
+    ColorDelegateItem * editor = new ColorDelegateItem(parent);
+    editor->setFixedHeight(DUI::MENU_ITEM_HEIGHT);
+
+    return editor;
+}
+
+void DComboBoxColorDelegate::setEditorData(QWidget *editor, const QModelIndex &index) const
+{
+    QJsonObject dataObj = index.model()->data(index, Qt::DisplayRole).toJsonValue().toObject();
+
+    if (dataObj.isEmpty())
+        return;
+
+    ColorDelegateItem *colorItem = static_cast<ColorDelegateItem*>(editor);
+    QString color = "#FFFFFFFF";
+    QString title = "";
+    if (dataObj.contains("itemTitle"))
+        title = dataObj.value("itemTitle").toString();
+    if (dataObj.contains("itemColor"))
+        color = dataObj.value("itemColor").toString();
+
+    if (colorItem)
+        colorItem->setData(color, title);
+}
+
+void DComboBoxColorDelegate::updateEditorGeometry(QWidget *editor, const QStyleOptionViewItem &option, const QModelIndex &index) const
+{
+    editor->setGeometry(option.rect);
+}
+
+DColorComboBox::DColorComboBox(QWidget *parent) : DComboBox(parent)
+{
+    DComboBoxColorDelegate *d = new DComboBoxColorDelegate();
+    setItemDelegate(d);
+
+    m_colorModel = new DComboBoxModel(this);
+    setModel(m_colorModel);
+
+    connect(this, SIGNAL(currentIndexChanged(int)), this, SLOT(onCurrentIndexChange(int)));
+}
+
+void DColorComboBox::addData(const QColor &color, const QString &title)
+{
+    QJsonObject colorObj;
+    colorObj.insert("itemTitle", QJsonValue(title));
+    colorObj.insert("itemColor", color.name(QColor::HexArgb));
+
+    m_colorModel->append(colorObj);
+    // Make the combo boxes always displayed.
+    view()->openPersistentEditor(m_colorModel->getModelIndex(m_colorModel->count() - 1));
+}
+
+void DColorComboBox::addData(const QString &color, const QString &title)
+{
+    QJsonObject colorObj;
+    colorObj.insert("itemTitle", QJsonValue(title));
+    colorObj.insert("itemColor", color);
+
+    m_colorModel->append(colorObj);
+    // Make the combo boxes always displayed.
+    view()->openPersistentEditor(m_colorModel->getModelIndex(m_colorModel->count() - 1));
+}
+
+void DColorComboBox::onCurrentIndexChange(int index)
+{
+    QJsonObject colorObj = m_colorModel->getJsonData(index);
+
+    emit currentColorChange(QColor(colorObj["itemColor"].toString()));
+}
+

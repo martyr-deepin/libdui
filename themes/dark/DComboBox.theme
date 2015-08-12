@@ -14,6 +14,7 @@ DUI--DComboBox:!editable, DComboBox::drop-down:editable {
      background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
                                  stop: 0 #272727,
                                  stop: 1.0 #191919);
+    /*combobox-popup: 0;*/
 }
 
 /* DComboBox gets the "on" state when the popup is open */
@@ -25,14 +26,14 @@ DUI--DComboBox:!editable:on, DComboBox::drop-down:editable:on {
 
 QAbstractItemView#DComboBoxItemView {
      border: 1px solid;
-     border-color: #19ffffff #0cffffff #0cffffff #0cffffff;
-     selection-background-color: #1d1d1d;
-     background: #1A1B1B;
+     border-color: rgba(0,0,0,0.2);
+     selection-background-color: rgba(0,0,0,0.4);
+     background: #191919;
      margin: 0;
 }
 
 QAbstractItemView#DComboBoxItemView::item {
-    min-height: 22;
+    min-height: 24;
 }
 
 DUI--DComboBox::drop-down {
@@ -53,7 +54,8 @@ DUI--DComboBox::down-arrow:hover {
     image: url(:/images/dark/images/arrow_down_hover.png);
 }
 
-DUI--FontDelegateItem {
+DUI--FontDelegateItem, DUI--ColorDelegateItem {
     qproperty-fontColor: #b4b4b4;
-    qproperty-fontPixelSize: 12;
+    qproperty-fontPointSize: 12;
 }
+

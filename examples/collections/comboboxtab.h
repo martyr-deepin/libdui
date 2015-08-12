@@ -6,8 +6,9 @@
 #include <QJsonObject>
 #include <QAbstractItemView>
 #include "dcombobox.h"
-#include "dcomboboxfontdelegate.h"
 #include "dcomboboxmodel.h"
+#include "dfontcombobox.h"
+#include "dcolorcombobox.h"
 
 DUI_USE_NAMESPACE
 
@@ -19,11 +20,12 @@ public:
 
 signals:
 
-public slots:
-
 private:
+    DComboBox *colorCB;
+    DComboBoxModel * colorModel;
     DComboBox *cb;
     DComboBoxModel * model;
+    DComboBox *simpleBox;
 };
 
 #endif // COMBOBOXTAB_H
