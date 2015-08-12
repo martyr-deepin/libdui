@@ -53,11 +53,11 @@ void DButtonList::setItemSize(QSize size){
     setFixedWidth(gridSize().width());
 }
 
-void DButtonList::addButton(const QString &label){
+void DButtonList::addButton(const QString &label, int index){
     QPushButton* button = new QPushButton(label, this);
     button->setFixedSize(gridSize());
     button->setCheckable(true);
-    m_buttonGroup->addButton(button);
+    m_buttonGroup->addButton(button, index);
     QListWidgetItem* item = new QListWidgetItem(this);
     addItem(item);
     setItemWidget(item, button);
@@ -65,16 +65,21 @@ void DButtonList::addButton(const QString &label){
 
 
 void DButtonList::addButtons(const QStringList &listLabels){
-    foreach (QString label, listLabels) {
-        addButton(label);
+    for(int i= 0; i< listLabels.length(); i++) {
+        addButton(listLabels.at(i), i);
     }
 }
 
 void DButtonList::setButtonChecked(int id){
-   QAbstractButton * button = m_buttonGroup->button(id);
+   QPushButton* button = reinterpret_cast<QPushButton*>(m_buttonGroup->button(id));
    button->setChecked(true);
-
+   emit buttonCheckedIndexChanged(id);
    emit buttonChecked(button->text());
+}
+
+void DButtonList::checkButtonByIndex(int index){
+    QPushButton* button = reinterpret_cast<QPushButton*>(m_buttonGroup->button(index));
+    button->click();
 }
 
 DUI_END_NAMESPACE

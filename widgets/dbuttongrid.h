@@ -26,10 +26,14 @@ public:
 public slots:
     void addButton(const QString& label, int index);
     void addButtons(const QStringList& listLabels);
+    void checkButtonByIndex(int index);
+
+private slots:
     void setButtonChecked(int id);
 
 signals:
     void buttonChecked(QString label);
+    void buttonCheckedIndexChanged(int index);
 
 private:
     QButtonGroup* m_buttonGroup = NULL;

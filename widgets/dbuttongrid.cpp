@@ -5,6 +5,7 @@
 #include <QPushButton>
 #include <QVBoxLayout>
 #include <QTableWidgetItem>
+#include <QPushButton>
 
 DUI_BEGIN_NAMESPACE
 
@@ -61,7 +62,7 @@ void DButtonGrid::addButton(const QString &label, int index){
     button->setFixedWidth(width + 20);
     button->setFixedHeight(fm.height() + 10);
     button->setCheckable(true);
-    m_buttonGroup->addButton(button);
+    m_buttonGroup->addButton(button, index);
 
     QFrame* buttonFrame = new QFrame(this);
     QVBoxLayout *mainLayout = new QVBoxLayout(this);
@@ -85,9 +86,15 @@ void DButtonGrid::addButtons(const QStringList &listLabels){
 }
 
 void DButtonGrid::setButtonChecked(int id){
-   QAbstractButton * button = m_buttonGroup->button(id);
+   QPushButton* button = reinterpret_cast<QPushButton*>(m_buttonGroup->button(id));
    button->setChecked(true);
+   emit buttonCheckedIndexChanged(id);
    emit buttonChecked(button->text());
+}
+
+void DButtonGrid::checkButtonByIndex(int index){
+    QPushButton* button = reinterpret_cast<QPushButton*>(m_buttonGroup->button(index));
+    button->click();
 }
 
 void DButtonGrid::setItemUnChecked(){

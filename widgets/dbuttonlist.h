@@ -16,17 +16,20 @@ public:
     ~DButtonList();
 
 public slots:
-    void addButton(const QString& label);
+    void addButton(const QString& label, int index);
     void addButtons(const QStringList& listLabels);
     void setItemHeight(int height);
     void setItemWidth(int width);
     void setItemSize(int width, int height);
     void setItemSize(QSize size);
+    void checkButtonByIndex(int index);
 
+private slots:
     void setButtonChecked(int id);
 
 signals:
     void buttonChecked(QString label);
+    void buttonCheckedIndexChanged(int index);
 
 private:
     QButtonGroup* m_buttonGroup = NULL;

@@ -41,6 +41,7 @@ void ButtonGridTab::initUI(){
     setLayout(layout);
     buttonGridGroup->addButtons(m_buttons);
     buttonGridGroup->setItemSize(60, 40);
+    buttonGridGroup->checkButtonByIndex(2);
 }
 
 
