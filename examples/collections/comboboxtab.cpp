@@ -10,11 +10,13 @@ ComboBoxTab::ComboBoxTab(QWidget *parent) : QLabel(parent)
     fcb->setFixedSize(200, DUI::BUTTON_HEIGHT);
     fcb->move(30, 100);
     for (int i = 0; i < 50; i ++){
-        fcb->addFontName(QString::number(i));
+        fcb->addFontItem(QString::number(i));
+//        fcb->addFontItem("fontFamily", "the title you want to display");
     }
     connect(fcb, &DFontComboBox::currentFontNameChange, [=](QString name){
         qWarning() << "Select font name: " << name;
     });
+    fcb->setCurrentIndex(2);
 
     /////////////////////////////////////////////Color ComboBox
     DColorComboBox *colorcb = new DColorComboBox(this);
@@ -26,6 +28,7 @@ ComboBoxTab::ComboBoxTab(QWidget *parent) : QLabel(parent)
     connect(colorcb, &DColorComboBox::currentColorChange, [=](QColor color){
         qWarning() << "========+++++++++" << color;
     });
+    colorcb->setCurrentIndex(2);
 
     ///////////////////////////////////////////////Normal ComboBox
     simpleBox = new DComboBox(this);

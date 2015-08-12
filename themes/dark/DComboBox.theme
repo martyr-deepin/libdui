@@ -4,10 +4,12 @@ DUI--DComboBox {
     border-radius: 3px;
     padding: 1px 18px 1px 3px;
     min-width: 6em;
-}
+    color: #b4b4b4;
+    font-size: 12pt;
 
-DUI--DComboBox:editable {
-    background: white;
+    qproperty-insensitiveTickImg: url(:/images/dark/images/tick_insensitive.png);
+    qproperty-hoverTickImg: url(:/images/dark/images/tick_hover.png);
+    qproperty-normalTickImg: url(:/images/dark/images/tick_normal.png);
 }
 
 DUI--DComboBox:!editable, DComboBox::drop-down:editable {
@@ -30,10 +32,12 @@ QAbstractItemView#DComboBoxItemView {
      selection-background-color: rgba(0,0,0,0.4);
      background: #191919;
      margin: 0;
+     font-size: 12pt;
 }
 
 QAbstractItemView#DComboBoxItemView::item {
     min-height: 24;
+    color: #b4b4b4;
 }
 
 DUI--DComboBox::drop-down {

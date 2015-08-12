@@ -15,6 +15,7 @@
 #include "libdui_global.h"
 #include "dcomboboxmodel.h"
 #include "dcombobox.h"
+#include "private/dabstractcomboboxdelegate.h"
 
 DUI_BEGIN_NAMESPACE
 
@@ -37,20 +38,19 @@ protected:
     void paintEvent(QPaintEvent *);
 
 private:
-    int m_fontPointSize = DUI::FONT_SIZE;
     QColor m_fontColor;
     QColor m_color;
     QString m_title;
+    int m_fontPointSize = DUI::FONT_SIZE;
     const int COLOR_BLOCK_WIDTH = 25;
     const int COLOR_BLOCK_HEIGHT = 10;
 };
 
-class DComboBoxColorDelegate : public QStyledItemDelegate
+class DComboBoxColorDelegate : public DAbstractComboBoxDelegate
 {
     Q_OBJECT
 public:
     explicit DComboBoxColorDelegate(QObject *parent = 0);
-    void updateEditorGeometry(QWidget *editor, const QStyleOptionViewItem &option, const QModelIndex &index) const;
     QWidget *createEditor(QWidget *parent, const QStyleOptionViewItem &option, const QModelIndex &index) const;
     void setEditorData(QWidget *editor, const QModelIndex &index) const;
 };

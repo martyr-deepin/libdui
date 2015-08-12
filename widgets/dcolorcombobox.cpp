@@ -54,7 +54,7 @@ void ColorDelegateItem::setFontColor(const QColor &fontColor)
 }
 
 
-DComboBoxColorDelegate::DComboBoxColorDelegate(QObject *parent) : QStyledItemDelegate(parent)
+DComboBoxColorDelegate::DComboBoxColorDelegate(QObject *parent) : DAbstractComboBoxDelegate(parent)
 {
 
 }
@@ -86,14 +86,9 @@ void DComboBoxColorDelegate::setEditorData(QWidget *editor, const QModelIndex &i
         colorItem->setData(color, title);
 }
 
-void DComboBoxColorDelegate::updateEditorGeometry(QWidget *editor, const QStyleOptionViewItem &option, const QModelIndex &index) const
-{
-    editor->setGeometry(option.rect);
-}
-
 DColorComboBox::DColorComboBox(QWidget *parent) : DComboBox(parent)
 {
-    DComboBoxColorDelegate *d = new DComboBoxColorDelegate();
+    DComboBoxColorDelegate *d = new DComboBoxColorDelegate(this);
     setItemDelegate(d);
 
     m_colorModel = new DComboBoxModel(this);

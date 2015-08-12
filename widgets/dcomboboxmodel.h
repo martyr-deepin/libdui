@@ -22,7 +22,7 @@ public:
     QVariant data(const QModelIndex &index, int role = Qt::EditRole) const Q_DECL_OVERRIDE;
     QModelIndex parent(const QModelIndex &child) const Q_DECL_OVERRIDE;
     QJsonObject getJsonData(int index);
-    QModelIndex getModelIndex(int row);
+    QModelIndex getModelIndex(int row) const;
     int columnCount(const QModelIndex &parent) const Q_DECL_OVERRIDE;
     int rowCount(const QModelIndex &parent) const Q_DECL_OVERRIDE;
     int count();

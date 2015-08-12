@@ -9,6 +9,8 @@ DComboBox::DComboBox(QWidget *parent) : QComboBox(parent)
     //TODO, just work on ediable
     setMaxVisibleItems(MAX_VISIBLE_ITEMS);
 
+    //default view not support ::item sub-control
+    setView(new QListView());
     view()->setObjectName("DComboBoxItemView");
     view()->setAutoScroll(true);
 
@@ -43,6 +45,36 @@ void DComboBox::slotCurrentIndexChange(int index)
     if (w)
         m_maskLabel->setPixmap(w->grab());
 }
+QString DComboBox::insensitiveTickImg() const
+{
+    return m_insensitiveTickImg;
+}
+
+void DComboBox::setInsensitiveTickImg(const QString &insensitiveTickImg)
+{
+    m_insensitiveTickImg = insensitiveTickImg;
+}
+
+QString DComboBox::hoverTickImg() const
+{
+    return m_hoverTickImg;
+}
+
+void DComboBox::setHoverTickImg(const QString &hoverTickImg)
+{
+    m_hoverTickImg = hoverTickImg;
+}
+
+QString DComboBox::normalTickImg() const
+{
+    return m_normalTickImg;
+}
+
+void DComboBox::setNormalTickImg(const QString &normalTickImg)
+{
+    m_normalTickImg = normalTickImg;
+}
+
 
 
 

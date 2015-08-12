@@ -63,7 +63,7 @@ void DComboBoxModel::setProperty(int index, const QString &property, const QVari
 
 }
 
-QModelIndex DComboBoxModel::getModelIndex(int row)
+QModelIndex DComboBoxModel::getModelIndex(int row) const
 {
     return this->index(row,0,QModelIndex());
 }

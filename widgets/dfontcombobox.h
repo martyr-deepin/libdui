@@ -7,14 +7,14 @@
 #include <QPaintEvent>
 #include <QJsonObject>
 #include <QItemDelegate>
-#include <QStyleOptionViewItem>
-#include <QStyledItemDelegate>
-#include <QAbstractItemModel>
 #include <QModelIndex>
+#include <QCursor>
 #include <QColor>
 
 #include "libdui_global.h"
 #include "dcombobox.h"
+#include "dcomboboxmodel.h"
+#include "private/dabstractcomboboxdelegate.h"
 
 DUI_BEGIN_NAMESPACE
 
@@ -26,7 +26,7 @@ class FontDelegateItem : public QLabel
 
 public:
     explicit FontDelegateItem(QWidget *parent = 0);
-    void setItemFont(const QString &fontName);
+    void setItemFont(const QString &family, const QString &title);
 
     QColor fontColor() const;
     void setFontColor(const QColor &fontColor);
@@ -40,22 +40,18 @@ protected:
 private:
     QColor m_fontColor;
     int m_fontPointSize = DUI::FONT_SIZE;
-    QString m_fontName;
+    QString m_fontTitle = "";
+    QString m_fontFamily = "";
 
 };
 
-class DComboBoxFontDelegate : public QStyledItemDelegate
+class DComboBoxFontDelegate : public DAbstractComboBoxDelegate
 {
     Q_OBJECT
 public:
     explicit DComboBoxFontDelegate(QObject *parent = 0);
-    void updateEditorGeometry(QWidget *editor, const QStyleOptionViewItem &option, const QModelIndex &index) const;
     QWidget *createEditor(QWidget *parent, const QStyleOptionViewItem &option, const QModelIndex &index) const;
     void setEditorData(QWidget *editor, const QModelIndex &index) const;
-//    void setModelData(QWidget *editor, QAbstractItemModel *model, const QModelIndex &index) const;
-//    void paint(QPainter * painter,const QStyleOptionViewItem & option,const QModelIndex & index) const;
-//    bool editorEvent(QEvent *event, QAbstractItemModel *model, const QStyleOptionViewItem &option, const QModelIndex &index);
-
 };
 
 class LIBDUISHARED_EXPORT DFontComboBox : public DComboBox
@@ -63,7 +59,7 @@ class LIBDUISHARED_EXPORT DFontComboBox : public DComboBox
     Q_OBJECT
 public:
     explicit DFontComboBox(QWidget *parent = 0);
-    void addFontName(const QString &name);
+    void addFontItem(const QString &family, const QString &title = "");
 
 signals:
     void currentFontNameChange(QString name);
