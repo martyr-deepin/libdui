@@ -1,0 +1,16 @@
+
+DUI--DShortcutEdit {
+    border-radius:4px;
+}
+
+DUI--DShortcutEdit #Edit {
+    color:#fff;
+    background-color:#2f2626;
+    padding:4px 3px;
+}
+
+DUI--DShortcutEdit #Label {
+    qproperty-echoNormal:black;
+    qproperty-echoHover:red;
+    qproperty-echoInvalid:orange;
+}

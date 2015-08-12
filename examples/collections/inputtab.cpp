@@ -1,10 +1,12 @@
 #include "inputtab.h"
+#include "dshortcutedit.h"
 
 #include <QPixmap>
 
 InputTab::InputTab(QWidget *parent) : QLabel(parent)
 {
     setStyleSheet("InputTab{background-color: #252627;}");
+    setFocusPolicy(Qt::ClickFocus);
 
     DUI::DPasswordEdit *pwdEdit = new DUI::DPasswordEdit(this);
     pwdEdit->setNormalIcon(QPixmap(":/images/button.png"));
@@ -20,4 +22,7 @@ InputTab::InputTab(QWidget *parent) : QLabel(parent)
     DUI::DLineEdit *lineEdit = new DUI::DLineEdit(this);
     lineEdit->setText("LineEdit");
     lineEdit->move(20, 80);
+
+    DUI::DShortcutEdit *shortcutEdit = new DUI::DShortcutEdit(this);
+    shortcutEdit->move(20, 110);
 }
