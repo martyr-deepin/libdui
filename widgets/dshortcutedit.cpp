@@ -11,15 +11,14 @@
 DUI_USE_NAMESPACE
 
 // static const varibles
-const QString DShortcutEdit::m_defaultTips = tr("请输入新的快捷键");
-const QRegExp DShortcutEdit::m_blockShortcutKeys[] = {QRegExp("^Backspace$")};
+const QString DShortcutEdit::DefaultTips = tr("请输入新的快捷键");
 
 DShortcutEdit::DShortcutEdit(QWidget *parent)
     : QFrame(parent)
 {
     D_THEME_INIT_WIDGET(DShortcutEdit);
 
-    m_keysEdit = new QLabel(m_defaultTips);
+    m_keysEdit = new QLabel(DefaultTips);
     m_keysEdit->setObjectName("Edit");
     m_keysEdit->setAlignment(Qt::AlignVCenter | Qt::AlignHCenter);
     m_keysEdit->installEventFilter(this);
@@ -46,7 +45,12 @@ DShortcutEdit::DShortcutEdit(QWidget *parent)
     setShortcutKey("Meta+Ctrl+Alt+Shift+Backspace");
 #endif
 
-    connect(this, &DShortcutEdit::invalidShortcutKey, [this] () -> void {m_keysLabel->setEchoState(DShortcutEditLabel::Invalid);});
+    m_keyMapping.insert("PgDown", "PageDown");
+    m_keyMapping.insert("PgUp", "PageUp");
+
+    m_blockedShortcutKeys.append(QRegExp("^Backspace$"));
+
+    //connect(this, &DShortcutEdit::invalidShortcutKey, [this] () -> void {m_keysLabel->setEchoState(DShortcutEditLabel::Invalid);});
 }
 
 bool DShortcutEdit::eventFilter(QObject *o, QEvent *e)
@@ -87,13 +91,43 @@ void DShortcutEdit::setShortcutKey(const QString &key)
     emit shortcutKeysChanged(m_shortcutKeys);
 }
 
+void DShortcutEdit::setKeyMapping(const QMap<QString, QString> &mapping)
+{
+    m_keyMapping = mapping;
+}
+
+void DShortcutEdit::setBlockShortcutKeysList(const QList<QRegExp> &kList)
+{
+    m_blockedShortcutKeys = kList;
+}
+
+void DShortcutEdit::setInValidState() const
+{
+    m_keysLabel->setEchoState(DShortcutEditLabel::Invalid);
+}
+
+void DShortcutEdit::setNormalState() const
+{
+    m_keysLabel->setEchoState(DShortcutEditLabel::Normal);
+}
+
+const QMap<QString, QString> &DShortcutEdit::getKeyMapping() const
+{
+    return std::move(m_keyMapping);
+}
+
+const QList<QRegExp> &DShortcutEdit::getBlockShortcutKeysList() const
+{
+    return m_blockedShortcutKeys;
+}
+
 bool DShortcutEdit::isValidShortcutKey(const QString &key)
 {
-    for (const QRegExp & k : m_blockShortcutKeys)
+    for (const QRegExp & k : m_blockedShortcutKeys)
         if (key.contains(k))
             return false;
 
-    const QStringList keys = key.split("+");
+    /*const QStringList keys = key.split("+");
 
     if (keys.size() == 1)
     {
@@ -108,7 +142,7 @@ bool DShortcutEdit::isValidShortcutKey(const QString &key)
         return false;
     if (lastKey == "Meta" || lastKey == "Ctrl" ||
         lastKey == "Shift" || lastKey == "Alt")
-        return false;
+        return false;*/
 
 
     qWarning() << "isValidShortcutKey: " << key;
@@ -132,7 +166,7 @@ void DShortcutEdit::toInputMode() const
     m_keysLabel->setEchoState(DShortcutEditLabel::Normal);
     m_keysEdit->show();
     m_keysEdit->setFocus();
-    m_keysEdit->setText(m_defaultTips);
+    m_keysEdit->setText(DefaultTips);
 }
 
 void DShortcutEdit::shortcutKeyPress(QKeyEvent *e)
@@ -181,8 +215,8 @@ QString DShortcutEdit::convertShortcutKeys(const QString &keys)
 {
     QString newKeys = keys;
 
-    newKeys.replace("PgDown", "PageDown");
-    newKeys.replace("PgUp", "PageUp");
+    for (const QString & k : m_keyMapping.keys())
+        newKeys.replace(k, m_keyMapping[k]);
 
     return std::move(newKeys);
 }

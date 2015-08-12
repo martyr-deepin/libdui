@@ -6,6 +6,7 @@
 #include <QString>
 #include <QRegExp>
 #include <QColor>
+#include <QMap>
 
 #include "libdui_global.h"
 
@@ -21,7 +22,9 @@ public:
 
     QSize sizeHint() const;
     bool eventFilter(QObject *o, QEvent *e);
-    static bool isValidShortcutKey(const QString & key);
+    bool isValidShortcutKey(const QString & key);
+    const QMap<QString, QString> &getKeyMapping() const;
+    const QList<QRegExp> &getBlockShortcutKeysList() const;
 
 signals:
     void shortcutKeysChanged(const QString & shortcutKeys);
@@ -31,6 +34,10 @@ signals:
 public slots:
     void clearShortcutKey();
     void setShortcutKey(const QString & key);
+    void setKeyMapping(const QMap<QString, QString> & mapping);
+    void setBlockShortcutKeysList(const QList<QRegExp> & kList);
+    void setInValidState() const;
+    void setNormalState() const;
 
 private slots:
     void toEchoMode();
@@ -45,9 +52,10 @@ private:
     QLabel *m_keysEdit;
 
     QString m_shortcutKeys;
+    QList<QRegExp> m_blockedShortcutKeys;
+    QMap<QString, QString> m_keyMapping;
 
-    static const QString m_defaultTips;
-    static const QRegExp m_blockShortcutKeys[];
+    static const QString DefaultTips;
 };
 
 class DShortcutEditLabel : public QLabel
