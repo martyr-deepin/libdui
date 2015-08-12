@@ -25,7 +25,8 @@ HEADERS += $$PWD/dslider.h\
     $$PWD/dcombobox.h \
     $$PWD/dbuttongrid.h\
     $$PWD/dcomboboxfontdelegate.h \
-    $$PWD/dcomboboxmodel.h
+    $$PWD/dcomboboxmodel.h \
+    $$PWD/dcomboboxcolordelegate.h
 
 SOURCES += $$PWD/dslider.cpp \
     $$PWD/dthememanager.cpp \
@@ -51,7 +52,8 @@ SOURCES += $$PWD/dslider.cpp \
     $$PWD/dcombobox.cpp \
     $$PWD/dbuttongrid.cpp\
     $$PWD/dcomboboxfontdelegate.cpp \
-    $$PWD/dcomboboxmodel.cpp
+    $$PWD/dcomboboxmodel.cpp \
+    $$PWD/dcomboboxcolordelegate.cpp
 
 RESOURCES += \
     $$PWD/../themes/dark.qrc \

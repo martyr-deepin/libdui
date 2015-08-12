@@ -6,7 +6,10 @@ DUI_USE_NAMESPACE
 DComboBox::DComboBox(QWidget *parent) : QComboBox(parent)
 {
     D_THEME_INIT_WIDGET(DComboBox);
+    setMaxVisibleItems(MAX_VISIBLE_ITEMS);
+
     view()->setObjectName("DComboBoxItemView");
+    view()->setAutoScroll(true);
 
     m_maskLabel = new QLabel(this);
     m_maskLabel->setAttribute(Qt::WA_TranslucentBackground);

@@ -24,6 +24,8 @@ private slots:
 
 private:
     QLabel *m_maskLabel = NULL;    //mask label
+
+    const int MAX_VISIBLE_ITEMS = 16;
 };
 
 DUI_END_NAMESPACE

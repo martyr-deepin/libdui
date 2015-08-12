@@ -15,6 +15,8 @@ namespace DUI {
 	const int EXPAND_HEADER_HEIGHT = 30;
 	const int CONTENT_HEADER_HEIGHT = 38;
 	const int RADIO_ITEM_HEIGHT = 30;
+    const int MENU_ITEM_HEIGHT = 24;
+    const int MENU_ITEM_LEFT_MARGIN = 24;   //NOT include the tick
 	const int HEADER_LEFT_MARGIN = 14;
 	const int HEADER_RIGHT_MARGIN = 14;
 	const int TEXT_LEFT_MARGIN = 6;

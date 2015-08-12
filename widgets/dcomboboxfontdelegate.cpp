@@ -28,9 +28,9 @@ void FontDelegateItem::paintEvent(QPaintEvent *event)
     QPainter painter(this);
     painter.setRenderHint(QPainter::Antialiasing);
 
-    QRect rect(DUI::TEXT_LEFT_MARGIN, 0, width(), height());
+    QRect rect(DUI::MENU_ITEM_LEFT_MARGIN, 0, width(), height());
 
-    QFont f(m_fontName, m_fontPixelSize);
+    QFont f(m_fontName, m_fontPointSize);
     painter.setFont(f);
     QPen p(m_fontColor);
     painter.setPen(p);
@@ -38,14 +38,14 @@ void FontDelegateItem::paintEvent(QPaintEvent *event)
     painter.drawText(rect, Qt::AlignVCenter | Qt::AlignLeft, m_fontName);
 }
 
-int FontDelegateItem::fontPixelSize() const
+int FontDelegateItem::fontPointSize() const
 {
-    return m_fontPixelSize;
+    return m_fontPointSize;
 }
 
-void FontDelegateItem::setFontPixelSize(int fontPixelSize)
+void FontDelegateItem::setFontPointSize(int fontPixelSize)
 {
-    m_fontPixelSize = fontPixelSize;
+    m_fontPointSize = fontPixelSize;
 }
 
 
@@ -58,7 +58,7 @@ DComboBoxFontDelegate::DComboBoxFontDelegate(QObject *parent) : QStyledItemDeleg
 QWidget * DComboBoxFontDelegate::createEditor(QWidget *parent, const QStyleOptionViewItem &option, const QModelIndex &index) const
 {
     FontDelegateItem * editor = new FontDelegateItem(parent);
-    editor->setFixedHeight(DUI::BUTTON_HEIGHT);
+    editor->setFixedHeight(DUI::MENU_ITEM_HEIGHT);
 
     return editor;
 }

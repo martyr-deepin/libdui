@@ -7,6 +7,7 @@
 #include <QAbstractItemView>
 #include "dcombobox.h"
 #include "dcomboboxfontdelegate.h"
+#include "dcomboboxcolordelegate.h"
 #include "dcomboboxmodel.h"
 
 DUI_USE_NAMESPACE
@@ -20,8 +21,11 @@ public:
 signals:
 
 public slots:
+    void colorIndexChange(int index);
 
 private:
+    DComboBox *colorCB;
+    DComboBoxModel * colorModel;
     DComboBox *cb;
     DComboBoxModel * model;
 };
