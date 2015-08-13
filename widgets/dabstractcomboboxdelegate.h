@@ -5,7 +5,7 @@
 #include <QPainter>
 #include <QStyledItemDelegate>
 
-#include "libdui/dcombobox.h"
+#include "dcombobox.h"
 
 class DAbstractComboBoxDelegate : public QStyledItemDelegate
 {

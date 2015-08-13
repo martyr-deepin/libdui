@@ -33,7 +33,8 @@ HEADERS += $$PWD/dslider.h\
     $$PWD/dwindowclosebutton.h \
     $$PWD/dwindowrestorebutton.h \
     $$PWD/dwindowoptionbutton.h \
-    $$PWD/dshortcutedit.h
+    $$PWD/dshortcutedit.h \
+    $$PWD/dabstractcomboboxdelegate.h
 
 SOURCES += $$PWD/dslider.cpp \
     $$PWD/dthememanager.cpp \
@@ -67,7 +68,8 @@ SOURCES += $$PWD/dslider.cpp \
     $$PWD/dwindowclosebutton.cpp \
     $$PWD/dwindowrestorebutton.cpp \
     $$PWD/dwindowoptionbutton.cpp \
-    $$PWD/dshortcutedit.cpp
+    $$PWD/dshortcutedit.cpp \
+    $$PWD/dabstractcomboboxdelegate.cpp
 
 RESOURCES += \
     $$PWD/../themes/dark.qrc \

@@ -15,7 +15,7 @@
 #include "libdui_global.h"
 #include "dcomboboxmodel.h"
 #include "dcombobox.h"
-#include "private/dabstractcomboboxdelegate.h"
+#include "dabstractcomboboxdelegate.h"
 
 DUI_BEGIN_NAMESPACE
 
