@@ -24,6 +24,10 @@ public:
     void mousePressEvent(QMouseEvent *);
     bool eventFilter(QObject *o, QEvent *e);
 
+signals:
+    void textChanged();
+    void editingFinished();
+
 public slots:
     void setSearchIcon(const QPixmap & icon) {if (m_btn) m_btn->setNormalPic(icon);}
 

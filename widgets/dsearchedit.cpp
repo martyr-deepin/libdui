@@ -41,6 +41,9 @@ DSearchEdit::DSearchEdit(QWidget *parent)
     setLayout(layout);
 
     m_edt->installEventFilter(this);
+
+    connect(m_edt, &QLineEdit::textChanged, this, &DSearchEdit::textChanged, Qt::DirectConnection);
+    connect(m_edt, &QLineEdit::editingFinished, this, &DSearchEdit::editingFinished, Qt::DirectConnection);
 }
 
 void DSearchEdit::mousePressEvent(QMouseEvent *)
