@@ -40,6 +40,10 @@ public:
     void setPressPic(const QPixmap & pressPicPixmap);
     void setCheckedPic(const QPixmap & checkedPicPixmap);
 
+    enum State {Normal, Hover, Press, Checked};
+
+    State getState() const;
+
 signals:
     void clicked();
     void stateChanged();
@@ -48,7 +52,6 @@ private:
     void changeState();
 
 private:
-    enum State {Normal, Hover, Press, Checked};
 
     State m_state = Normal;
 

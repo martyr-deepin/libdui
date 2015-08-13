@@ -172,4 +172,9 @@ void DImageButton::setCheckedPic(const QPixmap &checkedPicPixmap)
     changeState();
 }
 
+DImageButton::State DImageButton::getState() const
+{
+    return m_state;
+}
+
 DUI_END_NAMESPACE
