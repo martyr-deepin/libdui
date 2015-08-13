@@ -9,6 +9,7 @@
 #include "dcomboboxmodel.h"
 #include "dfontcombobox.h"
 #include "dcolorcombobox.h"
+#include "dsimplecombobox.h"
 
 DUI_USE_NAMESPACE
 

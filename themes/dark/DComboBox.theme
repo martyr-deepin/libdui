@@ -5,7 +5,7 @@ DUI--DComboBox {
     padding: 1px 18px 1px 3px;
     min-width: 6em;
     color: #b4b4b4;
-    font-size: 12pt;
+    font-size: 12px;
 
     qproperty-insensitiveTickImg: url(:/images/dark/images/tick_insensitive.png);
     qproperty-hoverTickImg: url(:/images/dark/images/tick_hover.png);
@@ -58,8 +58,8 @@ DUI--DComboBox::down-arrow:hover {
     image: url(:/images/dark/images/arrow_down_hover.png);
 }
 
-DUI--FontDelegateItem, DUI--ColorDelegateItem {
-    qproperty-fontColor: #b4b4b4;
-    qproperty-fontPointSize: 12;
+DUI--FontDelegateItem, DUI--ColorDelegateItem, DUI--SimpleDelegateItem {
+    qproperty-fontNormalColor: #b4b4b4;
+    qproperty-fontPixelSize: 12;
 }
 

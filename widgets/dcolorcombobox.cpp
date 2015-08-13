@@ -27,31 +27,32 @@ void ColorDelegateItem::paintEvent(QPaintEvent *)
 
     QRect textRect(colorRect.x() + colorRect.width() + DUI::TEXT_LEFT_MARGIN, 0, width(), height());
     QFont f;
-    f.setPointSize(m_fontPointSize);
+    f.setPixelSize(m_fontPixelSize);
     painter.setFont(f);
-    QPen p(m_fontColor);
+    QPen p(m_fontNormalColor);
     painter.setPen(p);
     painter.drawText(textRect, Qt::AlignVCenter | Qt::AlignLeft, m_title);  //draw title
 }
-int ColorDelegateItem::fontPointSize() const
+int ColorDelegateItem::fontPixelSize() const
 {
-    return m_fontPointSize;
+    return m_fontPixelSize;
 }
 
-void ColorDelegateItem::setFontPointSize(int fontPointSize)
+void ColorDelegateItem::setFontPixelSize(int fontPixelSize)
 {
-    m_fontPointSize = fontPointSize;
+    m_fontPixelSize = fontPixelSize;
 }
 
-QColor ColorDelegateItem::fontColor() const
+QColor ColorDelegateItem::fontNormalColor() const
 {
-    return m_fontColor;
+    return m_fontNormalColor;
 }
 
-void ColorDelegateItem::setFontColor(const QColor &fontColor)
+void ColorDelegateItem::setFontNormalColor(const QColor &fontNormalColor)
 {
-    m_fontColor = fontColor;
+    m_fontNormalColor = fontNormalColor;
 }
+
 
 
 DComboBoxColorDelegate::DComboBoxColorDelegate(QObject *parent) : DAbstractComboBoxDelegate(parent)

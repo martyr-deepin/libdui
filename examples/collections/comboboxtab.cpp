@@ -30,9 +30,13 @@ ComboBoxTab::ComboBoxTab(QWidget *parent) : QLabel(parent)
     });
     colorcb->setCurrentIndex(2);
 
+//    simpleBox = new DComboBox(this);
+//    simpleBox->setFixedSize(200, DUI::BUTTON_HEIGHT);
+//    simpleBox->move(430, 100);
+
     ///////////////////////////////////////////////Normal ComboBox
-    simpleBox = new DComboBox(this);
-    simpleBox->setFixedSize(200, DUI::BUTTON_HEIGHT);
+    DSimpleComboBox *simpleBox = new DSimpleComboBox(this);
+    simpleBox->setFixedSize(200, 22);
     simpleBox->move(430, 100);
 
     QStringList simpleList;

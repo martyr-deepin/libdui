@@ -21,27 +21,27 @@ DUI_BEGIN_NAMESPACE
 class FontDelegateItem : public QLabel
 {
     Q_OBJECT
-    Q_PROPERTY(QColor fontColor READ fontColor WRITE setFontColor)
-    Q_PROPERTY(int fontPointSize READ fontPointSize WRITE setFontPointSize)
+    Q_PROPERTY(QColor fontNormalColor READ fontNormalColor WRITE setFontNormalColor)
+    Q_PROPERTY(int fontPixelSize READ fontPixelSize WRITE setFontPixelSize)
 
 public:
     explicit FontDelegateItem(QWidget *parent = 0);
     void setItemFont(const QString &family, const QString &title);
 
-    QColor fontColor() const;
-    void setFontColor(const QColor &fontColor);
+    QColor fontNormalColor() const;
+    void setFontNormalColor(const QColor &fontNormalColor);
 
-    int fontPointSize() const;
-    void setFontPointSize(int fontPointSize);
+    int fontPixelSize() const;
+    void setFontPixelSize(int fontPixelSize);
 
 protected:
     void paintEvent(QPaintEvent *event);
 
 private:
-    QColor m_fontColor;
-    int m_fontPointSize = DUI::FONT_SIZE;
     QString m_fontTitle = "";
     QString m_fontFamily = "";
+    QColor m_fontNormalColor;
+    int m_fontPixelSize = DUI::FONT_SIZE;
 
 };
 

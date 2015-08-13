@@ -22,26 +22,27 @@ DUI_BEGIN_NAMESPACE
 class ColorDelegateItem : public QLabel
 {
     Q_OBJECT
-    Q_PROPERTY(QColor fontColor READ fontColor WRITE setFontColor)
-    Q_PROPERTY(int fontPointSize READ fontPointSize WRITE setFontPointSize)
+    Q_PROPERTY(QColor fontNormalColor READ fontNormalColor WRITE setFontNormalColor)
+    Q_PROPERTY(int fontPixelSize READ fontPixelSize WRITE setFontPixelSize)
 public:
     explicit ColorDelegateItem(QWidget *parent = 0);
     void setData(const QString &color, const QString &title);
 
-    QColor fontColor() const;
-    void setFontColor(const QColor &fontColor);
 
-    int fontPointSize() const;
-    void setFontPointSize(int fontPointSize);
+    QColor fontNormalColor() const;
+    void setFontNormalColor(const QColor &fontNormalColor);
+
+    int fontPixelSize() const;
+    void setFontPixelSize(int fontPixelSize);
 
 protected:
     void paintEvent(QPaintEvent *);
 
 private:
-    QColor m_fontColor;
     QColor m_color;
     QString m_title;
-    int m_fontPointSize = DUI::FONT_SIZE;
+    QColor m_fontNormalColor;
+    int m_fontPixelSize = DUI::FONT_SIZE;
     const int COLOR_BLOCK_WIDTH = 25;
     const int COLOR_BLOCK_HEIGHT = 10;
 };

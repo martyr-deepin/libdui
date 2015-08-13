@@ -14,15 +14,6 @@ void FontDelegateItem::setItemFont(const QString &family, const QString &title)
     m_fontTitle = title.isEmpty() ? family : title;
     repaint();
 }
-QColor FontDelegateItem::fontColor() const
-{
-    return m_fontColor;
-}
-
-void FontDelegateItem::setFontColor(const QColor &fontColor)
-{
-    m_fontColor = fontColor;
-}
 
 void FontDelegateItem::paintEvent(QPaintEvent *event)
 {
@@ -31,22 +22,33 @@ void FontDelegateItem::paintEvent(QPaintEvent *event)
 
     QRect rect(DUI::MENU_ITEM_LEFT_MARGIN, 0, width(), height());
 
-    QFont f(m_fontFamily, m_fontPointSize);
+    QFont f;
+    f.setFamily(m_fontFamily);
+    f.setPixelSize(m_fontPixelSize);
     painter.setFont(f);
-    QPen p(m_fontColor);
+    QPen p(m_fontNormalColor);
     painter.setPen(p);
 
     painter.drawText(rect, Qt::AlignVCenter | Qt::AlignLeft, m_fontTitle);
 }
-
-int FontDelegateItem::fontPointSize() const
+int FontDelegateItem::fontPixelSize() const
 {
-    return m_fontPointSize;
+    return m_fontPixelSize;
 }
 
-void FontDelegateItem::setFontPointSize(int fontPixelSize)
+void FontDelegateItem::setFontPixelSize(int fontPixelSize)
 {
-    m_fontPointSize = fontPixelSize;
+    m_fontPixelSize = fontPixelSize;
+}
+
+QColor FontDelegateItem::fontNormalColor() const
+{
+    return m_fontNormalColor;
+}
+
+void FontDelegateItem::setFontNormalColor(const QColor &fontNormalColor)
+{
+    m_fontNormalColor = fontNormalColor;
 }
 
 DComboBoxFontDelegate::DComboBoxFontDelegate(QObject *parent) : DAbstractComboBoxDelegate(parent)
