@@ -19,7 +19,11 @@ include(widgets/widgets.pri)
 HEADERS += libdui_global.h
 
 unix {
-    target.path = /usr/lib
+    isEmptry(LIB_INSTALL_DIR) {
+		target.path = /usr/lib
+	} else {
+		target.path = $$LIB_INSTALL_DIR
+	}
     INSTALLS += target
 
     includes.files += libdui_global.h widgets/*.h
