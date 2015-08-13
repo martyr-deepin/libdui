@@ -10,8 +10,11 @@
 #include "dheaderline.h"
 #include "darrowbutton.h"
 #include "dswitchbutton.h"
-
-DUI_USE_NAMESPACE
+#include "dwindowmaxbutton.h"
+#include "dwindowminbutton.h"
+#include "dwindowrestorebutton.h"
+#include "dwindowclosebutton.h"
+#include "dwindowoptionbutton.h"
 
 class ButtonTab : public QLabel
 {

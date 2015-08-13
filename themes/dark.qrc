@@ -19,6 +19,11 @@
         <file>dark/DSearchEdit.theme</file>
         <file>dark/DComboBox.theme</file>
         <file>dark/DButtonGrid.theme</file>
+        <file>dark/DWindowMaxButton.theme</file>
+        <file>dark/DWindowCloseButton.theme</file>
+        <file>dark/DWindowMinButton.theme</file>
+        <file>dark/DWindowRestoreButton.theme</file>
+        <file>dark/DWindowOptionButton.theme</file>
     </qresource>
     <qresource prefix="/images">
         <file>dark/images/add_hover.png</file>

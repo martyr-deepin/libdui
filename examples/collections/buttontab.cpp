@@ -1,6 +1,8 @@
 #include "buttontab.h"
 #include "QDebug"
 
+DUI_USE_NAMESPACE
+
 ButtonTab::ButtonTab(QWidget *parent) : QLabel(parent)
 {
     setStyleSheet("ButtonTab{background-color: #252627;}");
@@ -8,6 +10,21 @@ ButtonTab::ButtonTab(QWidget *parent) : QLabel(parent)
     DArrowButton * arrowButton = new DArrowButton(this);
     arrowButton->setArrowDirection(DArrowButton::ArrowDown);
     arrowButton->move(5, 5);
+
+    DWindowMinButton * minButton = new DWindowMinButton(this);
+    minButton->move(30, 5);
+
+    DWindowMaxButton * maxButton = new DWindowMaxButton(this);
+    maxButton->move(50, 5);
+
+    DWindowRestoreButton * restoreButton = new DWindowRestoreButton(this);
+    restoreButton->move(70, 5);
+
+    DWindowCloseButton * closeButton = new DWindowCloseButton(this);
+    closeButton->move(90, 5);
+
+    DWindowOptionButton * optionButton = new DWindowOptionButton(this);
+    optionButton->move(110, 5);
 
     //////////////////////////////////////////////////////////////--DTextButton
     DTextButton *textButton = new DTextButton("Test Text", this);

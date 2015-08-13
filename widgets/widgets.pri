@@ -27,7 +27,12 @@ HEADERS += $$PWD/dslider.h\
     $$PWD/dcomboboxmodel.h \
     $$PWD/dcolorcombobox.h \
     $$PWD/dfontcombobox.h \
-    $$PWD/dsimplecombobox.h
+    $$PWD/dsimplecombobox.h \
+    $$PWD/dwindowmaxbutton.h \
+    $$PWD/dwindowminbutton.h \
+    $$PWD/dwindowclosebutton.h \
+    $$PWD/dwindowrestorebutton.h \
+    $$PWD/dwindowoptionbutton.h
 
 SOURCES += $$PWD/dslider.cpp \
     $$PWD/dthememanager.cpp \
@@ -55,7 +60,12 @@ SOURCES += $$PWD/dslider.cpp \
     $$PWD/dcomboboxmodel.cpp \
     $$PWD/dcolorcombobox.cpp \
     $$PWD/dfontcombobox.cpp \
-    $$PWD/dsimplecombobox.cpp
+    $$PWD/dsimplecombobox.cpp\
+    $$PWD/dwindowmaxbutton.cpp \
+    $$PWD/dwindowminbutton.cpp \
+    $$PWD/dwindowclosebutton.cpp \
+    $$PWD/dwindowrestorebutton.cpp \
+    $$PWD/dwindowoptionbutton.cpp
 
 RESOURCES += \
     $$PWD/../themes/dark.qrc \
