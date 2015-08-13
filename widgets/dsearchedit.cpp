@@ -46,6 +46,11 @@ DSearchEdit::DSearchEdit(QWidget *parent)
     connect(m_edt, &QLineEdit::editingFinished, this, &DSearchEdit::editingFinished, Qt::DirectConnection);
 }
 
+const QString DSearchEdit::text() const
+{
+    return std::move(m_edt->text());
+}
+
 void DSearchEdit::mousePressEvent(QMouseEvent *)
 {
     //m_edt.setFixedWidth(m_size.width() - m_btn.width());

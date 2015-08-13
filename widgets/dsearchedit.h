@@ -20,9 +20,13 @@ public:
     QSize minimumSizeHint() const {return m_size;}
     void setFixedSize(const QSize & size) {m_size = size;}
     void setMinimumSize(const QSize & size) {m_size = size;}
+    const QString text() const;
 
     void mousePressEvent(QMouseEvent *);
     bool eventFilter(QObject *o, QEvent *e);
+
+public slots:
+    void setText(const QString & text) {if (m_edt) m_edt->setText(text);}
 
 signals:
     void textChanged();
