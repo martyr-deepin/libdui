@@ -11,6 +11,7 @@ HEADERS += $$PWD/dslider.h\
     $$PWD/dbaseexpand.h \
     $$PWD/darrowbutton.h \
     $$PWD/darrowlineexpand.h \
+    $$PWD/dswitchlineexpand.h \
     $$PWD/dbuttonlist.h \
     $$PWD/dcalendar.h \
     $$PWD/dimagebutton.h \
@@ -46,6 +47,7 @@ SOURCES += $$PWD/dslider.cpp \
     $$PWD/dbaseexpand.cpp \
     $$PWD/darrowbutton.cpp \
     $$PWD/darrowlineexpand.cpp \
+    $$PWD/dswitchlineexpand.cpp \
     $$PWD/dbuttonlist.cpp \
     $$PWD/dcalendar.cpp \
     $$PWD/dimagebutton.cpp \

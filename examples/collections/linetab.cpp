@@ -50,5 +50,15 @@ LineTab::LineTab(QWidget *parent) : QLabel(parent)
         expandLabel2->setFixedSize(200,50);
         arrowLineExpand->setContent(expandLabel2);
         arrowLineExpand->move(350, 70);
+
+        /////////////////////////////////////////////////////////////--DSwitchLineExpand
+        DSwitchLineExpand *switchLineExpand = new DSwitchLineExpand(this);
+        switchLineExpand->setFixedWidth(300);
+        switchLineExpand->setTitle("Switch Line Expand");
+        QLabel *expandLabel3 = new QLabel("Switch Expand content");
+        expandLabel3->setAlignment(Qt::AlignHCenter | Qt::AlignVCenter);
+        expandLabel3->setFixedSize(200,50);
+        switchLineExpand->setContent(expandLabel3);
+        switchLineExpand->move(350, 170);
 }
 

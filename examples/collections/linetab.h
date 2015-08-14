@@ -10,6 +10,7 @@
 #include "dseparatorvertical.h"
 #include "dbaseexpand.h"
 #include "darrowlineexpand.h"
+#include "dswitchlineexpand.h"
 
 DUI_USE_NAMESPACE
 
