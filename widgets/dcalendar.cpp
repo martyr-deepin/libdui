@@ -15,6 +15,7 @@
 DUI_BEGIN_NAMESPACE
 
 DCalendar::DCalendar(QWidget *parent) : QWidget(parent),
+    m_resetBtn(tr("Reset")),
     usingDate(QDate::currentDate()),
     selectDate(QDate::currentDate()),
     currentDate(QDate::currentDate())
@@ -34,18 +35,16 @@ DCalendar::DCalendar(QWidget *parent) : QWidget(parent),
     cViewRight->setModel(nextStepModel);
 
     QSpacerItem *hSpace = new QSpacerItem(0, 0, QSizePolicy::Expanding, QSizePolicy::Minimum);
-    QSpacerItem *hSpaceCenter = new QSpacerItem(5, 0, QSizePolicy::Fixed, QSizePolicy::Minimum);
 
     QHBoxLayout *dateItems = new QHBoxLayout;
-    dateItems->addItem(hSpace);
     dateItems->addWidget(&prevYear);
     dateItems->addWidget(&year);
     dateItems->addWidget(&nextYear);
-    dateItems->addItem(hSpaceCenter);
     dateItems->addWidget(&prevMonth);
     dateItems->addWidget(&month);
     dateItems->addWidget(&nextMonth);
     dateItems->addItem(hSpace);
+    dateItems->addWidget(&m_resetBtn);
 
     QHBoxLayout *viewsLayout = new QHBoxLayout;
     viewsLayout->addWidget(cViewLeft);
@@ -66,7 +65,9 @@ DCalendar::DCalendar(QWidget *parent) : QWidget(parent),
 
     setLayout(centralLayout);
 
+#ifdef QT_DEBUG
     datailOfToday.setText("details");
+#endif
     prevYear.setText("<");
     nextYear.setText(">");
     prevMonth.setText("<");
@@ -76,6 +77,8 @@ DCalendar::DCalendar(QWidget *parent) : QWidget(parent),
 
     year.setFixedWidth(40);
     month.setFixedWidth(20);
+
+    m_resetBtn.hide();
 
     const int btnWidth = 20;
     prevYear.setMaximumWidth(btnWidth);
@@ -87,6 +90,7 @@ DCalendar::DCalendar(QWidget *parent) : QWidget(parent),
     connect(&nextYear, &QPushButton::clicked, [this] () -> void {selectDate = selectDate.addYears(1); adjustDate();});
     connect(&prevMonth, &QPushButton::clicked, [this] () -> void {selectDate = selectDate.addMonths(-1); adjustDate();});
     connect(&nextMonth, &QPushButton::clicked, [this] () -> void {selectDate = selectDate.addMonths(1); adjustDate();});
+    connect(&m_resetBtn, &QPushButton::clicked, this, &DCalendar::resetDate);
 
     connect(cViewLeft, SIGNAL(cellClicked(QModelIndex)), this, SLOT(maybeChangeMonth(QModelIndex)), Qt::QueuedConnection);
     connect(cViewRight, SIGNAL(cellClicked(QModelIndex)), this, SLOT(maybeChangeMonth(QModelIndex)), Qt::QueuedConnection);
@@ -105,18 +109,19 @@ DCalendar::DCalendar(QWidget *parent) : QWidget(parent),
     cViewRight->setObjectName("DCalendarView");
 }
 
-QDate DCalendar::getCurrentDate() const
+inline QDate DCalendar::getCurrentDate() const
 {
     return usingDate;
 }
 
-QDate DCalendar::getSelectDate() const
+inline QDate DCalendar::getSelectDate() const
 {
     return selectDate;
 }
 
 void DCalendar::animationToPrev()
 {
+    qDebug() << "prev";
     cViewLeft->setModel(nextStepModel);
     cViewRight->setModel(currentModel);
     QPropertyAnimation *animation = new QPropertyAnimation(innerWidget, "geometry");
@@ -131,12 +136,14 @@ void DCalendar::animationToPrev()
 
 void DCalendar::animationToNext()
 {
+    qDebug() << "next";
     cViewLeft->setModel(currentModel);
     cViewRight->setModel(nextStepModel);
     QPropertyAnimation *animation = new QPropertyAnimation(innerWidget, "geometry");
     animation->setDuration(animationDuration);
     animation->setStartValue(QRect(0, 0, outerWidth * 2, outerHeight));
     animation->setEndValue(QRect(-outerWidth, 0, outerWidth * 2, outerHeight));
+    animation->setEasingCurve(QEasingCurve::OutCubic);
     animation->start();
 
     cViewCurrent = cViewRight;
@@ -150,20 +157,29 @@ void DCalendar::adjustDate()
     nextStepModel->setDate(selectDate);
     currentModel->setDate(usingDate);
 
-    if (selectDate.year() < usingDate.year() ||
-        selectDate.month() < usingDate.month())
+    if (selectDate.year() < usingDate.year())
         animationToPrev();
-    if (selectDate.year() > usingDate.year() ||
-        selectDate.month() > usingDate.month())
+    else if (selectDate.year() > usingDate.year())
+        animationToNext();
+    else if (selectDate.month() < usingDate.month())
+        animationToPrev();
+    else if (selectDate.month() > usingDate.month())
         animationToNext();
 
     usingDate = selectDate;
+
+    if (selectDate == currentDate)
+        m_resetBtn.hide();
+    else
+        m_resetBtn.show();
+
+    emit selectedDateChanged(selectDate);
 }
 
 void DCalendar::maybeChangeMonth(const QModelIndex &clickedIndex)
 {
     DCalendarModel *model = (DCalendarModel *)(clickedIndex.model());
-    if (!model)
+    if (!model || model != cViewCurrent->model())
         return;
 
     int dayNum = model->getDayNum(clickedIndex);
@@ -182,7 +198,10 @@ void DCalendar::selectedIndexChanged(const QModelIndex &index)
 {
     //cViewLeft->setCurrentIndex(index);
     //cViewRight->setCurrentIndex(index);
-    if (cViewCurrent)
+    if (!index.isValid())
+        return;
+
+    if (cViewCurrent && cViewCurrent->model() == index.model())
         cViewCurrent->setCurrentIndex(index);
 }
 

@@ -27,6 +27,7 @@ public:
     QVariant data(const QModelIndex &index, int role) const;
     void setDate(const QDate & date);
     int getDayNum(const QModelIndex & index) const;
+    const QDate &getDate(const QModelIndex & index) const;
 
 signals:
     void selectedCellChanged(const QModelIndex & index);

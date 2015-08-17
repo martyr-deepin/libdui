@@ -8,6 +8,7 @@
 #include <QWidget>
 
 #include "libdui_global.h"
+#include "libdui/dtextbutton.h"
 
 class DCalendarView;
 class DCalendarDelegate;
@@ -61,8 +62,11 @@ public:
     QColor getFestivalLunarColor() const;
 
 signals:
+    void selectedDateChanged(const QDate & date);
 
 public slots:
+    inline void resetDate() {setDate(currentDate);}
+    inline void setDate(const QDate & date) {usingDate = selectDate = date; adjustDate();}
     void adjustDate();
     void maybeChangeMonth(const QModelIndex & clickedIndex);
     void selectedIndexChanged(const QModelIndex & index);
@@ -75,6 +79,7 @@ private:
     QPushButton nextYear;
     QPushButton prevMonth;
     QPushButton nextMonth;
+    DUI::DTextButton m_resetBtn;
 
     QLineEdit year;
     QLineEdit month;
@@ -83,7 +88,7 @@ private:
 
     QDate usingDate;
     QDate selectDate;
-    QDate currentDate;
+    const QDate currentDate;
 
     int outerWidth;
     int outerHeight;

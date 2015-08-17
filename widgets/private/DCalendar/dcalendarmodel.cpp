@@ -53,7 +53,7 @@ void DCalendarModel::setDate(const QDate & date)
     const QPoint p = dateToCell(date);
     const int currentIndex = p.x() * 7 + p.y();
 
-    qDebug() << "current: " << p.x() << p.y();
+    qDebug() << this << "current: " << p.x() << p.y();
 
     for (int i(0); i != 42; ++i)
         days[i] = date.addDays(i - currentIndex);
@@ -76,6 +76,11 @@ void DCalendarModel::setDate(const QDate & date)
 int DCalendarModel::getDayNum(const QModelIndex &index) const
 {
     return days[index.row() * 7 + index.column()].day();
+}
+
+const QDate &DCalendarModel::getDate(const QModelIndex &index) const
+{
+    return days[index.row() * 7 + index.column()];
 }
 
 QPoint DCalendarModel::dateToCell(const QDate & date) const
