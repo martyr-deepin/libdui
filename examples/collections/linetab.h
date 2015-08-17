@@ -12,6 +12,7 @@
 #include "dbaseexpand.h"
 #include "darrowlineexpand.h"
 #include "dswitchlineexpand.h"
+#include "dexpandgroup.h"
 
 DUI_USE_NAMESPACE
 
