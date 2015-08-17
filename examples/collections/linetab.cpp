@@ -27,6 +27,7 @@ LineTab::LineTab(QWidget *parent) : QLabel(parent)
 
         //////////////////////////////////////////////////////////////--DBaseExpand
         DBaseExpand *baseExpand = new DBaseExpand(this);
+        baseExpand->setExpand(true);
         baseExpand->setFixedWidth(300);
         baseExpand->setHeader(baseLine);
         connect(bbb, &QPushButton::clicked, [=]{
@@ -41,24 +42,47 @@ LineTab::LineTab(QWidget *parent) : QLabel(parent)
         baseExpand->move(20,70);
         dsHorizontal2->move(baseExpand->x(),baseExpand->y() - 2);
 
+        /////////////////////////////////////////////////////////////--Right content
+        QLabel *rightWidget = new QLabel(this);
+        rightWidget->setFixedSize(300, 500);
+        rightWidget->move(400, 0);
+        QVBoxLayout *rightLayout = new QVBoxLayout();
+        rightLayout->setSpacing(0);
+        rightLayout->setMargin(0);
+        rightWidget->setLayout(rightLayout);
+
         /////////////////////////////////////////////////////////////--DArrowLineExpand
-        DArrowLineExpand *arrowLineExpand = new DArrowLineExpand(this);
+        DArrowLineExpand *arrowLineExpand = new DArrowLineExpand();
         arrowLineExpand->setFixedWidth(300);
         arrowLineExpand->setTitle("Arrow Line Expand");
         QLabel *expandLabel2 = new QLabel("Arrow Expand content");
         expandLabel2->setAlignment(Qt::AlignHCenter | Qt::AlignVCenter);
-        expandLabel2->setFixedSize(200,50);
+        expandLabel2->setFixedSize(200,200);
         arrowLineExpand->setContent(expandLabel2);
-        arrowLineExpand->move(350, 70);
+        connect(arrowLineExpand, &DArrowLineExpand::expandChanged, [=]{
+            expandLabel2->setFixedSize(expandLabel2->width(), expandLabel2->height() / 3 * 2);
+        });
+        /////////////////////////////////////////////////////////////--DArrowLineExpand2
+        DArrowLineExpand *arrowLineExpand2 = new DArrowLineExpand();
+        arrowLineExpand2->setFixedWidth(300);
+        arrowLineExpand2->setTitle("Arrow Line Expand");
+        QLabel *expandLabel4 = new QLabel("Arrow Expand content");
+        expandLabel4->setAlignment(Qt::AlignHCenter | Qt::AlignVCenter);
+        expandLabel4->setFixedSize(200,200);
+        arrowLineExpand2->setContent(expandLabel4);
 
         /////////////////////////////////////////////////////////////--DSwitchLineExpand
-        DSwitchLineExpand *switchLineExpand = new DSwitchLineExpand(this);
+        DSwitchLineExpand *switchLineExpand = new DSwitchLineExpand();
         switchLineExpand->setFixedWidth(300);
         switchLineExpand->setTitle("Switch Line Expand");
         QLabel *expandLabel3 = new QLabel("Switch Expand content");
         expandLabel3->setAlignment(Qt::AlignHCenter | Qt::AlignVCenter);
         expandLabel3->setFixedSize(200,50);
         switchLineExpand->setContent(expandLabel3);
-        switchLineExpand->move(350, 170);
+
+        rightLayout->addWidget(arrowLineExpand);
+        rightLayout->addWidget(arrowLineExpand2);
+        rightLayout->addWidget(switchLineExpand);
+        rightLayout->addStretch();
 }
 

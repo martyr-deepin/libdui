@@ -29,11 +29,16 @@ public:
 
     void setHeader(QWidget *header);
     void setContent(QWidget *content);
+    void setHeaderHeight(int height);
     void setExpand(bool value);
     bool expand() const;
     void setAnimationDuration(int duration);
     void setAnimationEasingCurve(QEasingCurve curve);
     void resizeEvent(QResizeEvent *e);
+
+signals:
+    void expandChanged(bool e);
+    void sizeChanged(QSize s);
 
 private:
     QWidget *m_content = NULL;
@@ -41,8 +46,9 @@ private:
     QVBoxLayout *m_contentLayout = NULL;
     ContentLoader *m_contentLoader = NULL;
     DSeparatorHorizontal * m_hSeparator = NULL;
-    bool m_expand = true;
     QPropertyAnimation *m_animation = NULL;
+    bool m_expand = false;
+    int m_headerHeight = DUI::EXPAND_HEADER_HEIGHT;
 };
 
 DUI_END_NAMESPACE

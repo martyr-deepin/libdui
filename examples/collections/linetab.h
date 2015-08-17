@@ -3,6 +3,7 @@
 
 #include <QWidget>
 #include <QPushButton>
+#include <QTimer>
 
 #include "dheaderline.h"
 #include "dbaseline.h"

@@ -27,6 +27,9 @@ DBaseExpand::DBaseExpand(QWidget *parent) : QWidget(parent)
     m_animation->setDuration(200);
     m_animation->setEasingCurve(QEasingCurve::InSine);
     connect(m_animation, &QPropertyAnimation::valueChanged, this, &DBaseExpand::adjustSize);
+    connect(m_animation, &QPropertyAnimation::finished, [=]{
+        emit expandChanged(expand());
+    });
 
     mainLayout->addLayout(m_headerLayout);
     mainLayout->addWidget(m_hSeparator);
@@ -46,7 +49,7 @@ void DBaseExpand::setHeader(QWidget *header)
     }
 
     m_hSeparator->setFixedWidth(width());
-    header->setMaximumSize(width(), DUI::EXPAND_HEADER_HEIGHT);
+    header->setFixedSize(width(), m_headerHeight);
     m_headerLayout->addWidget(header);
 }
 
@@ -60,9 +63,14 @@ void DBaseExpand::setContent(QWidget *content)
         m_contentLayout->removeItem(child);
     }
 
-    m_contentLoader->setFixedSize(width(), content->height());
+    m_contentLoader->setFixedSize(width(), expand() ? content->height() : 0);
     m_contentLayout->addWidget(content);
     m_content = content;
+}
+
+void DBaseExpand::setHeaderHeight(int height)
+{
+    m_headerHeight = height;
 }
 
 void DBaseExpand::setExpand(bool value)
@@ -110,6 +118,8 @@ void DBaseExpand::resizeEvent(QResizeEvent *e)
         m_content->setFixedWidth(e->size().width());
 
     QWidget::resizeEvent(e);
+
+    emit sizeChanged(size());
 }
 
 DUI_END_NAMESPACE
