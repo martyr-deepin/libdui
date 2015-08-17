@@ -41,6 +41,7 @@ signals:
     void sizeChanged(QSize s);
 
 private:
+    QWidget *m_header = NULL;
     QWidget *m_content = NULL;
     QVBoxLayout *m_headerLayout = NULL;
     QVBoxLayout *m_contentLayout = NULL;

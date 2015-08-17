@@ -48,6 +48,7 @@ void DBaseExpand::setHeader(QWidget *header)
     m_hSeparator->setFixedWidth(width());
     header->setFixedSize(width(), m_headerHeight);
     m_headerLayout->addWidget(header);
+    m_header = header;
 }
 
 void DBaseExpand::setContent(QWidget *content)
@@ -67,7 +68,10 @@ void DBaseExpand::setContent(QWidget *content)
 
 void DBaseExpand::setHeaderHeight(int height)
 {
-    m_headerHeight = height;
+    if (m_header)
+        m_header->setFixedHeight(height);
+
+    m_headerHeight = height;    //for height change before header set
 }
 
 void DBaseExpand::setExpand(bool value)

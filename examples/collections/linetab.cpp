@@ -59,11 +59,12 @@ LineTab::LineTab(QWidget *parent) : QLabel(parent)
         expandLabel2->setAlignment(Qt::AlignHCenter | Qt::AlignVCenter);
         expandLabel2->setFixedSize(200,200);
         arrowLineExpand->setContent(expandLabel2);
-        connect(arrowLineExpand, &DArrowLineExpand::expandChanged, [=]{
+        connect(arrowLineExpand, &DArrowLineExpand::expandChange, [=]{
             expandLabel2->setFixedSize(expandLabel2->width(), expandLabel2->height() / 3 * 2);
         });
         /////////////////////////////////////////////////////////////--DArrowLineExpand2
         DArrowLineExpand *arrowLineExpand2 = new DArrowLineExpand();
+        arrowLineExpand2->setHeaderHeight(50);
         arrowLineExpand2->setFixedWidth(300);
         arrowLineExpand2->setTitle("Arrow Line Expand");
         QLabel *expandLabel4 = new QLabel("Arrow Expand content");
