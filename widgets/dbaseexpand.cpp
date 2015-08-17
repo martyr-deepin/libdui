@@ -27,9 +27,6 @@ DBaseExpand::DBaseExpand(QWidget *parent) : QWidget(parent)
     m_animation->setDuration(200);
     m_animation->setEasingCurve(QEasingCurve::InSine);
     connect(m_animation, &QPropertyAnimation::valueChanged, this, &DBaseExpand::adjustSize);
-    connect(m_animation, &QPropertyAnimation::finished, [=]{
-        emit expandChanged(expand());
-    });
 
     mainLayout->addLayout(m_headerLayout);
     mainLayout->addWidget(m_hSeparator);
@@ -79,6 +76,8 @@ void DBaseExpand::setExpand(bool value)
 
     if (!m_content)
         return;
+
+    emit expandChange(value);
 
     if (value)
     {

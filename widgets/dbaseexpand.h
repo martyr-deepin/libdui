@@ -37,7 +37,7 @@ public:
     void resizeEvent(QResizeEvent *e);
 
 signals:
-    void expandChanged(bool e);
+    void expandChange(bool e);
     void sizeChanged(QSize s);
 
 private:
