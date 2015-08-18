@@ -33,6 +33,8 @@ public:
     const QDate &getDate(const QModelIndex & index) const;
     const CaLunarDayInfo getCaLunarDayInfo(const QDate & date) const;
     QString getLunarDetail(const QModelIndex & index) const;
+    inline bool lunarVisible() const {return m_showLunar;}
+    inline void setLunarVisible(const bool visible) {m_showLunar = visible;}
 
 signals:
     void selectedCellChanged(const QModelIndex & index);
@@ -53,6 +55,8 @@ private:
 
     QDate days[42];
     QDate currentDate;
+
+    bool m_showLunar = true;
 
     static const int MaxOfLunarCache = 1024;
 };

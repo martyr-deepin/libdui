@@ -37,5 +37,4 @@ HEADERS  += mainwindow.h \
     buttongridtab.h
 
 RESOURCES += \
-    images.qrc \
-    $$(_PRO_FILE_PWD_)../../images.qrc
+    images.qrc

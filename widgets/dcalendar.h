@@ -41,6 +41,9 @@ public:
     void animationToPrev();
     void animationToNext();
 
+    inline bool lunarVisible() const {return m_lunarVisible;}
+    void setLunarVisible(const bool visible);
+
     void setBackgroundColor(const QColor & color);
     QColor getBackgroundColor() const;
     void setBackgroundCircleColor(const QColor & color);
@@ -93,6 +96,8 @@ private:
 
     int outerWidth;
     int outerHeight;
+
+    bool m_lunarVisible = true;
 
     DCalendarView *cViewLeft;
     DCalendarView *cViewRight;

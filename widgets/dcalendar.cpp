@@ -7,6 +7,7 @@
 #include <QScrollArea>
 #include <QSpacerItem>
 #include <QVBoxLayout>
+#include <QHeaderView>
 
 DUI_BEGIN_NAMESPACE
 
@@ -149,6 +150,14 @@ void DCalendar::animationToNext()
     animation->start();
 
     cViewCurrent = cViewRight;
+}
+
+void DCalendar::setLunarVisible(const bool visible)
+{
+    m_lunarVisible = visible;
+    datailOfToday.setVisible(visible);
+    currentModel->setLunarVisible(visible);
+    nextStepModel->setLunarVisible(visible);
 }
 
 void DCalendar::adjustDate()

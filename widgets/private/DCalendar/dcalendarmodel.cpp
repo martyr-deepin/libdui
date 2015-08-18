@@ -31,10 +31,15 @@ QVariant DCalendarModel::data(const QModelIndex &index, int role) const
 
     // the day number
     if (role == Qt::DisplayRole)
-        return QString("%1\n").arg(days[listIndex].day(), 2, 10, QLatin1Char('0'));
+    {
+        if (m_showLunar)
+            return QString("%1\n").arg(days[listIndex].day(), 2, 10, QLatin1Char('0'));
+        else
+            return QString("%1").arg(days[listIndex].day(), 2, 10, QLatin1Char('0'));
+    }
 
     // the nongli day type
-    if (role == Qt::WhatsThisRole)
+    if (role == Qt::WhatsThisRole && m_showLunar)
         return '\n' + toLunar(days[listIndex]);
 
     // day type (festival or weekends or ...)
