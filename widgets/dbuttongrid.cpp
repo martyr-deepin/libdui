@@ -46,16 +46,20 @@ void ImageButton::initUI(){
 }
 
 void ImageButton::initConnect(){
-    connect(this, SIGNAL(toggled(bool)), this, SLOT(handleChecked(bool)));
+    connect(this, SIGNAL(clicked(bool)), this, SLOT(handleChecked(bool)));
 }
 
 void ImageButton::handleChecked(bool checked){
     if (checked){
         m_iconLabel->setProperty("state","checked");
-        m_textLabel->setProperty("state","checked");
+        if (m_textLabel){
+            m_textLabel->setProperty("state","checked");
+        }
     }else{
         m_iconLabel->setProperty("state","normal");
-        m_textLabel->setProperty("state","normal");
+        if (m_textLabel){
+            m_textLabel->setProperty("state","normal");
+        }
     }
     updateChildWidgets();
 }
@@ -68,9 +72,11 @@ void ImageButton::updateChildWidgets(){
     m_iconLabel->style()->unpolish(m_iconLabel);
     m_iconLabel->style()->polish(m_iconLabel);
     m_iconLabel->update();
-    m_textLabel->style()->unpolish(m_textLabel);
-    m_textLabel->style()->polish(m_textLabel);
-    m_textLabel->update();
+    if (m_textLabel){
+        m_textLabel->style()->unpolish(m_textLabel);
+        m_textLabel->style()->polish(m_textLabel);
+        m_textLabel->update();
+    }
 }
 
 void ImageButton::enterEvent(QEvent *event){
@@ -81,11 +87,13 @@ void ImageButton::enterEvent(QEvent *event){
              m_iconLabel->setProperty("state","hover");
         }
     }
-    if (m_textLabel->property("state").isValid()){
-        if (m_textLabel->property("state").toString() == "checked"){
+    if (m_textLabel){
+        if (m_textLabel->property("state").isValid()){
+            if (m_textLabel->property("state").toString() == "checked"){
 
-        }else{
-             m_textLabel->setProperty("state","hover");
+            }else{
+                 m_textLabel->setProperty("state","hover");
+            }
         }
     }
     updateChildWidgets();
@@ -99,11 +107,13 @@ void ImageButton::leaveEvent(QEvent *event){
              m_iconLabel->setProperty("state","normal");
         }
     }
-    if (m_textLabel->property("state").isValid()){
-        if (m_textLabel->property("state").toString() == "checked"){
+    if (m_textLabel){
+        if (m_textLabel->property("state").isValid()){
+            if (m_textLabel->property("state").toString() == "checked"){
 
-        }else{
-             m_textLabel->setProperty("state","normal");
+            }else{
+                 m_textLabel->setProperty("state","normal");
+            }
         }
     }
     updateChildWidgets();
@@ -112,8 +122,10 @@ void ImageButton::leaveEvent(QEvent *event){
 
 void ImageButton::resizeEvent(QResizeEvent *event){
     m_iconLabel->setPixmap(QPixmap(m_icon).scaled(m_iconLabel->size()));
-    QFontMetrics fm = m_textLabel->fontMetrics();
-    m_textLabel->setFixedHeight(fm.height() + 10);
+    if (m_textLabel){
+        QFontMetrics fm = m_textLabel->fontMetrics();
+        m_textLabel->setFixedHeight(fm.height() + 10);
+    }
     QPushButton::resizeEvent(event);
 }
 
