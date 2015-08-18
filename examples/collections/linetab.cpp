@@ -81,6 +81,10 @@ LineTab::LineTab(QWidget *parent) : QLabel(parent)
         expandLabel3->setFixedSize(200,50);
         switchLineExpand->setContent(expandLabel3);
 
+        DExpandGroup *group = new DExpandGroup(this);
+        group->addExpand(arrowLineExpand);
+        group->addExpand(arrowLineExpand2);
+
         rightLayout->addWidget(arrowLineExpand);
         rightLayout->addWidget(arrowLineExpand2);
         rightLayout->addWidget(switchLineExpand);

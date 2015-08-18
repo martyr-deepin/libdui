@@ -119,6 +119,8 @@ void DBaseExpand::resizeEvent(QResizeEvent *e)
     m_contentLoader->setFixedWidth(e->size().width());
     if (m_content)
         m_content->setFixedWidth(e->size().width());
+    if (m_header)
+        m_header->setFixedSize(e->size().width(), m_headerHeight);
 
     QWidget::resizeEvent(e);
 

@@ -23,15 +23,13 @@ DCalendarView::DCalendarView(QWidget *parent)
 
 void DCalendarView::currentChanged(const QModelIndex &current, const QModelIndex &previous)
 {
-    Q_UNUSED(previous);
+    qDebug() << "currentChanged: " << current << previous;
 
     emit cellClicked(current);
 }
 
 void DCalendarView::resizeEvent(QResizeEvent *e)
 {
-    Q_UNUSED(e);
-
     QTableView::resizeEvent(e);
 }
 

@@ -4,6 +4,7 @@
 #include <QLabel>
 
 #include "dcalendar.h"
+#include "dtextbutton.h"
 
 DUI_USE_NAMESPACE
 

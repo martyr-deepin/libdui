@@ -8,10 +8,12 @@
 #include <QWidget>
 
 #include "libdui_global.h"
+#include "dtextbutton.h"
+#include "dimagebutton.h"
 
-class DCalendarView;
-class DCalendarDelegate;
-class DCalendarModel;
+#include "private/DCalendar/dcalendarmodel.h"
+#include "private/DCalendar/dcalendarview.h"
+#include "private/DCalendar/dcalendardelegate.h"
 
 DUI_BEGIN_NAMESPACE
 
@@ -39,6 +41,9 @@ public:
     void animationToPrev();
     void animationToNext();
 
+    inline bool lunarVisible() const {return m_lunarVisible;}
+    void setLunarVisible(const bool visible);
+
     void setBackgroundColor(const QColor & color);
     QColor getBackgroundColor() const;
     void setBackgroundCircleColor(const QColor & color);
@@ -61,8 +66,11 @@ public:
     QColor getFestivalLunarColor() const;
 
 signals:
+    void selectedDateChanged(const QDate & date);
 
 public slots:
+    inline void resetDate() {setDate(currentDate);}
+    inline void setDate(const QDate & date) {usingDate = selectDate = date; adjustDate();}
     void adjustDate();
     void maybeChangeMonth(const QModelIndex & clickedIndex);
     void selectedIndexChanged(const QModelIndex & index);
@@ -71,10 +79,11 @@ private:
     void resizeEvent(QResizeEvent *e);
 
 private:
-    QPushButton prevYear;
-    QPushButton nextYear;
-    QPushButton prevMonth;
-    QPushButton nextMonth;
+    DUI::DImageButton prevYear;
+    DUI::DImageButton nextYear;
+    DUI::DImageButton prevMonth;
+    DUI::DImageButton nextMonth;
+    DUI::DTextButton m_resetBtn;
 
     QLineEdit year;
     QLineEdit month;
@@ -83,10 +92,12 @@ private:
 
     QDate usingDate;
     QDate selectDate;
-    QDate currentDate;
+    const QDate currentDate;
 
     int outerWidth;
     int outerHeight;
+
+    bool m_lunarVisible = true;
 
     DCalendarView *cViewLeft;
     DCalendarView *cViewRight;
