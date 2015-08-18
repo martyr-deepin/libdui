@@ -31,6 +31,7 @@ public:
     void setContent(QWidget *content);
     void setHeaderHeight(int height);
     void setExpand(bool value);
+    void updateContentHeight();
     bool expand() const;
     void setAnimationDuration(int duration);
     void setAnimationEasingCurve(QEasingCurve curve);
