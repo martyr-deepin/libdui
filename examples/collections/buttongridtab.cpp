@@ -29,20 +29,18 @@ void ButtonGridTab::initUI(){
 
 
     DButtonGrid* buttonGridGroup = new DButtonGrid(3, 4, this);
-    buttonGridGroup->setShowGrid(true);
-    connect(buttonGridGroup, SIGNAL(buttonChecked(QString)), this, SLOT(handleClicked(QString)));
-
-
+    buttonGridGroup->setItemSize(60, 40);
     buttonGridGroup->addButtons(m_buttons);
+    buttonGridGroup->addButtons(m_buttons);
+    buttonGridGroup->setShowGrid(false);
+    connect(buttonGridGroup, SIGNAL(buttonChecked(QString)), this, SLOT(handleClicked(QString)));
 
     QHBoxLayout* layout = new QHBoxLayout;
     layout->addWidget(buttonGridGroup);
     layout->setContentsMargins(50, 50, 50, 50);
     setLayout(layout);
 
-    buttonGridGroup->setItemSize(60, 40);
     buttonGridGroup->checkButtonByIndex(2);
-    buttonGridGroup->addButtons(m_buttons);
     buttonGridGroup->addButtons(m_buttons);
 }
 

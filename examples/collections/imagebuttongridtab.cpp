@@ -32,14 +32,14 @@ void ImageButtonGridTab::initData(){
 void ImageButtonGridTab::initUI(){
     DButtonGrid* buttonGridGroup = new DButtonGrid(2, 2, this);
     buttonGridGroup->setItemSize(100, 80);
+    buttonGridGroup->addImageButtons(m_imageInfos, true);
+    buttonGridGroup->addImageButtons(m_imageInfos, false);
     connect(buttonGridGroup, SIGNAL(buttonChecked(QString)), this, SLOT(handleClicked(QString)));
     QVBoxLayout* layout = new QVBoxLayout;
     layout->addWidget(buttonGridGroup, 0, Qt::AlignCenter);
     layout->setContentsMargins(10, 0, 0, 0);
     setLayout(layout);
-    buttonGridGroup->addImageButtons(m_imageInfos, false);
     buttonGridGroup->checkButtonByIndex(2);
-    buttonGridGroup->addImageButtons(m_imageInfos, false);
 }
 
 

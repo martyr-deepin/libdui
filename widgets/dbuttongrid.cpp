@@ -46,7 +46,7 @@ void ImageButton::initUI(){
 }
 
 void ImageButton::initConnect(){
-    connect(this, SIGNAL(clicked(bool)), this, SLOT(handleChecked(bool)));
+    connect(this, SIGNAL(toggled(bool)), this, SLOT(handleChecked(bool)));
 }
 
 void ImageButton::handleChecked(bool checked){
@@ -186,62 +186,14 @@ void DButtonGrid::setItemSize(int width, int height){
     setFixedSize(width * columnCount(), height* rowCount());
 }
 
-void DButtonGrid::addButton(const QString &label, int index){
+void DButtonGrid::addButtonWidget(QPushButton *button, int index){
     int _columnCount = columnCount();
     int row = index / _columnCount;
     int column = index % _columnCount;
 
-    QFontMetrics fm = fontMetrics();
-    int width = fm.width(label);
-    QPushButton* button = new QPushButton(label, this);
-    button->setFixedWidth(width + 20);
-    button->setFixedHeight(fm.height() + 10);
-    button->setCheckable(true);
-    m_buttonGroup->addButton(button, index);
-
-    QFrame* buttonFrame = new QFrame(this);
-    QVBoxLayout *mainLayout = new QVBoxLayout(this);
-    mainLayout->addWidget(button, 0, Qt::AlignHCenter);
-    mainLayout->setSpacing(0);
-    mainLayout->setContentsMargins(0, 0, 0, 0);
-    buttonFrame->setLayout(mainLayout);
-
-    setCellWidget(row, column, buttonFrame);
-}
-
-void DButtonGrid::addButtons(const QStringList &listLabels){
-    int length = m_buttonLabels.length();
-    int oldRowCount = rowCount();
-    m_buttonLabels.append(listLabels);
-    int _rowCount = 0;
-    if (m_buttonLabels.length() % columnCount() == 0){
-        _rowCount = m_buttonLabels.length()/columnCount();
-    }else{
-        _rowCount = m_buttonLabels.length()/columnCount() + 1;
-    }
-    for (int i = oldRowCount; i< _rowCount; i++){
+    for (int i = rowCount(); i<= row; i++){
         insertRow(i);
     }
-    foreach (QString label, listLabels) {
-        int index = listLabels.indexOf(label);
-        addButton(label, length + index);
-    }
-
-    setItemUnChecked();
-    setFixedSize(columnCount() * m_columnWidth, rowCount() * m_rowHeight);
-}
-
-void DButtonGrid::addImageButton(const QMap<QString, QString> &imageInfo,
-                                 int index, bool isNameVisible){
-    int _columnCount = columnCount();
-    int row = index / _columnCount;
-    int column = index % _columnCount;
-
-    ImageButton* button = new ImageButton(imageInfo.value("url"), imageInfo.value("name"), isNameVisible);
-    if (imageInfo.contains("key")){
-        button->setProperty("key", imageInfo.value("key"));
-    }
-    button->setCheckable(true);
     m_buttonGroup->addButton(button, index);
 
     QFrame* buttonFrame = new QFrame(this);
@@ -251,23 +203,44 @@ void DButtonGrid::addImageButton(const QMap<QString, QString> &imageInfo,
     mainLayout->setContentsMargins(0, 0, 0, 0);
     buttonFrame->setLayout(mainLayout);
     setCellWidget(row, column, buttonFrame);
+    setItemSize(m_columnWidth, m_rowHeight);
+}
+
+void DButtonGrid::addButton(const QString &label, int index){
+    QFontMetrics fm = fontMetrics();
+    int width = fm.width(label);
+    QPushButton* button = new QPushButton(label, this);
+    button->setFixedWidth(width + 20);
+    button->setFixedHeight(fm.height() + 10);
+    button->setCheckable(true);
+
+    addButtonWidget(button, index);
+}
+
+void DButtonGrid::addButtons(const QStringList &listLabels){
+    int length = m_buttonLabels.length();
+    m_buttonLabels.append(listLabels);
+    foreach (QString label, listLabels) {
+        int index = listLabels.indexOf(label);
+        addButton(label, length + index);
+    }
+    setItemUnChecked();
+}
+
+void DButtonGrid::addImageButton(const QMap<QString, QString> &imageInfo,
+                                 int index, bool isNameVisible){
+
+    ImageButton* button = new ImageButton(imageInfo.value("url"), imageInfo.value("name"), isNameVisible);
+    if (imageInfo.contains("key")){
+        button->setProperty("key", imageInfo.value("key"));
+    }
+    button->setCheckable(true);
+    addButtonWidget(button, index);
 }
 
 void DButtonGrid::addImageButtons(const QList<QMap<QString, QString> > &imageInfos, bool isNameVisible){
     int length = m_imageButtonInfos.length();
-    int oldRowCount = rowCount();
     m_imageButtonInfos.append(imageInfos);
-
-    int _rowCount = 0;
-    if (m_imageButtonInfos.length() % columnCount() == 0){
-        _rowCount = m_imageButtonInfos.length()/columnCount();
-    }else{
-        _rowCount = m_imageButtonInfos.length()/columnCount() + 1;
-    }
-
-    for (int i = oldRowCount; i< _rowCount; i++){
-        insertRow(i);
-    }
 
     for (int i=0; i < imageInfos.count(); i++) {
         addImageButton(imageInfos.at(i), length + i, isNameVisible);

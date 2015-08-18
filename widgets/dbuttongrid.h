@@ -58,6 +58,7 @@ public slots:
     void addButtons(const QStringList& listLabels);
     void addImageButton(const QMap<QString, QString>& imageInfo, int index, bool isNameVisible=true);
     void addImageButtons(const QList<QMap<QString, QString>>& imageInfos, bool isNameVisible=true);
+    void addButtonWidget(QPushButton* button, int index);
     void checkButtonByIndex(int index);
 
 private slots:
