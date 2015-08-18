@@ -10,15 +10,15 @@ DBaseExpand::DBaseExpand(QWidget *parent) : QWidget(parent)
     D_THEME_INIT_WIDGET(DBaseExpand);
 
     QVBoxLayout * mainLayout = new QVBoxLayout(this);
-    mainLayout->setMargin(0);
+    mainLayout->setContentsMargins(0, 0, 0, 0);
     mainLayout->setSpacing(0);
 
     m_headerLayout = new QVBoxLayout();
-    m_headerLayout->setMargin(0);
+    m_headerLayout->setContentsMargins(0, 0, 0, 0);
     m_headerLayout->setAlignment(Qt::AlignHCenter | Qt::AlignVCenter);
     m_hSeparator = new DSeparatorHorizontal(this);
     m_contentLayout = new QVBoxLayout();
-    m_contentLayout->setMargin(0);
+    m_contentLayout->setContentsMargins(0, 0, 0, 0);
     m_contentLayout->setAlignment(Qt::AlignHCenter | Qt::AlignVCenter);
     m_contentLoader = new ContentLoader(this);
     m_contentLoader->setLayout(m_contentLayout);
@@ -63,6 +63,7 @@ void DBaseExpand::setContent(QWidget *content)
 
     m_contentLoader->setFixedSize(width(), expand() ? content->height() : 0);
     m_contentLayout->addWidget(content);
+    m_contentLayout->addStretch(1);
     m_content = content;
 }
 
@@ -94,6 +95,17 @@ void DBaseExpand::setExpand(bool value)
         m_animation->setEndValue(0);
     }
 
+    m_animation->stop();
+    m_animation->start();
+}
+
+void DBaseExpand::updateContentHeight()
+{
+    if (!m_content)
+        return;
+
+    m_animation->setStartValue(m_contentLoader->height());
+    m_animation->setEndValue(m_content->height());
     m_animation->stop();
     m_animation->start();
 }
