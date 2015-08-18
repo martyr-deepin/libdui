@@ -8,8 +8,8 @@
 #include <QWidget>
 
 #include "libdui_global.h"
-#include "libdui/dtextbutton.h"
-#include "libdui/dimagebutton.h"
+#include "dtextbutton.h"
+#include "dimagebutton.h"
 
 #include "private/DCalendar/dcalendarmodel.h"
 #include "private/DCalendar/dcalendarview.h"

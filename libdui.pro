@@ -4,7 +4,7 @@
 #
 #-------------------------------------------------
 
-QT       += widgets
+QT       += widgets dbus
 
 TARGET = dui
 VERSION = 1.0
