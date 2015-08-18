@@ -1,4 +1,4 @@
-QT       += core gui
+QT       += core gui dbus
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -37,4 +37,5 @@ HEADERS  += mainwindow.h \
     buttongridtab.h
 
 RESOURCES += \
-    images.qrc
+    images.qrc \
+    $$(_PRO_FILE_PWD_)../../images.qrc

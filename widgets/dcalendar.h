@@ -9,10 +9,11 @@
 
 #include "libdui_global.h"
 #include "libdui/dtextbutton.h"
+#include "libdui/dimagebutton.h"
 
-class DCalendarView;
-class DCalendarDelegate;
-class DCalendarModel;
+#include "private/DCalendar/dcalendarmodel.h"
+#include "private/DCalendar/dcalendarview.h"
+#include "private/DCalendar/dcalendardelegate.h"
 
 DUI_BEGIN_NAMESPACE
 
@@ -75,10 +76,10 @@ private:
     void resizeEvent(QResizeEvent *e);
 
 private:
-    QPushButton prevYear;
-    QPushButton nextYear;
-    QPushButton prevMonth;
-    QPushButton nextMonth;
+    DUI::DImageButton prevYear;
+    DUI::DImageButton nextYear;
+    DUI::DImageButton prevMonth;
+    DUI::DImageButton nextMonth;
     DUI::DTextButton m_resetBtn;
 
     QLineEdit year;

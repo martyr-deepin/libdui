@@ -34,3 +34,5 @@ unix {
 
 DISTFILES += \
     themes/DButtonGrid.theme
+
+RESOURCES +=

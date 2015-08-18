@@ -77,4 +77,5 @@ SOURCES += $$PWD/dslider.cpp \
 
 RESOURCES += \
     $$PWD/../themes/dark.qrc \
-    $$PWD/../themes/light.qrc
+    $$PWD/../themes/light.qrc \
+    $$PWD/../images.qrc

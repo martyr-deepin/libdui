@@ -24,3 +24,7 @@ DUI--DCalendar QHeaderView::section{
     background-color:#272829;
     color:#eee;
 }
+
+DUI--DCalendar QLineEdit {
+    background:transparent;
+}

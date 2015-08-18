@@ -8,10 +8,6 @@
 #include <QSpacerItem>
 #include <QVBoxLayout>
 
-#include "private/DCalendar/dcalendarview.h"
-#include "private/DCalendar/dcalendardelegate.h"
-#include "private/DCalendar/dcalendarmodel.h"
-
 DUI_BEGIN_NAMESPACE
 
 DCalendar::DCalendar(QWidget *parent) : QWidget(parent),
@@ -27,8 +23,8 @@ DCalendar::DCalendar(QWidget *parent) : QWidget(parent),
     cViewCurrent = cViewLeft = new DCalendarView(this);
     cViewRight = new DCalendarView(this);
     cDelegate = new DCalendarDelegate(this);
-    currentModel = new DCalendarModel();
-    nextStepModel = new DCalendarModel();
+    currentModel = new DCalendarModel;
+    nextStepModel = new DCalendarModel;
     cViewLeft->setItemDelegate(cDelegate);
     cViewLeft->setModel(nextStepModel);
     cViewRight->setItemDelegate(cDelegate);
@@ -68,29 +64,35 @@ DCalendar::DCalendar(QWidget *parent) : QWidget(parent),
 #ifdef QT_DEBUG
     datailOfToday.setText("details");
 #endif
-    prevYear.setText("<");
-    nextYear.setText(">");
-    prevMonth.setText("<");
-    nextMonth.setText(">");
+    prevYear.setNormalPic(QPixmap(":/images/arrow_left_normal.png"));
+    prevYear.setHoverPic(QPixmap(":/images/arrow_left_hover.png"));
+    prevYear.setPressPic(QPixmap(":/images/arrow_left_press.png"));
+    nextYear.setNormalPic(QPixmap(":/images/arrow_right_normal.png"));
+    nextYear.setHoverPic(QPixmap(":/images/arrow_right_hover.png"));
+    nextYear.setPressPic(QPixmap(":/images/arrow_right_press.png"));
+    prevMonth.setNormalPic(QPixmap(":/images/arrow_left_normal.png"));
+    prevMonth.setHoverPic(QPixmap(":/images/arrow_left_hover.png"));
+    prevMonth.setPressPic(QPixmap(":/images/arrow_left_press.png"));
+    nextMonth.setNormalPic(QPixmap(":/images/arrow_right_normal.png"));
+    nextMonth.setHoverPic(QPixmap(":/images/arrow_right_hover.png"));
+    nextMonth.setPressPic(QPixmap(":/images/arrow_right_press.png"));
     year.setText(QString::number(usingDate.year()));
+    year.setEnabled(false);
     month.setText(QString::number(usingDate.month()));
+    month.setEnabled(false);
 
     year.setFixedWidth(40);
+    year.setAlignment(Qt::AlignCenter);
     month.setFixedWidth(20);
+    month.setAlignment(Qt::AlignCenter);
 
     m_resetBtn.hide();
 
-    const int btnWidth = 20;
-    prevYear.setMaximumWidth(btnWidth);
-    nextYear.setMaximumWidth(btnWidth);
-    prevMonth.setMaximumWidth(btnWidth);
-    nextMonth.setMaximumWidth(btnWidth);
-
-    connect(&prevYear, &QPushButton::clicked, [this] () -> void {selectDate = selectDate.addYears(-1); adjustDate();});
-    connect(&nextYear, &QPushButton::clicked, [this] () -> void {selectDate = selectDate.addYears(1); adjustDate();});
-    connect(&prevMonth, &QPushButton::clicked, [this] () -> void {selectDate = selectDate.addMonths(-1); adjustDate();});
-    connect(&nextMonth, &QPushButton::clicked, [this] () -> void {selectDate = selectDate.addMonths(1); adjustDate();});
-    connect(&m_resetBtn, &QPushButton::clicked, this, &DCalendar::resetDate);
+    connect(&prevYear, &DUI::DImageButton::clicked, [this] () -> void {selectDate = selectDate.addYears(-1); adjustDate();});
+    connect(&nextYear, &DUI::DImageButton::clicked, [this] () -> void {selectDate = selectDate.addYears(1); adjustDate();});
+    connect(&prevMonth, &DUI::DImageButton::clicked, [this] () -> void {selectDate = selectDate.addMonths(-1); adjustDate();});
+    connect(&nextMonth, &DUI::DImageButton::clicked, [this] () -> void {selectDate = selectDate.addMonths(1); adjustDate();});
+    connect(&m_resetBtn, &DUI::DTextButton::clicked, this, &DCalendar::resetDate);
 
     connect(cViewLeft, SIGNAL(cellClicked(QModelIndex)), this, SLOT(maybeChangeMonth(QModelIndex)), Qt::QueuedConnection);
     connect(cViewRight, SIGNAL(cellClicked(QModelIndex)), this, SLOT(maybeChangeMonth(QModelIndex)), Qt::QueuedConnection);
@@ -190,6 +192,8 @@ void DCalendar::maybeChangeMonth(const QModelIndex &clickedIndex)
         selectDate = selectDate.addMonths(1);
 
     selectDate = QDate(selectDate.year(), selectDate.month(), dayNum);
+
+    datailOfToday.setText(currentModel->getLunarDetail(clickedIndex));
 
     adjustDate();
 }
