@@ -184,6 +184,9 @@ void DCalendar::adjustDate()
     else
         m_resetBtn.show();
 
+
+    datailOfToday.setText(currentModel->getLunarDetail(selectDate));
+
     emit selectedDateChanged(selectDate);
 }
 
@@ -201,8 +204,6 @@ void DCalendar::maybeChangeMonth(const QModelIndex &clickedIndex)
         selectDate = selectDate.addMonths(1);
 
     selectDate = QDate(selectDate.year(), selectDate.month(), dayNum);
-
-    datailOfToday.setText(currentModel->getLunarDetail(clickedIndex));
 
     adjustDate();
 }

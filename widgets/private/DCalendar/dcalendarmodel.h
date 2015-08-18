@@ -32,7 +32,7 @@ public:
     int getDayNum(const QModelIndex & index) const;
     const QDate &getDate(const QModelIndex & index) const;
     const CaLunarDayInfo getCaLunarDayInfo(const QDate & date) const;
-    QString getLunarDetail(const QModelIndex & index) const;
+    QString getLunarDetail(const QDate &date) const;
     inline bool lunarVisible() const {return m_showLunar;}
     inline void setLunarVisible(const bool visible) {m_showLunar = visible;}
 

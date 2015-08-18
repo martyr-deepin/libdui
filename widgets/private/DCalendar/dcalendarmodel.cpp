@@ -120,9 +120,8 @@ const CaLunarDayInfo DCalendarModel::getCaLunarDayInfo(const QDate &date) const
     return reply.value();
 }
 
-QString DCalendarModel::getLunarDetail(const QModelIndex &index) const
+QString DCalendarModel::getLunarDetail(const QDate &date) const
 {
-    QDate date = getDate(index);
     CaLunarDayInfo lunarInfo = getCaLunarDayInfo(date);
     if (lunarInfo.mSolarFestival.isEmpty())
         return std::move(QString(tr("%1年%2%3").arg(lunarInfo.mGanZhiYear).arg(lunarInfo.mLunarMonthName).arg(lunarInfo.mLunarDayName)));
