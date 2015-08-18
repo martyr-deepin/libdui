@@ -24,6 +24,7 @@ DUI--DButtonGrid QFrame QPushButton:checked{
     color: green;
     background-color: rgba(0, 0, 0, 1);
     border-radius: 2px;
+    border:2px solid rgba(0, 0, 0, 1);
 }
 
 QLabel#IconLabel[state = "normal"]{

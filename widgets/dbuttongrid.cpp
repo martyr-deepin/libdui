@@ -30,7 +30,7 @@ void ImageButton::initUI(){
     m_iconLabel->setPixmap(QPixmap(m_icon).scaled(m_iconLabel->size()));
 
     QVBoxLayout* mainlayout = new QVBoxLayout;
-    mainlayout->addWidget(m_iconLabel);
+    mainlayout->addWidget(m_iconLabel, 0, Qt::AlignCenter);
 
     if (m_isNameVisible){
         m_textLabel = new QLabel;
@@ -38,7 +38,7 @@ void ImageButton::initUI(){
         m_textLabel->setAlignment(Qt::AlignCenter);
         m_textLabel->setProperty("state", "normal");
         m_textLabel->setText(m_text);
-        mainlayout->addWidget(m_textLabel);
+        mainlayout->addWidget(m_textLabel, 0, Qt::AlignCenter);
     }
     mainlayout->setSpacing(0);
     mainlayout->setContentsMargins(5, 5, 5, 5);
@@ -174,7 +174,7 @@ void DButtonGrid::setItemSize(int width, int height){
         setRowHeight(i, height);
     }
     for (int j=0; j < columnCount(); j++){
-        setColumnWidth(j, width);
+        setColumnWidth(j, width + 10);
     }
 
     for(int i= 0; i< m_buttonGroup->buttons().length(); i++){
@@ -183,7 +183,7 @@ void DButtonGrid::setItemSize(int width, int height){
         }
     }
 
-    setFixedSize(width * columnCount(), height* rowCount());
+    setFixedSize((width + 10) * columnCount() + 5, height* rowCount() + 5);
 }
 
 void DButtonGrid::addButtonWidget(QPushButton *button, int index){
