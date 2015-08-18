@@ -21,7 +21,8 @@ SOURCES += main.cpp\
     indicatortab.cpp \
     widgetstab.cpp \
     comboboxtab.cpp \
-    buttongridtab.cpp
+    buttongridtab.cpp \
+    imagebuttongridtab.cpp
 
 HEADERS  += mainwindow.h \
     buttontab.h \
@@ -34,7 +35,8 @@ HEADERS  += mainwindow.h \
     indicatortab.h \
     widgetstab.h \
     comboboxtab.h \
-    buttongridtab.h
+    buttongridtab.h \
+    imagebuttongridtab.h
 
 RESOURCES += \
     images.qrc

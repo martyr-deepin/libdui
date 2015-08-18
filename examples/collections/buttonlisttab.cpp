@@ -28,7 +28,6 @@ void ButtonListTab::initUI(){
 
 
     DButtonList* buttonListGroup = new DButtonList(this);
-
     buttonListGroup->addButtons(m_buttons);
 
     QHBoxLayout* layout = new QHBoxLayout;

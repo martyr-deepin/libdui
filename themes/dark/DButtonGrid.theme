@@ -25,3 +25,30 @@ DUI--DButtonGrid QFrame QPushButton:checked{
     background-color: rgba(0, 0, 0, 1);
     border-radius: 2px;
 }
+
+QLabel#IconLabel[state = "normal"]{
+    border: 1px solid #b4b4b4;
+}
+
+
+QLabel#IconLabel[state = "hover"]{
+     border: 1px solid #FFFFFF;
+}
+
+QLabel#IconLabel[state = "checked"]{
+    border: 1px solid #01BDFF;
+}
+
+
+QLabel#TextLabel[state = "normal"]{
+    color: #b4b4b4;
+}
+
+
+QLabel#TextLabel[state = "hover"]{
+     color: #FFFFFF;
+}
+
+QLabel#TextLabel[state = "checked"]{
+    color: #01BDFF;
+}
