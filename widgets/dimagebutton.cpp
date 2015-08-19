@@ -2,7 +2,8 @@
 #include "dconstants.h"
 #include "dthememanager.h"
 
-#include "dthememanager.h"
+#include <QMouseEvent>
+#include <QEvent>
 
 DUI_BEGIN_NAMESPACE
 
@@ -61,7 +62,8 @@ void DImageButton::enterEvent(QEvent *event)
         changeState();
     }
 
-    QLabel::enterEvent(event);
+    event->accept();
+    //QLabel::enterEvent(event);
 }
 
 void DImageButton::leaveEvent(QEvent *event)
@@ -70,7 +72,9 @@ void DImageButton::leaveEvent(QEvent *event)
         m_state = Normal;
         changeState();
     }
-    QLabel::leaveEvent(event);
+
+    event->accept();
+    //QLabel::leaveEvent(event);
 }
 
 void DImageButton::mousePressEvent(QMouseEvent *event)
@@ -78,7 +82,8 @@ void DImageButton::mousePressEvent(QMouseEvent *event)
     m_state = Press;
     changeState();
 
-    QLabel::mousePressEvent(event);
+    event->accept();
+    //QLabel::mousePressEvent(event);
 }
 
 void DImageButton::mouseReleaseEvent(QMouseEvent *event)
@@ -98,7 +103,8 @@ void DImageButton::mouseReleaseEvent(QMouseEvent *event)
         changeState();
     }
 
-    QLabel::mouseReleaseEvent(event);
+    event->accept();
+    //QLabel::mouseReleaseEvent(event);
 }
 
 void DImageButton::changeState()
