@@ -13,6 +13,10 @@ DUI_BEGIN_NAMESPACE
 class LIBDUISHARED_EXPORT DImageButton : public QLabel
 {
     Q_OBJECT
+    Q_PROPERTY(QString normalPic READ getNormalPic WRITE setNormalPic DESIGNABLE true)
+    Q_PROPERTY(QString hoverPic READ getHoverPic WRITE setHoverPic DESIGNABLE true)
+    Q_PROPERTY(QString pressPic READ getPressPic WRITE setPressPic DESIGNABLE true)
+    Q_PROPERTY(QString checkedPic READ getCheckedPic WRITE setCheckedPic DESIGNABLE true)
 
 public:
     DImageButton(QWidget * parent=0);
@@ -39,6 +43,15 @@ public:
     void setHoverPic(const QPixmap & hoverPicPixmap);
     void setPressPic(const QPixmap & pressPicPixmap);
     void setCheckedPic(const QPixmap & checkedPicPixmap);
+    inline void setNormalPic(const QString & normalPic) {setNormalPic(QPixmap(normalPic));}
+    inline void setHoverPic(const QString & hoverPic) {setHoverPic(QPixmap(hoverPic));}
+    inline void setPressPic(const QString & pressPic) {setPressPic(QPixmap(pressPic));}
+    inline void setCheckedPic(const QString & checkedPic) {setCheckedPic(QPixmap(checkedPic));}
+
+    inline const QString getNormalPic() const {return "";}
+    inline const QString getHoverPic() const {return "";}
+    inline const QString getPressPic() const {return "";}
+    inline const QString getCheckedPic() const {return "";}
 
     enum State {Normal, Hover, Press, Checked};
 
