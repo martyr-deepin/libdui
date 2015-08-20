@@ -15,7 +15,7 @@ DUI--DSegmentedControl  DUI--DSegmentedHighlight#Highlight{
 
 DUI--DSegmentedControl QToolButton#Segmented:enabled{
     color: #C0C0C0;
-    padding-bottom: 3px;
+    padding-bottom: 2px;
 }
 
 DUI--DSegmentedControl QToolButton#Segmented:hover{
@@ -27,5 +27,5 @@ DUI--DSegmentedControl QToolButton#Segmented{
     color: #19A9F9;
     font-size: 12px;
     border: none;
-    padding-bottom: 3px;
+    padding-bottom: 2px;
 }
