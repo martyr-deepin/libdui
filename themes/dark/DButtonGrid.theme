@@ -1,5 +1,6 @@
 DUI--DButtonGrid {
     background-color: transparent;
+    border: none;
 }
 
 DUI--DButtonGrid QFrame{

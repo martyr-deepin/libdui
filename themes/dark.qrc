@@ -25,6 +25,7 @@
         <file>dark/DWindowRestoreButton.theme</file>
         <file>dark/DWindowOptionButton.theme</file>
         <file>dark/DShortcutEdit.theme</file>
+        <file>dark/DLabel.theme</file>
     </qresource>
     <qresource prefix="/images">
         <file>dark/images/add_hover.png</file>

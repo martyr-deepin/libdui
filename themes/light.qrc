@@ -13,6 +13,7 @@
         <file>light/DCalendar.theme</file>
         <file>light/DButtonList.theme</file>
         <file>light/DButtonGrid.theme</file>
+        <file>light/DLabel.theme</file>
     </qresource>
     <qresource prefix="/images">
         <file>light/images/arrow_down_hover.png</file>
