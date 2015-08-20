@@ -1,11 +1,10 @@
 #ifndef DBASEEXPAND_H
 #define DBASEEXPAND_H
 
-#include <QWidget>
 #include <QLabel>
+#include <QWidget>
 #include <QVBoxLayout>
 #include <QPropertyAnimation>
-#include <QDebug>
 
 #include "libdui_global.h"
 #include "dseparatorhorizontal.h"
@@ -35,7 +34,6 @@ public:
     bool expand() const;
     void setAnimationDuration(int duration);
     void setAnimationEasingCurve(QEasingCurve curve);
-    void resizeEvent(QResizeEvent *e);
 
 signals:
     void expandChange(bool e);
@@ -50,7 +48,6 @@ private:
     DSeparatorHorizontal * m_hSeparator = NULL;
     QPropertyAnimation *m_animation = NULL;
     bool m_expand = false;
-    int m_headerHeight = DUI::EXPAND_HEADER_HEIGHT;
 };
 
 DUI_END_NAMESPACE

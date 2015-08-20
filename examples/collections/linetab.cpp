@@ -19,7 +19,6 @@ LineTab::LineTab(QWidget *parent) : QLabel(parent)
 
         //////////////////////////////////////////////////////////////--DBaseLine
         DBaseLine * baseLine = new DBaseLine(this);
-        baseLine->setFixedSize(400,30);
         baseLine->setLeftContent(new QLabel("DBaseLine"));
         QPushButton *bbb = new QPushButton("Test button",this);
         bbb->setStyleSheet("background-color: red");
@@ -85,9 +84,9 @@ LineTab::LineTab(QWidget *parent) : QLabel(parent)
         group->addExpand(arrowLineExpand);
         group->addExpand(arrowLineExpand2);
 
-        rightLayout->addWidget(arrowLineExpand);
         rightLayout->addWidget(arrowLineExpand2);
+        rightLayout->addWidget(arrowLineExpand);
         rightLayout->addWidget(switchLineExpand);
-        rightLayout->addStretch();
+        rightLayout->addStretch(1);
 }
 
