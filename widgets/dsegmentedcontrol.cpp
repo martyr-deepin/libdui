@@ -213,7 +213,7 @@ void DSegmentedControl::updateHighlightGeometry()
     if(m_currentIndex>=0){
         m_highlightMoveAnimation->setStartValue(m_highlight->geometry());
         QRect tmp = at(m_currentIndex)->geometry();
-        tmp.setHeight(tmp.height()-1);
+
         if(m_currentIndex==0){
             tmp.setX(0);
             tmp.setWidth(tmp.width()+1);
