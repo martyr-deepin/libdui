@@ -11,6 +11,7 @@ ArrowHeaderLine::ArrowHeaderLine(QWidget *parent) :
     m_arrowButton = new DArrowButton(this);
     connect(m_arrowButton, &DArrowButton::mouseRelease, this, &ArrowHeaderLine::mousePress);
     setContent(m_arrowButton);
+    setFixedHeight(DUI::EXPAND_HEADER_HEIGHT);
 }
 
 void ArrowHeaderLine::setExpand(bool value)

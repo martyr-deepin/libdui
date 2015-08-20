@@ -2,11 +2,13 @@
 #include "dthememanager.h"
 
 #include <QHBoxLayout>
+#include <QStyle>
+#include <QDebug>
 
 DUI_BEGIN_NAMESPACE
 
 DPasswordEdit::DPasswordEdit(QWidget *parent)
-    : QWidget(parent),
+    : QFrame(parent),
       m_btn(this)
 {
     D_THEME_INIT_WIDGET(DPasswordEdit);
@@ -19,10 +21,27 @@ DPasswordEdit::DPasswordEdit(QWidget *parent)
 
     setLayout(layout);
 
-    m_edit.setEchoMode(QLineEdit::Password);
-    m_btn.setCheckable(true);
+    setEchoMode(m_echo);
 
-    connect(&m_btn, &DImageButton::stateChanged, [this] () -> void {m_edit.setEchoMode(m_btn.isChecked() ? QLineEdit::Normal : QLineEdit::Password);});
+    connect(&m_btn, &DImageButton::clicked, [this] () -> void {setEchoMode(!m_echo);});
+    connect(&m_edit, &QLineEdit::textChanged, this, &DPasswordEdit::textChanged);
+}
+
+void DPasswordEdit::setEchoMode(const bool isEcho)
+{
+    m_echo = isEcho;
+    m_edit.setEchoMode(isEcho ? QLineEdit::Normal : QLineEdit::Password);
+
+    // TODO theme
+    D_THEME_INIT_WIDGET(DPasswordEdit);
+}
+
+void DPasswordEdit::setAlertMode(const bool isAlert)
+{
+    m_alert = isAlert;
+
+    // TODO theme
+    D_THEME_INIT_WIDGET(DPasswordEdit);
 }
 
 DUI_END_NAMESPACE

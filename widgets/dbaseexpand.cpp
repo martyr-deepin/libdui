@@ -15,12 +15,14 @@ DBaseExpand::DBaseExpand(QWidget *parent) : QWidget(parent)
 
     m_headerLayout = new QVBoxLayout();
     m_headerLayout->setContentsMargins(0, 0, 0, 0);
-    m_headerLayout->setAlignment(Qt::AlignHCenter | Qt::AlignVCenter);
-    m_hSeparator = new DSeparatorHorizontal(this);
+    m_headerLayout->setAlignment(Qt::AlignCenter);
+
+    m_hSeparator = new DSeparatorHorizontal();
+
     m_contentLayout = new QVBoxLayout();
+    m_contentLayout->setAlignment(Qt::AlignCenter);
     m_contentLayout->setContentsMargins(0, 0, 0, 0);
-    m_contentLayout->setAlignment(Qt::AlignHCenter | Qt::AlignVCenter);
-    m_contentLoader = new ContentLoader(this);
+    m_contentLoader = new ContentLoader();
     m_contentLoader->setLayout(m_contentLayout);
 
     m_animation = new QPropertyAnimation(m_contentLoader, "height");
@@ -33,6 +35,8 @@ DBaseExpand::DBaseExpand(QWidget *parent) : QWidget(parent)
     mainLayout->addWidget(m_contentLoader);
 
     setLayout(mainLayout);
+
+    updateContentHeight();
 }
 
 void DBaseExpand::setHeader(QWidget *header)
@@ -45,8 +49,6 @@ void DBaseExpand::setHeader(QWidget *header)
         m_headerLayout->removeItem(child);
     }
 
-    m_hSeparator->setFixedWidth(width());
-    header->setFixedSize(width(), m_headerHeight);
     m_headerLayout->addWidget(header);
     m_header = header;
 }
@@ -61,18 +63,17 @@ void DBaseExpand::setContent(QWidget *content)
         m_contentLayout->removeItem(child);
     }
 
-    m_contentLoader->setFixedSize(width(), expand() ? content->height() : 0);
     m_contentLayout->addWidget(content);
     m_contentLayout->addStretch(1);
     m_content = content;
+
+    updateContentHeight();
 }
 
 void DBaseExpand::setHeaderHeight(int height)
 {
     if (m_header)
         m_header->setFixedHeight(height);
-
-    m_headerHeight = height;    //for height change before header set
 }
 
 void DBaseExpand::setExpand(bool value)
@@ -101,11 +102,14 @@ void DBaseExpand::setExpand(bool value)
 
 void DBaseExpand::updateContentHeight()
 {
-    if (!m_content)
-        return;
+    int endHeight = 0;
+    if (m_content){
+        if (m_expand)
+            endHeight = m_content->height();
+    }
 
     m_animation->setStartValue(m_contentLoader->height());
-    m_animation->setEndValue(m_content->height());
+    m_animation->setEndValue(endHeight);
     m_animation->stop();
     m_animation->start();
 }
@@ -125,18 +129,5 @@ void DBaseExpand::setAnimationEasingCurve(QEasingCurve curve)
     m_animation->setEasingCurve(curve);
 }
 
-void DBaseExpand::resizeEvent(QResizeEvent *e)
-{
-    m_hSeparator->setFixedWidth(e->size().width());
-    m_contentLoader->setFixedWidth(e->size().width());
-    if (m_content)
-        m_content->setFixedWidth(e->size().width());
-    if (m_header)
-        m_header->setFixedSize(e->size().width(), m_headerHeight);
-
-    QWidget::resizeEvent(e);
-
-    emit sizeChanged(size());
-}
 
 DUI_END_NAMESPACE

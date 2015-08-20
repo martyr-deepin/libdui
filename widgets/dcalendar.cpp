@@ -1,6 +1,10 @@
 #include "dcalendar.h"
 #include "dthememanager.h"
 
+#include "private/DCalendar/dcalendarmodel.h"
+#include "private/DCalendar/dcalendarview.h"
+#include "private/DCalendar/dcalendardelegate.h"
+
 #include <QDebug>
 #include <QHBoxLayout>
 #include <QPropertyAnimation>

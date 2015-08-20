@@ -81,7 +81,6 @@ void MainWindow::initTabWidget()
 
     ImageButtonGridTab* imageButtonGridTab = new ImageButtonGridTab(this);
     imageButtonGridTab->setFixedSize(m_mainTab->size());
-    qDebug() << m_mainTab->size() << "=========";
 
     Segmentedcontrol *segmentedControl = new Segmentedcontrol(this);
 

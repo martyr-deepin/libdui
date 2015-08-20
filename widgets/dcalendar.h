@@ -11,9 +11,9 @@
 #include "dtextbutton.h"
 #include "dimagebutton.h"
 
-#include "private/DCalendar/dcalendarmodel.h"
-#include "private/DCalendar/dcalendarview.h"
-#include "private/DCalendar/dcalendardelegate.h"
+class DCalendarView;
+class DCalendarDelegate;
+class DCalendarModel;
 
 DUI_BEGIN_NAMESPACE
 

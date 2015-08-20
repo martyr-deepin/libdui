@@ -7,7 +7,7 @@ DBaseLine::DBaseLine(QWidget *parent) : QLabel(parent)
 {
     D_THEME_INIT_WIDGET(DBaseLine);
 
-    this->setFixedHeight(DUI::EXPAND_HEADER_HEIGHT);
+    this->setFixedHeight(DUI::CONTENT_HEADER_HEIGHT);
     m_leftLayout = new QHBoxLayout();
     m_leftLayout->setMargin(0);
     m_leftLayout->setSpacing(0);
