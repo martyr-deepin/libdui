@@ -1,17 +1,18 @@
 DUI--DTextButton {
-    color: #222;
-    background-color: #BBB;
-    outline: none;
+    color:#474747;
+    background:transparent;
+    outline:none;
+    border:none;
 }
 
 DUI--DTextButton:hover {
-    color: #444;
+    color:#000;
 }
 
 DUI--DTextButton:pressed {
-    background-color: #883333;
+    color:#2CA7F8;
 }
 
 DUI--DTextButton:checked {
-    color: #993333;
+    color:red;
 }
