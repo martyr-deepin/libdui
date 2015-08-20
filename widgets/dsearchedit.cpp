@@ -60,7 +60,7 @@ void DSearchEdit::mousePressEvent(QMouseEvent *)
     animation->setEndValue(m_size.width() - m_btn->width());
     animation->setDuration(animationDuration);
     animation->setEasingCurve(QEasingCurve::OutCubic);
-    animation->start();
+    animation->start(QAbstractAnimation::DeleteWhenStopped);
 
     m_edt->show();
     m_edt->setFocus();
@@ -77,7 +77,7 @@ bool DSearchEdit::eventFilter(QObject *o, QEvent *e)
         animation->setEndValue(0);
         animation->setDuration(animationDuration);
         animation->setEasingCurve(QEasingCurve::InCubic);
-        animation->start();
+        animation->start(QAbstractAnimation::DeleteWhenStopped);
     }
 
     return QFrame::eventFilter(o, e);

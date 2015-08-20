@@ -136,7 +136,7 @@ void DCalendar::animationToPrev()
     animation->setStartValue(QRect(-outerWidth, 0, outerWidth * 2, outerHeight));
     animation->setEndValue(QRect(0, 0, outerWidth * 2, outerHeight));
     animation->setEasingCurve(QEasingCurve::OutCubic);
-    animation->start();
+    animation->start(QAbstractAnimation::DeleteWhenStopped);
 
     cViewCurrent = cViewLeft;
 }
@@ -151,7 +151,7 @@ void DCalendar::animationToNext()
     animation->setStartValue(QRect(0, 0, outerWidth * 2, outerHeight));
     animation->setEndValue(QRect(-outerWidth, 0, outerWidth * 2, outerHeight));
     animation->setEasingCurve(QEasingCurve::OutCubic);
-    animation->start();
+    animation->start(QAbstractAnimation::DeleteWhenStopped);
 
     cViewCurrent = cViewRight;
 }
