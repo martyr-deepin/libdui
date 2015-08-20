@@ -66,7 +66,7 @@ protected:
     bool eventFilter(QObject *, QEvent *);
 
 private Q_SLOTS:
-    void updateHighlightGeometry();
+    void updateHighlightGeometry(bool animation = true);
     void buttonClicked();
 
 Q_SIGNALS:
