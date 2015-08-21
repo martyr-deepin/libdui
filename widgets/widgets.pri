@@ -38,7 +38,8 @@ HEADERS += $$PWD/dslider.h\
     $$PWD/dabstractcomboboxdelegate.h \
     $$PWD/dexpandgroup.h \
     $$PWD/dlabel.h \
-    $$PWD/dlinkbutton.h
+    $$PWD/dlinkbutton.h \
+    $$PWD/dcameraview.h
 
 SOURCES += $$PWD/dslider.cpp \
     $$PWD/dthememanager.cpp \
@@ -77,7 +78,8 @@ SOURCES += $$PWD/dslider.cpp \
     $$PWD/dabstractcomboboxdelegate.cpp \
     $$PWD/dexpandgroup.cpp \
     $$PWD/dlabel.cpp \
-    $$PWD/dlinkbutton.cpp
+    $$PWD/dlinkbutton.cpp \
+    $$PWD/dcameraview.cpp
 
 RESOURCES += \
     $$PWD/../themes/dark.qrc \

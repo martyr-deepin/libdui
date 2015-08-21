@@ -1,6 +1,6 @@
 QT       += core gui dbus
 
-greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
+greaterThan(QT_MAJOR_VERSION, 4): QT += widgets multimedia multimediawidgets
 
 TARGET = collections
 TEMPLATE = app
@@ -22,7 +22,8 @@ SOURCES += main.cpp\
     widgetstab.cpp \
     comboboxtab.cpp \
     buttongridtab.cpp \
-    imagebuttongridtab.cpp
+    imagebuttongridtab.cpp \
+    cameraform.cpp
 
 HEADERS  += mainwindow.h \
     buttontab.h \
@@ -36,7 +37,11 @@ HEADERS  += mainwindow.h \
     widgetstab.h \
     comboboxtab.h \
     buttongridtab.h \
-    imagebuttongridtab.h
+    imagebuttongridtab.h \
+    cameraform.h
 
 RESOURCES += \
     images.qrc
+
+FORMS += \
+    cameraform.ui

@@ -13,6 +13,7 @@
 #include "buttonlisttab.h"
 #include "buttongridtab.h"
 #include "imagebuttongridtab.h"
+#include "cameraform.h"
 
 DUI_USE_NAMESPACE
 
@@ -89,6 +90,8 @@ void MainWindow::initTabWidget()
 
     DColorPicker *picker = new DColorPicker(1, this);
 
+    CameraForm *cameraform = new CameraForm(this);
+
     m_mainTab->addTab(comboBoxTab, "ComboBox");
     m_mainTab->addTab(indicatorTab, "Indicator");
     m_mainTab->addTab(lineTab,"Line");
@@ -103,6 +106,7 @@ void MainWindow::initTabWidget()
     m_mainTab->addTab(segmentedControl, "Segmented Control");
     m_mainTab->addTab(widgetsTab, "Widgets");
     m_mainTab->addTab(picker, "Color Picker");
+    m_mainTab->addTab(cameraform, "Camera View");
 
     m_mainTab->setCurrentIndex(0);
 }
