@@ -6,10 +6,6 @@ DUI--DButtonList QFrame#BorderFrame{
   background-color: transparent;
 }
 
-DUI--DButtonList QFrame#BorderFrame[state="checked"]{
-  background-color: transparent;
-}
-
 DUI--DButtonList QPushButton{
     background-color: transparent;
     color: white;
@@ -21,4 +17,14 @@ DUI--DButtonList QPushButton{
 
 DUI--DButtonList QPushButton:checked{
     background-color: lightblack;
+}
+
+DUI--DButtonList QPushButton:checked[state="OnlyOne"]{
+    background-color: lightblack;
+    color:#01BDFF;
+}
+
+DUI--DButtonList QPushButton:checked[state="normal"]{
+    background-color: transparent;
+    color:#01BDFF;
 }

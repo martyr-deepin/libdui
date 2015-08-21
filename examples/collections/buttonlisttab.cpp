@@ -19,9 +19,9 @@ ButtonListTab::~ButtonListTab()
 }
 
 void ButtonListTab::initData() {
-    m_buttons << "Button1" << "Button2" << "Button3";
-    m_buttons << "Button4" << "Button5" << "Button6";
-    m_buttons << "Button7" << "Button8" << "Button9";
+//    m_buttons << "Button1" << "Button2" << "Button3";
+//    m_buttons << "Button4" << "Button5" << "Button6";
+//    m_buttons << "Button7" << "Button8" << "Button9";
 }
 
 void ButtonListTab::initUI() {
@@ -36,7 +36,7 @@ void ButtonListTab::initUI() {
     layout->setContentsMargins(50, 50, 50, 50);
     setLayout(layout);
     buttonListGroup->checkButtonByIndex(2);
-    buttonListGroup->addButton("1111", 10);
+    buttonListGroup->addButton("1111");
 }
 
 void ButtonListTab::initConnect(){

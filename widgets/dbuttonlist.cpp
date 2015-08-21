@@ -44,6 +44,23 @@ void IconButton::resizeEvent(QResizeEvent *event){
     QPushButton::resizeEvent(event);
 }
 
+void IconButton::setIconLabel(const QString &Icon){
+    QImage image(m_icon);
+    m_iconLabel->setPixmap(QPixmap::fromImage(image));
+    m_iconLabel->setFixedSize(image.size());
+}
+
+void IconButton::hideIconLabel(){
+    m_iconLabel->hide();
+}
+
+void IconButton::updateStyle(){
+    style()->unpolish(this);
+    style()->polish(this);
+    update();
+}
+
+
 DUI_BEGIN_NAMESPACE
 
 DButtonList::DButtonList(QWidget *parent) : QListWidget(parent)
@@ -102,6 +119,11 @@ void DButtonList::setItemSize(QSize size){
     }
 }
 
+void DButtonList::addButton(const QString &label){
+    int index = count();
+    addButton(label, index);
+}
+
 void DButtonList::addButton(const QString &label, int index){
     IconButton* button = new IconButton(":/images/dark/images/tick_hover.png", label, this);
     button->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
@@ -132,15 +154,37 @@ void DButtonList::addButtons(const QStringList &listLabels){
 }
 
 void DButtonList::setButtonChecked(int id){
-   IconButton* button = reinterpret_cast<IconButton*>(m_buttonGroup->button(id));
-   button->setChecked(true);
-   emit buttonCheckedIndexChanged(id);
-   emit buttonChecked(button->text());
+   if (id < m_buttonGroup->buttons().length()){
+       IconButton* button = reinterpret_cast<IconButton*>(m_buttonGroup->button(id));
+       button->setChecked(true);
+       if (m_buttonGroup->buttons().length() == 1){
+            button->setProperty("state", "OnlyOne");
+            button->hideIconLabel();
+       }else{
+            button->setProperty("state", "normal");
+       }
+       button->updateStyle();
+       emit buttonCheckedIndexChanged(id);
+       emit buttonChecked(button->text());
+   }
 }
 
 void DButtonList::checkButtonByIndex(int index){
-    IconButton* button = reinterpret_cast<IconButton*>(m_buttonGroup->button(index));
-    button->click();
+    if (index < m_buttonGroup->buttons().length()){
+        IconButton* button = reinterpret_cast<IconButton*>(m_buttonGroup->button(index));
+        button->click();
+    }
 }
+
+IconButton* DButtonList::getButtonByIndex(int index){
+    if (index < m_buttonGroup->buttons().length()){
+        IconButton* button = reinterpret_cast<IconButton*>(m_buttonGroup->button(index));
+        return button;
+    }else{
+        qWarning() << "There is no this index:" << index;
+    }
+    return NULL;
+}
+
 
 DUI_END_NAMESPACE

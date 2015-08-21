@@ -18,6 +18,9 @@ public:
     void initIconLabel();
     void initConnect();
     void setIconLeftMargin(int leftMargin);
+    void setIconLabel(const QString& Icon);
+    void hideIconLabel();
+    void updateStyle();
 
 protected:
     void resizeEvent(QResizeEvent* event);
@@ -41,6 +44,7 @@ public:
     void initMargins(int leftMargin, int rightMargin, int imageLeftMargin);
 
 public slots:
+    void addButton(const QString &label);
     void addButton(const QString& label, int index);
     void addButtons(const QStringList& listLabels);
     void setItemHeight(int height);
@@ -48,6 +52,8 @@ public slots:
     void setItemSize(int width, int height);
     void setItemSize(QSize size);
     void checkButtonByIndex(int index);
+
+    IconButton* getButtonByIndex(int index);
 
 private slots:
     void setButtonChecked(int id);
