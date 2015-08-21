@@ -5,7 +5,8 @@ DUI_USE_NAMESPACE
 
 SliderTab::SliderTab(QWidget *parent) : QLabel(parent)
 {
-//    setStyleSheet("SliderTab{background-color:  #1A1B1B}");
+    setStyleSheet("SliderTab{background-color:  #1A1B1B}");
+
     DSlider * slider = new DSlider(Qt::Horizontal, this);
     slider->setFixedWidth(300);
     slider->setFixedHeight(40);

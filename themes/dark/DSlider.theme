@@ -1,3 +1,7 @@
+DUI--DSlider {
+    qproperty-tipColor: darkgrey;
+}
+
 /*************************************For Round Handle***************************************/
 DUI--DSlider::groove[handleType="1"] {
     margin-left: 10px;
