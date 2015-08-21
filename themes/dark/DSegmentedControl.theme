@@ -5,8 +5,8 @@ DUI--DSegmentedControl#DSegmentedControl{
 
     background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
                     stop: 0 #191919, stop: 0.2 #1e1e1e, stop: 1 #1e1e1e);
-    min-height: 24px;
-    max-height: 24px;
+    min-height: 21px;
+    max-height: 21px;
 }
 
 DUI--DSegmentedControl  DUI--DSegmentedHighlight#Highlight{

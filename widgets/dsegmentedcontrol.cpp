@@ -200,8 +200,8 @@ void DSegmentedControl::setAnimationType(QEasingCurve::Type animationType)
 
 bool DSegmentedControl::eventFilter(QObject *obj, QEvent *e)
 {
-    if(currentIndex == m_currentIndex)
-        return true;
+    if(m_currentIndex < 0)
+        return false;
 
     QWidget *w = at(m_currentIndex);
 
