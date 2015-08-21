@@ -6,6 +6,7 @@
 #include <QLineEdit>
 #include <QPushButton>
 #include <QWidget>
+#include <QPropertyAnimation>
 
 #include "libdui_global.h"
 #include "dtextbutton.h"
@@ -34,12 +35,15 @@ class LIBDUISHARED_EXPORT DCalendar : public QWidget
 
 public:
     explicit DCalendar(QWidget *parent = 0);
+    ~DCalendar();
 
     QDate getCurrentDate() const;
     QDate getSelectDate() const;
 
     void animationToPrev();
     void animationToNext();
+    inline void setAnimationDuration(const int duration) {m_animation->setDuration(duration);}
+    inline void setAnimationEasingCurve(const QEasingCurve curve) {m_animation->setEasingCurve(curve);}
 
     inline bool lunarVisible() const {return m_lunarVisible;}
     void setLunarVisible(const bool visible);
@@ -109,7 +113,7 @@ private:
     QWidget *outerWidget;
     QWidget *innerWidget;
 
-    static const int animationDuration = 450;
+    QPropertyAnimation *m_animation;
 };
 
 DUI_END_NAMESPACE

@@ -114,6 +114,14 @@ DCalendar::DCalendar(QWidget *parent) : QWidget(parent),
 
     cViewLeft->setObjectName("DCalendarView");
     cViewRight->setObjectName("DCalendarView");
+
+    m_animation = new QPropertyAnimation(innerWidget, "geometry");
+    //m_animation->setEasingCurve(QEasingCurve::OutCubic);
+}
+
+DCalendar::~DCalendar()
+{
+    m_animation->deleteLater();
 }
 
 inline QDate DCalendar::getCurrentDate() const
@@ -131,12 +139,11 @@ void DCalendar::animationToPrev()
     qDebug() << "prev";
     cViewLeft->setModel(nextStepModel);
     cViewRight->setModel(currentModel);
-    QPropertyAnimation *animation = new QPropertyAnimation(innerWidget, "geometry");
-    animation->setDuration(animationDuration);
-    animation->setStartValue(QRect(-outerWidth, 0, outerWidth * 2, outerHeight));
-    animation->setEndValue(QRect(0, 0, outerWidth * 2, outerHeight));
-    animation->setEasingCurve(QEasingCurve::OutCubic);
-    animation->start(QAbstractAnimation::DeleteWhenStopped);
+
+    m_animation->stop();
+    m_animation->setStartValue(QRect(-outerWidth, 0, outerWidth * 2, outerHeight));
+    m_animation->setEndValue(QRect(0, 0, outerWidth * 2, outerHeight));
+    m_animation->start();
 
     cViewCurrent = cViewLeft;
 }
@@ -146,12 +153,11 @@ void DCalendar::animationToNext()
     qDebug() << "next";
     cViewLeft->setModel(currentModel);
     cViewRight->setModel(nextStepModel);
-    QPropertyAnimation *animation = new QPropertyAnimation(innerWidget, "geometry");
-    animation->setDuration(animationDuration);
-    animation->setStartValue(QRect(0, 0, outerWidth * 2, outerHeight));
-    animation->setEndValue(QRect(-outerWidth, 0, outerWidth * 2, outerHeight));
-    animation->setEasingCurve(QEasingCurve::OutCubic);
-    animation->start(QAbstractAnimation::DeleteWhenStopped);
+
+    m_animation->stop();
+    m_animation->setStartValue(QRect(0, 0, outerWidth * 2, outerHeight));
+    m_animation->setEndValue(QRect(-outerWidth, 0, outerWidth * 2, outerHeight));
+    m_animation->start();
 
     cViewCurrent = cViewRight;
 }
