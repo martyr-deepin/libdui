@@ -87,7 +87,7 @@ void DBaseExpand::setExpand(bool value)
 
     if (value)
     {
-        m_animation->setStartValue(0);
+        m_animation->setStartValue(m_contentLoader->height());
         m_animation->setEndValue(m_content->height());
     }
     else
