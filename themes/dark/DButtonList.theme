@@ -2,23 +2,23 @@ DUI--DButtonList {
     background-color: grey;
 }
 
+DUI--DButtonList QFrame#BorderFrame{
+  background-color: transparent;
+}
+
+DUI--DButtonList QFrame#BorderFrame[state="checked"]{
+  background-color: transparent;
+}
+
 DUI--DButtonList QPushButton{
     background-color: transparent;
     color: white;
     border: none;
-    border-left:20px solid transparent;
+    border-radius:3px;
     text-align: left center;
-    padding-left: 20px;
+    padding-left: 40;
 }
 
 DUI--DButtonList QPushButton:checked{
-    background-image: url(:/images/dark/images/tick_hover.png);
-    background-repeat: no-repeat;
-    background-attachment: fixed;
-    background-position: left center;
     background-color: lightblack;
-    border-left:20px solid lightblack;
-    text-align: left center;
-    padding-left: 20px;
-    color: lightblue;
 }

@@ -29,6 +29,7 @@ void ButtonListTab::initUI() {
 
     DButtonList* buttonListGroup = new DButtonList(this);
     buttonListGroup->addButtons(m_buttons);
+    buttonListGroup->setItemSize(200, 30);
 
     QHBoxLayout* layout = new QHBoxLayout;
     layout->addWidget(buttonListGroup);

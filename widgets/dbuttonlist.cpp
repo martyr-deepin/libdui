@@ -5,6 +5,44 @@
 #include <QButtonGroup>
 #include <QPushButton>
 #include <QListWidgetItem>
+#include <QVBoxLayout>
+#include <QLabel>
+#include <QPoint>
+#include <QResizeEvent>
+#include <QDebug>
+
+
+IconButton::IconButton(const QString &Icon, const QString &text, QWidget *parent):
+    QPushButton(text, parent),
+    m_icon(Icon),
+    m_text(text)
+{
+    initIconLabel();
+    initConnect();
+}
+
+void IconButton::initConnect(){
+    connect(this, SIGNAL(toggled(bool)), m_iconLabel, SLOT(setVisible(bool)));
+}
+
+void IconButton::initIconLabel(){
+    m_iconLabel = new QLabel(this);
+    setIconLeftMargin(20);
+    m_iconLabel->hide();
+    QImage image(m_icon);
+    m_iconLabel->setPixmap(QPixmap::fromImage(image));
+    m_iconLabel->setFixedSize(image.size());
+}
+
+void IconButton::setIconLeftMargin(int leftMargin){
+    m_iconLabel->move(leftMargin, y());
+}
+
+void IconButton::resizeEvent(QResizeEvent *event){
+    int height = event->size().height();
+    m_iconLabel->move(m_iconLabel->x(), (height - m_iconLabel->height())/ 2 );
+    QPushButton::resizeEvent(event);
+}
 
 DUI_BEGIN_NAMESPACE
 
@@ -17,6 +55,7 @@ DButtonList::DButtonList(QWidget *parent) : QListWidget(parent)
     setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     setVerticalScrollMode(ScrollPerItem);
     setResizeMode(Adjust);
+
     setItemSize(200, BUTTON_HEIGHT);
 
     m_buttonGroup = new QButtonGroup(this);
@@ -25,6 +64,12 @@ DButtonList::DButtonList(QWidget *parent) : QListWidget(parent)
     initConnect();
 }
 
+
+void DButtonList::initMargins(int leftMargin, int rightMargin, int imageLeftMargin){
+    m_leftMargin = leftMargin;
+    m_rightMargin = rightMargin;
+    m_imageLeftMargin = imageLeftMargin;
+}
 
 DButtonList::~DButtonList()
 {
@@ -51,16 +96,32 @@ void DButtonList::setItemSize(int width, int height){
 void DButtonList::setItemSize(QSize size){
     setGridSize(size);
     setFixedWidth(gridSize().width());
+
+    for(int i=0; i< count(); i++){
+        itemWidget(item(i))->setFixedHeight(size.height());
+    }
 }
 
 void DButtonList::addButton(const QString &label, int index){
-    QPushButton* button = new QPushButton(label, this);
-    button->setFixedSize(gridSize());
+    IconButton* button = new IconButton(":/images/dark/images/tick_hover.png", label, this);
+    button->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
     button->setCheckable(true);
+
+    QFrame* borderFrame = new QFrame;
+    borderFrame->setObjectName("BorderFrame");
+    QVBoxLayout* borderLayout = new QVBoxLayout;
+    borderLayout->addWidget(button);
+    borderLayout->setSpacing(0);
+    borderLayout->setContentsMargins(m_leftMargin, 0, m_rightMargin, 0);
+    borderFrame->setLayout(borderLayout);
+
     m_buttonGroup->addButton(button, index);
     QListWidgetItem* item = new QListWidgetItem(this);
     addItem(item);
-    setItemWidget(item, button);
+    setItemWidget(item, borderFrame);
+
+    setItemSize(gridSize());
+
 }
 
 
@@ -71,14 +132,14 @@ void DButtonList::addButtons(const QStringList &listLabels){
 }
 
 void DButtonList::setButtonChecked(int id){
-   QPushButton* button = reinterpret_cast<QPushButton*>(m_buttonGroup->button(id));
+   IconButton* button = reinterpret_cast<IconButton*>(m_buttonGroup->button(id));
    button->setChecked(true);
    emit buttonCheckedIndexChanged(id);
    emit buttonChecked(button->text());
 }
 
 void DButtonList::checkButtonByIndex(int index){
-    QPushButton* button = reinterpret_cast<QPushButton*>(m_buttonGroup->button(index));
+    IconButton* button = reinterpret_cast<IconButton*>(m_buttonGroup->button(index));
     button->click();
 }
 
