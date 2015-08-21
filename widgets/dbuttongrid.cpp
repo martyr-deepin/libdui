@@ -249,10 +249,14 @@ void DButtonGrid::addImageButtons(const QList<QMap<QString, QString> > &imageInf
     setItemSize(m_columnWidth, m_rowHeight);
 }
 
+int DButtonGrid::getCurrentCheckedIndex() const{
+    return m_currentCheckedIndex;
+}
 
 void DButtonGrid::setButtonChecked(int id){
    QPushButton* button = reinterpret_cast<QPushButton*>(m_buttonGroup->button(id));
    emit buttonCheckedIndexChanged(id);
+   m_currentCheckedIndex = id;
    if (button->property("type").isValid() && button->property("type").toString() == "ImageButton"){
        if (button->property("key").isValid()){
            emit buttonChecked(button->property("key").toString());

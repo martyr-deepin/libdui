@@ -52,6 +52,7 @@ public:
     void initConnect();
     void setItemUnChecked();
     void setItemSize(int width, int height);
+    int getCurrentCheckedIndex() const;
 
 public slots:
     void addButton(const QString& label, int index);
@@ -74,6 +75,7 @@ private:
     QList<QMap<QString, QString>> m_imageButtonInfos;
     int m_rowHeight = 40;
     int m_columnWidth = 100;
+    int m_currentCheckedIndex = 0;
 };
 
 DUI_END_NAMESPACE
