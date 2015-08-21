@@ -1,5 +1,6 @@
 #include "buttontab.h"
-#include "QDebug"
+
+#include <QDebug>
 
 DUI_USE_NAMESPACE
 
@@ -49,9 +50,11 @@ ButtonTab::ButtonTab(QWidget *parent) : QLabel(parent)
     checkableImageButton->move(85, 100);
     connect(checkableImageButton, SIGNAL(clicked()), this, SLOT(buttonClickTest()));
 
-
     DSwitchButton *switchButton = new DSwitchButton(this);
     switchButton->move(85, 200);
+
+    DUI::DLinkButton *linkBtn = new DUI::DLinkButton("Link Button", this);
+    linkBtn->move(10, 125);
 }
 
 void ButtonTab::buttonClickTest()

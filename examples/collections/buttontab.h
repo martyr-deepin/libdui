@@ -15,6 +15,7 @@
 #include "dwindowrestorebutton.h"
 #include "dwindowclosebutton.h"
 #include "dwindowoptionbutton.h"
+#include "dlinkbutton.h"
 
 class ButtonTab : public QLabel
 {

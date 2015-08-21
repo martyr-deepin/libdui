@@ -19,13 +19,14 @@ DSegmentedControl::DSegmentedControl(QWidget *parent) :
     m_highlightMoveAnimation(new QPropertyAnimation(m_highlight, "geometry", this)),
     m_currentIndex(-1)
 {
-    setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+    setObjectName("DSegmentedControl");
+    setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
 
     m_hLayout->setSpacing(0);
     m_hLayout->setMargin(0);
-    setObjectName("DSegmentedControl");
     m_hLayout->setObjectName("TabBar");
     m_highlight->setObjectName("Highlight");
+    m_highlight->installEventFilter(this);
 
     D_THEME_INIT_WIDGET(DSegmentedControl);
 
@@ -199,30 +200,49 @@ void DSegmentedControl::setAnimationType(QEasingCurve::Type animationType)
 
 bool DSegmentedControl::eventFilter(QObject *obj, QEvent *e)
 {
-    if(obj == at(m_currentIndex)){
+    if(m_currentIndex < 0)
+        return false;
+
+    QWidget *w = at(m_currentIndex);
+
+    if(obj == m_highlight){
+        if(e->type() == QEvent::Move){
+            updateHighlightGeometry(false);
+        }
+    }else if(obj == w){
         if(e->type() == QEvent::Resize){
-            updateHighlightGeometry();
+            updateHighlightGeometry(false);
         }
     }
 
     return false;
 }
 
-void DSegmentedControl::updateHighlightGeometry()
+void DSegmentedControl::updateHighlightGeometry(bool animation)
 {
-    if(m_currentIndex>=0){
+    if(m_currentIndex<0)
+        return;
+
+    QRect tmp = at(m_currentIndex)->geometry();
+
+    if(m_currentIndex==0){
+        tmp.setX(0);
+        tmp.setWidth(tmp.width()+1);
+    }else if(m_currentIndex == count()-1){
+        tmp.setWidth(tmp.width()+1);
+    }
+    tmp.setY(0);
+
+    if(m_highlight->geometry() == tmp)
+        return;
+
+    if(animation){
         m_highlightMoveAnimation->setStartValue(m_highlight->geometry());
-        QRect tmp = at(m_currentIndex)->geometry();
-        tmp.setHeight(tmp.height()-1);
-        if(m_currentIndex==0){
-            tmp.setX(0);
-            tmp.setWidth(tmp.width()+1);
-        }else if(m_currentIndex == count()-1){
-            tmp.setWidth(tmp.width()+1);
-        }
-        tmp.setY(0);
         m_highlightMoveAnimation->setEndValue(tmp);
         m_highlightMoveAnimation->start();
+    }else{
+        m_highlight->setFixedSize(tmp.size());
+        m_highlight->move(tmp.topLeft());
     }
 }
 

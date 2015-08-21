@@ -1,0 +1,13 @@
+DUI--DLinkButton {
+    background-color:transparent;
+    border:none;
+    color:#b4b4b4;
+}
+
+DUI--DLinkButton:hover {
+    color:#01BDFF;
+}
+
+DUI--DLinkButton:pressed {
+    color:red;
+}

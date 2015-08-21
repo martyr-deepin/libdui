@@ -37,7 +37,8 @@ HEADERS += $$PWD/dslider.h\
     $$PWD/dshortcutedit.h \
     $$PWD/dabstractcomboboxdelegate.h \
     $$PWD/dexpandgroup.h \
-    $$PWD/dlabel.h
+    $$PWD/dlabel.h \
+    $$PWD/dlinkbutton.h
 
 SOURCES += $$PWD/dslider.cpp \
     $$PWD/dthememanager.cpp \
@@ -75,9 +76,10 @@ SOURCES += $$PWD/dslider.cpp \
     $$PWD/dshortcutedit.cpp \
     $$PWD/dabstractcomboboxdelegate.cpp \
     $$PWD/dexpandgroup.cpp \
-    $$PWD/dlabel.cpp
+    $$PWD/dlabel.cpp \
+    $$PWD/dlinkbutton.cpp
 
 RESOURCES += \
     $$PWD/../themes/dark.qrc \
-    $$PWD/../themes/light.qrc \
-    $$PWD/../icons.qrc
+    $$PWD/../icons.qrc \
+    $$PWD/../themes/light.qrc

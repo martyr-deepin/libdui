@@ -143,8 +143,7 @@ void DSwitchButton::paintEvent(QPaintEvent *e)
         return;
 
     QPainter p(this);
-    p.setRenderHint(QPainter::Antialiasing);
-    p.setRenderHint(QPainter::SmoothPixmapTransform);
+    p.setRenderHints(QPainter::Antialiasing);
 
     QPainterPath path;
     path.addRoundedRect(rect(), m_innerImage->height()/2.3, m_innerImage->height()/2.3);
@@ -166,7 +165,7 @@ void DSwitchButton::paintEvent(QPaintEvent *e)
                  height()/2.0-m_innerImage->height()/2.0,
                  *m_innerImage);
 
-    p.setPen(Qt::black);
+    p.setPen(QPen(QColor("#aa000000"), 2));
     p.drawPath(path);
 }
 
