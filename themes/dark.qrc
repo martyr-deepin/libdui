@@ -26,6 +26,7 @@
         <file>dark/DWindowOptionButton.theme</file>
         <file>dark/DShortcutEdit.theme</file>
         <file>dark/DLabel.theme</file>
+        <file>dark/DLinkButton.theme</file>
     </qresource>
     <qresource prefix="/images">
         <file>dark/images/add_hover.png</file>
