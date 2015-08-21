@@ -9,23 +9,24 @@ DUI--DButtonGrid QFrame{
 
 DUI--DButtonGrid QFrame QPushButton{
     background-color: rgba(0, 0, 0, 0);
-    color: white;
-    border:0px solid transprent;
+    color: #b4b4b4;
+    border: none;
 }
 
 DUI--DButtonGrid QFrame QPushButton:hover{
-    color: gray;
+    color: white;
 }
 
 DUI--DButtonGrid QFrame QPushButton:pressed{
-    color: green;
+    color: white;
 }
 
 DUI--DButtonGrid QFrame QPushButton:checked{
-    color: green;
-    background-color: rgba(0, 0, 0, 1);
-    border-radius: 2px;
-    border:2px solid rgba(0, 0, 0, 1);
+    color: #19A9F9;
+    font-size: 12px;
+    background-color: #66000000;
+    border-radius: 3px;
+    border: none;
 }
 
 QLabel#IconLabel[state = "normal"]{

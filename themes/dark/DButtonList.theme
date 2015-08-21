@@ -1,5 +1,10 @@
 DUI--DButtonList {
-    background-color: grey;
+    background-color: #1A1B1B;
+    border: none;
+}
+
+DUI--DButtonList QPushButton:hover{
+    color: white;
 }
 
 DUI--DButtonList QFrame#BorderFrame{
@@ -8,15 +13,16 @@ DUI--DButtonList QFrame#BorderFrame{
 
 DUI--DButtonList QPushButton{
     background-color: transparent;
-    color: white;
+    color: #b4b4b4;
     border: none;
     border-radius:3px;
     text-align: left center;
-    padding-left: 40;
+    padding-left: 40px;
 }
 
 DUI--DButtonList QPushButton:checked{
-    background-color: lightblack;
+    background-color: #66000000;
+    color: #2ca7f8;
 }
 
 DUI--DButtonList QPushButton:checked[state="OnlyOne"]{
