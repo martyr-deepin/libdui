@@ -43,7 +43,7 @@ ButtonTab::ButtonTab(QWidget *parent) : QLabel(parent)
     imageButton->setChecked(true);
 
     DImageButton *imageButton2 = new DImageButton(this);
-    imageButton2->setNormalPic(QPixmap(":/images/buttonHover.png"));
+    imageButton2->setNormalPic(":/images/buttonHover.png");
     imageButton2->move(35, 100);
 
     DImageButton *checkableImageButton = new DImageButton(":/images/button.png", ":/images/buttonHover.png", ":/images/buttonPress.png", ":/images/buttonChecked.png", this);

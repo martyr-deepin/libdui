@@ -33,7 +33,7 @@ public:
 
 public slots:
     void setText(const QString & text) {if (m_edt) m_edt->setText(text);}
-    void setSearchIcon(const QPixmap & icon) {if (m_btn) m_btn->setNormalPic(icon);}
+    void setSearchIcon(const QString & icon) {if (m_btn) m_btn->setNormalPic(icon);}
 
 signals:
     void textChanged();

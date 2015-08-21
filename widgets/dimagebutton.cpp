@@ -20,11 +20,11 @@ DImageButton::DImageButton(const QString &normalPic, const QString &hoverPic, co
     D_THEME_INIT_WIDGET(DImageButton);
 
     if (!normalPic.isEmpty())
-        m_normalPic = QPixmap(normalPic);
+        m_normalPic = normalPic;
     if (!hoverPic.isEmpty())
-        m_hoverPic = QPixmap(hoverPic);
+        m_hoverPic = hoverPic;
     if (!pressPic.isEmpty())
-        m_pressPic = QPixmap(pressPic);
+        m_pressPic = pressPic;
 
     setCheckable(false);
 
@@ -38,13 +38,13 @@ DImageButton::DImageButton(const QString &normalPic, const QString &hoverPic,
     D_THEME_INIT_WIDGET(DImageButton);
 
     if (!normalPic.isEmpty())
-        m_normalPic = QPixmap(normalPic);
+        m_normalPic = normalPic;
     if (!hoverPic.isEmpty())
-        m_hoverPic = QPixmap(hoverPic);
+        m_hoverPic = hoverPic;
     if (!pressPic.isEmpty())
-        m_pressPic = QPixmap(pressPic);
+        m_pressPic = pressPic;
     if (!checkedPic.isEmpty())
-        m_checkedPic = QPixmap(checkedPic);
+        m_checkedPic = checkedPic;
 
     setCheckable(true);
 
@@ -110,10 +110,10 @@ void DImageButton::mouseReleaseEvent(QMouseEvent *event)
 void DImageButton::changeState()
 {
     switch (m_state) {
-    case Hover:     if (!m_hoverPic.isNull()) setPixmap(m_hoverPic);      break;
-    case Press:     if (!m_pressPic.isNull()) setPixmap(m_pressPic);      break;
-    case Checked:   if (!m_checkedPic.isNull()) setPixmap(m_checkedPic);  break;
-    default:        if (!m_normalPic.isNull()) setPixmap(m_normalPic);    break;
+    case Hover:     if (!m_hoverPic.isEmpty()) setPixmap(QPixmap(m_hoverPic));      break;
+    case Press:     if (!m_pressPic.isEmpty()) setPixmap(QPixmap(m_pressPic));      break;
+    case Checked:   if (!m_checkedPic.isEmpty()) setPixmap(QPixmap(m_checkedPic));  break;
+    default:        if (!m_normalPic.isEmpty()) setPixmap(QPixmap(m_normalPic));    break;
     }
 
     emit stateChanged();
@@ -154,25 +154,25 @@ bool DImageButton::isCheckable()
     return m_isCheckable;
 }
 
-void DImageButton::setNormalPic(const QPixmap &normalPicPixmap)
+void DImageButton::setNormalPic(const QString &normalPicPixmap)
 {
     m_normalPic = normalPicPixmap;
     changeState();
 }
 
-void DImageButton::setHoverPic(const QPixmap &hoverPicPixmap)
+void DImageButton::setHoverPic(const QString &hoverPicPixmap)
 {
     m_hoverPic = hoverPicPixmap;
     changeState();
 }
 
-void DImageButton::setPressPic(const QPixmap &pressPicPixmap)
+void DImageButton::setPressPic(const QString &pressPicPixmap)
 {
     m_pressPic = pressPicPixmap;
     changeState();
 }
 
-void DImageButton::setCheckedPic(const QPixmap &checkedPicPixmap)
+void DImageButton::setCheckedPic(const QString &checkedPicPixmap)
 {
     m_checkedPic = checkedPicPixmap;
     changeState();

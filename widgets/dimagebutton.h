@@ -39,19 +39,15 @@ public:
     bool isChecked();
     bool isCheckable();
 
-    void setNormalPic(const QPixmap & normalPicPixmap);
-    void setHoverPic(const QPixmap & hoverPicPixmap);
-    void setPressPic(const QPixmap & pressPicPixmap);
-    void setCheckedPic(const QPixmap & checkedPicPixmap);
-    inline void setNormalPic(const QString & normalPic) {setNormalPic(QPixmap(normalPic));}
-    inline void setHoverPic(const QString & hoverPic) {setHoverPic(QPixmap(hoverPic));}
-    inline void setPressPic(const QString & pressPic) {setPressPic(QPixmap(pressPic));}
-    inline void setCheckedPic(const QString & checkedPic) {setCheckedPic(QPixmap(checkedPic));}
+    void setNormalPic(const QString & normalPic);
+    void setHoverPic(const QString & hoverPic);
+    void setPressPic(const QString & pressPic);
+    void setCheckedPic(const QString & checkedPic);
 
-    inline const QString getNormalPic() const {return "";}
-    inline const QString getHoverPic() const {return "";}
-    inline const QString getPressPic() const {return "";}
-    inline const QString getCheckedPic() const {return "";}
+    inline const QString getNormalPic() const {return m_normalPic;}
+    inline const QString getHoverPic() const {return m_hoverPic;}
+    inline const QString getPressPic() const {return m_pressPic;}
+    inline const QString getCheckedPic() const {return m_checkedPic;}
 
     enum State {Normal, Hover, Press, Checked};
 
@@ -70,10 +66,10 @@ private:
 
     bool m_isChecked = false;
     bool m_isCheckable = false;
-    QPixmap m_normalPic;
-    QPixmap m_hoverPic;
-    QPixmap m_pressPic;
-    QPixmap m_checkedPic;
+    QString m_normalPic;
+    QString m_hoverPic;
+    QString m_pressPic;
+    QString m_checkedPic;
 };
 
 DUI_END_NAMESPACE

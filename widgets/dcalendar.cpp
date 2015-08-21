@@ -69,18 +69,18 @@ DCalendar::DCalendar(QWidget *parent) : QWidget(parent),
 #ifdef QT_DEBUG
     datailOfToday.setText("details");
 #endif
-    prevYear.setNormalPic(QPixmap(":/images/arrow_left_normal.png"));
-    prevYear.setHoverPic(QPixmap(":/images/arrow_left_hover.png"));
-    prevYear.setPressPic(QPixmap(":/images/arrow_left_press.png"));
-    nextYear.setNormalPic(QPixmap(":/images/arrow_right_normal.png"));
-    nextYear.setHoverPic(QPixmap(":/images/arrow_right_hover.png"));
-    nextYear.setPressPic(QPixmap(":/images/arrow_right_press.png"));
-    prevMonth.setNormalPic(QPixmap(":/images/arrow_left_normal.png"));
-    prevMonth.setHoverPic(QPixmap(":/images/arrow_left_hover.png"));
-    prevMonth.setPressPic(QPixmap(":/images/arrow_left_press.png"));
-    nextMonth.setNormalPic(QPixmap(":/images/arrow_right_normal.png"));
-    nextMonth.setHoverPic(QPixmap(":/images/arrow_right_hover.png"));
-    nextMonth.setPressPic(QPixmap(":/images/arrow_right_press.png"));
+    prevYear.setNormalPic(":/images/arrow_left_normal.png");
+    prevYear.setHoverPic(":/images/arrow_left_hover.png");
+    prevYear.setPressPic(":/images/arrow_left_press.png");
+    nextYear.setNormalPic(":/images/arrow_right_normal.png");
+    nextYear.setHoverPic(":/images/arrow_right_hover.png");
+    nextYear.setPressPic(":/images/arrow_right_press.png");
+    prevMonth.setNormalPic(":/images/arrow_left_normal.png");
+    prevMonth.setHoverPic(":/images/arrow_left_hover.png");
+    prevMonth.setPressPic(":/images/arrow_left_press.png");
+    nextMonth.setNormalPic(":/images/arrow_right_normal.png");
+    nextMonth.setHoverPic(":/images/arrow_right_hover.png");
+    nextMonth.setPressPic(":/images/arrow_right_press.png");
     year.setText(QString::number(usingDate.year()));
     year.setEnabled(false);
     month.setText(QString::number(usingDate.month()));

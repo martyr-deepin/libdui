@@ -21,7 +21,7 @@ void DWindowCloseButton::setNormalImage(const QString &normalImage)
 {
     m_normalImage = normalImage;
 
-    this->setNormalPic(QPixmap(m_normalImage));
+    this->setNormalPic(m_normalImage);
 }
 
 QString DWindowCloseButton::hoverImage() const
@@ -33,7 +33,7 @@ void DWindowCloseButton::setHoverImage(const QString &hoverImage)
 {
     m_hoverImage = hoverImage;
 
-    this->setHoverPic(QPixmap(m_hoverImage));
+    this->setHoverPic(m_hoverImage);
 }
 
 QString DWindowCloseButton::pressedImage() const
@@ -45,7 +45,7 @@ void DWindowCloseButton::setPressedImage(const QString &pressedImage)
 {
     m_pressedImage = pressedImage;
 
-    this->setPressPic(QPixmap(m_pressedImage));
+    this->setPressPic(m_pressedImage);
 }
 
 DUI_END_NAMESPACE
