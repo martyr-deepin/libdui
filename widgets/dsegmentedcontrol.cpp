@@ -1,4 +1,4 @@
-﻿#include "dsegmentedcontrol.h"
+#include "dsegmentedcontrol.h"
 #include <QDebug>
 #include <QPainter>
 #include <QPaintEvent>
@@ -200,6 +200,9 @@ void DSegmentedControl::setAnimationType(QEasingCurve::Type animationType)
 
 bool DSegmentedControl::eventFilter(QObject *obj, QEvent *e)
 {
+    if(currentIndex == m_currentIndex)
+        return true;
+
     QWidget *w = at(m_currentIndex);
 
     if(obj == m_highlight){
