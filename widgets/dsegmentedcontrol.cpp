@@ -20,7 +20,7 @@ DSegmentedControl::DSegmentedControl(QWidget *parent) :
     m_currentIndex(-1)
 {
     setObjectName("DSegmentedControl");
-    setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+    setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
 
     m_hLayout->setSpacing(0);
     m_hLayout->setMargin(0);
