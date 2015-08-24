@@ -1,5 +1,5 @@
 #include "cameraform.h"
-#include "ui_form.h"
+#include "ui_cameraform.h"
 
 #include <QCamera>
 #include <QCameraInfo>
@@ -12,7 +12,7 @@
 
 CameraForm::CameraForm(QWidget *parent) :
     QWidget(parent),
-    ui(new Ui::Form)
+    ui(new Ui::CameraForm)
 {
     ui->setupUi(this);
 

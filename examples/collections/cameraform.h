@@ -6,7 +6,7 @@
 #include "dcameraview.h"
 
 namespace Ui {
-class Form;
+class CameraForm;
 }
 
 class QCamera;
@@ -29,7 +29,7 @@ private Q_SLOTS:
     void on_pushButton_3_clicked();
 
 private:
-    Ui::Form *ui;
+    Ui::CameraForm *ui;
     QCamera *camera;
     DCameraView *viewfinder;
 };
