@@ -37,8 +37,8 @@ public:
     explicit DCalendar(QWidget *parent = 0);
     ~DCalendar();
 
-    QDate getCurrentDate() const;
-    QDate getSelectDate() const;
+    inline QDate getCurrentDate() const {return currentDate;}
+    inline QDate getSelectDate() const {return selectDate;}
 
     void animationToPrev();
     void animationToNext();

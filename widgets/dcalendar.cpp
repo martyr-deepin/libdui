@@ -124,16 +124,6 @@ DCalendar::~DCalendar()
     m_animation->deleteLater();
 }
 
-inline QDate DCalendar::getCurrentDate() const
-{
-    return usingDate;
-}
-
-inline QDate DCalendar::getSelectDate() const
-{
-    return selectDate;
-}
-
 void DCalendar::animationToPrev()
 {
     qDebug() << "prev";
