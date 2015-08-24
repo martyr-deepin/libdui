@@ -27,6 +27,8 @@
         <file>dark/DShortcutEdit.theme</file>
         <file>dark/DLabel.theme</file>
         <file>dark/DLinkButton.theme</file>
+        <file>dark/DScrollBar.theme</file>
+        <file>dark/DScrollArea.theme</file>
     </qresource>
     <qresource prefix="/images">
         <file>dark/images/add_hover.png</file>

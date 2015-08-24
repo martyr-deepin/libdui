@@ -17,6 +17,8 @@
         <file>light/DSwitchButton.theme</file>
         <file>light/DSegmentedControl.theme</file>
         <file>light/DLinkButton.theme</file>
+        <file>light/DScrollBar.theme</file>
+        <file>light/DScrollArea.theme</file>
     </qresource>
     <qresource prefix="/images">
         <file>light/images/arrow_down_hover.png</file>

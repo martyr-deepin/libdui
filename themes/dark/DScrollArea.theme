@@ -1,0 +1,7 @@
+DUI--DScrollArea{
+    border: none;
+}
+
+DUI--DScrollArea::corner{
+    background-color: transparent;
+}
