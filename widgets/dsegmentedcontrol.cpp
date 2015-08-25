@@ -146,6 +146,32 @@ void DSegmentedControl::insertSegmented(int index, const QIcon &icon, const QStr
     button->installEventFilter(this);
 }
 
+void DSegmentedControl::removeSegmented(int index)
+{
+    if(index == m_currentIndex)
+        setCurrentIndex(-1);
+
+    m_hLayout->removeItem(m_hLayout->itemAt(index));
+
+    QToolButton *button = at(index);
+    m_tabList.removeAt(index);
+    if(button)
+        button->deleteLater();
+}
+
+void DSegmentedControl::clear()
+{
+    for(int i=0; i<count(); ++i){
+        m_hLayout->removeItem(m_hLayout->itemAt(i));
+
+        QToolButton *button = at(i);
+        if(button)
+            button->deleteLater();
+    }
+
+    m_tabList.clear();
+}
+
 bool DSegmentedControl::setCurrentIndex(int currentIndex)
 {
     if(currentIndex == m_currentIndex)

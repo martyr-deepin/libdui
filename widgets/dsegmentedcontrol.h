@@ -48,6 +48,8 @@ public Q_SLOTS:
     void addSegmented(const QList<QIcon> &iconList, const QStringList &titleList);
     void insertSegmented(int index, const QString &title);
     void insertSegmented(int index, const QIcon &icon, const QString &title);
+    void removeSegmented(int index);
+    void clear();
     bool setCurrentIndex(int currentIndex);
     bool setCurrentIndexByTitle(const QString &title);
     void setText(int index, const QString &title);
