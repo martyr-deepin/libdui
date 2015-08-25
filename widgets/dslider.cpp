@@ -46,7 +46,15 @@ QString DSlider::rightTip() const
 
 void DSlider::setRightTip(const QString &rightTip)
 {
-    m_rightTip = rightTip;
+    if(m_rightTip == rightTip)
+        return;
+
+    if(m_rightTip.isEmpty() || rightTip.isEmpty()){
+        m_rightTip = rightTip;
+        updateGeometry();
+    }else{
+        m_rightTip = rightTip;
+    }
 
     repaint();
 }
@@ -58,7 +66,15 @@ QString DSlider::leftTip() const
 
 void DSlider::setLeftTip(const QString &leftTip)
 {
-    m_leftTip = leftTip;
+    if(m_leftTip == leftTip)
+        return;
+
+    if(m_leftTip.isEmpty() || leftTip.isEmpty()){
+        m_leftTip = leftTip;
+        updateGeometry();
+    }else{
+        m_leftTip = leftTip;
+    }
 
     repaint();
 }
@@ -91,12 +107,18 @@ void DSlider::addScale(int value)
 {
     m_scales.append(value);
 
+    if(m_scales.count() == 1)
+        updateGeometry();
+
     repaint();
 }
 
 void DSlider::removeScale(int value)
 {
     m_scales.removeOne(value);
+
+    if(m_scales.isEmpty())
+        updateGeometry();
 
     repaint();
 }
@@ -138,6 +160,16 @@ void DSlider::paintEvent(QPaintEvent * event)
     }
 
     painter.end();
+}
+
+QSize DSlider::sizeHint() const
+{
+    QSize size = QSlider::sizeHint();
+    if(!m_leftTip.isEmpty() || !m_rightTip.isEmpty() || !m_scales.isEmpty())
+        size.setHeight(size.height()+25);
+    else
+        size.setHeight(size.height()+3);
+    return size;
 }
 
 int DSlider::getScalePosition(int value)

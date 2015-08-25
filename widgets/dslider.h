@@ -41,14 +41,16 @@ public:
     void addScale(int value);
     void removeScale(int value);
 
+    QSize sizeHint() const;
+
 protected:
     void paintEvent(QPaintEvent * event);
 
 private:
     int m_handleType = RoundHandle;
 
-    QString m_leftTip = "+";
-    QString m_rightTip = "左";
+    QString m_leftTip;
+    QString m_rightTip;
     QList<int> m_scales;
 
     QColor m_tipColor = Qt::black;
