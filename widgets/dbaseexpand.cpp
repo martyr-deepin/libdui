@@ -23,6 +23,7 @@ DBaseExpand::DBaseExpand(QWidget *parent) : QWidget(parent)
     m_contentLayout->setAlignment(Qt::AlignCenter);
     m_contentLayout->setContentsMargins(0, 0, 0, 0);
     m_contentLoader = new ContentLoader();
+    m_contentLoader->setFixedHeight(0); // default to not expanded.
     m_contentLoader->setLayout(m_contentLayout);
 
     m_animation = new QPropertyAnimation(m_contentLoader, "height");
@@ -92,7 +93,7 @@ void DBaseExpand::setExpand(bool value)
     }
     else
     {
-        m_animation->setStartValue(m_content->height());
+        m_animation->setStartValue(m_contentLoader->height());
         m_animation->setEndValue(0);
     }
 
