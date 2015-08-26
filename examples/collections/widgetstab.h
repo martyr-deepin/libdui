@@ -5,6 +5,7 @@
 
 #include "dcalendar.h"
 #include "dtextbutton.h"
+#include "darrowrectangle.h"
 
 DUI_USE_NAMESPACE
 

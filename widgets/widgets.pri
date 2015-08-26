@@ -41,7 +41,8 @@ HEADERS += $$PWD/dslider.h\
     $$PWD/dlinkbutton.h \
     $$PWD/dcameraview.h \
     $$PWD/dscrollbar.h \
-    $$PWD/dscrollarea.h
+    $$PWD/dscrollarea.h \
+    $$PWD/darrowrectangle.h
 
 SOURCES += $$PWD/dslider.cpp \
     $$PWD/dthememanager.cpp \
@@ -83,7 +84,8 @@ SOURCES += $$PWD/dslider.cpp \
     $$PWD/dlinkbutton.cpp \
     $$PWD/dcameraview.cpp \
     $$PWD/dscrollbar.cpp \
-    $$PWD/dscrollarea.cpp
+    $$PWD/dscrollarea.cpp \
+    $$PWD/darrowrectangle.cpp
 
 RESOURCES += \
     $$PWD/../themes/dark.qrc \

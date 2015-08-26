@@ -29,6 +29,7 @@
         <file>dark/DLinkButton.theme</file>
         <file>dark/DScrollBar.theme</file>
         <file>dark/DScrollArea.theme</file>
+        <file>dark/DArrowRectangle.theme</file>
     </qresource>
     <qresource prefix="/images">
         <file>dark/images/add_hover.png</file>
