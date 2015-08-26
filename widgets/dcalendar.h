@@ -9,7 +9,7 @@
 #include <QPropertyAnimation>
 
 #include "libdui_global.h"
-#include "dtextbutton.h"
+#include "dlinkbutton.h"
 #include "dimagebutton.h"
 
 class DCalendarView;
@@ -85,11 +85,11 @@ private:
     void resizeEvent(QResizeEvent *e);
 
 private:
-    DUI::DImageButton prevYear;
-    DUI::DImageButton nextYear;
-    DUI::DImageButton prevMonth;
-    DUI::DImageButton nextMonth;
-    DUI::DTextButton m_resetBtn;
+    DImageButton prevYear;
+    DImageButton nextYear;
+    DImageButton prevMonth;
+    DImageButton nextMonth;
+    DLinkButton m_resetBtn;
 
     QLineEdit year;
     QLineEdit month;

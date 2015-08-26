@@ -74,7 +74,7 @@ void DCalendarModel::setDate(const QDate & date)
     const QPoint p = dateToCell(date);
     const int currentIndex = p.x() * 7 + p.y();
 
-    qDebug() << this << "current: " << p.x() << p.y();
+    //qDebug() << this << "current: " << p.x() << p.y();
 
     for (int i(0); i != 42; ++i)
         days[i] = date.addDays(i - currentIndex);
@@ -113,7 +113,8 @@ const CaLunarDayInfo DCalendarModel::getCaLunarDayInfo(const QDate &date) const
 
     bool o1;
     QDBusReply<CaLunarDayInfo> reply = mDBusInter->GetLunarInfoBySolar(date.year(), date.month(), date.day(), o1);
-    qDebug() << reply.isValid() << reply.error() << reply.value() << o1;
+
+    //qDebug() << reply.isValid() << reply.error() << reply.value() << o1;
 
     mLunarCache->insert(date, reply.value());
 
@@ -122,10 +123,19 @@ const CaLunarDayInfo DCalendarModel::getCaLunarDayInfo(const QDate &date) const
 
 QString DCalendarModel::getLunarDetail(const QDate &date) const
 {
+    QString result;
     CaLunarDayInfo lunarInfo = getCaLunarDayInfo(date);
-    if (lunarInfo.mSolarFestival.isEmpty())
-        return std::move(QString(tr("%1年%2%3").arg(lunarInfo.mGanZhiYear).arg(lunarInfo.mLunarMonthName).arg(lunarInfo.mLunarDayName)));
-    return std::move(lunarInfo.mSolarFestival);
+
+    result = QString(tr("%1年%2%3").arg(lunarInfo.mGanZhiYear)
+                                  .arg(lunarInfo.mLunarMonthName)
+                                  .arg(lunarInfo.mLunarDayName));
+
+    if (!lunarInfo.mSolarFestival.isEmpty())
+        result += ' ' + lunarInfo.mSolarFestival;
+    if (!lunarInfo.mLunarFestival.isEmpty())
+        result += ' ' + lunarInfo.mLunarFestival;
+
+    return std::move(result);
 }
 
 QPoint DCalendarModel::dateToCell(const QDate & date) const

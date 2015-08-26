@@ -93,11 +93,11 @@ DCalendar::DCalendar(QWidget *parent) : QWidget(parent),
 
     m_resetBtn.hide();
 
-    connect(&prevYear, &DUI::DImageButton::clicked, [this] () -> void {selectDate = selectDate.addYears(-1); adjustDate();});
-    connect(&nextYear, &DUI::DImageButton::clicked, [this] () -> void {selectDate = selectDate.addYears(1); adjustDate();});
-    connect(&prevMonth, &DUI::DImageButton::clicked, [this] () -> void {selectDate = selectDate.addMonths(-1); adjustDate();});
-    connect(&nextMonth, &DUI::DImageButton::clicked, [this] () -> void {selectDate = selectDate.addMonths(1); adjustDate();});
-    connect(&m_resetBtn, &DUI::DTextButton::clicked, this, &DCalendar::resetDate);
+    connect(&prevYear, &DImageButton::clicked, [this] () -> void {selectDate = selectDate.addYears(-1); adjustDate();});
+    connect(&nextYear, &DImageButton::clicked, [this] () -> void {selectDate = selectDate.addYears(1); adjustDate();});
+    connect(&prevMonth, &DImageButton::clicked, [this] () -> void {selectDate = selectDate.addMonths(-1); adjustDate();});
+    connect(&nextMonth, &DImageButton::clicked, [this] () -> void {selectDate = selectDate.addMonths(1); adjustDate();});
+    connect(&m_resetBtn, &DLinkButton::clicked, this, &DCalendar::resetDate);
 
     connect(cViewLeft, SIGNAL(cellClicked(QModelIndex)), this, SLOT(maybeChangeMonth(QModelIndex)), Qt::QueuedConnection);
     connect(cViewRight, SIGNAL(cellClicked(QModelIndex)), this, SLOT(maybeChangeMonth(QModelIndex)), Qt::QueuedConnection);
@@ -126,7 +126,7 @@ DCalendar::~DCalendar()
 
 void DCalendar::animationToPrev()
 {
-    qDebug() << "prev";
+    //qDebug() << "prev";
     cViewLeft->setModel(nextStepModel);
     cViewRight->setModel(currentModel);
 
@@ -140,7 +140,7 @@ void DCalendar::animationToPrev()
 
 void DCalendar::animationToNext()
 {
-    qDebug() << "next";
+    //qDebug() << "next";
     cViewLeft->setModel(currentModel);
     cViewRight->setModel(nextStepModel);
 
