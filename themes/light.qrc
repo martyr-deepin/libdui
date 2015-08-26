@@ -19,6 +19,7 @@
         <file>light/DLinkButton.theme</file>
         <file>light/DScrollBar.theme</file>
         <file>light/DScrollArea.theme</file>
+        <file>light/DArrowRectangle.theme</file>
     </qresource>
     <qresource prefix="/images">
         <file>light/images/arrow_down_hover.png</file>
