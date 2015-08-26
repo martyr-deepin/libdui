@@ -26,11 +26,11 @@ DUI--DButtonList QPushButton:checked{
 }
 
 DUI--DButtonList QPushButton:checked[state="OnlyOne"]{
-    background-color: lightblack;
+    background-color: transparent;
     color:#01BDFF;
 }
 
 DUI--DButtonList QPushButton:checked[state="normal"]{
-    background-color: transparent;
+    background-color: lightblack;
     color:#01BDFF;
 }
