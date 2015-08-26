@@ -29,7 +29,7 @@ public:
     void setHeader(QWidget *header);
     void setContent(QWidget *content);
     void setHeaderHeight(int height);
-    void setExpand(bool value);
+    virtual void setExpand(bool value);
     void updateContentHeight();
     bool expand() const;
     void setAnimationDuration(int duration);

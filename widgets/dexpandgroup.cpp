@@ -83,9 +83,8 @@ void DExpandGroup::onExpandChanged(bool v)
     QList<DBaseExpand *> expandList = m_expandMap.values();
     for (int i = 0; i < expandList.count(); i ++){
         DBaseExpand *target = expandList.at(i);
-        if (target != dSender && target->expand()){
+        if (target != dSender && target->expand())
             target->setExpand(false);
-        }
     }
 }
 
