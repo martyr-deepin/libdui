@@ -6,11 +6,18 @@ DUI--DSearchEdit {
     border-radius:3px;
 }
 
-DUI--DSearchEdit #Icon {
+DUI--DSearchEdit #SearchIcon {
     background-color:transparent;
     qproperty-normalPic:url(:/images/dark/images/search_normal.png);
     qproperty-hoverPic:url(:/images/dark/images/search_hover.png);
     qproperty-pressPic:url(:/images/dark/images/search_press.png);
+}
+
+DUI--DSearchEdit #ClearIcon {
+    background-color:transparent;
+    qproperty-normalPic:url(:/images/dark/images/clear_content_normal.png);
+    qproperty-hoverPic:url(:/images/dark/images/clear_content_hover.png);
+    qproperty-pressPic:url(:/images/dark/images/clear_content_press.png);
 }
 
 DUI--DSearchEdit #Edit {
@@ -18,4 +25,5 @@ DUI--DSearchEdit #Edit {
     border-radius:0;
     color:#fff;
     border:none;
+    padding-right:15px;
 }

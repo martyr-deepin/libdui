@@ -20,8 +20,6 @@ public:
 
     QSize sizeHint() const {return m_size;}
     QSize minimumSizeHint() const {return m_size;}
-    void setFixedSize(const QSize & size) {m_size = size;}
-    void setMinimumSize(const QSize & size) {m_size = size;}
     const QString text() const;
 
     void mousePressEvent(QMouseEvent *);
@@ -33,7 +31,7 @@ public:
 
 public slots:
     void setText(const QString & text) {if (m_edt) m_edt->setText(text);}
-    void setSearchIcon(const QString & icon) {if (m_btn) m_btn->setNormalPic(icon);}
+    inline void clear() {m_edt->clear();}
 
 signals:
     void textChanged();
@@ -43,9 +41,13 @@ private slots:
     void toEditMode();
 
 private:
+    void resizeEvent(QResizeEvent *e);
+
+private:
     QSize m_size;
     QLineEdit *m_edt;
-    DImageButton *m_btn;
+    DImageButton *m_searchBtn;
+    DImageButton *m_clearBtn;
 
     QPropertyAnimation *m_animation;
     QEasingCurve m_showCurve = QEasingCurve::OutCubic;

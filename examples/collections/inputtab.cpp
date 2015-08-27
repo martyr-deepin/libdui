@@ -21,6 +21,7 @@ InputTab::InputTab(QWidget *parent) : QLabel(parent)
 
     DUI::DSearchEdit *searchEdit = new DUI::DSearchEdit(this);
     //searchEdit->setSearchIcon(":/images/button.png");
+    //searchEdit->setFixedWidth(300);
     searchEdit->move(20, 80);
 
     DUI::DLineEdit *lineEdit = new DUI::DLineEdit(this);

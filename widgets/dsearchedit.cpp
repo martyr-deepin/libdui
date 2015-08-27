@@ -6,6 +6,7 @@
 #include <QPropertyAnimation>
 #include <QDebug>
 #include <QEvent>
+#include <QResizeEvent>
 
 DUI_USE_NAMESPACE
 
@@ -14,38 +15,42 @@ DSearchEdit::DSearchEdit(QWidget *parent)
 {
     D_THEME_INIT_WIDGET(DSearchEdit);
 
-    m_btn = new DUI::DImageButton;
+    m_searchBtn = new DImageButton;
+    m_searchBtn->setObjectName("SearchIcon");
+    m_clearBtn = new DImageButton;
+    m_clearBtn->setObjectName("ClearIcon");
+    m_clearBtn->hide();
     m_edt = new QLineEdit;
-    m_btn->setObjectName("Icon");
     m_edt->setObjectName("Edit");
 
-    m_animation = new QPropertyAnimation(m_edt, "maximumWidth");
+    m_animation = new QPropertyAnimation(m_edt, "minimumWidth");
 
-    //setObjectName("DSearchEdit");
-    setAutoFillBackground(true);
-    //setStyleSheet("background-color:red;");
-
-    m_size = QSize(m_btn->sizeHint().width() + m_edt->sizeHint().width(), qMax(m_btn->sizeHint().height(), m_edt->sizeHint().height()));
-    setFixedSize(m_size);
+    m_size = QSize(m_searchBtn->sizeHint().width() + m_edt->sizeHint().width() + m_clearBtn->sizeHint().width() + 6,
+                   qMax(m_searchBtn->sizeHint().height(), m_edt->sizeHint().height()));
     m_edt->setFixedWidth(0);
     m_edt->installEventFilter(this);
 
-    //QSpacerItem *spacer = new QSpacerItem(0, 0, QSizePolicy::Expanding, QSizePolicy::Minimum);
     QHBoxLayout *layout = new QHBoxLayout;
-    //layout->addSpacerItem(spacer);
     layout->addStretch();
-    layout->addWidget(m_btn);
+    layout->addWidget(m_searchBtn);
+    layout->setAlignment(m_searchBtn, Qt::AlignCenter);
     layout->addWidget(m_edt);
+    layout->setAlignment(m_edt, Qt::AlignCenter);
     layout->addStretch();
-    //layout->addSpacerItem(spacer);
+    layout->addWidget(m_clearBtn);
+    layout->setAlignment(m_clearBtn, Qt::AlignCenter);
     layout->setSpacing(0);
-    layout->setMargin(0);
+    layout->setContentsMargins(3, 0, 3, 0);
 
     setLayout(layout);
+    setAutoFillBackground(true);
 
+    connect(m_clearBtn, &DImageButton::clicked, m_edt, static_cast<void (QLineEdit::*)()>(&QLineEdit::setFocus));
+    connect(m_clearBtn, &DImageButton::clicked, this, &DSearchEdit::clear);
+    connect(m_edt, &QLineEdit::textChanged, [this] {m_clearBtn->setVisible(!m_edt->text().isEmpty());});
     connect(m_edt, &QLineEdit::textChanged, this, &DSearchEdit::textChanged, Qt::DirectConnection);
     connect(m_edt, &QLineEdit::editingFinished, this, &DSearchEdit::editingFinished, Qt::DirectConnection);
-    connect(m_btn, &DImageButton::clicked, this, &DSearchEdit::toEditMode);
+    connect(m_searchBtn, &DImageButton::clicked, this, &DSearchEdit::toEditMode);
 }
 
 DSearchEdit::~DSearchEdit()
@@ -81,10 +86,15 @@ void DSearchEdit::toEditMode()
 {
     m_animation->stop();
     m_animation->setStartValue(0);
-    m_animation->setEndValue(m_size.width() - m_btn->width());
+    m_animation->setEndValue(m_size.width() - m_searchBtn->width() - 6); // left + right margins = 6
     m_animation->setEasingCurve(m_showCurve);
     m_animation->start();
 
     m_edt->show();
     m_edt->setFocus();
+}
+
+void DSearchEdit::resizeEvent(QResizeEvent *e)
+{
+    m_size = e->size();
 }
