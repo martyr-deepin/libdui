@@ -1,5 +1,7 @@
 DUI--DSlider {
-    qproperty-tipColor: darkgrey;
+    qproperty-tipColor: #505050;
+    qproperty-scaleColor: #505050;
+    qproperty-hoverValueColor: #B4B4B4;
 }
 
 /*************************************For Round Handle***************************************/

@@ -1,6 +1,7 @@
 #include <QPainter>
 #include <QPaintEvent>
 #include <QDebug>
+#include <QTimer>
 
 #include "dslider.h"
 #include "dthememanager.h"
@@ -11,16 +12,51 @@ static const int CustomDrawingLeftPadding = 10;
 static const int CustomDrawingRightPadding = 10;
 static const int CustomDrawingScaleHeight = 6;
 
-DSlider::DSlider(QWidget * parent) :
-    QSlider(parent)
+class DSliderPrivate
 {
-    D_THEME_INIT_WIDGET(DSlider);
+    DSliderPrivate (DSlider *q):
+        m_hoverShowValue(false),
+        m_handleHovering(false),
+        m_hoverTimout(false),
+        m_hoverShowValueInterval(-1),
+        q_ptr(q)
+    {
+        m_hoverTimer.setSingleShot(true);
+    }
+
+    int m_handleType = DSlider::RoundHandle;
+
+    QString m_leftTip;
+    QString m_rightTip;
+    QList<int> m_scales;
+
+    QColor m_tipColor = Qt::black;
+    QColor m_scaleColor = Qt::black;
+    QColor m_hoverValueColor;
+    bool m_hoverShowValue;
+    bool m_handleHovering;
+    bool m_hoverTimout;
+    int m_hoverShowValueInterval;
+    QTimer m_hoverTimer;
+
+    int getScalePosition(int value);
+
+    DSlider *q_ptr;
+    Q_DECLARE_PUBLIC(DSlider)
+};
+
+DSlider::DSlider(QWidget * parent) :
+    QSlider(parent),
+    d_ptr(new DSliderPrivate(this))
+{
+    init();
 }
 
 DSlider::DSlider(Qt::Orientation orientation, QWidget * parent) :
-    QSlider(orientation, parent)
+    QSlider(orientation, parent),
+    d_ptr(new DSliderPrivate(this))
 {
-    D_THEME_INIT_WIDGET(DSlider);
+    init();
 }
 
 DSlider::~DSlider()
@@ -30,30 +66,38 @@ DSlider::~DSlider()
 
 int DSlider::handleType() const
 {
-    return m_handleType;
+    Q_D(const DSlider);
+
+    return d->m_handleType;
 }
 
 void DSlider::setHandleType(HandleType handleType)
 {
-    m_handleType = handleType;
+    Q_D(DSlider);
+
+    d->m_handleType = handleType;
 }
 
 
 QString DSlider::rightTip() const
 {
-    return m_rightTip;
+    Q_D(const DSlider);
+
+    return d->m_rightTip;
 }
 
 void DSlider::setRightTip(const QString &rightTip)
 {
-    if(m_rightTip == rightTip)
+    Q_D(DSlider);
+
+    if(d->m_rightTip == rightTip)
         return;
 
-    if(m_rightTip.isEmpty() || rightTip.isEmpty()){
-        m_rightTip = rightTip;
+    if(d->m_rightTip.isEmpty() || rightTip.isEmpty()){
+        d->m_rightTip = rightTip;
         updateGeometry();
     }else{
-        m_rightTip = rightTip;
+        d->m_rightTip = rightTip;
     }
 
     repaint();
@@ -61,19 +105,23 @@ void DSlider::setRightTip(const QString &rightTip)
 
 QString DSlider::leftTip() const
 {
-    return m_leftTip;
+    Q_D(const DSlider);
+
+    return d->m_leftTip;
 }
 
 void DSlider::setLeftTip(const QString &leftTip)
 {
-    if(m_leftTip == leftTip)
+    Q_D(DSlider);
+
+    if(d->m_leftTip == leftTip)
         return;
 
-    if(m_leftTip.isEmpty() || leftTip.isEmpty()){
-        m_leftTip = leftTip;
+    if(d->m_leftTip.isEmpty() || leftTip.isEmpty()){
+        d->m_leftTip = leftTip;
         updateGeometry();
     }else{
-        m_leftTip = leftTip;
+        d->m_leftTip = leftTip;
     }
 
     repaint();
@@ -81,33 +129,43 @@ void DSlider::setLeftTip(const QString &leftTip)
 
 QColor DSlider::scaleColor() const
 {
-    return m_scaleColor;
+    Q_D(const DSlider);
+
+    return d->m_scaleColor;
 }
 
 void DSlider::setScaleColor(const QColor &scaleColor)
 {
-    m_scaleColor = scaleColor;
+    Q_D(DSlider);
+
+    d->m_scaleColor = scaleColor;
 
     repaint();
 }
 
 QColor DSlider::tipColor() const
 {
-    return m_tipColor;
+    Q_D(const DSlider);
+
+    return d->m_tipColor;
 }
 
 void DSlider::setTipColor(const QColor &tipColor)
 {
-    m_tipColor = tipColor;
+    Q_D(DSlider);
+
+    d->m_tipColor = tipColor;
 
     repaint();
 }
 
 void DSlider::addScale(int value)
 {
-    m_scales.append(value);
+    Q_D(DSlider);
 
-    if(m_scales.count() == 1)
+    d->m_scales.append(value);
+
+    if(d->m_scales.count() == 1)
         updateGeometry();
 
     repaint();
@@ -115,9 +173,11 @@ void DSlider::addScale(int value)
 
 void DSlider::removeScale(int value)
 {
-    m_scales.removeOne(value);
+    Q_D(DSlider);
 
-    if(m_scales.isEmpty())
+    d->m_scales.removeOne(value);
+
+    if(d->m_scales.isEmpty())
         updateGeometry();
 
     repaint();
@@ -125,7 +185,7 @@ void DSlider::removeScale(int value)
 
 void DSlider::paintEvent(QPaintEvent * event)
 {
-    QSlider::paintEvent(event);
+    Q_D(DSlider);
 
     QPainter painter;
     painter.begin(this);
@@ -136,47 +196,164 @@ void DSlider::paintEvent(QPaintEvent * event)
     painter.setFont(font);
 
     QPen pen = painter.pen();
-    pen.setColor(m_tipColor);
+    pen.setColor(d->m_tipColor);
     painter.setPen(pen);
 
     QRect tmp = rect().adjusted(CustomDrawingLeftPadding - 5, 0, -CustomDrawingRightPadding + 5, 0);
 
     QTextOption leftBottomOption;
     leftBottomOption.setAlignment(Qt::AlignLeft | Qt::AlignBottom);
-    painter.drawText(tmp, m_leftTip, leftBottomOption);
+    painter.drawText(tmp, d->m_leftTip, leftBottomOption);
 
     QTextOption rightBottomOption;
     rightBottomOption.setAlignment(Qt::AlignRight | Qt::AlignBottom);
-    painter.drawText(tmp, m_rightTip, rightBottomOption);
+    painter.drawText(tmp, d->m_rightTip, rightBottomOption);
 
     // draw scales
-    pen.setColor(m_scaleColor);
+    pen.setColor(d->m_scaleColor);
     painter.setPen(pen);
 
-    foreach (int scale, m_scales) {
-        int x = getScalePosition(scale);
+    foreach (int scale, d->m_scales) {
+        int x = d->getScalePosition(scale);
         int y = height() - 8;
         painter.drawLine(x, y, x, y - CustomDrawingScaleHeight);
     }
 
+    if(d->m_handleHovering && !d->m_hoverTimout){
+        QString str = QString::number(value());
+        int x = d->getScalePosition(value()) - painter.fontMetrics().width(str) / 2.0;
+        painter.setPen(d->m_hoverValueColor);
+        painter.drawText(x, 10, str);
+    }
+
     painter.end();
+
+    QSlider::paintEvent(event);
+}
+
+void DSlider::mouseMoveEvent(QMouseEvent *event)
+{
+    QSlider::mouseMoveEvent(event);
+
+    Q_D(DSlider);
+
+    if(!d->m_hoverShowValue){
+        return;
+    }
+
+    QPoint pos = event->pos();
+    QRect rect(d->getScalePosition(value()) - CustomDrawingLeftPadding, 10, 20, 20);
+    if(d->m_handleHovering){
+        d->m_handleHovering = rect.contains(pos);
+    }else{
+        d->m_handleHovering = rect.contains(pos);
+        if(d->m_handleHovering){
+            d->m_hoverTimout = false;
+            if(d->m_hoverShowValueInterval > 0)
+                d->m_hoverTimer.start(d->m_hoverShowValueInterval);
+        }
+    }
+
+    update();
+}
+
+void DSlider::hoverTimout()
+{
+    Q_D(DSlider);
+
+    d->m_hoverTimout = true;
+    update();
+}
+
+void DSlider::init()
+{
+    Q_D(DSlider);
+
+    D_THEME_INIT_WIDGET(DSlider);
+
+    setMouseTracking(true);
+    connect(&d->m_hoverTimer, &QTimer::timeout, this, &DSlider::hoverTimout);
 }
 
 QSize DSlider::sizeHint() const
 {
+    Q_D(const DSlider);
+
     QSize size = QSlider::sizeHint();
-    if(!m_leftTip.isEmpty() || !m_rightTip.isEmpty() || !m_scales.isEmpty())
-        size.setHeight(size.height()+25);
-    else
-        size.setHeight(size.height()+3);
+    if(!d->m_leftTip.isEmpty() || !d->m_rightTip.isEmpty() || !d->m_scales.isEmpty()){
+        size.setHeight(size.height() + 25);
+    }else{
+        if(d->m_hoverShowValue){
+            size.setHeight(size.height() + 25);
+        }else{
+            size.setHeight(size.height() + 3);
+        }
+    }
+
     return size;
 }
 
-int DSlider::getScalePosition(int value)
+bool DSlider::hoverShowValue() const
 {
-    float valueRange = maximum() - minimum();
-    float posRange = width() - CustomDrawingLeftPadding - CustomDrawingRightPadding;
-    return CustomDrawingLeftPadding + value * posRange / valueRange;
+    Q_D(const DSlider);
+
+    return d->m_hoverShowValue;
+}
+
+QColor DSlider::hoverValueColor() const
+{
+    Q_D(const DSlider);
+
+    return d->m_hoverValueColor;
+}
+
+int DSlider::hoverShowValueInterval() const
+{
+    Q_D(const DSlider);
+
+    return d->m_hoverShowValueInterval;
+}
+
+void DSlider::setHoverShowValue(bool hoverShowValue)
+{
+    Q_D(DSlider);
+
+    if(d->m_hoverShowValue == hoverShowValue)
+        return;
+
+    d->m_hoverShowValue = hoverShowValue;
+    d->m_handleHovering &= hoverShowValue;
+
+    updateGeometry();
+    repaint();
+}
+
+void DSlider::setHoverValueColor(QColor hoverValueColor)
+{
+    Q_D(DSlider);
+
+    d->m_hoverValueColor = hoverValueColor;
+}
+
+void DSlider::setHoverShowValueInterval(int hoverShowValueInterval)
+{
+    Q_D(DSlider);
+
+    d->m_hoverShowValueInterval = hoverShowValueInterval;
+}
+
+DSlider::DSlider(DSliderPrivate &d): d_ptr(&d)
+{
+    init();
+}
+
+int DSliderPrivate::getScalePosition(int value)
+{
+    Q_Q(DSlider);
+
+    float valueRange = q->maximum() - q->minimum();
+    float posRange = q->width() - CustomDrawingLeftPadding - CustomDrawingRightPadding;
+    return CustomDrawingLeftPadding + (value - q->minimum()) * posRange / valueRange;
 }
 
 DUI_END_NAMESPACE
