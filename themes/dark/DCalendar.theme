@@ -2,8 +2,10 @@ DUI--DCalendar {
     qproperty-backgroundColor:#242526;
     qproperty-backgroundCircleColor:#00b1e9;
     qproperty-defaultTextColor:#eee;
-    qproperty-defaultLunarColor:#00f2e9;
-    qproperty-weekendsTextColor:cyan;
+    qproperty-defaultLunarColor:#eee;
+    qproperty-festivalLunarColor:cyan;
+    qproperty-weekendsTextColor:#eee;
+    qproperty-weekendsLunarColor:#eee;
     background-color:transparent;
 }
 

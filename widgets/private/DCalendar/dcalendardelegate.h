@@ -46,11 +46,13 @@ private:
     QColor m_weekendsTextColor = Qt::gray;
     QColor m_selectedTextColor = Qt::white;
     QColor m_festivalTextColor = Qt::cyan;
+    QColor m_notCurrentTextColor = QColor(0x55, 0x55, 0x55);
 
     QColor m_defaultLunarColor = Qt::black;
     QColor m_weekendsLunarColor = Qt::gray;
     QColor m_selectedLunarColor = Qt::white;
     QColor m_festivalLunarColor = Qt::cyan;
+    QColor m_notCurrentLunarColor = QColor(0x55, 0x55, 0x55);
 };
 
 #endif // DCALENDARDELEGATE_H

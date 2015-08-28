@@ -17,8 +17,10 @@ public:
     enum CalendarDayType
     {
         SO_Festival = QStyleOption::SO_CustomBase + 0x01,
-        SO_Weekends = QStyleOption::SO_CustomBase + 0x10,
+        SO_Weekends = QStyleOption::SO_CustomBase + 0x02,
         SO_WeekendsAndFestival = SO_Festival | SO_Weekends,
+        SO_NotCurrentMonth = 0x04,
+        SO_NotCurrentMonthFestival = SO_NotCurrentMonth | SO_Festival,
         SO_Default,
     };
 

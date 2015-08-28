@@ -45,23 +45,21 @@ QVariant DCalendarModel::data(const QModelIndex &index, int role) const
     // day type (festival or weekends or ...)
     if (role == Qt::UserRole)
     {
+        const CaLunarDayInfo info = getCaLunarDayInfo(days[listIndex]);
         const int dayOfWeek = days[listIndex].dayOfWeek();
-        bool weekends = false;
-        if (dayOfWeek == 6 || dayOfWeek == 7)
-            weekends = true;
+        bool weekends = dayOfWeek == 6 || dayOfWeek == 7;
+        bool isCurrentMonth = currentDate.month() == days[listIndex].month();
+        bool isFestival = !info.mSolarFestival.isEmpty() || !info.mLunarFestival.isEmpty();
 
-        CaLunarDayInfo info = getCaLunarDayInfo(days[listIndex]);
-        if (!info.mTerm.isEmpty())
-        {
-            if (weekends)
-                return SO_WeekendsAndFestival;
-            else
-                return SO_Festival;
-        }
-
+        int resultFlag = 0;
+        if (!isCurrentMonth)
+            resultFlag |= SO_NotCurrentMonth;
+        if (isFestival)
+            resultFlag |= SO_Festival;
         if (weekends)
-            return SO_Weekends;
-        return SO_Default;
+            resultFlag |= SO_Weekends;
+
+        return resultFlag;
     }
 
     return QVariant();

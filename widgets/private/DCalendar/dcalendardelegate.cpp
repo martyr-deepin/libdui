@@ -49,18 +49,29 @@ void DCalendarDelegate::paint(QPainter *painter, const QStyleOptionViewItem &opt
     if (isSelectedCell)
         painter->setPen(m_selectedTextColor);
     else
-        if (type == DCalendarModel::SO_Weekends)
+    {
+        const int tType = type & 0xff;
+        if (tType & DCalendarModel::SO_NotCurrentMonth)
+            painter->setPen(m_notCurrentTextColor);
+        else if (type == DCalendarModel::SO_Weekends)
             painter->setPen(m_weekendsTextColor);
         else
             painter->setPen(m_defaultTextColor);
+    }
     painter->drawText(option.rect, Qt::AlignCenter, index.data().toString());
 
+    qDebug() << index.data(Qt::WhatsThisRole).toString() << type;
     // draw text of day type
     if (isSelectedCell)
         painter->setPen(m_selectedLunarColor);
     else
     {
-        if (type == DCalendarModel::SO_Weekends)
+        const int tType = type & 0xff;
+        if (tType & DCalendarModel::SO_NotCurrentMonth)
+            painter->setPen(tType & DCalendarModel::SO_Festival ? m_festivalLunarColor : m_notCurrentLunarColor);
+        else if (tType & DCalendarModel::SO_Festival)
+            painter->setPen(m_festivalLunarColor);
+        else if (tType & DCalendarModel::SO_Weekends)
             painter->setPen(m_weekendsLunarColor);
         else
             painter->setPen(m_defaultLunarColor);
