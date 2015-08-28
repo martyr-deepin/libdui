@@ -160,6 +160,13 @@ void DCalendar::setLunarVisible(const bool visible)
     nextStepModel->setLunarVisible(visible);
 }
 
+void DCalendar::resetCurrentDate(const QDate & resetDate)
+{
+    // when system date changed, reset to system date
+    currentDate = resetDate;
+    adjustDate();
+}
+
 void DCalendar::adjustDate()
 {
     year.setText(QString::number(selectDate.year()));

@@ -48,6 +48,8 @@ public:
     inline bool lunarVisible() const {return m_lunarVisible;}
     void setLunarVisible(const bool visible);
 
+    void resetCurrentDate(const QDate &resetDate);
+
     void setBackgroundColor(const QColor & color);
     QColor getBackgroundColor() const;
     void setBackgroundCircleColor(const QColor & color);
@@ -96,7 +98,7 @@ private:
 
     QDate usingDate;
     QDate selectDate;
-    const QDate currentDate;
+    QDate currentDate;
 
     int outerWidth;
     int outerHeight;
