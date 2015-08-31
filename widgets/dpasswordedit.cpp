@@ -32,16 +32,18 @@ void DPasswordEdit::setEchoMode(const bool isEcho)
     m_echo = isEcho;
     m_edit.setEchoMode(isEcho ? QLineEdit::Normal : QLineEdit::Password);
 
-    // TODO theme
-    D_THEME_INIT_WIDGET(DPasswordEdit);
+    style()->unpolish(this);
+    style()->polish(this);
+    update();
 }
 
 void DPasswordEdit::setAlertMode(const bool isAlert)
 {
     m_alert = isAlert;
 
-    // TODO theme
-    D_THEME_INIT_WIDGET(DPasswordEdit);
+    style()->unpolish(this);
+    style()->polish(this);
+    update();
 }
 
 DUI_END_NAMESPACE
