@@ -21,6 +21,9 @@ public:
 
     QString getQssForWidget(QString className);
 
+public slots:
+    void updateQss();
+
 signals:
     void themeChanged(QString theme);
 

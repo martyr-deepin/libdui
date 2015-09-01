@@ -1,5 +1,5 @@
 #include <QFile>
-#include <QDebug>
+#include <QWidget>
 
 #include "dthememanager.h"
 #include "dapplication.h"
@@ -46,6 +46,14 @@ QString DThemeManager::getQssForWidget(QString className)
     }
 
     return qss;
+}
+
+void DThemeManager::updateQss()
+{
+    QWidget *w = qobject_cast<QWidget*>(sender());
+    if(w){
+        w->setStyleSheet(w->styleSheet());
+    }
 }
 
 DThemeManager::DThemeManager() :
