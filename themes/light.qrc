@@ -92,5 +92,8 @@
         <file>light/images/slider_bg.png</file>
         <file>light/images/slider_round.png</file>
         <file>light/images/slider_sharp.png</file>
+        <file>light/images/button_press_bg.png</file>
+        <file>light/images/button_normal_bg.png</file>
+        <file>light/images/button_hover_bg.png</file>
     </qresource>
 </RCC>

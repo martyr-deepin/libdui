@@ -150,5 +150,8 @@
         <file>dark/images/switch_inner.png</file>
         <file>dark/images/slider_bg.png</file>
         <file>dark/images/slider_bg_active.png</file>
+        <file>dark/images/dark_button_press_bg.png</file>
+        <file>dark/images/dark_button_normal_bg.png</file>
+        <file>dark/images/dark_button_hover_bg.png</file>
     </qresource>
 </RCC>

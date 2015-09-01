@@ -9,5 +9,4 @@ DUI--DLinkButton:hover {
 }
 
 DUI--DLinkButton:pressed {
-    color:red;
 }

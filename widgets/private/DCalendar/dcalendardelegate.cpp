@@ -60,7 +60,7 @@ void DCalendarDelegate::paint(QPainter *painter, const QStyleOptionViewItem &opt
     }
     painter->drawText(option.rect, Qt::AlignCenter, index.data().toString());
 
-    qDebug() << index.data(Qt::WhatsThisRole).toString() << type;
+    //qDebug() << index.data(Qt::WhatsThisRole).toString() << type;
     // draw text of day type
     if (isSelectedCell)
         painter->setPen(m_selectedLunarColor);
