@@ -11,7 +11,7 @@ DPasswordEdit::DPasswordEdit(QWidget *parent)
     : QFrame(parent),
       m_btn(this)
 {
-    D_THEME_INIT_WIDGET(DPasswordEdit);
+    D_THEME_INIT_WIDGET(DPasswordEdit, isEchoMode, isAlertMode);
 
     QHBoxLayout *layout = new QHBoxLayout;
     layout->addWidget(&m_edit);
@@ -29,21 +29,21 @@ DPasswordEdit::DPasswordEdit(QWidget *parent)
 
 void DPasswordEdit::setEchoMode(const bool isEcho)
 {
+    if (m_echo == isEcho)
+        return;
+
     m_echo = isEcho;
     m_edit.setEchoMode(isEcho ? QLineEdit::Normal : QLineEdit::Password);
-
-    style()->unpolish(this);
-    style()->polish(this);
-    update();
+    emit echoModeChanged();
 }
 
 void DPasswordEdit::setAlertMode(const bool isAlert)
 {
-    m_alert = isAlert;
+    if (m_alert == isAlert)
+        return;
 
-    style()->unpolish(this);
-    style()->polish(this);
-    update();
+    m_alert = isAlert;
+    emit alertModeChanged();
 }
 
 DUI_END_NAMESPACE

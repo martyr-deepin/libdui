@@ -13,8 +13,8 @@ DUI_BEGIN_NAMESPACE
 class LIBDUISHARED_EXPORT DPasswordEdit : public QFrame
 {
     Q_OBJECT
-    Q_PROPERTY(bool isEchoMode READ isEchoMode)
-    Q_PROPERTY(bool isAlertMode READ isAlertMode)
+    Q_PROPERTY(bool isEchoMode READ isEchoMode NOTIFY echoModeChanged)
+    Q_PROPERTY(bool isAlertMode READ isAlertMode NOTIFY alertModeChanged)
 
 public:
     explicit DPasswordEdit(QWidget *parent = 0);
@@ -22,6 +22,10 @@ public:
     inline QString text() const {return m_edit.text();}
     inline bool isEchoMode() const {return m_echo;}
     inline bool isAlertMode() const {return m_alert;}
+
+signals:
+    void echoModeChanged();
+    void alertModeChanged();
 
 public slots:
     /*inline void setNormalIcon(const QPixmap & icon) {m_btn.setNormalPic(icon);}

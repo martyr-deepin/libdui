@@ -1,6 +1,6 @@
 
 DUI--DLineEdit {
-    background-color:#4cffffff;
+    background-color:#0cffffff;
     color:#fff;
     border:1px solid black;
     border-radius:3px;

@@ -20,6 +20,9 @@
         <file>light/DScrollBar.theme</file>
         <file>light/DScrollArea.theme</file>
         <file>light/DArrowRectangle.theme</file>
+        <file>light/DSearchEdit.theme</file>
+        <file>light/DLineEdit.theme</file>
+        <file>light/DPasswordEdit.theme</file>
     </qresource>
     <qresource prefix="/images">
         <file>light/images/arrow_down_hover.png</file>
