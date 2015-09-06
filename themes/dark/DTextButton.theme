@@ -1,5 +1,5 @@
 DUI--DTextButton {
-    padding:1px 5px;
+    padding:0 5px;
     min-width:60px;
     color: #CCCCCC;
     outline:none;

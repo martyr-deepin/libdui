@@ -13,6 +13,9 @@ DPasswordEdit::DPasswordEdit(QWidget *parent)
 {
     D_THEME_INIT_WIDGET(DPasswordEdit, isEchoMode, isAlertMode);
 
+    // default echo mode is password
+    m_edit.setEchoMode(QLineEdit::Password);
+
     QHBoxLayout *layout = new QHBoxLayout;
     layout->addWidget(&m_edit);
     layout->addWidget(&m_btn);
@@ -20,7 +23,6 @@ DPasswordEdit::DPasswordEdit(QWidget *parent)
     layout->setSpacing(0);
 
     setLayout(layout);
-
     setEchoMode(m_echo);
 
     connect(&m_btn, &DImageButton::clicked, [this] () -> void {setEchoMode(!m_echo);});

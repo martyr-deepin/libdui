@@ -28,9 +28,6 @@ signals:
     void alertModeChanged();
 
 public slots:
-    /*inline void setNormalIcon(const QPixmap & icon) {m_btn.setNormalPic(icon);}
-    inline void setHoverIcon(const QPixmap & icon) {m_btn.setHoverPic(icon);}
-    inline void setShowPasswordIcon(const QPixmap &icon) {m_btn.setCheckedPic(icon);}*/
     inline void setPassword(const QString & password) {m_edit.setText(password);}
     void setEchoMode(const bool isEcho);
     void setAlertMode(const bool isAlert);
@@ -40,7 +37,7 @@ signals:
 
 private:
     QLineEdit m_edit;
-    DUI::DImageButton m_btn;
+    DImageButton m_btn;
 
     bool m_alert = false;
     bool m_echo = false;
