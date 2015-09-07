@@ -88,6 +88,6 @@ SOURCES += $$PWD/dslider.cpp \
     $$PWD/darrowrectangle.cpp
 
 RESOURCES += \
-    $$PWD/../themes/dark.qrc \
+    $$PWD/../themes/dui_theme_dark.qrc \
     $$PWD/../icons.qrc \
-    $$PWD/../themes/light.qrc
+    $$PWD/../themes/dui_theme_light.qrc
