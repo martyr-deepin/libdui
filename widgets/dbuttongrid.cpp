@@ -267,8 +267,12 @@ void DButtonGrid::setButtonChecked(int id){
 }
 
 void DButtonGrid::checkButtonByIndex(int index){
+    if(index == m_currentCheckedIndex)
+        return;
+
     QPushButton* button = reinterpret_cast<QPushButton*>(m_buttonGroup->button(index));
-    button->click();
+    if(button)
+        button->click();
 }
 
 void DButtonGrid::setItemUnChecked(){
@@ -283,6 +287,21 @@ void DButtonGrid::setItemUnChecked(){
             }
         }
     }
+}
+
+void DButtonGrid::clearData(){
+    for(int i=0; i<m_buttonGroup->buttons().length(); i++){
+        m_buttonGroup->removeButton(m_buttonGroup->buttons().at(i));
+    }
+    m_buttonLabels.clear();
+    m_imageButtonInfos.clear();
+    m_currentCheckedIndex = -1;
+}
+
+void DButtonGrid::clear()
+{
+    clearData();
+    QTableWidget::clear();
 }
 
 DButtonGrid::~DButtonGrid()

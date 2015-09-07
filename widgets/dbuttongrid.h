@@ -61,6 +61,7 @@ public slots:
     void addImageButtons(const QList<QMap<QString, QString>>& imageInfos, bool isNameVisible=true);
     void addButtonWidget(QPushButton* button, int index);
     void checkButtonByIndex(int index);
+    void clear();
 
 private slots:
     void setButtonChecked(int id);
@@ -75,7 +76,9 @@ private:
     QList<QMap<QString, QString>> m_imageButtonInfos;
     int m_rowHeight = 40;
     int m_columnWidth = 100;
-    int m_currentCheckedIndex = 0;
+    int m_currentCheckedIndex = -1;
+
+    void clearData();
 };
 
 DUI_END_NAMESPACE
