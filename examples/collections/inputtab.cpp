@@ -18,6 +18,8 @@ InputTab::InputTab(QWidget *parent) : QLabel(parent)
     pwdEdit2->setEchoMode(true);
     pwdEdit2->setAlertMode(true);
     pwdEdit2->move(20, 50);
+    connect(pwdEdit2, &DUI::DPasswordEdit::focusChanged, [](bool focus) {qDebug() << "focus: " << focus;});
+    connect(pwdEdit2, &DUI::DPasswordEdit::textChanged, [](const QString &text) {qDebug() << "text: " << text;});
 
     DUI::DSearchEdit *searchEdit = new DUI::DSearchEdit(this);
     //searchEdit->setSearchIcon(":/images/button.png");

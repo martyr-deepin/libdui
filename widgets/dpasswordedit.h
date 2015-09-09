@@ -26,14 +26,16 @@ public:
 signals:
     void echoModeChanged();
     void alertModeChanged();
+    void focusChanged(bool onFocus);
+    void textChanged(const QString text);
 
 public slots:
     inline void setPassword(const QString & password) {m_edit.setText(password);}
     void setEchoMode(const bool isEcho);
     void setAlertMode(const bool isAlert);
 
-signals:
-    void textChanged(const QString text);
+private slots:
+    bool eventFilter(QObject *o, QEvent *e);
 
 private:
     QLineEdit m_edit;
