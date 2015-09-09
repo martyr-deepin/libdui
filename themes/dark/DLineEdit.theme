@@ -6,3 +6,7 @@ DUI--DLineEdit {
     border-radius:3px;
     border-bottom-color:#4d4d4d;
 }
+
+DUI--DLineEdit[alert="true"] {
+    border-color:#FF8F00;
+}

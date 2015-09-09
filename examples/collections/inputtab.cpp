@@ -28,6 +28,11 @@ InputTab::InputTab(QWidget *parent) : QLabel(parent)
     lineEdit->setText("LineEdit");
     lineEdit->move(20, 110);
 
+    DUI::DLineEdit *lineEditAlert = new DUI::DLineEdit(this);
+    lineEditAlert->setText("AlertLineEdit");
+    lineEditAlert->setAlert(true);
+    lineEditAlert->move(150, 110);
+
     DUI::DShortcutEdit *shortcutEdit = new DUI::DShortcutEdit(this);
     shortcutEdit->move(20, 140);
 }
