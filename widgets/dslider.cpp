@@ -12,9 +12,10 @@ static const int CustomDrawingLeftPadding = 10;
 static const int CustomDrawingRightPadding = 10;
 static const int CustomDrawingScaleHeight = 6;
 
+// TODO: optimize for better vertical slider support
 class DSliderPrivate
 {
-    DSliderPrivate (DSlider *q):
+    DSliderPrivate(DSlider *q):
         m_hoverShowValue(false),
         m_handleHovering(false),
         m_hoverTimout(false),
@@ -45,14 +46,14 @@ class DSliderPrivate
     Q_DECLARE_PUBLIC(DSlider)
 };
 
-DSlider::DSlider(QWidget * parent) :
+DSlider::DSlider(QWidget *parent) :
     QSlider(parent),
     d_ptr(new DSliderPrivate(this))
 {
     init();
 }
 
-DSlider::DSlider(Qt::Orientation orientation, QWidget * parent) :
+DSlider::DSlider(Qt::Orientation orientation, QWidget *parent) :
     QSlider(orientation, parent),
     d_ptr(new DSliderPrivate(this))
 {
@@ -90,13 +91,14 @@ void DSlider::setRightTip(const QString &rightTip)
 {
     Q_D(DSlider);
 
-    if(d->m_rightTip == rightTip)
+    if (d->m_rightTip == rightTip) {
         return;
+    }
 
-    if(d->m_rightTip.isEmpty() || rightTip.isEmpty()){
+    if (d->m_rightTip.isEmpty() || rightTip.isEmpty()) {
         d->m_rightTip = rightTip;
         updateGeometry();
-    }else{
+    } else {
         d->m_rightTip = rightTip;
     }
 
@@ -114,13 +116,14 @@ void DSlider::setLeftTip(const QString &leftTip)
 {
     Q_D(DSlider);
 
-    if(d->m_leftTip == leftTip)
+    if (d->m_leftTip == leftTip) {
         return;
+    }
 
-    if(d->m_leftTip.isEmpty() || leftTip.isEmpty()){
+    if (d->m_leftTip.isEmpty() || leftTip.isEmpty()) {
         d->m_leftTip = leftTip;
         updateGeometry();
-    }else{
+    } else {
         d->m_leftTip = leftTip;
     }
 
@@ -165,8 +168,9 @@ void DSlider::addScale(int value)
 
     d->m_scales.append(value);
 
-    if(d->m_scales.count() == 1)
+    if (d->m_scales.count() == 1) {
         updateGeometry();
+    }
 
     repaint();
 }
@@ -177,13 +181,32 @@ void DSlider::removeScale(int value)
 
     d->m_scales.removeOne(value);
 
-    if(d->m_scales.isEmpty())
+    if (d->m_scales.isEmpty()) {
         updateGeometry();
+    }
 
     repaint();
 }
 
-void DSlider::paintEvent(QPaintEvent * event)
+void DSlider::mousePressEvent(QMouseEvent *event)
+{
+    if (event->button() == Qt::LeftButton) {
+        if (orientation() == Qt::Vertical) {
+            setValue(minimum() + ((maximum() - minimum()) * (height() - event->y())) / height()) ;
+        } else {
+            // FIXME
+            // the value 10 is specified in DSlider.theme, it's ugly here, but I don't have any
+            // good idea for now, maybe someone can help.
+            setValue(minimum() + ((maximum() - minimum()) * (event->x() - 10)) / (width() - 10 - 10)) ;
+        }
+
+        event->accept();
+    }
+
+    QSlider::mousePressEvent(event);
+}
+
+void DSlider::paintEvent(QPaintEvent *event)
 {
     Q_D(DSlider);
 
@@ -213,13 +236,13 @@ void DSlider::paintEvent(QPaintEvent * event)
     pen.setColor(d->m_scaleColor);
     painter.setPen(pen);
 
-    foreach (int scale, d->m_scales) {
+    foreach(int scale, d->m_scales) {
         int x = d->getScalePosition(scale);
         int y = height() - 8;
         painter.drawLine(x, y, x, y - CustomDrawingScaleHeight);
     }
 
-    if(d->m_handleHovering && !d->m_hoverTimout){
+    if (d->m_handleHovering && !d->m_hoverTimout) {
         QString str = QString::number(value());
         int x = d->getScalePosition(value()) - painter.fontMetrics().width(str) / 2.0;
         painter.setPen(d->m_hoverValueColor);
@@ -237,20 +260,21 @@ void DSlider::mouseMoveEvent(QMouseEvent *event)
 
     Q_D(DSlider);
 
-    if(!d->m_hoverShowValue){
+    if (!d->m_hoverShowValue) {
         return;
     }
 
     QPoint pos = event->pos();
     QRect rect(d->getScalePosition(value()) - CustomDrawingLeftPadding, 10, 20, 20);
-    if(d->m_handleHovering){
+    if (d->m_handleHovering) {
         d->m_handleHovering = rect.contains(pos);
-    }else{
+    } else {
         d->m_handleHovering = rect.contains(pos);
-        if(d->m_handleHovering){
+        if (d->m_handleHovering) {
             d->m_hoverTimout = false;
-            if(d->m_hoverShowValueInterval > 0)
+            if (d->m_hoverShowValueInterval > 0) {
                 d->m_hoverTimer.start(d->m_hoverShowValueInterval);
+            }
         }
     }
 
@@ -280,12 +304,12 @@ QSize DSlider::sizeHint() const
     Q_D(const DSlider);
 
     QSize size = QSlider::sizeHint();
-    if(!d->m_leftTip.isEmpty() || !d->m_rightTip.isEmpty() || !d->m_scales.isEmpty()){
+    if (!d->m_leftTip.isEmpty() || !d->m_rightTip.isEmpty() || !d->m_scales.isEmpty()) {
         size.setHeight(size.height() + 25);
-    }else{
-        if(d->m_hoverShowValue){
+    } else {
+        if (d->m_hoverShowValue) {
             size.setHeight(size.height() + 25);
-        }else{
+        } else {
             size.setHeight(size.height() + 3);
         }
     }
@@ -318,8 +342,9 @@ void DSlider::setHoverShowValue(bool hoverShowValue)
 {
     Q_D(DSlider);
 
-    if(d->m_hoverShowValue == hoverShowValue)
+    if (d->m_hoverShowValue == hoverShowValue) {
         return;
+    }
 
     d->m_hoverShowValue = hoverShowValue;
     d->m_handleHovering &= hoverShowValue;

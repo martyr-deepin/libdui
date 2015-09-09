@@ -24,8 +24,8 @@ public:
         RoundHandle
     };
 
-    DSlider(QWidget * parent = 0);
-    DSlider(Qt::Orientation orientation, QWidget * parent = 0);
+    DSlider(QWidget *parent = 0);
+    DSlider(Qt::Orientation orientation, QWidget *parent = 0);
     ~DSlider();
 
     int handleType() const;
@@ -58,7 +58,8 @@ public slots:
 
 protected:
     DSlider(DSliderPrivate &d);
-    void paintEvent(QPaintEvent * event);
+    void paintEvent(QPaintEvent *event);
+    void mousePressEvent(QMouseEvent *event);
     void mouseMoveEvent(QMouseEvent *event);
 
 private slots:
