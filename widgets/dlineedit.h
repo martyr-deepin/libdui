@@ -27,7 +27,7 @@ private:
     inline void focusOutEvent(QFocusEvent *e) {emit focusChanged(false); QLineEdit::focusOutEvent(e);}
 
 private:
-    bool m_isAlert;
+    bool m_isAlert = false;
 };
 
 DUI_END_NAMESPACE

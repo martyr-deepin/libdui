@@ -16,4 +16,3 @@ void DLineEdit::setAlert(bool isAlert)
     m_isAlert = isAlert;
     emit alertChanged();
 }
-
