@@ -20,6 +20,11 @@ public:
 
 signals:
     void alertChanged();
+    void focusChanged(bool onFocus);
+
+private:
+    inline void focusInEvent(QFocusEvent *e) {emit focusChanged(true); QLineEdit::focusInEvent(e);}
+    inline void focusOutEvent(QFocusEvent *e) {emit focusChanged(false); QLineEdit::focusOutEvent(e);}
 
 private:
     bool m_isAlert;

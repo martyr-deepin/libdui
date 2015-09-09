@@ -27,6 +27,7 @@ InputTab::InputTab(QWidget *parent) : QLabel(parent)
     DUI::DLineEdit *lineEdit = new DUI::DLineEdit(this);
     lineEdit->setText("LineEdit");
     lineEdit->move(20, 110);
+    connect(lineEdit, &DUI::DLineEdit::focusChanged, [](bool focus) {qDebug() << "focus: " << focus;});
 
     DUI::DLineEdit *lineEditAlert = new DUI::DLineEdit(this);
     lineEditAlert->setText("AlertLineEdit");
