@@ -49,6 +49,7 @@ public:
     ~DButtonList();
 
     void initMargins(int leftMargin, int rightMargin, int imageLeftMargin);
+    IconButton* getButtonByIndex(int index);
 
 public slots:
     void addButton(const QString &label);
@@ -63,7 +64,6 @@ public slots:
 
 private slots:
     void setButtonChecked(int id);
-    IconButton* getButtonByIndex(int index);
 
 signals:
     void buttonChecked(QString label);
