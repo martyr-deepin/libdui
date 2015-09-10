@@ -16,6 +16,8 @@ signals:
 
 public slots:
     void handleClicked(QString label);
+    void handleEnterEvent(QString label);
+    void handleLeaveEvent(QString label);
 private:
     QStringList m_buttons;
 };

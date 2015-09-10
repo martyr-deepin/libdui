@@ -39,7 +39,21 @@ private:
     QLabel* m_textLabel = NULL;
 };
 
-
+class ItemButton: public QPushButton
+{
+    Q_OBJECT
+public:
+    ItemButton(QString text, QWidget *parent=0);
+    ~ItemButton();
+signals:
+    void mouseEntered(QString buttonId);
+    void mouseLeaved(QString buttonId);
+protected:
+    void enterEvent(QEvent* event);
+    void leaveEvent(QEvent* event);
+private:
+    QString m_text;
+};
 class LIBDUISHARED_EXPORT DButtonGrid : public QTableWidget
 {
     Q_OBJECT
@@ -69,7 +83,8 @@ private slots:
 signals:
     void buttonChecked(QString label);
     void buttonCheckedIndexChanged(int index);
-
+    void buttonMouseEntered(QString label);
+    void buttonMouseLeaved(QString label);
 private:
     QButtonGroup* m_buttonGroup = NULL;
     QStringList m_buttonLabels;

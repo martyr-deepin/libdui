@@ -132,8 +132,23 @@ void ImageButton::resizeEvent(QResizeEvent *event){
 ImageButton::~ImageButton(){
 
 }
+ItemButton::ItemButton(QString text,QWidget *parent)
+    : QPushButton(parent)
+{
+    m_text = text;
+    this->setText(text);
+}
+ItemButton::~ItemButton()
+{}
 
-
+void ItemButton::enterEvent(QEvent* event) {
+    Q_UNUSED(event);
+    emit mouseEntered(m_text);
+}
+void ItemButton::leaveEvent(QEvent* event) {
+    Q_UNUSED(event);
+    emit mouseLeaved(m_text);
+}
 DButtonGrid::DButtonGrid(QWidget *parent) : QTableWidget(parent)
 {
     init();
@@ -209,11 +224,15 @@ void DButtonGrid::addButtonWidget(QPushButton *button, int index){
 void DButtonGrid::addButton(const QString &label, int index){
     QFontMetrics fm = fontMetrics();
     int width = fm.width(label);
-    QPushButton* button = new QPushButton(label, this);
+    QPushButton* button = new ItemButton(label, this);
+
     button->setFixedWidth(width + 20);
     button->setFixedHeight(fm.height() + 10);
     button->setCheckable(true);
-
+    connect(button, SIGNAL(mouseEntered(QString)), this,
+        SIGNAL(buttonMouseEntered(QString)));
+    connect(button, SIGNAL(mouseLeaved(QString)), this,
+        SIGNAL(buttonMouseLeaved(QString)));
     addButtonWidget(button, index);
 }
 

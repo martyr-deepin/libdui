@@ -34,6 +34,8 @@ void ButtonGridTab::initUI(){
     buttonGridGroup->addButtons(m_buttons);
     buttonGridGroup->setShowGrid(false);
     connect(buttonGridGroup, SIGNAL(buttonChecked(QString)), this, SLOT(handleClicked(QString)));
+    connect(buttonGridGroup, SIGNAL(buttonMouseEntered(QString)), this, SLOT(handleEnterEvent(QString)));
+    connect(buttonGridGroup, SIGNAL(buttonMouseLeaved(QString)), this, SLOT(handleLeaveEvent(QString)));
 
     QHBoxLayout* layout = new QHBoxLayout;
     layout->addWidget(buttonGridGroup);
@@ -56,4 +58,9 @@ void ButtonGridTab::handleClicked(QString label){
 void ButtonGridTab::initConnect(){
 
 }
-
+void ButtonGridTab::handleEnterEvent(QString label) {
+    qDebug() << "enterEvent" << label;
+}
+void ButtonGridTab::handleLeaveEvent(QString label) {
+     qDebug() << "leaveEvent" << label;
+}
