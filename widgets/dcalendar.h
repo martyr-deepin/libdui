@@ -47,6 +47,7 @@ public slots:
     void setLunarVisible(bool visible);
     void setLunarFestivalHighlight(bool highlight);
     void setSelectionMode(SelectionMode mode);
+    void updateCurrentDate();
 
 private:
     bool eventFilter(QObject *o, QEvent *e);

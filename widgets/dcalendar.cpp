@@ -203,10 +203,7 @@ bool DCalendar::eventFilter(QObject *o, QEvent *e)
 
 void DCalendar::showEvent(QEvent *)
 {
-    const QDate &date = QDate::currentDate();
-
-    if (date != m_currentDate)
-        setCurrentDate(date);
+    updateCurrentDate();
 }
 
 void DCalendar::viewDateChanged(const QDate &date, const CaLunarDayInfo &lunarInfo)
@@ -231,6 +228,14 @@ void DCalendar::viewDateChanged(const QDate &date, const CaLunarDayInfo &lunarIn
                                                 .arg(lunarInfo.mLunarDayName));
 
     selectDate(date);
+}
+
+void DCalendar::updateCurrentDate()
+{
+    const QDate &date = QDate::currentDate();
+
+    if (date != m_currentDate)
+        setCurrentDate(date);
 }
 
 void DCalendar::aniToPrev()
