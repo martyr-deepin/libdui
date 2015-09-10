@@ -42,6 +42,10 @@ void ButtonGridTab::initUI(){
 
     buttonGridGroup->checkButtonByIndex(2);
     buttonGridGroup->addButtons(m_buttons);
+
+    buttonGridGroup->clear();
+    buttonGridGroup->addButtons(m_buttons);
+    buttonGridGroup->checkButtonByIndex(2);
 }
 
 

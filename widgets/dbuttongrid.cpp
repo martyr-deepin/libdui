@@ -65,7 +65,7 @@ void ImageButton::handleChecked(bool checked){
 }
 
 void ImageButton::handleHover(bool hovered){
-
+    Q_UNUSED(hovered);
 }
 
 void ImageButton::updateChildWidgets(){
@@ -290,8 +290,8 @@ void DButtonGrid::setItemUnChecked(){
 }
 
 void DButtonGrid::clearData(){
-    for(int i=0; i<m_buttonGroup->buttons().length(); i++){
-        m_buttonGroup->removeButton(m_buttonGroup->buttons().at(i));
+    foreach (QAbstractButton* button, m_buttonGroup->buttons()) {
+        m_buttonGroup->removeButton(button);
     }
     m_buttonLabels.clear();
     m_imageButtonInfos.clear();

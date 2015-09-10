@@ -9,6 +9,7 @@
 #include <QLabel>
 #include <QPoint>
 #include <QResizeEvent>
+#include <QEvent>
 #include <QDebug>
 
 
@@ -44,7 +45,8 @@ void IconButton::resizeEvent(QResizeEvent *event){
     QPushButton::resizeEvent(event);
 }
 
-void IconButton::setIconLabel(const QString &Icon){
+void IconButton::setIconLabel(const QString &icon){
+    m_icon = icon;
     QImage image(m_icon);
     m_iconLabel->setPixmap(QPixmap::fromImage(image));
     m_iconLabel->setFixedSize(image.size());
@@ -58,6 +60,16 @@ void IconButton::updateStyle(){
     style()->unpolish(this);
     style()->polish(this);
     update();
+}
+
+void IconButton::enterEvent(QEvent *event){
+    emit mouseEntered(text());
+    QPushButton::enterEvent(event);
+}
+
+void IconButton::leaveEvent(QEvent *event){
+    emit mouseLeaved(text());
+    QPushButton::leaveEvent(event);
 }
 
 
@@ -128,7 +140,8 @@ void DButtonList::addButton(const QString &label, int index){
     IconButton* button = new IconButton(":/images/dark/images/tick_hover.png", label, this);
     button->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
     button->setCheckable(true);
-
+    connect(button, SIGNAL(mouseEntered(QString)), this, SIGNAL(buttonMouseEntered(QString)));
+    connect(button, SIGNAL(mouseLeaved(QString)), this, SIGNAL(buttonMouseLeaved(QString)));
     QFrame* borderFrame = new QFrame;
     borderFrame->setObjectName("BorderFrame");
     QVBoxLayout* borderLayout = new QVBoxLayout;
@@ -184,6 +197,15 @@ IconButton* DButtonList::getButtonByIndex(int index){
         qWarning() << "There is no this index:" << index;
     }
     return NULL;
+}
+
+void DButtonList::clear(){
+    foreach (QAbstractButton* button, m_buttonGroup->buttons()) {
+        qDebug() << static_cast<IconButton*>(button)->text();
+        static_cast<IconButton*>(button)->disconnect();
+        m_buttonGroup->removeButton(static_cast<IconButton*>(button));
+    }
+    QListWidget::clear();
 }
 
 

@@ -2,7 +2,7 @@
 #define BUTTONLISTTAB_H
 
 #include <QFrame>
-
+class QListWidgetItem;
 
 class ButtonListTab : public QFrame
 {
@@ -14,6 +14,10 @@ public:
     void initData();
     void initUI();
     void initConnect();
+
+public slots:
+    void handleEnter(QString text);
+    void handleLeave(QString text);
 private:
     QStringList m_buttons;
 };

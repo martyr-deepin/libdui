@@ -9,6 +9,7 @@ class QButtonGroup;
 class QLabel;
 class QPoint;
 class QResizeEvent;
+class QEvent;
 
 class IconButton : public QPushButton{
     Q_OBJECT
@@ -18,12 +19,18 @@ public:
     void initIconLabel();
     void initConnect();
     void setIconLeftMargin(int leftMargin);
-    void setIconLabel(const QString& Icon);
+    void setIconLabel(const QString& icon);
     void hideIconLabel();
     void updateStyle();
 
+signals:
+    void mouseEntered(QString label);
+    void mouseLeaved(QString label);
+
 protected:
     void resizeEvent(QResizeEvent* event);
+    void enterEvent(QEvent* event);
+    void leaveEvent(QEvent* event);
 
 private:
     QLabel* m_iconLabel;
@@ -52,15 +59,17 @@ public slots:
     void setItemSize(int width, int height);
     void setItemSize(QSize size);
     void checkButtonByIndex(int index);
-
-    IconButton* getButtonByIndex(int index);
+    void clear();
 
 private slots:
     void setButtonChecked(int id);
+    IconButton* getButtonByIndex(int index);
 
 signals:
     void buttonChecked(QString label);
     void buttonCheckedIndexChanged(int index);
+    void buttonMouseEntered(QString label);
+    void buttonMouseLeaved(QString label);
 
 private:
     QButtonGroup* m_buttonGroup = NULL;
