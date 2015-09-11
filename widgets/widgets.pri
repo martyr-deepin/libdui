@@ -13,7 +13,6 @@ HEADERS += $$PWD/dslider.h\
     $$PWD/darrowlineexpand.h \
     $$PWD/dswitchlineexpand.h \
     $$PWD/dbuttonlist.h \
-    $$PWD/dcalendar.h \
     $$PWD/dimagebutton.h \
     $$PWD/dtextbutton.h \
     $$PWD/dloadingindicator.h \
@@ -42,7 +41,8 @@ HEADERS += $$PWD/dslider.h\
     $$PWD/dcameraview.h \
     $$PWD/dscrollbar.h \
     $$PWD/dscrollarea.h \
-    $$PWD/darrowrectangle.h
+    $$PWD/darrowrectangle.h \
+    $$PWD/dcalendar.h
 
 SOURCES += $$PWD/dslider.cpp \
     $$PWD/dthememanager.cpp \
@@ -56,7 +56,6 @@ SOURCES += $$PWD/dslider.cpp \
     $$PWD/darrowlineexpand.cpp \
     $$PWD/dswitchlineexpand.cpp \
     $$PWD/dbuttonlist.cpp \
-    $$PWD/dcalendar.cpp \
     $$PWD/dimagebutton.cpp \
     $$PWD/dtextbutton.cpp \
     $$PWD/dloadingindicator.cpp \
@@ -85,7 +84,8 @@ SOURCES += $$PWD/dslider.cpp \
     $$PWD/dcameraview.cpp \
     $$PWD/dscrollbar.cpp \
     $$PWD/dscrollarea.cpp \
-    $$PWD/darrowrectangle.cpp
+    $$PWD/darrowrectangle.cpp \
+    $$PWD/dcalendar.cpp
 
 RESOURCES += \
     $$PWD/../themes/dui_theme_dark.qrc \

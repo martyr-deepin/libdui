@@ -1,11 +1,8 @@
-HEADERS += $$PWD/dthemehelper.h \
-    $$PWD/DCalendar/dcalendardbus.h \
-    $$PWD/DCalendar/dcalendarview.h \
-    $$PWD/DCalendar/dcalendarmodel.h \
-    $$PWD/DCalendar/dcalendardelegate.h
+HEADERS += \
+    $$PWD/DCalendarWidget/dcalendardbus.h \
+    $$PWD/DCalendarWidget/calendarview.h \
+    $$PWD/dthemehelper.h
 
 SOURCES += $$PWD/dthemehelper.cpp \
-    $$PWD/DCalendar/dcalendardbus.cpp \
-    $$PWD/DCalendar/dcalendarview.cpp \
-    $$PWD/DCalendar/dcalendarmodel.cpp \
-    $$PWD/DCalendar/dcalendardelegate.cpp
+    $$PWD/DCalendarWidget/dcalendardbus.cpp \
+    $$PWD/DCalendarWidget/calendarview.cpp

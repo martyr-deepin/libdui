@@ -1,122 +1,99 @@
 #include "dcalendar.h"
+#include "dimagebutton.h"
 #include "dthememanager.h"
+#include "private/DCalendarWidget/calendarview.h"
 
-#include "private/DCalendar/dcalendarmodel.h"
-#include "private/DCalendar/dcalendarview.h"
-#include "private/DCalendar/dcalendardelegate.h"
-
-#include <QDebug>
 #include <QHBoxLayout>
-#include <QPropertyAnimation>
-#include <QScrollArea>
-#include <QSpacerItem>
-#include <QVBoxLayout>
-#include <QHeaderView>
+#include <QResizeEvent>
+#include <QDebug>
 
 DUI_BEGIN_NAMESPACE
 
-DCalendar::DCalendar(QWidget *parent) : QWidget(parent),
-    m_resetBtn(tr("Reset")),
-    usingDate(QDate::currentDate()),
-    selectDate(QDate::currentDate()),
-    currentDate(QDate::currentDate())
+DCalendar::DCalendar(QWidget *parent) : QWidget(parent)
 {
     D_THEME_INIT_WIDGET(DCalendar);
 
-    setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Preferred);
+    m_detailLabel = new QLabel;
+#ifdef QT_DEBUG
+    m_detailLabel->setText("detail label");
+#endif
+    m_yearEdt = new QLineEdit;
+    m_yearEdt->setEnabled(false);
+    m_yearEdt->setFixedWidth(40);
+    m_yearEdt->setAlignment(Qt::AlignCenter);
+    m_monEdt = new QLineEdit;
+    m_monEdt->setEnabled(false);
+    m_monEdt->setFixedWidth(25);
+    m_monEdt->setAlignment(Qt::AlignCenter);
+    m_resetBtn = new DLinkButton;
+    m_resetBtn->setText(tr("Reset"));
+    m_resetBtn->hide();
+    m_viewLeft = new CalendarView;
+    m_viewLeft->setObjectName("CalendarView");
+    m_viewCurrent = m_viewLeft;
+    m_viewRight = new CalendarView;
+    m_viewRight->setCurrentDate(QDate::currentDate());
+    m_viewRight->setObjectName("CalendarView");
+    m_viewOuterWidget = new QWidget;
+    m_viewOuterWidget->installEventFilter(this);
+    m_viewOuterWidget->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+    m_viewInnerWidget = new QWidget(m_viewOuterWidget);
+    m_currentDate = QDate::currentDate();
+    m_showDate = m_currentDate;
+    m_animation = new QPropertyAnimation(m_viewInnerWidget, "geometry");
 
-    cViewCurrent = cViewLeft = new DCalendarView(this);
-    cViewRight = new DCalendarView(this);
-    cDelegate = new DCalendarDelegate(this);
-    currentModel = new DCalendarModel;
-    nextStepModel = new DCalendarModel;
-    cViewLeft->setItemDelegate(cDelegate);
-    cViewLeft->setModel(nextStepModel);
-    cViewRight->setItemDelegate(cDelegate);
-    cViewRight->setModel(nextStepModel);
+    DImageButton *prevYear = new DImageButton;
+    prevYear->setNormalPic(":/images/arrow_left_normal.png");
+    prevYear->setHoverPic(":/images/arrow_left_hover.png");
+    prevYear->setPressPic(":/images/arrow_left_press.png");
+    DImageButton *nextYear = new DImageButton;
+    nextYear->setNormalPic(":/images/arrow_right_normal.png");
+    nextYear->setHoverPic(":/images/arrow_right_hover.png");
+    nextYear->setPressPic(":/images/arrow_right_press.png");
+    DImageButton *prevMon = new DImageButton;
+    prevMon->setNormalPic(":/images/arrow_left_normal.png");
+    prevMon->setHoverPic(":/images/arrow_left_hover.png");
+    prevMon->setPressPic(":/images/arrow_left_press.png");
+    DImageButton *nextMon = new DImageButton;
+    nextMon->setNormalPic(":/images/arrow_right_normal.png");
+    nextMon->setHoverPic(":/images/arrow_right_hover.png");
+    nextMon->setPressPic(":/images/arrow_right_press.png");
 
-    QSpacerItem *hSpace = new QSpacerItem(0, 0, QSizePolicy::Expanding, QSizePolicy::Minimum);
-
-    QHBoxLayout *dateItems = new QHBoxLayout;
-    dateItems->addWidget(&prevYear);
-    dateItems->addWidget(&year);
-    dateItems->addWidget(&nextYear);
-    dateItems->addWidget(&prevMonth);
-    dateItems->addWidget(&month);
-    dateItems->addWidget(&nextMonth);
-    dateItems->addItem(hSpace);
-    dateItems->addWidget(&m_resetBtn);
+    QHBoxLayout *topCtrlLayout = new QHBoxLayout;
+    topCtrlLayout->addWidget(prevYear);
+    topCtrlLayout->addWidget(m_yearEdt);
+    topCtrlLayout->addWidget(nextYear);
+    topCtrlLayout->addWidget(prevMon);
+    topCtrlLayout->addWidget(m_monEdt);
+    topCtrlLayout->addWidget(nextMon);
+    topCtrlLayout->addStretch();
+    topCtrlLayout->addWidget(m_resetBtn);
+    topCtrlLayout->setMargin(0);
+    topCtrlLayout->setSpacing(0);
 
     QHBoxLayout *viewsLayout = new QHBoxLayout;
-    viewsLayout->addWidget(cViewLeft);
-    viewsLayout->addWidget(cViewRight);
+    viewsLayout->addWidget(m_viewLeft);
+    viewsLayout->addWidget(m_viewRight);
     viewsLayout->setMargin(0);
     viewsLayout->setSpacing(0);
 
-    outerWidget = new QWidget;
-    outerWidget->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+    m_viewInnerWidget->setLayout(viewsLayout);
 
-    innerWidget = new QWidget(outerWidget);
-    innerWidget->setLayout(viewsLayout);
+    QVBoxLayout *mainLayout = new QVBoxLayout;
+    mainLayout->addLayout(topCtrlLayout);
+    mainLayout->addWidget(m_detailLabel);
+    mainLayout->addWidget(m_viewOuterWidget);
 
-    QVBoxLayout *centralLayout = new QVBoxLayout;
-    centralLayout->addItem(dateItems);
-    centralLayout->addWidget(&datailOfToday);
-    centralLayout->addWidget(outerWidget);
+    connect(m_viewLeft, &CalendarView::dateSelected, this, &DCalendar::viewDateChanged);
+    connect(m_viewRight, &CalendarView::dateSelected, this, &DCalendar::viewDateChanged);
+    connect(m_resetBtn, &DLinkButton::clicked, [this] {selectDate(m_currentDate);});
+    connect(prevYear, &DImageButton::clicked, [this] {selectDate(m_showDate.addYears(-1));});
+    connect(prevMon, &DImageButton::clicked, [this] {selectDate(m_showDate.addMonths(-1));});
+    connect(nextYear, &DImageButton::clicked, [this] {selectDate(m_showDate.addYears(1));});
+    connect(nextMon, &DImageButton::clicked, [this] {selectDate(m_showDate.addMonths(1));});
 
-    setLayout(centralLayout);
-
-#ifdef QT_DEBUG
-    datailOfToday.setText("details");
-#endif
-    prevYear.setNormalPic(":/images/arrow_left_normal.png");
-    prevYear.setHoverPic(":/images/arrow_left_hover.png");
-    prevYear.setPressPic(":/images/arrow_left_press.png");
-    nextYear.setNormalPic(":/images/arrow_right_normal.png");
-    nextYear.setHoverPic(":/images/arrow_right_hover.png");
-    nextYear.setPressPic(":/images/arrow_right_press.png");
-    prevMonth.setNormalPic(":/images/arrow_left_normal.png");
-    prevMonth.setHoverPic(":/images/arrow_left_hover.png");
-    prevMonth.setPressPic(":/images/arrow_left_press.png");
-    nextMonth.setNormalPic(":/images/arrow_right_normal.png");
-    nextMonth.setHoverPic(":/images/arrow_right_hover.png");
-    nextMonth.setPressPic(":/images/arrow_right_press.png");
-    year.setText(QString::number(usingDate.year()));
-    year.setEnabled(false);
-    month.setText(QString::number(usingDate.month()));
-    month.setEnabled(false);
-
-    year.setFixedWidth(40);
-    year.setAlignment(Qt::AlignCenter);
-    month.setFixedWidth(20);
-    month.setAlignment(Qt::AlignCenter);
-
-    m_resetBtn.hide();
-
-    connect(&prevYear, &DImageButton::clicked, [this] () -> void {selectDate = selectDate.addYears(-1); adjustDate();});
-    connect(&nextYear, &DImageButton::clicked, [this] () -> void {selectDate = selectDate.addYears(1); adjustDate();});
-    connect(&prevMonth, &DImageButton::clicked, [this] () -> void {selectDate = selectDate.addMonths(-1); adjustDate();});
-    connect(&nextMonth, &DImageButton::clicked, [this] () -> void {selectDate = selectDate.addMonths(1); adjustDate();});
-    connect(&m_resetBtn, &DLinkButton::clicked, this, &DCalendar::resetDate);
-
-    connect(cViewLeft, SIGNAL(cellClicked(QModelIndex)), this, SLOT(maybeChangeMonth(QModelIndex)), Qt::QueuedConnection);
-    connect(cViewRight, SIGNAL(cellClicked(QModelIndex)), this, SLOT(maybeChangeMonth(QModelIndex)), Qt::QueuedConnection);
-
-    connect(currentModel, SIGNAL(selectedCellChanged(QModelIndex)), this, SLOT(selectedIndexChanged(QModelIndex)), Qt::QueuedConnection);
-    connect(nextStepModel, SIGNAL(selectedCellChanged(QModelIndex)), this, SLOT(selectedIndexChanged(QModelIndex)), Qt::QueuedConnection);
-
-    nextStepModel->setDate(QDate::currentDate());
-    currentModel->setDate(QDate::currentDate());
-
-    outerHeight = outerWidget->height();
-    outerWidth = outerWidget->width();
-    innerWidget->setGeometry(0, 0, outerWidth * 2, outerHeight);
-
-    cViewLeft->setObjectName("DCalendarView");
-    cViewRight->setObjectName("DCalendarView");
-
-    m_animation = new QPropertyAnimation(innerWidget, "geometry");
-    //m_animation->setEasingCurve(QEasingCurve::OutCubic);
+    setCurrentDate(m_currentDate);
+    setLayout(mainLayout);
 }
 
 DCalendar::~DCalendar()
@@ -124,217 +101,91 @@ DCalendar::~DCalendar()
     m_animation->deleteLater();
 }
 
-void DCalendar::animationToPrev()
+void DCalendar::setCurrentDate(const QDate &date)
 {
-    //qDebug() << "prev";
-    cViewLeft->setModel(nextStepModel);
-    cViewRight->setModel(currentModel);
+    selectDate(date);
 
-    m_animation->stop();
-    m_animation->setStartValue(QRect(-outerWidth, 0, outerWidth * 2, outerHeight));
-    m_animation->setEndValue(QRect(0, 0, outerWidth * 2, outerHeight));
-    m_animation->start();
-
-    cViewCurrent = cViewLeft;
+    m_currentDate = date;
+    m_showDate = date;
 }
 
-void DCalendar::animationToNext()
+void DCalendar::selectDate(const QDate &date)
 {
-    //qDebug() << "next";
-    cViewLeft->setModel(currentModel);
-    cViewRight->setModel(nextStepModel);
+    qDebug() << m_showDate << date;
+    const QDate oldDate = m_showDate;
+    m_showDate = date;
 
-    m_animation->stop();
-    m_animation->setStartValue(QRect(0, 0, outerWidth * 2, outerHeight));
-    m_animation->setEndValue(QRect(-outerWidth, 0, outerWidth * 2, outerHeight));
-    m_animation->start();
+    if (date.year() < oldDate.year())
+        aniToPrev();
+    else if (date.year() > oldDate.year())
+        aniToNext();
+    else if (date.month() < oldDate.month())
+        aniToPrev();
+    else if (date.month() > oldDate.month())
+        aniToNext();
 
-    cViewCurrent = cViewRight;
-}
-
-void DCalendar::setLunarVisible(const bool visible)
-{
-    m_lunarVisible = visible;
-    datailOfToday.setVisible(visible);
-    currentModel->setLunarVisible(visible);
-    nextStepModel->setLunarVisible(visible);
-}
-
-void DCalendar::resetCurrentDate(const QDate & resetDate)
-{
-    // when system date changed, reset to system date
-    currentDate = resetDate;
-    adjustDate();
-}
-
-void DCalendar::adjustDate()
-{
-    year.setText(QString::number(selectDate.year()));
-    month.setText(QString::number(selectDate.month()));
-
-    nextStepModel->setDate(selectDate);
-    currentModel->setDate(usingDate);
-
-    if (selectDate.year() < usingDate.year())
-        animationToPrev();
-    else if (selectDate.year() > usingDate.year())
-        animationToNext();
-    else if (selectDate.month() < usingDate.month())
-        animationToPrev();
-    else if (selectDate.month() > usingDate.month())
-        animationToNext();
-
-    usingDate = selectDate;
-
-    if (selectDate == currentDate)
-        m_resetBtn.hide();
+    if (date == m_currentDate)
+        m_resetBtn->hide();
     else
-        m_resetBtn.show();
+        m_resetBtn->show();
 
+    m_monEdt->setText(QString::number(date.month()));
+    m_yearEdt->setText(QString::number(date.year()));
+    m_viewCurrent->setCurrentDate(m_showDate);
 
-    datailOfToday.setText(currentModel->getLunarDetail(selectDate));
-
-    emit selectedDateChanged(selectDate);
+    emit selectedDateChanged(date);
 }
 
-void DCalendar::maybeChangeMonth(const QModelIndex &clickedIndex)
+void DCalendar::setLunarVisible(bool visible)
 {
-    DCalendarModel *model = (DCalendarModel *)(clickedIndex.model());
-    if (!model || model != cViewCurrent->model())
+    m_viewLeft->setLunarVisible(visible);
+    m_viewRight->setLunarVisible(visible);
+}
+
+bool DCalendar::eventFilter(QObject *o, QEvent *e)
+{
+    // update inner widget geometery
+    if (o == m_viewOuterWidget && e->type() == QEvent::Resize)
+    {
+        m_viewSize = m_viewOuterWidget->size();
+
+        if (m_viewCurrent == m_viewLeft)
+            m_viewInnerWidget->setGeometry(0, 0, m_viewSize.width() * 2, m_viewSize.height());
+        else
+            m_viewInnerWidget->setGeometry(m_viewSize.width(), 0, m_viewSize.width() * 2, m_viewSize.height());
+    }
+
+    return false;
+}
+
+void DCalendar::viewDateChanged(const QDate &date, const QString &detail)
+{
+    qDebug() << date << detail;
+    if (sender() != m_viewCurrent)
         return;
 
-    int dayNum = model->getDayNum(clickedIndex);
-
-    if (clickedIndex.row() == 0 && dayNum >= 23)
-        selectDate = selectDate.addMonths(-1);
-    if (clickedIndex.row() > 3 && dayNum <= 14)
-        selectDate = selectDate.addMonths(1);
-
-    selectDate = QDate(selectDate.year(), selectDate.month(), dayNum);
-
-    adjustDate();
+    selectDate(date);
+    m_detailLabel->setText(detail);
 }
 
-void DCalendar::selectedIndexChanged(const QModelIndex &index)
+void DCalendar::aniToPrev()
 {
-    //cViewLeft->setCurrentIndex(index);
-    //cViewRight->setCurrentIndex(index);
-    if (!index.isValid())
-        return;
+    m_animation->stop();
+    m_animation->setStartValue(QRect(-m_viewSize.width(), 0, m_viewSize.width() * 2, m_viewSize.height()));
+    m_animation->setEndValue(QRect(0, 0, m_viewSize.width() * 2, m_viewSize.height()));
+    m_animation->start();
 
-    if (cViewCurrent && cViewCurrent->model() == index.model())
-        cViewCurrent->setCurrentIndex(index);
+    m_viewCurrent = m_viewLeft;
 }
 
-void DCalendar::resizeEvent(QResizeEvent *e)
+void DCalendar::aniToNext()
 {
-    outerWidth = outerWidget->width();
-    outerHeight = outerWidget->height();
+    m_animation->stop();
+    m_animation->setStartValue(QRect(0, 0, m_viewSize.width() * 2, m_viewSize.height()));
+    m_animation->setEndValue(QRect(-m_viewSize.width(), 0, m_viewSize.width() * 2, m_viewSize.height()));
+    m_animation->start();
 
-    innerWidget->setGeometry(0, 0, outerWidth * 2, outerHeight);
-
-    return QWidget::resizeEvent(e);
-}
-
-void DCalendar::setBackgroundColor(const QColor &color)
-{
-    cDelegate->setBackgroundColor(color);
-}
-
-QColor DCalendar::getBackgroundColor() const
-{
-    return cDelegate->getBackgroundColor();
-}
-
-void DCalendar::setBackgroundCircleColor(const QColor &color)
-{
-    cDelegate->setBackgroundCircleColor(color);
-}
-
-QColor DCalendar::getBackgroundCircleColor() const
-{
-    return cDelegate->getBackgroundCircleColor();
-}
-
-void DCalendar::setDefaultTextColor(const QColor &color)
-{
-    cDelegate->setDefaultTextColor(color);
-}
-
-QColor DCalendar::getDefaultTextColor() const
-{
-    return cDelegate->getDefaultTextColor();
-}
-
-void DCalendar::setWeekendsTextColor(const QColor &color)
-{
-    cDelegate->setWeekendsTextColor(color);
-}
-
-QColor DCalendar::getWeekendsTextColor() const
-{
-    return cDelegate->getWeekendsTextColor();
-}
-
-void DCalendar::setSelectedTextColor(const QColor &color)
-{
-    cDelegate->setSelectedTextColor(color);
-}
-
-QColor DCalendar::getSelectedTextColor() const
-{
-    return cDelegate->getSelectedTextColor();
-}
-
-void DCalendar::setFestivalTextColor(const QColor &color)
-{
-    cDelegate->setFestivalTextColor(color);
-}
-
-QColor DCalendar::getFestivalTextColor() const
-{
-    return cDelegate->getFestivalTextColor();
-}
-
-void DCalendar::setDefaultLunarColor(const QColor &color)
-{
-    cDelegate->setDefaultLunarColor(color);
-}
-
-QColor DCalendar::getDefaultLunarColor() const
-{
-    return cDelegate->getDefaultLunarColor();
-}
-
-void DCalendar::setWeekendsLunarColor(const QColor &color)
-{
-    cDelegate->setWeekendsLunarColor(color);
-}
-
-QColor DCalendar::getWeekendsLunarColor() const
-{
-    return cDelegate->getWeekendsLunarColor();
-}
-
-void DCalendar::setSelectedLunarColor(const QColor &color)
-{
-    cDelegate->setSelectedLunarColor(color);
-}
-
-QColor DCalendar::getSelectedLunarColor() const
-{
-    return cDelegate->getSelectedLunarColor();
-}
-
-void DCalendar::setFestivalLunarColor(const QColor &color)
-{
-    cDelegate->setFestivalLunarColor(color);
-}
-
-QColor DCalendar::getFestivalLunarColor() const
-{
-    return cDelegate->getFestivalLunarColor();
+    m_viewCurrent = m_viewRight;
 }
 
 DUI_END_NAMESPACE
-

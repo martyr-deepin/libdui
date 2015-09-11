@@ -1,0 +1,91 @@
+#ifndef MYCALENDARWIDGET_H
+#define MYCALENDARWIDGET_H
+
+#include <QWidget>
+#include <QList>
+#include <QDate>
+#include <QStyleOption>
+
+class DCalendarDBus;
+class CaLunarDayInfo;
+class CalendarView : public QWidget
+{
+    Q_OBJECT
+
+    Q_PROPERTY(QColor backgroundCircleColor MEMBER m_backgroundCircleColor DESIGNABLE true SCRIPTABLE true)
+    Q_PROPERTY(QColor defaultTextColor MEMBER m_defaultTextColor DESIGNABLE true SCRIPTABLE true)
+    Q_PROPERTY(QColor defaultLunarColor MEMBER m_defaultLunarColor DESIGNABLE true SCRIPTABLE true)
+    Q_PROPERTY(QColor festivalLunarColor MEMBER m_festivalLunarColor DESIGNABLE true SCRIPTABLE true)
+    Q_PROPERTY(QColor weekendsTextColor MEMBER m_weekendsTextColor DESIGNABLE true SCRIPTABLE true)
+    Q_PROPERTY(QColor weekendsLunarColor MEMBER m_weekendsLunarColor DESIGNABLE true SCRIPTABLE true)
+
+public:
+    enum ShowState {
+        ShowLunar = 0x01,
+        ShowColor = 0x02,
+        Normal = ShowLunar | ShowColor,
+    };
+
+private:
+    enum CalendarDayType
+    {
+        SO_Festival = QStyleOption::SO_CustomBase + 0x01,
+        SO_Weekends = QStyleOption::SO_CustomBase + 0x02,
+        SO_WeekendsAndFestival = SO_Festival | SO_Weekends,
+        SO_NotCurrentMonth = 0x04,
+        SO_NotCurrentMonthFestival = SO_NotCurrentMonth | SO_Festival,
+        SO_Default,
+    };
+
+public:
+    explicit CalendarView(QWidget *parent = 0);
+
+    int getDateType(const QDate &date) const;
+
+signals:
+    void dateSelected(const QDate &date, const QString &detail);
+
+public slots:
+    void setCurrentDate(const QDate &date);
+    void setLunarVisible(bool visible);
+    void setColorVisible(bool visible);
+
+private:
+    int getDateIndex(const QDate &date) const;
+    const QString getCellDayNum(int pos);
+    const QString getLunarDetail(int pos);
+    const QString getLunar(int pos);
+    const CaLunarDayInfo getCaLunarDayInfo(int pos) const;
+    void paintCell(QWidget *cell);
+    bool eventFilter(QObject *o, QEvent *e);
+
+private slots:
+    void cellClicked(QWidget *cell);
+    void setSelectedCell(int index);
+
+private:
+    QList<QWidget *> m_cellList;
+    QMap<QDate, CaLunarDayInfo> *m_LunarCache = nullptr;
+    DCalendarDBus *m_DBusInter;
+    QDate m_days[42];
+    QDate m_currentDate;
+
+    ShowState m_showState = Normal;
+    int m_selectedCell = 0;
+
+    QColor m_backgroundCircleColor = QColor(33, 147, 202);
+
+    QColor m_defaultTextColor = Qt::black;
+    QColor m_weekendsTextColor = Qt::gray;
+    QColor m_selectedTextColor = Qt::white;
+    QColor m_festivalTextColor = Qt::cyan;
+    QColor m_notCurrentTextColor = QColor(0x55, 0x55, 0x55);
+
+    QColor m_defaultLunarColor = Qt::black;
+    QColor m_weekendsLunarColor = Qt::gray;
+    QColor m_selectedLunarColor = Qt::white;
+    QColor m_festivalLunarColor = Qt::cyan;
+    QColor m_notCurrentLunarColor = QColor(0x55, 0x55, 0x55);
+};
+
+#endif // MYCALENDARWIDGET_H
