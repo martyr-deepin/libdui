@@ -7,26 +7,12 @@ DUI--DCalendar #CalendarView {
     qproperty-weekendsLunarColor:#eee;
 }
 
-DUI--DCalendar QPushButton{
-    background-color:#242526;
-    color:white;
-}
-
 DUI--DCalendar QLineEdit{
-    background-color:#242526;
+    border:none;
+    background-color:transparent;
     color:white;
 }
 
 DUI--DCalendar QLabel{
     color:white;
-}
-
-DUI--DCalendar QHeaderView::section {
-    border:none;
-    color:white;
-    background:#242526;
-}
-
-DUI--DCalendar QLineEdit {
-    background:transparent;
 }
