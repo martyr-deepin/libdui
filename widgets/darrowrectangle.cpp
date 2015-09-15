@@ -71,8 +71,8 @@ QSize DArrowRectangle::getFixedSize()
             return QSize(m_content->width() + m_margin * 2,m_content->height() + m_margin * 2 + m_arrowHeight);
         }
     }
-    else
-        return QSize(0, 0);
+
+    return QSize(0, 0);
 }
 
 void DArrowRectangle::move(int x, int y)
@@ -204,6 +204,11 @@ QColor DArrowRectangle::backgroundColor() const
     return m_backgroundColor;
 }
 
+DArrowRectangle::ArrowDirection DArrowRectangle::arrowDirection() const
+{
+    return m_arrowDirection;
+}
+
 void DArrowRectangle::setBackgroundColor(const QColor &backgroundColor)
 {
     m_backgroundColor = backgroundColor;
@@ -239,7 +244,7 @@ int DArrowRectangle::margin() const
     return this->m_margin;
 }
 
-void DArrowRectangle::setArrorDirection(ArrowDirection value)
+void DArrowRectangle::setArrowDirection(ArrowDirection value)
 {
     m_arrowDirection = value;
 }

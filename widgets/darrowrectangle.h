@@ -43,6 +43,7 @@ public:
     int borderWidth() const;
     QColor borderColor() const;
     QColor backgroundColor() const;
+    ArrowDirection arrowDirection() const;
 
     void setRadius(int value);
     void setArrowHeight(int value);
@@ -54,7 +55,7 @@ public:
     void setBorderColor(const QColor &borderColor);
     void setBackgroundColor(const QColor &backgroundColor);
 
-    void setArrorDirection(ArrowDirection value);
+    void setArrowDirection(ArrowDirection value);
     void setWidth(int value);
     void setHeight(int value);
 
