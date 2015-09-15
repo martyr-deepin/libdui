@@ -249,6 +249,11 @@ void DArrowRectangle::setArrowDirection(ArrowDirection value)
     m_arrowDirection = value;
 }
 
+void DArrowRectangle::setArrorDirection(ArrowDirection value)
+{
+    setArrowDirection(value);
+}
+
 void DArrowRectangle::setWidth(int value)
 {
     this->setFixedWidth(value);
