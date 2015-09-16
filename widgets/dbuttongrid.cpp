@@ -27,7 +27,7 @@ void ImageButton::initUI(){
     m_iconLabel = new QLabel;
     m_iconLabel->setObjectName("IconLabel");
     m_iconLabel->setProperty("state", "normal");
-    m_iconLabel->setPixmap(QPixmap(m_icon).scaled(m_iconLabel->size()));
+    m_iconLabel->setPixmap(QPixmap(m_icon));
 
     QVBoxLayout* mainlayout = new QVBoxLayout;
     mainlayout->addWidget(m_iconLabel, 0, Qt::AlignCenter);
@@ -121,7 +121,7 @@ void ImageButton::leaveEvent(QEvent *event){
 }
 
 void ImageButton::resizeEvent(QResizeEvent *event){
-    m_iconLabel->setPixmap(QPixmap(m_icon).scaled(m_iconLabel->size()));
+    m_iconLabel->setPixmap(QPixmap(m_icon));
     if (m_textLabel){
         QFontMetrics fm = m_textLabel->fontMetrics();
         m_textLabel->setFixedHeight(fm.height() + 10);
