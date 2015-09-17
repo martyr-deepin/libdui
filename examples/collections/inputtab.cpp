@@ -20,7 +20,7 @@ InputTab::InputTab(QWidget *parent) : QLabel(parent)
     pwdEdit2->move(20, 50);
 
     DUI::DSearchEdit *searchEdit = new DUI::DSearchEdit(this);
-    searchEdit->setSearchIcon(":/images/button.png");
+    //searchEdit->setSearchIcon(":/images/button.png");
     searchEdit->move(20, 80);
 
     DUI::DLineEdit *lineEdit = new DUI::DLineEdit(this);
