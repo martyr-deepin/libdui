@@ -97,14 +97,14 @@ void CalendarView::setLunarVisible(bool visible)
     update();
 }
 
-void CalendarView::setColorVisible(bool visible)
+void CalendarView::setLunarFestivalHighlight(bool highlight)
 {
     int state = int(m_showState);
 
-    if (visible)
-        state |= ShowColor;
+    if (highlight)
+        state |= ShowLunarFestivalHighlight;
     else
-        state &= ~ShowColor;
+        state &= ~ShowLunarFestivalHighlight;
 
     m_showState = ShowState(state);
     update();
@@ -246,10 +246,10 @@ void CalendarView::paintCell(QWidget *cell)
     {
         if (isSelectedCell)
             painter.setPen(m_selectedLunarColor);
-        else if (m_showState & ShowColor)
+        else if (m_showState & ShowLunarFestivalHighlight)
         {
             const int tType = type & 0xff;
-            if (m_showState & ShowColor)
+            if (m_showState & ShowLunarFestivalHighlight)
             {
                 if (tType & SO_NotCurrentMonth)
                     painter.setPen(tType & SO_Festival ? m_festivalLunarColor : m_notCurrentLunarColor);

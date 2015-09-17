@@ -22,8 +22,8 @@ class CalendarView : public QWidget
 public:
     enum ShowState {
         ShowLunar = 0x01,
-        ShowColor = 0x02,
-        Normal = ShowLunar | ShowColor,
+        ShowLunarFestivalHighlight = 0x02,
+        Normal = ShowLunar | ShowLunarFestivalHighlight,
     };
 
 private:
@@ -48,7 +48,7 @@ signals:
 public slots:
     void setCurrentDate(const QDate &date);
     void setLunarVisible(bool visible);
-    void setColorVisible(bool visible);
+    void setLunarFestivalHighlight(bool highlight);
 
 private:
     int getDateIndex(const QDate &date) const;

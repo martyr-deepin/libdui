@@ -36,6 +36,7 @@ public slots:
     void setCurrentDate(const QDate &date);
     void selectDate(const QDate &date);
     void setLunarVisible(bool visible);
+    void setLunarFestivalHighlight(bool highlight);
 
 private:
     bool eventFilter(QObject *o, QEvent *e);

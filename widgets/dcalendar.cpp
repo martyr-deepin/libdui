@@ -140,6 +140,13 @@ void DCalendar::setLunarVisible(bool visible)
 {
     m_viewLeft->setLunarVisible(visible);
     m_viewRight->setLunarVisible(visible);
+    m_detailLabel->setVisible(visible);
+}
+
+void DCalendar::setLunarFestivalHighlight(bool highlight)
+{
+    m_viewLeft->setLunarFestivalHighlight(highlight);
+    m_viewRight->setLunarFestivalHighlight(highlight);
 }
 
 bool DCalendar::eventFilter(QObject *o, QEvent *e)
