@@ -110,6 +110,15 @@ void CalendarView::setLunarFestivalHighlight(bool highlight)
     update();
 }
 
+void CalendarView::setCellSelectable(bool selectable)
+{
+    if (selectable == m_cellSelectable)
+        return;
+    m_cellSelectable = selectable;
+
+    emit cellSelectableChanged(m_cellSelectable);
+}
+
 int CalendarView::getDateIndex(const QDate &date) const
 {
     for (int i = 0; i != 42; ++i)
@@ -144,26 +153,15 @@ const QString CalendarView::getCellDayNum(int pos)
         return result;
 }
 
-const QString CalendarView::getLunarDetail(int pos)
+const CaLunarDayInfo CalendarView::getLunarInfo(int pos)
 {
     const QDate day = m_days[pos];
 
     bool o1;
     Q_UNUSED(o1)
     const QDBusReply<CaLunarDayInfo> reply = m_DBusInter->GetLunarInfoBySolar(day.year(), day.month(), day.day(), o1);
-    const CaLunarDayInfo lunarInfo = reply.value();
 
-    QString result;
-    result = QString(tr("%1年%2%3").arg(lunarInfo.mGanZhiYear)
-                                  .arg(lunarInfo.mLunarMonthName)
-                                  .arg(lunarInfo.mLunarDayName));
-
-    if (!lunarInfo.mSolarFestival.isEmpty())
-        result += ' ' + lunarInfo.mSolarFestival;
-    if (!lunarInfo.mLunarFestival.isEmpty())
-        result += ' ' + lunarInfo.mLunarFestival;
-
-    return result;
+    return reply.value();
 }
 
 const QString CalendarView::getLunar(int pos)
@@ -270,6 +268,9 @@ void CalendarView::paintCell(QWidget *cell)
 
 void CalendarView::cellClicked(QWidget *cell)
 {
+    if (!m_cellSelectable)
+        return;
+
     const int pos = m_cellList.indexOf(cell);
     if (pos == -1)
         return;
@@ -294,6 +295,6 @@ void CalendarView::setSelectedCell(int index)
     m_cellList.at(prevPos)->update();
     m_cellList.at(index)->update();
 
-    emit dateSelected(m_days[index], getLunarDetail(index));
+    emit dateSelected(m_days[index], getLunarInfo(index));
 }
 

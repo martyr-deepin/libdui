@@ -2,6 +2,7 @@
 #include "dimagebutton.h"
 #include "dthememanager.h"
 #include "private/DCalendarWidget/calendarview.h"
+#include "private/DCalendarWidget/dcalendardbus.h"
 
 #include <QHBoxLayout>
 #include <QResizeEvent>
@@ -14,9 +15,6 @@ DCalendar::DCalendar(QWidget *parent) : QWidget(parent)
     D_THEME_INIT_WIDGET(DCalendar);
 
     m_detailLabel = new QLabel;
-#ifdef QT_DEBUG
-    m_detailLabel->setText("detail label");
-#endif
     m_yearEdt = new QLineEdit;
     m_yearEdt->setEnabled(false);
     m_yearEdt->setFixedWidth(40);
@@ -71,6 +69,21 @@ DCalendar::DCalendar(QWidget *parent) : QWidget(parent)
     topCtrlLayout->setMargin(0);
     topCtrlLayout->setSpacing(0);
 
+    m_topControlPanel = new QWidget;
+    m_topControlPanel->setLayout(topCtrlLayout);
+
+    m_solarLabel = new QLabel;
+    m_lunarLabel = new QLabel;
+    QHBoxLayout *solarLunarWidget = new QHBoxLayout;
+    solarLunarWidget->addWidget(m_solarLabel);
+    solarLunarWidget->addStretch();
+    solarLunarWidget->addWidget(m_lunarLabel);
+    solarLunarWidget->setSpacing(0);
+    solarLunarWidget->setMargin(0);
+
+    m_solarLunarWidget = new QWidget;
+    m_solarLunarWidget->setLayout(solarLunarWidget);
+
     QHBoxLayout *viewsLayout = new QHBoxLayout;
     viewsLayout->addWidget(m_viewLeft);
     viewsLayout->addWidget(m_viewRight);
@@ -80,7 +93,8 @@ DCalendar::DCalendar(QWidget *parent) : QWidget(parent)
     m_viewInnerWidget->setLayout(viewsLayout);
 
     QVBoxLayout *mainLayout = new QVBoxLayout;
-    mainLayout->addLayout(topCtrlLayout);
+    mainLayout->addWidget(m_topControlPanel);
+    mainLayout->addWidget(m_solarLunarWidget);
     mainLayout->addWidget(m_detailLabel);
     mainLayout->addWidget(m_viewOuterWidget);
 
@@ -136,17 +150,34 @@ void DCalendar::selectDate(const QDate &date)
     emit selectedDateChanged(date);
 }
 
+void DCalendar::setControlPanelVisible(bool visible)
+{
+    m_topControlPanel->setVisible(visible);
+}
+
+void DCalendar::setDateInfoVisible(bool visible)
+{
+    m_solarLunarWidget->setVisible(visible);
+}
+
 void DCalendar::setLunarVisible(bool visible)
 {
     m_viewLeft->setLunarVisible(visible);
     m_viewRight->setLunarVisible(visible);
     m_detailLabel->setVisible(visible);
+    m_lunarLabel->setVisible(visible);
 }
 
 void DCalendar::setLunarFestivalHighlight(bool highlight)
 {
     m_viewLeft->setLunarFestivalHighlight(highlight);
     m_viewRight->setLunarFestivalHighlight(highlight);
+}
+
+void DCalendar::setCellSelectable(bool selectable)
+{
+    m_viewLeft->setCellSelectable(selectable);
+    m_viewRight->setCellSelectable(selectable);
 }
 
 bool DCalendar::eventFilter(QObject *o, QEvent *e)
@@ -165,14 +196,28 @@ bool DCalendar::eventFilter(QObject *o, QEvent *e)
     return false;
 }
 
-void DCalendar::viewDateChanged(const QDate &date, const QString &detail)
+void DCalendar::viewDateChanged(const QDate &date, const CaLunarDayInfo &lunarInfo)
 {
-    qDebug() << date << detail;
+    qDebug() << date << lunarInfo;
     if (sender() != m_viewCurrent)
         return;
 
-    selectDate(date);
+
+    QString detail;
+    detail = QString(tr("%1%2").arg(lunarInfo.mLunarMonthName)
+                               .arg(lunarInfo.mLunarDayName));
+
+    if (!lunarInfo.mSolarFestival.isEmpty())
+        detail += ' ' + lunarInfo.mSolarFestival;
+    if (!lunarInfo.mLunarFestival.isEmpty())
+        detail += ' ' + lunarInfo.mLunarFestival;
+
     m_detailLabel->setText(detail);
+    m_solarLabel->setText(date.toString(tr("dddd, MMMM dd, yyyy")));
+    m_lunarLabel->setText(QString(tr("农历%1%2")).arg(lunarInfo.mLunarMonthName)
+                                                .arg(lunarInfo.mLunarDayName));
+
+    selectDate(date);
 }
 
 void DCalendar::aniToPrev()

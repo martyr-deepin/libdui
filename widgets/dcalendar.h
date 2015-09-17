@@ -12,6 +12,7 @@
 #include "dlinkbutton.h"
 #include "dimagebutton.h"
 
+class CaLunarDayInfo;
 class CalendarView;
 
 DUI_BEGIN_NAMESPACE
@@ -35,19 +36,24 @@ signals:
 public slots:
     void setCurrentDate(const QDate &date);
     void selectDate(const QDate &date);
+    void setControlPanelVisible(bool visible);
+    void setDateInfoVisible(bool visible);
     void setLunarVisible(bool visible);
     void setLunarFestivalHighlight(bool highlight);
+    void setCellSelectable(bool selectable);
 
 private:
     bool eventFilter(QObject *o, QEvent *e);
 
 private slots:
-    void viewDateChanged(const QDate &date, const QString &detail);
+    void viewDateChanged(const QDate &date, const CaLunarDayInfo &detail);
     void aniToPrev();
     void aniToNext();
 
 private:
     QLabel *m_detailLabel;
+    QLabel *m_solarLabel;
+    QLabel *m_lunarLabel;
     QLineEdit *m_yearEdt;
     QLineEdit *m_monEdt;
     DLinkButton *m_resetBtn;
@@ -56,6 +62,8 @@ private:
     CalendarView *m_viewRight;
     CalendarView *m_viewCurrent;
 
+    QWidget *m_topControlPanel;
+    QWidget *m_solarLunarWidget;
     QWidget *m_viewOuterWidget;
     QWidget *m_viewInnerWidget;
 

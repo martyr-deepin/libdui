@@ -18,6 +18,7 @@ class CalendarView : public QWidget
     Q_PROPERTY(QColor festivalLunarColor MEMBER m_festivalLunarColor DESIGNABLE true SCRIPTABLE true)
     Q_PROPERTY(QColor weekendsTextColor MEMBER m_weekendsTextColor DESIGNABLE true SCRIPTABLE true)
     Q_PROPERTY(QColor weekendsLunarColor MEMBER m_weekendsLunarColor DESIGNABLE true SCRIPTABLE true)
+    Q_PROPERTY(bool cellSelectable READ cellSelectable WRITE setCellSelectable NOTIFY cellSelectableChanged)
 
 public:
     enum ShowState {
@@ -41,19 +42,22 @@ public:
     explicit CalendarView(QWidget *parent = 0);
 
     int getDateType(const QDate &date) const;
+    inline bool cellSelectable() const {return m_cellSelectable;}
 
 signals:
-    void dateSelected(const QDate &date, const QString &detail);
+    void dateSelected(const QDate &date, const CaLunarDayInfo &detail);
+    void cellSelectableChanged(bool cellSelectable);
 
 public slots:
     void setCurrentDate(const QDate &date);
     void setLunarVisible(bool visible);
     void setLunarFestivalHighlight(bool highlight);
+    void setCellSelectable(bool selectable);
 
 private:
     int getDateIndex(const QDate &date) const;
     const QString getCellDayNum(int pos);
-    const QString getLunarDetail(int pos);
+    const CaLunarDayInfo getLunarInfo(int pos);
     const QString getLunar(int pos);
     const CaLunarDayInfo getCaLunarDayInfo(int pos) const;
     void paintCell(QWidget *cell);
@@ -72,6 +76,7 @@ private:
 
     ShowState m_showState = Normal;
     int m_selectedCell = 0;
+    bool m_cellSelectable = true;
 
     QColor m_backgroundCircleColor = QColor(33, 147, 202);
 
