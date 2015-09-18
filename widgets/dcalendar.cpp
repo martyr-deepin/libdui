@@ -106,6 +106,7 @@ DCalendar::DCalendar(QWidget *parent) : QWidget(parent)
     connect(nextYear, &DImageButton::clicked, [this] {selectDate(m_showDate.addYears(1));});
     connect(nextMon, &DImageButton::clicked, [this] {selectDate(m_showDate.addMonths(1));});
 
+    setDateInfoVisible(false);
     setCurrentDate(m_currentDate);
     setLayout(mainLayout);
 }
@@ -174,10 +175,10 @@ void DCalendar::setLunarFestivalHighlight(bool highlight)
     m_viewRight->setLunarFestivalHighlight(highlight);
 }
 
-void DCalendar::setCellSelectable(bool selectable)
+void DCalendar::setSelectionMode(DCalendar::SelectionMode mode)
 {
-    m_viewLeft->setCellSelectable(selectable);
-    m_viewRight->setCellSelectable(selectable);
+    m_viewLeft->setCellSelectable(int(mode));
+    m_viewRight->setCellSelectable(int(mode));
 }
 
 bool DCalendar::eventFilter(QObject *o, QEvent *e)

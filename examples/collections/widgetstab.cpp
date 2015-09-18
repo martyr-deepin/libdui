@@ -29,10 +29,10 @@ WidgetsTab::WidgetsTab(QWidget *parent) : QLabel(parent)
     controlPanelVisible->setChecked(true);
     QCheckBox *dateInfoVisible = new QCheckBox(this);
     dateInfoVisible->setText("date info visible");
-    dateInfoVisible->setChecked(true);
+    dateInfoVisible->setChecked(false);
     dateInfoVisible->move(320, 170);
 
-    connect(cellSelectable, &QCheckBox::stateChanged, [calendar] (int state) -> void {calendar->setCellSelectable(state);});
+    connect(cellSelectable, &QCheckBox::stateChanged, [calendar] (int state) -> void {calendar->setSelectionMode(DCalendar::SelectionMode(state));});
     connect(festivalHighlight, &QCheckBox::stateChanged, [calendar] (int state) -> void {calendar->setLunarFestivalHighlight(state);});
     connect(lunarVisible, &QCheckBox::stateChanged, [calendar] (int state) -> void {calendar->setLunarVisible(state);});
     connect(controlPanelVisible, &QCheckBox::stateChanged, [calendar] (int state) -> void {calendar->setControlPanelVisible(state);});

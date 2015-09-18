@@ -22,6 +22,12 @@ class LIBDUISHARED_EXPORT DCalendar : public QWidget
     Q_OBJECT
 
 public:
+    enum SelectionMode {
+        NoSelection = 0,
+        SingleSelection = 1,
+    };
+
+public:
     explicit DCalendar(QWidget *parent = 0);
     ~DCalendar();
 
@@ -40,7 +46,7 @@ public slots:
     void setDateInfoVisible(bool visible);
     void setLunarVisible(bool visible);
     void setLunarFestivalHighlight(bool highlight);
-    void setCellSelectable(bool selectable);
+    void setSelectionMode(SelectionMode mode);
 
 private:
     bool eventFilter(QObject *o, QEvent *e);
