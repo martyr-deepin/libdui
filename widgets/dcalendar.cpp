@@ -159,6 +159,7 @@ void DCalendar::setControlPanelVisible(bool visible)
 void DCalendar::setDateInfoVisible(bool visible)
 {
     m_solarLunarWidget->setVisible(visible);
+    m_detailLabel->setVisible(!visible);
 }
 
 void DCalendar::setLunarVisible(bool visible)
