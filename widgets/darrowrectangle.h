@@ -1,5 +1,5 @@
-#ifndef ARROWRECTANGLE_H
-#define ARROWRECTANGLE_H
+#ifndef DARROWRECTANGLE_H
+#define DARROWRECTANGLE_H
 
 #include <QDesktopWidget>
 #include <QWidget>
@@ -13,6 +13,7 @@
 
 #include "libdui_global.h"
 #include "dthememanager.h"
+#include "dgraphicsgloweffect.h"
 
 DUI_BEGIN_NAMESPACE
 
@@ -66,6 +67,18 @@ public:
     void move(int x,int y);
     QSize getFixedSize();
 
+    qreal shadowBlurRadius() const;
+    void setShadowBlurRadius(const qreal &shadowBlurRadius);
+
+    qreal shadowDistance() const;
+    void setShadowDistance(const qreal &shadowDistance);
+
+    qreal shadowXOffset() const;
+    void setShadowXOffset(const qreal &shadowXOffset);
+
+    qreal shadowYOffset() const;
+    void setShadowYOffset(const qreal &shadowYOffset);
+
 protected:
     void paintEvent(QPaintEvent *);
 
@@ -77,7 +90,11 @@ private:
     int m_arrowX = 0;
     int m_arrowY = 0;
 
-    int m_shadowWidth = 0;
+    qreal m_shadowBlurRadius = 20;
+    qreal m_shadowDistance = 1;
+    qreal m_shadowXOffset = 0;
+    qreal m_shadowYOffset = 3;
+    int m_shadowWidth = 5; //Abandoned
     int m_borderWidth = 1;
     QColor m_borderColor = QColor(255,255,255,130);
     QColor m_backgroundColor = QColor(0,0,0,200);
@@ -97,4 +114,4 @@ private:
 
 DUI_END_NAMESPACE
 
-#endif // ARROWRECTANGLE_H
+#endif // DARROWRECTANGLE_H

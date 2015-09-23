@@ -42,7 +42,8 @@ HEADERS += $$PWD/dslider.h\
     $$PWD/dscrollbar.h \
     $$PWD/dscrollarea.h \
     $$PWD/darrowrectangle.h \
-    $$PWD/dcalendar.h
+    $$PWD/dcalendar.h \
+    $$PWD/dgraphicsgloweffect.h
 
 SOURCES += $$PWD/dslider.cpp \
     $$PWD/dthememanager.cpp \
@@ -85,7 +86,8 @@ SOURCES += $$PWD/dslider.cpp \
     $$PWD/dscrollbar.cpp \
     $$PWD/dscrollarea.cpp \
     $$PWD/darrowrectangle.cpp \
-    $$PWD/dcalendar.cpp
+    $$PWD/dcalendar.cpp \
+    $$PWD/dgraphicsgloweffect.cpp
 
 RESOURCES += \
     $$PWD/../themes/dui_theme_dark.qrc \

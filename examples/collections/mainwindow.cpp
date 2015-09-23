@@ -14,6 +14,7 @@
 #include "buttongridtab.h"
 #include "imagebuttongridtab.h"
 #include "cameraform.h"
+#include "graphicseffecttab.h"
 
 DUI_USE_NAMESPACE
 
@@ -92,6 +93,9 @@ void MainWindow::initTabWidget()
 
     CameraForm *cameraform = new CameraForm(this);
 
+    GraphicsEffectTab *effectTab = new GraphicsEffectTab;
+
+    m_mainTab->addTab(effectTab, "GraphicsEffect");
     m_mainTab->addTab(comboBoxTab, "ComboBox");
     m_mainTab->addTab(indicatorTab, "Indicator");
     m_mainTab->addTab(lineTab,"Line");
