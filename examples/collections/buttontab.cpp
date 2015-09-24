@@ -55,6 +55,21 @@ ButtonTab::ButtonTab(QWidget *parent) : QLabel(parent)
 
     DUI::DLinkButton *linkBtn = new DUI::DLinkButton("Link Button", this);
     linkBtn->move(10, 125);
+
+    DUI::DLinkButton *showCalendarBtn = new DUI::DLinkButton("Show Calendar", this);
+    showCalendarBtn->move(10, 155);
+    connect(showCalendarBtn, &DLinkButton::clicked, [] {
+//        (new DUI::DCalendar())->show();
+        DUI::DCalendar *calendar = new DUI::DCalendar;
+        calendar->setFixedSize(300, 300);
+
+        QWidget *widget = new QWidget;
+        QVBoxLayout *layout = new QVBoxLayout;
+        layout->addWidget(calendar);
+        widget->setLayout(layout);
+        widget->show();
+        widget->setStyleSheet("background-color:black;");
+    });
 }
 
 void ButtonTab::buttonClickTest()
