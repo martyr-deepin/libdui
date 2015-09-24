@@ -7,11 +7,22 @@
 #include <QEvent>
 #include <QDebug>
 #include <QMessageBox>
+#include <QTime>
+#include <QQueue>
+
+QQueue<int> *CalendarView::queue = nullptr;
+QMap<QDate, CaLunarDayInfo> *CalendarView::lunarCache = nullptr;
+CaLunarDayInfo *CalendarView::emptyCaLunarDayInfo = nullptr;
 
 CalendarView::CalendarView(QWidget *parent) : QWidget(parent)
 {
     m_DBusInter = new DCalendarDBus("com.deepin.api.LunarCalendar", "/com/deepin/api/LunarCalendar", QDBusConnection::sessionBus(), this);
-    m_LunarCache = new QMap<QDate, CaLunarDayInfo>;
+    if (!queue)
+        queue = new QQueue<int>;
+    if (!lunarCache)
+        lunarCache = new QMap<QDate, CaLunarDayInfo>;
+    if (!emptyCaLunarDayInfo)
+        emptyCaLunarDayInfo = new CaLunarDayInfo;
 
     const QStringList headerlist({tr("Sun"), tr("Mon"), tr("Tue"), tr("Wed"), tr("Thu"), tr("Fri"), tr("Sta")});
     QHBoxLayout *headerLayout = new QHBoxLayout;
@@ -153,17 +164,6 @@ const QString CalendarView::getCellDayNum(int pos)
         return result;
 }
 
-const CaLunarDayInfo CalendarView::getLunarInfo(int pos)
-{
-    const QDate day = m_days[pos];
-
-    bool o1;
-    Q_UNUSED(o1)
-    const QDBusReply<CaLunarDayInfo> reply = m_DBusInter->GetLunarInfoBySolar(day.year(), day.month(), day.day(), o1);
-
-    return reply.value();
-}
-
 const QString CalendarView::getLunar(int pos)
 {
     CaLunarDayInfo info = getCaLunarDayInfo(pos);
@@ -177,17 +177,33 @@ const CaLunarDayInfo CalendarView::getCaLunarDayInfo(int pos) const
 {
     const QDate date = m_days[pos];
 
-    if (m_LunarCache->contains(date))
-        return m_LunarCache->value(date);
-    if (m_LunarCache->size() > 1000)
-        m_LunarCache->clear();
+    if (lunarCache->contains(date))
+        return lunarCache->value(date);
+    if (lunarCache->size() > 300)
+        lunarCache->clear();
+
+//    QTimer::singleShot(500, [this, pos] {getDbusData(pos);});
+    queue->push_back(pos);
+    QTimer::singleShot(300, this, SLOT(getDbusData()));
+
+    return *emptyCaLunarDayInfo;
+}
+
+void CalendarView::getDbusData() const
+{
+    if (queue->isEmpty())
+        return;
+
+    const int pos = queue->head();
+    queue->pop_front();
+    const QDate date = m_days[pos];
 
     bool o1;
     QDBusReply<CaLunarDayInfo> reply = m_DBusInter->GetLunarInfoBySolar(date.year(), date.month(), date.day(), o1);
 
-    m_LunarCache->insert(date, reply.value());
+    lunarCache->insert(date, reply.value());
 
-    return reply.value();
+    m_cellList.at(pos)->update();
 }
 
 void CalendarView::paintCell(QWidget *cell)
@@ -295,6 +311,5 @@ void CalendarView::setSelectedCell(int index)
     m_cellList.at(prevPos)->update();
     m_cellList.at(index)->update();
 
-    emit dateSelected(m_days[index], getLunarInfo(index));
+    emit dateSelected(m_days[index], getCaLunarDayInfo(index));
 }
-

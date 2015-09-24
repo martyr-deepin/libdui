@@ -30,7 +30,7 @@ DCalendar::DCalendar(QWidget *parent) : QWidget(parent)
     m_viewLeft->setObjectName("CalendarView");
     m_viewCurrent = m_viewLeft;
     m_viewRight = new CalendarView;
-    m_viewRight->setCurrentDate(QDate::currentDate());
+//    m_viewRight->setCurrentDate(QDate::currentDate());
     m_viewRight->setObjectName("CalendarView");
     m_viewOuterWidget = new QWidget;
     m_viewOuterWidget->installEventFilter(this);
@@ -98,8 +98,8 @@ DCalendar::DCalendar(QWidget *parent) : QWidget(parent)
     mainLayout->addWidget(m_detailLabel);
     mainLayout->addWidget(m_viewOuterWidget);
 
-    connect(m_viewLeft, &CalendarView::dateSelected, this, &DCalendar::viewDateChanged);
-    connect(m_viewRight, &CalendarView::dateSelected, this, &DCalendar::viewDateChanged);
+    connect(m_viewLeft, &CalendarView::dateSelected, this, &DCalendar::viewDateChanged, Qt::QueuedConnection);
+    connect(m_viewRight, &CalendarView::dateSelected, this, &DCalendar::viewDateChanged, Qt::QueuedConnection);
     connect(m_resetBtn, &DLinkButton::clicked, [this] {selectDate(m_currentDate);});
     connect(prevYear, &DImageButton::clicked, [this] {selectDate(m_showDate.addYears(-1));});
     connect(prevMon, &DImageButton::clicked, [this] {selectDate(m_showDate.addMonths(-1));});

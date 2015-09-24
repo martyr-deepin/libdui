@@ -5,6 +5,7 @@
 #include <QList>
 #include <QDate>
 #include <QStyleOption>
+#include <QSignalMapper>
 
 class DCalendarDBus;
 class CaLunarDayInfo;
@@ -57,7 +58,6 @@ public slots:
 private:
     int getDateIndex(const QDate &date) const;
     const QString getCellDayNum(int pos);
-    const CaLunarDayInfo getLunarInfo(int pos);
     const QString getLunar(int pos);
     const CaLunarDayInfo getCaLunarDayInfo(int pos) const;
     void paintCell(QWidget *cell);
@@ -66,10 +66,10 @@ private:
 private slots:
     void cellClicked(QWidget *cell);
     void setSelectedCell(int index);
+    void getDbusData() const;
 
 private:
     QList<QWidget *> m_cellList;
-    QMap<QDate, CaLunarDayInfo> *m_LunarCache = nullptr;
     DCalendarDBus *m_DBusInter;
     QDate m_days[42];
     QDate m_currentDate;
@@ -91,6 +91,10 @@ private:
     QColor m_selectedLunarColor = Qt::white;
     QColor m_festivalLunarColor = Qt::cyan;
     QColor m_notCurrentLunarColor = QColor(0x55, 0x55, 0x55);
+
+    static QQueue<int> *queue;
+    static QMap<QDate, CaLunarDayInfo> *lunarCache;
+    static CaLunarDayInfo *emptyCaLunarDayInfo;
 };
 
 #endif // MYCALENDARWIDGET_H
