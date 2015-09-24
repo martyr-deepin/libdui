@@ -6,7 +6,7 @@
 
 include(widgets/widgets.pri)
 
-QT       += widgets dbus multimedia multimediawidgets
+QT       += widgets dbus multimedia multimediawidgets x11extras
 
 TARGET = dui
 VERSION = 1.0

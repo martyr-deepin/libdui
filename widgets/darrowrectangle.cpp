@@ -1,4 +1,5 @@
 #include "darrowrectangle.h"
+#include <X11/extensions/shape.h>
 
 DUI_USE_NAMESPACE
 
@@ -68,6 +69,19 @@ void DArrowRectangle::resizeWithContent()
     setFixedSize(getFixedSize());
 
     repaint();
+
+    //Shadow Transparent For MouseEvents
+    qreal delta = shadowBlurRadius() + shadowDistance();
+
+    XRectangle m_contentXRect;
+    m_contentXRect.x = 0;
+    m_contentXRect.y = 0;
+    m_contentXRect.width = width() - delta * 2;
+    m_contentXRect.height = height() - delta * 2;
+    XShapeCombineRectangles(QX11Info::display(), winId(), ShapeInput,
+                            delta + shadowXOffset(),
+                            delta + shadowYOffset(),
+                            &m_contentXRect, 1, ShapeSet, YXBanded);
 }
 
 QSize DArrowRectangle::getFixedSize()
