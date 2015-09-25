@@ -1,10 +1,13 @@
 QT       += core gui dbus
 
-greaterThan(QT_MAJOR_VERSION, 4): QT += widgets multimedia multimediawidgets
+greaterThan(QT_MAJOR_VERSION, 4): QT += widgets multimedia multimediawidgets x11extras
 
 TARGET = collections
 TEMPLATE = app
 CONFIG += c++11
+
+CONFIG += link_pkgconfig
+PKGCONFIG += xext
 
 INCLUDEPATH += $$(_PRO_FILE_PWD_)../../ $$(_PRO_FILE_PWD_)../../widgets
 include($$(_PRO_FILE_PWD_)../../widgets/widgets.pri)

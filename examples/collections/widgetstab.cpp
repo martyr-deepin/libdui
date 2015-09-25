@@ -1,4 +1,5 @@
 #include "widgetstab.h"
+#include "darrowrectangle.h"
 
 #include <QCheckBox>
 

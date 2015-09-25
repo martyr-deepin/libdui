@@ -9,6 +9,7 @@
 #include <QVBoxLayout>
 #include <QPainter>
 #include <QTimer>
+#include <QX11Info>
 #include <QDebug>
 
 #include "libdui_global.h"
@@ -93,7 +94,7 @@ private:
     qreal m_shadowBlurRadius = 20;
     qreal m_shadowDistance = 1;
     qreal m_shadowXOffset = 0;
-    qreal m_shadowYOffset = 3;
+    qreal m_shadowYOffset = 5;
     int m_shadowWidth = 5; //Abandoned
     int m_borderWidth = 1;
     QColor m_borderColor = QColor(255,255,255,130);
