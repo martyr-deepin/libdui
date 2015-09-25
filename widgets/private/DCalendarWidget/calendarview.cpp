@@ -23,6 +23,8 @@ CalendarView::CalendarView(QWidget *parent) : QWidget(parent)
         lunarCache = new QMap<QDate, CaLunarDayInfo>;
     if (!emptyCaLunarDayInfo)
         emptyCaLunarDayInfo = new CaLunarDayInfo;
+    m_dayNumFont.setPixelSize(12);
+    m_dayLunarFont.setPixelSize(11);
 
     const QStringList headerlist({tr("Sun"), tr("Mon"), tr("Tue"), tr("Wed"), tr("Thu"), tr("Fri"), tr("Sta")});
     QHBoxLayout *headerLayout = new QHBoxLayout;
@@ -255,6 +257,8 @@ void CalendarView::paintCell(QWidget *cell)
         else
             painter.setPen(m_defaultTextColor);
     }
+
+    painter.setFont(m_dayNumFont);
     painter.drawText(cell->rect(), Qt::AlignCenter, getCellDayNum(pos));
 
     // draw text of day type
@@ -278,6 +282,8 @@ void CalendarView::paintCell(QWidget *cell)
             } else
                 painter.setPen(m_defaultLunarColor);
         }
+
+        painter.setFont(m_dayLunarFont);
         painter.drawText(cell->rect(), Qt::AlignCenter, '\n' + getLunar(pos));
     }
 

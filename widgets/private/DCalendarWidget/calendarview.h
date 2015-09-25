@@ -78,6 +78,9 @@ private:
     int m_selectedCell = 0;
     bool m_cellSelectable = true;
 
+    QFont m_dayNumFont;
+    QFont m_dayLunarFont;
+
     QColor m_backgroundCircleColor = QColor(33, 147, 202);
 
     QColor m_defaultTextColor = Qt::black;
