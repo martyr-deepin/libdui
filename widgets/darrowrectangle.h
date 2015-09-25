@@ -9,7 +9,7 @@
 #include <QVBoxLayout>
 #include <QPainter>
 #include <QTimer>
-#include <QX11Info>
+#include <QtX11Extras/QX11Info>
 #include <QDebug>
 
 #include "libdui_global.h"
