@@ -194,6 +194,8 @@ void CalendarView::getDbusData() const
     if (queue->isEmpty())
         return;
 
+    qApp->processEvents();
+
     const int pos = queue->head();
     queue->pop_front();
     const QDate date = m_days[pos];
