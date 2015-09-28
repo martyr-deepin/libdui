@@ -122,6 +122,9 @@ void DCalendar::setCurrentDate(const QDate &date)
 
     m_currentDate = date;
     m_showDate = date;
+
+    // if reset current date, hide "reset" button
+    m_resetBtn->setVisible(false);
 }
 
 void DCalendar::selectDate(const QDate &date)
