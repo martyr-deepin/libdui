@@ -52,6 +52,7 @@ private:
     bool eventFilter(QObject *o, QEvent *e);
 
 private slots:
+    void showEvent(QEvent *);
     void viewDateChanged(const QDate &date, const CaLunarDayInfo &detail);
     void aniToPrev();
     void aniToNext();
