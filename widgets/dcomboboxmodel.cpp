@@ -55,12 +55,15 @@ void DComboBoxModel::remove(int index, int count)
 
 void DComboBoxModel::set(int index, const QJsonObject &dataObj)
 {
-
+    Q_UNUSED(index)
+    Q_UNUSED(dataObj)
 }
 
 void DComboBoxModel::setProperty(int index, const QString &property, const QVariant &value)
 {
-
+    Q_UNUSED(index)
+    Q_UNUSED(property)
+    Q_UNUSED(value)
 }
 
 QModelIndex DComboBoxModel::getModelIndex(int row) const
@@ -81,16 +84,22 @@ bool DComboBoxModel::setData(const QModelIndex &index, const QVariant &value, in
 
 QModelIndex DComboBoxModel::parent(const QModelIndex &child) const
 {
+    Q_UNUSED(child)
+
     return QModelIndex();
 }
 
 int DComboBoxModel::rowCount(const QModelIndex &parent) const
 {
+    Q_UNUSED(parent)
+
     return m_dataArray.count();
 }
 
 int DComboBoxModel::columnCount(const QModelIndex &parent) const
 {
+    Q_UNUSED(parent)
+
     return 1;
 }
 
@@ -108,6 +117,8 @@ QVariant DComboBoxModel::data(const QModelIndex &index, int role) const
 
 bool DComboBoxModel::insertRows(int row, int count, const QModelIndex &parent)
 {
+    Q_UNUSED(parent)
+
     beginInsertRows(QModelIndex(), row, row + count-1);
     for (int i = row; i < row + count; i++)
     {

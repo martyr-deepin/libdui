@@ -17,6 +17,8 @@ void FontDelegateItem::setItemFont(const QString &family, const QString &title)
 
 void FontDelegateItem::paintEvent(QPaintEvent *event)
 {
+    Q_UNUSED(event)
+
     QPainter painter(this);
     painter.setRenderHint(QPainter::Antialiasing);
 
@@ -58,6 +60,9 @@ DComboBoxFontDelegate::DComboBoxFontDelegate(QObject *parent) : DAbstractComboBo
 
 QWidget * DComboBoxFontDelegate::createEditor(QWidget *parent, const QStyleOptionViewItem &option, const QModelIndex &index) const
 {
+    Q_UNUSED(option)
+    Q_UNUSED(index)
+
     FontDelegateItem * editor = new FontDelegateItem(parent);
     editor->setFixedHeight(DUI::MENU_ITEM_HEIGHT);
 

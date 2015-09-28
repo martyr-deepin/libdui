@@ -60,6 +60,9 @@ DComboBoxSimpleDelegate::DComboBoxSimpleDelegate(QObject *parent) : DAbstractCom
 
 QWidget * DComboBoxSimpleDelegate::createEditor(QWidget *parent, const QStyleOptionViewItem &option, const QModelIndex &index) const
 {
+    Q_UNUSED(option)
+    Q_UNUSED(index)
+
     SimpleDelegateItem * editor = new SimpleDelegateItem(parent);
     editor->setFixedHeight(DUI::MENU_ITEM_HEIGHT);
 

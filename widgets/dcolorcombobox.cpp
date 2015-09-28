@@ -62,6 +62,9 @@ DComboBoxColorDelegate::DComboBoxColorDelegate(QObject *parent) : DAbstractCombo
 
 QWidget * DComboBoxColorDelegate::createEditor(QWidget *parent, const QStyleOptionViewItem &option, const QModelIndex &index) const
 {
+    Q_UNUSED(option)
+    Q_UNUSED(index)
+
     ColorDelegateItem * editor = new ColorDelegateItem(parent);
     editor->setFixedHeight(DUI::MENU_ITEM_HEIGHT);
 
