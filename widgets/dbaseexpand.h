@@ -34,6 +34,7 @@ public:
     bool expand() const;
     void setAnimationDuration(int duration);
     void setAnimationEasingCurve(QEasingCurve curve);
+    void setSeparatorVisible(bool arg);
 
 signals:
     void expandChange(bool e);

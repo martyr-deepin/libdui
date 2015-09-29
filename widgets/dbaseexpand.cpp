@@ -130,5 +130,10 @@ void DBaseExpand::setAnimationEasingCurve(QEasingCurve curve)
     m_animation->setEasingCurve(curve);
 }
 
+void DBaseExpand::setSeparatorVisible(bool arg)
+{
+    m_hSeparator->setVisible(arg);
+}
+
 
 DUI_END_NAMESPACE
