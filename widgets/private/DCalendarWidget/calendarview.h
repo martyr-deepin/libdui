@@ -46,8 +46,8 @@ public:
     inline bool cellSelectable() const {return m_cellSelectable;}
 
 signals:
-    void dateSelected(const QDate &date, const CaLunarDayInfo &detail);
-    void cellSelectableChanged(bool cellSelectable);
+    void dateSelected(const QDate &date, const CaLunarDayInfo &detail) const;
+    void cellSelectableChanged(bool cellSelectable) const;
 
 public slots:
     void setCurrentDate(const QDate &date);

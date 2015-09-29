@@ -208,6 +208,10 @@ void CalendarView::getDbusData() const
     lunarCache->insert(date, reply.value());
 
     m_cellList.at(pos)->update();
+
+    // refersh lunar info
+    if (date == m_currentDate)
+        emit dateSelected(date, reply.value());
 }
 
 void CalendarView::paintCell(QWidget *cell)
