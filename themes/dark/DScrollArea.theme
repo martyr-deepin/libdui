@@ -1,7 +1,12 @@
 DUI--DScrollArea{
-    background-color: transparent;
+    border: none;
+    background: transparent;
 }
 
 DUI--DScrollArea::corner{
     background-color: transparent;
+}
+
+DUI--DScrollArea QWidget{
+    background: transparent;
 }
