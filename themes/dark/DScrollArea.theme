@@ -1,5 +1,5 @@
 DUI--DScrollArea{
-    border: none;
+    background-color: transparent;
 }
 
 DUI--DScrollArea::corner{
