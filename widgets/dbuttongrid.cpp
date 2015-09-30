@@ -294,6 +294,15 @@ void DButtonGrid::checkButtonByIndex(int index){
         button->click();
 }
 
+void DButtonGrid::checkButtonByText(const QString &label)
+{
+    for (int i = 0; i < m_buttonGroup->buttons().count(); ++i) {
+        QAbstractButton *button = m_buttonGroup->buttons()[i];
+        if(button->text() == label)
+            checkButtonByIndex(i);
+    }
+}
+
 void DButtonGrid::setItemUnChecked(){
     for(int i = 0; i< rowCount(); i++){
         for (int j=0; j < columnCount(); j++){
