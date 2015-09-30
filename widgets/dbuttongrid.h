@@ -26,6 +26,10 @@ public slots:
     void handleChecked(bool checked);
     void handleHover(bool hovered);
 
+signals:
+    void mouseEnter();
+    void mouseLeave();
+
 protected:
     void enterEvent(QEvent* event);
     void leaveEvent(QEvent* event);

@@ -98,6 +98,7 @@ void ImageButton::enterEvent(QEvent *event){
     }
     updateChildWidgets();
     QPushButton::enterEvent(event);
+    emit mouseEnter();
 }
 void ImageButton::leaveEvent(QEvent *event){
     if (m_iconLabel->property("state").isValid()){
@@ -118,6 +119,7 @@ void ImageButton::leaveEvent(QEvent *event){
     }
     updateChildWidgets();
     QPushButton::leaveEvent(event);
+    emit mouseLeave();
 }
 
 void ImageButton::resizeEvent(QResizeEvent *event){
