@@ -26,11 +26,11 @@ CalendarView::CalendarView(QWidget *parent) : QWidget(parent)
     m_dayNumFont.setPixelSize(12);
     m_dayLunarFont.setPixelSize(11);
 
-    const QStringList headerlist({tr("Sun"), tr("Mon"), tr("Tue"), tr("Wed"), tr("Thu"), tr("Fri"), tr("Sta")});
     QHBoxLayout *headerLayout = new QHBoxLayout;
+    QLocale locale;
     for (int i = 0; i != 7; ++i)
     {
-        QLabel *label = new QLabel(headerlist.at(i));
+        QLabel *label = new QLabel(locale.dayName(i ? i : 7, QLocale::ShortFormat));
         label->setObjectName("CalendarHeader");
         label->setAlignment(Qt::AlignCenter);
         headerLayout->addWidget(label);

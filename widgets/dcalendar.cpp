@@ -24,7 +24,7 @@ DCalendar::DCalendar(QWidget *parent) : QWidget(parent)
     m_monEdt->setFixedWidth(25);
     m_monEdt->setAlignment(Qt::AlignCenter);
     m_resetBtn = new DLinkButton;
-    m_resetBtn->setText(tr("Reset"));
+    m_resetBtn->setText("Reset");
     m_resetBtn->hide();
     m_viewLeft = new CalendarView;
     m_viewLeft->setObjectName("CalendarView");
@@ -114,6 +114,11 @@ DCalendar::DCalendar(QWidget *parent) : QWidget(parent)
 DCalendar::~DCalendar()
 {
     m_animation->deleteLater();
+}
+
+void DCalendar::setResetButtonText(const QString &resetText)
+{
+    m_resetBtn->setText(resetText);
 }
 
 void DCalendar::setCurrentDate(const QDate &date)

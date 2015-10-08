@@ -40,6 +40,7 @@ signals:
     void selectedDateChanged(const QDate & date);
 
 public slots:
+    void setResetButtonText(const QString & resetText);
     void setCurrentDate(const QDate &date);
     void selectDate(const QDate &date);
     void setControlPanelVisible(bool visible);
