@@ -62,7 +62,7 @@ DSlider::DSlider(Qt::Orientation orientation, QWidget *parent) :
 
 DSlider::~DSlider()
 {
-
+    delete d_ptr;
 }
 
 int DSlider::handleType() const
