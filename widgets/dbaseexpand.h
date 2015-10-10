@@ -25,6 +25,7 @@ class LIBDUISHARED_EXPORT DBaseExpand : public QWidget
     Q_OBJECT
 public:
     explicit DBaseExpand(QWidget *parent = 0);
+    ~DBaseExpand();
 
     void setHeader(QWidget *header);
     void setContent(QWidget *content);

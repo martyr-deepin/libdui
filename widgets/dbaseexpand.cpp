@@ -40,6 +40,18 @@ DBaseExpand::DBaseExpand(QWidget *parent) : QWidget(parent)
     updateContentHeight();
 }
 
+DBaseExpand::~DBaseExpand()
+{
+    if (m_headerLayout)
+        m_headerLayout->deleteLater();
+    if (m_contentLayout)
+        m_contentLayout->deleteLater();
+    if (m_contentLoader)
+        m_contentLoader->deleteLater();
+    if (m_animation)
+        m_animation->deleteLater();
+}
+
 void DBaseExpand::setHeader(QWidget *header)
 {
     if (!header)
