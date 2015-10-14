@@ -3,14 +3,18 @@
 
 #include <QTableWidget>
 #include <QPushButton>
+#include <QResizeEvent>
 
 #include "libdui_global.h"
 #include "dconstants.h"
+#include "dimagebutton.h"
 
 class QButtonGroup;
 class QLabel;
 
+
 DUI_BEGIN_NAMESPACE
+
 
 class ImageButton: public QPushButton
 {
@@ -20,15 +24,26 @@ public:
     ~ImageButton();
     void initUI();
     void initConnect();
+    QString getId();
     void updateChildWidgets();
+    bool isDeletable();
+
 
 public slots:
+    void setId(QString id);
     void handleChecked(bool checked);
     void handleHover(bool hovered);
+
+    void showCloseButton();
+    void hideCloseButton();
+
+    void setDeletable(bool flag);
+    void handleClose();
 
 signals:
     void mouseEnter();
     void mouseLeave();
+    void closed(QString url);
 
 protected:
     void enterEvent(QEvent* event);
@@ -38,9 +53,12 @@ protected:
 private:
     QString m_icon;
     QString m_text;
+    QString m_id;
     bool m_isNameVisible;
     QLabel* m_iconLabel = NULL;
     QLabel* m_textLabel = NULL;
+    DImageButton* m_cloesButton;
+    bool m_isDeletable = false;
 };
 
 class ItemButton: public QPushButton
@@ -81,6 +99,7 @@ public slots:
     void checkButtonByIndex(int index);
     void checkButtonByText(const QString& label);
     void clear();
+    void handleClosed(QString url);
 
 private slots:
     void setButtonChecked(int id);
@@ -90,6 +109,9 @@ signals:
     void buttonCheckedIndexChanged(int index);
     void buttonMouseEntered(QString label);
     void buttonMouseLeaved(QString label);
+
+    void requestRefreshed(QString url);
+
 private:
     QButtonGroup* m_buttonGroup = NULL;
     QStringList m_buttonLabels;

@@ -1,5 +1,6 @@
 #include "dbuttongrid.h"
 #include "dthememanager.h"
+
 #include <QButtonGroup>
 #include <QHeaderView>
 #include <QPushButton>
@@ -11,6 +12,7 @@
 
 DUI_BEGIN_NAMESPACE
 
+#include "dwindowclosebutton.h"
 
 ImageButton::ImageButton(const QString &icon, const QString text,
                          bool isNameVisible, QWidget *parent):
@@ -43,10 +45,52 @@ void ImageButton::initUI(){
     mainlayout->setSpacing(0);
     mainlayout->setContentsMargins(5, 5, 5, 5);
     setLayout(mainlayout);
+
+    m_cloesButton = new DImageButton(":/images/dark/images/dock_preview_close_normal.png",
+                                     ":/images/dark/images/dock_preview_close_hover.png",
+                                     ":/images/dark/images/dock_preview_close_press.png",
+                                     ":/images/dark/images/dock_preview_close_press.png",
+                                     this);
+    m_cloesButton->setFixedSize(20, 20);
+    m_cloesButton->setCheckable(false);
+    m_cloesButton->hide();
 }
 
 void ImageButton::initConnect(){
     connect(this, SIGNAL(toggled(bool)), this, SLOT(handleChecked(bool)));
+    connect(m_cloesButton, SIGNAL(clicked()), this, SLOT(handleClose()));
+}
+
+QString ImageButton::getId(){
+    return m_id;
+}
+
+void ImageButton::setId(QString id){
+    m_id = id;
+}
+
+bool ImageButton::isDeletable(){
+    return m_isDeletable;
+}
+
+void ImageButton::setDeletable(bool flag){
+    m_isDeletable = flag;
+}
+
+void ImageButton::handleClose(){
+    emit closed(m_icon);
+}
+
+void ImageButton::showCloseButton(){
+    if (m_isDeletable){
+        m_cloesButton->show();
+    }else{
+        m_cloesButton->hide();
+    }
+}
+
+void ImageButton::hideCloseButton(){
+    m_cloesButton->hide();
 }
 
 void ImageButton::handleChecked(bool checked){
@@ -55,11 +99,13 @@ void ImageButton::handleChecked(bool checked){
         if (m_textLabel){
             m_textLabel->setProperty("state","checked");
         }
+        hideCloseButton();
     }else{
         m_iconLabel->setProperty("state","normal");
         if (m_textLabel){
             m_textLabel->setProperty("state","normal");
         }
+        showCloseButton();
     }
     updateChildWidgets();
 }
@@ -128,6 +174,7 @@ void ImageButton::resizeEvent(QResizeEvent *event){
         QFontMetrics fm = m_textLabel->fontMetrics();
         m_textLabel->setFixedHeight(fm.height() + 10);
     }
+    m_cloesButton->move(m_iconLabel->width() - 10, 0);
     QPushButton::resizeEvent(event);
 }
 
@@ -254,9 +301,23 @@ void DButtonGrid::addImageButton(const QMap<QString, QString> &imageInfo,
     ImageButton* button = new ImageButton(imageInfo.value("url"), imageInfo.value("name"), isNameVisible);
     if (imageInfo.contains("key")){
         button->setProperty("key", imageInfo.value("key"));
+        button->setId(imageInfo.value("key"));
     }
+
+    if (imageInfo.contains("deletable")){
+        if (imageInfo.value("deletable") == "true"){
+            button->setDeletable(true);
+            button->showCloseButton();
+        }else{
+            button->setDeletable(false);
+            button->hideCloseButton();
+        }
+    }
+
     button->setCheckable(true);
     addButtonWidget(button, index);
+
+    connect(button, SIGNAL(closed(QString)),this, SLOT(handleClosed(QString)));
 }
 
 void DButtonGrid::addImageButtons(const QList<QMap<QString, QString> > &imageInfos, bool isNameVisible){
@@ -332,6 +393,15 @@ void DButtonGrid::clear()
 {
     clearData();
     QTableWidget::clear();
+    int row = rowCount();
+    for (int i=0; i < row; i++){
+        removeRow(0);
+    }
+    setFixedSize(0, 0);
+}
+
+void DButtonGrid::handleClosed(QString url){
+    emit requestRefreshed(static_cast<ImageButton*>(sender())->getId());
 }
 
 DButtonGrid::~DButtonGrid()

@@ -153,5 +153,8 @@
         <file>dark/images/dark_button_press_bg.png</file>
         <file>dark/images/dark_button_normal_bg.png</file>
         <file>dark/images/dark_button_hover_bg.png</file>
+        <file>dark/images/dock_preview_close_hover.png</file>
+        <file>dark/images/dock_preview_close_normal.png</file>
+        <file>dark/images/dock_preview_close_press.png</file>
     </qresource>
 </RCC>
