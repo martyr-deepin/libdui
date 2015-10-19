@@ -15,7 +15,9 @@ DSwitchButton::DSwitchButton(QWidget *parent) :
     m_animationEndValue(0)
 {
     setObjectName("DSwitchButton");
-    setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+
+    setMaximumSize(39, 18);
+    setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
 
     D_THEME_INIT_WIDGET(DSwitchButton);
 
@@ -57,6 +59,11 @@ QString DSwitchButton::disabledImageSource() const
 QString DSwitchButton::enabledImageSource() const
 {
     return m_enabledImageSource;
+}
+
+QSize DSwitchButton::sizeHint() const
+{
+    return maximumSize();
 }
 
 void DSwitchButton::setChecked(bool arg)

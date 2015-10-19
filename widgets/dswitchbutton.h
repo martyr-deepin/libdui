@@ -35,6 +35,7 @@ public:
     double animationEndValue() const;
     QString disabledImageSource() const;
     QString enabledImageSource() const;
+    QSize sizeHint() const Q_DECL_OVERRIDE;
 
 public Q_SLOTS:
     void setChecked(bool arg);
