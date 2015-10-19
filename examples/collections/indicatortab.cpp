@@ -20,7 +20,10 @@ IndicatorTab::IndicatorTab(QWidget *parent) :
     loadingIndicator->setBackgroundColor(color);
 
     DLoadingIndicator *loadingIndicator2 = new DLoadingIndicator(this);
-    loadingIndicator2->setLoadingPixmap(QPixmap(":/images/test.png"));
+    QLabel *label = new QLabel;
+    label->setPixmap(QPixmap(":/images/test.png"));
+    label->setAttribute(Qt::WA_TranslucentBackground);
+    loadingIndicator2->setWidgetSource(label);
     loadingIndicator2->setLoading(true);
 
     loadingContainerLayout->addWidget(loadingIndicator);
