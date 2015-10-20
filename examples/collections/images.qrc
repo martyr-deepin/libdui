@@ -6,5 +6,6 @@
         <file>images/buttonPress.png</file>
         <file>images/test.png</file>
         <file>images/wallpaper/1.jpg</file>
+        <file>images/reload_normal.png</file>
     </qresource>
 </RCC>

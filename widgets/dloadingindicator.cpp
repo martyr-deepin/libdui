@@ -1,4 +1,5 @@
 #include <QGraphicsProxyWidget>
+#include <QLabel>
 
 #include "dloadingindicator.h"
 #include "dthememanager.h"
@@ -10,41 +11,21 @@ DLoadingIndicator::DLoadingIndicator(QWidget *parent) :
 {
     D_THEME_INIT_WIDGET(DLoadingIndicator);
 
-    this->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Preferred);
-    m_backgroundColor = QColor("white");
-
-    QGraphicsScene *graphicsScene = new QGraphicsScene(this);
-    setScene(graphicsScene);
+    setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
+    setScene(new QGraphicsScene(this));
 
     initAniProperty();
-    connect(&m_rotateAni, SIGNAL(valueChanged(QVariant)), this, SLOT(rotateImg(QVariant)));
-}
-
-DLoadingIndicator::DLoadingIndicator(QString loadingImgPath, QWidget * parent) :
-    QGraphicsView(parent)
-{
-    D_THEME_INIT_WIDGET(DLoadingIndicator);
-
-    QPixmap m_loadingImg(loadingImgPath);
-
-    this->setMinimumSize(m_loadingImg.size());
-    this->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Preferred);
-
-    m_backgroundColor = QColor("white");
-
-    QGraphicsScene *m_scene = new QGraphicsScene(this);
-    setScene(m_scene);
-
-    m_loadingImgItem = new QGraphicsPixmapItem(m_loadingImg);
-    setLoadingItem(m_loadingImgItem);
-
-    initAniProperty();
-    connect(&m_rotateAni, SIGNAL(valueChanged(QVariant)), this, SLOT(rotateImg(QVariant)));
+    connect(&m_rotateAni, SIGNAL(valueChanged(QVariant)), this, SLOT(setRotate(QVariant)));
 }
 
 DLoadingIndicator::~DLoadingIndicator()
 {
     m_widgetSource->deleteLater();
+}
+
+QColor DLoadingIndicator::backgroundColor() const
+{
+    return scene()->backgroundBrush().color();
 }
 
 void DLoadingIndicator::initAniProperty(){
@@ -60,20 +41,19 @@ void DLoadingIndicator::setLoadingItem(QGraphicsItem *item)
 {
     QSizeF itemSize = item->boundingRect().size();
 
-    m_loadingImgItem = item;
-
-    scene()->setSceneRect(0, 0, width(), height());
-    scene()->clear();
-    scene()->addItem(m_loadingImgItem);
-
-    m_loadingImgItem->setPos((width()-itemSize.width())/2,
+    item->setPos((width()-itemSize.width())/2,
                              (height()-itemSize.height())/2);
-    m_loadingImgItem->setTransformOriginPoint(itemSize.width()/2, itemSize.height()/2);
+    item->setTransformOriginPoint(itemSize.width()/2, itemSize.height()/2);
+
+    scene()->clear();
+    scene()->setSceneRect(0, 0, width(), height());
+    scene()->addItem(item);
 }
 
-void DLoadingIndicator::rotateImg(QVariant angle)
+void DLoadingIndicator::setRotate(QVariant angle)
 {
-    m_loadingImgItem->setRotation(angle.toReal());
+    if(!scene()->items().isEmpty())
+        scene()->items().first()->setRotation(angle.toReal());
 }
 
 void DLoadingIndicator::setWidgetSource(QWidget *widgetSource)
@@ -83,15 +63,46 @@ void DLoadingIndicator::setWidgetSource(QWidget *widgetSource)
 
     m_widgetSource = widgetSource;
 
-    scene()->clear();
     QGraphicsProxyWidget *proxy = new QGraphicsProxyWidget;
     proxy->setWidget(widgetSource);
     setLoadingItem(proxy);
 }
 
-void DLoadingIndicator::setImageSource(QPixmap imageSource)
+void DLoadingIndicator::setImageSource(const QPixmap &imageSource)
 {
-    setLoadingPixmap(imageSource);
+    QGraphicsPixmapItem * item = new QGraphicsPixmapItem(imageSource);
+    if(m_smooth)
+        item->setTransformationMode(Qt::SmoothTransformation);
+    setLoadingItem(item);
+}
+
+void DLoadingIndicator::setAniEasingType(QEasingCurve::Type aniEasingType)
+{
+    setAniEasingCurve(aniEasingType);
+}
+
+void DLoadingIndicator::setSmooth(bool smooth)
+{
+    if(m_smooth == smooth)
+        return;
+
+    m_smooth = smooth;
+
+    QGraphicsPixmapItem * item = nullptr;
+
+    if(!scene()->items().isEmpty())
+        item = dynamic_cast<QGraphicsPixmapItem*>(scene()->items().first());
+
+    if(smooth){
+        setRenderHints(QPainter::SmoothPixmapTransform | QPainter::Antialiasing);
+        if(item)
+            item->setTransformationMode(Qt::SmoothTransformation);
+    }else{
+        setRenderHint(QPainter::SmoothPixmapTransform, false);
+        setRenderHint(QPainter::Antialiasing, false);
+        if(item)
+            item->setTransformationMode(Qt::FastTransformation);
+    }
 }
 
 void DLoadingIndicator::setLoading(bool flag)
@@ -115,8 +126,7 @@ void DLoadingIndicator::setAniEasingCurve(const QEasingCurve & easing)
 
 void DLoadingIndicator::setBackgroundColor(const QColor &color)
 {
-    m_backgroundColor = color;
-    scene()->setBackgroundBrush(QBrush(color));
+    scene()->setBackgroundBrush(color);
 }
 
 bool DLoadingIndicator::loading() const
@@ -131,13 +141,32 @@ QWidget *DLoadingIndicator::widgetSource() const
 
 QPixmap DLoadingIndicator::imageSource() const
 {
-    return m_loadingImg;
+    QGraphicsPixmapItem * item = nullptr;
+
+    if(!scene()->items().isEmpty())
+        item = dynamic_cast<QGraphicsPixmapItem*>(scene()->items().first());
+
+    return item ? item->pixmap() : QPixmap();
 }
 
-void DLoadingIndicator::setLoadingPixmap(const QPixmap &loadingPixmap)
+int DLoadingIndicator::aniDuration() const
 {
-    m_loadingImg = loadingPixmap;
-    setLoadingItem(new QGraphicsPixmapItem(m_loadingImg));
+    return m_rotateAni.duration();
+}
+
+QEasingCurve::Type DLoadingIndicator::aniEasingType() const
+{
+    return m_rotateAni.easingCurve().type();
+}
+
+QSize DLoadingIndicator::sizeHint() const
+{
+    return scene()->sceneRect().size().toSize();
+}
+
+bool DLoadingIndicator::smooth() const
+{
+    return m_smooth;
 }
 
 DUI_END_NAMESPACE
