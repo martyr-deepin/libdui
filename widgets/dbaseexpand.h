@@ -29,6 +29,7 @@ public:
 
     void setHeader(QWidget *header);
     void setContent(QWidget *content);
+    inline QWidget *getContent() const {return m_content;}
     void setHeaderHeight(int height);
     virtual void setExpand(bool value);
     void updateContentHeight();
