@@ -1,3 +1,5 @@
+#include <QPropertyAnimation>
+#include <QTimer>
 #include <QDebug>
 #include <QGraphicsOpacityEffect>
 #include <QEvent>
@@ -5,68 +7,97 @@
 #include "dscrollarea.h"
 #include "dthememanager.h"
 #include "dscrollbar.h"
+#include "private/dscrollarea_p.h"
 
 DUI_BEGIN_NAMESPACE
 
+DScrollAreaPrivate::DScrollAreaPrivate(DScrollArea *qq):
+    DObjectPrivate(qq),
+    autoHideScrollBar(false),
+    vBar(new DScrollBar),
+    hBar(new DScrollBar),
+    scrollBarAnimation(0),
+    timer(0)
+{
+
+}
+
+DScrollAreaPrivate::~DScrollAreaPrivate()
+{
+    vBar->deleteLater();
+    hBar->deleteLater();
+    if(scrollBarAnimation)
+        scrollBarAnimation->deleteLater();
+    if(timer)
+        timer->deleteLater();
+}
+
+void DScrollAreaPrivate::init()
+{
+    Q_Q(DScrollArea);
+
+    q->setVerticalScrollBar(vBar);
+    q->setHorizontalScrollBar(hBar);
+
+    QObject::connect(vBar, &DScrollBar::valueChanged, q, [q, this]{
+        q->showScrollBar(vBar);
+    });
+    QObject::connect(hBar, &DScrollBar::valueChanged, q, [q, this]{
+        q->showScrollBar(hBar);
+    });
+}
+
 DScrollArea::DScrollArea(QWidget *parent) :
     QScrollArea(parent),
-    m_autoHideScrollBar(false),
-    m_vBar(new DScrollBar),
-    m_hBar(new DScrollBar),
-    m_scrollBarAnimation(0),
-    m_timer(0)
+    DObject(*new DScrollAreaPrivate(this))
 {
-    this->setVerticalScrollBar(m_vBar);
-    this->setHorizontalScrollBar(m_hBar);
-
-    connect(m_vBar, &DScrollBar::valueChanged, [&]{
-        showScrollBar(m_vBar);
-    });
-    connect(m_hBar, &DScrollBar::valueChanged, [&]{
-        showScrollBar(m_hBar);
-    });
-
     D_THEME_INIT_WIDGET(DScrollArea);
+
+    d_func()->init();
 }
 
 bool DScrollArea::autoHideScrollBar() const
 {
-    return m_autoHideScrollBar;
+    Q_D(const DScrollArea);
+
+    return d->autoHideScrollBar;
 }
 
 void DScrollArea::setAutoHideScrollBar(bool autoHideScrollBar)
 {
-    if (m_autoHideScrollBar == autoHideScrollBar)
+    Q_D(DScrollArea);
+
+    if (d->autoHideScrollBar == autoHideScrollBar)
         return;
 
-    m_autoHideScrollBar = autoHideScrollBar;
+    d->autoHideScrollBar = autoHideScrollBar;
 
     if(autoHideScrollBar){
-        if(!m_scrollBarAnimation)
-            m_scrollBarAnimation = new QPropertyAnimation(this, "windowOpacity");
-        if(!m_timer)
-            m_timer = new QTimer(this);
+        if(!d->scrollBarAnimation)
+            d->scrollBarAnimation = new QPropertyAnimation(this, "windowOpacity");
+        if(!d->timer)
+            d->timer = new QTimer(this);
 
-        m_scrollBarAnimation->setDuration(300);
-        m_timer->setSingleShot(true);
+        d->scrollBarAnimation->setDuration(300);
+        d->timer->setSingleShot(true);
 
-        m_vBar->hide();
-        m_hBar->hide();
+        d->vBar->hide();
+        d->hBar->hide();
 
-        connect(m_timer, &QTimer::timeout, [&]{
-            if(m_vBar->isVisible())
-                hideScrollBar(m_vBar);
-            if(m_hBar->isVisible())
-                hideScrollBar(m_hBar);
+        connect(d->timer, &QTimer::timeout, [&]{
+            if(d->vBar->isVisible())
+                hideScrollBar(d->vBar);
+            if(d->hBar->isVisible())
+                hideScrollBar(d->hBar);
         });
     }else{
-        if(m_scrollBarAnimation)
-            m_scrollBarAnimation->deleteLater();
-        if(m_timer)
-            m_timer->deleteLater();
+        if(d->scrollBarAnimation)
+            d->scrollBarAnimation->deleteLater();
+        if(d->timer)
+            d->timer->deleteLater();
 
-        showScrollBar(m_vBar);
-        showScrollBar(m_hBar);
+        showScrollBar(d->vBar);
+        showScrollBar(d->hBar);
     }
 
     emit autoHideScrollBarChanged(autoHideScrollBar);
@@ -74,16 +105,18 @@ void DScrollArea::setAutoHideScrollBar(bool autoHideScrollBar)
 
 void DScrollArea::hideScrollBar(QScrollBar *bar)
 {
+    Q_D(DScrollArea);
+
     if(bar->isHidden())
         return;
 
-    if(m_scrollBarAnimation){
-        connect(m_scrollBarAnimation, &QPropertyAnimation::finished, bar, &DScrollBar::hide);
-        connect(m_scrollBarAnimation, &QPropertyAnimation::finished, bar, &DScrollBar::hide);
+    if(d->scrollBarAnimation){
+        connect(d->scrollBarAnimation, &QPropertyAnimation::finished, bar, &DScrollBar::hide);
+        connect(d->scrollBarAnimation, &QPropertyAnimation::finished, bar, &DScrollBar::hide);
 
-        m_scrollBarAnimation->setStartValue(1.0);
-        m_scrollBarAnimation->setEndValue(0.0);
-        m_scrollBarAnimation->start();
+        d->scrollBarAnimation->setStartValue(1.0);
+        d->scrollBarAnimation->setEndValue(0.0);
+        d->scrollBarAnimation->start();
     }else{
         bar->hide();
     }
@@ -91,23 +124,34 @@ void DScrollArea::hideScrollBar(QScrollBar *bar)
 
 void DScrollArea::showScrollBar(QScrollBar *bar)
 {
+    Q_D(DScrollArea);
+
     if(bar->isVisible())
         return;
 
-    if(bar == m_vBar && verticalScrollBarPolicy() != Qt::ScrollBarAlwaysOff)
-        m_vBar->show();
-    else if(bar == m_hBar && horizontalScrollBarPolicy() != Qt::ScrollBarAlwaysOff)
-        m_hBar->show();
+    if(bar == d->vBar && verticalScrollBarPolicy() != Qt::ScrollBarAlwaysOff)
+        d->vBar->show();
+    else if(bar == d->hBar && horizontalScrollBarPolicy() != Qt::ScrollBarAlwaysOff)
+        d->hBar->show();
 
-    if(m_scrollBarAnimation){
-        disconnect(m_scrollBarAnimation, &QPropertyAnimation::finished, bar, &DScrollBar::hide);
-        disconnect(m_scrollBarAnimation, &QPropertyAnimation::finished, bar, &DScrollBar::hide);
+    if(d->scrollBarAnimation){
+        disconnect(d->scrollBarAnimation, &QPropertyAnimation::finished, bar, &DScrollBar::hide);
+        disconnect(d->scrollBarAnimation, &QPropertyAnimation::finished, bar, &DScrollBar::hide);
 
-        m_scrollBarAnimation->setStartValue(1.0);
-        m_scrollBarAnimation->setEndValue(0.0);
-        m_scrollBarAnimation->start();
-        m_timer->start(1000);
+        d->scrollBarAnimation->setStartValue(1.0);
+        d->scrollBarAnimation->setEndValue(0.0);
+        d->scrollBarAnimation->start();
+        d->timer->start(1000);
     }
+}
+
+DScrollArea::DScrollArea(DScrollAreaPrivate &dd, QWidget *parent):
+    QScrollArea(parent),
+    DObject(dd)
+{
+    D_THEME_INIT_WIDGET(DScrollArea);
+
+    d_func()->init();
 }
 
 DUI_END_NAMESPACE

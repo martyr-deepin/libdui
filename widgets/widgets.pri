@@ -45,7 +45,12 @@ HEADERS += $$PWD/dslider.h\
     $$PWD/dcalendar.h \
     $$PWD/dgraphicsgloweffect.h \
     $$PWD/anchors.h \
-    $$PWD/dbasebutton.h
+    $$PWD/dbasebutton.h \
+    $$PWD/dlistwidget.h \
+    $$PWD/private/dscrollarea_p.h \
+    $$PWD/private/dlistwidget_p.h \
+    $$PWD/dobject.h \
+    $$PWD/private/dobject_p.h
 
 SOURCES += $$PWD/dslider.cpp \
     $$PWD/dthememanager.cpp \
@@ -91,9 +96,13 @@ SOURCES += $$PWD/dslider.cpp \
     $$PWD/dcalendar.cpp \
     $$PWD/dgraphicsgloweffect.cpp \
     $$PWD/anchors.cpp \
-    $$PWD/dbasebutton.cpp
+    $$PWD/dbasebutton.cpp \
+    $$PWD/dlistwidget.cpp \
+    $$PWD/dobject.cpp
 
 RESOURCES += \
     $$PWD/../themes/dui_theme_dark.qrc \
     $$PWD/../icons.qrc \
     $$PWD/../themes/dui_theme_light.qrc
+
+INCLUDEPATH += $$PWD

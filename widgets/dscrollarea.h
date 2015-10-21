@@ -2,15 +2,15 @@
 #define DSCROLLAREA_H
 
 #include <QScrollArea>
-#include <QTimer>
-#include <QPropertyAnimation>
 
 #include "libdui_global.h"
+#include "dobject.h"
 
 DUI_BEGIN_NAMESPACE
 
 class DScrollBar;
-class LIBDUISHARED_EXPORT DScrollArea : public QScrollArea
+class DScrollAreaPrivate;
+class LIBDUISHARED_EXPORT DScrollArea : public QScrollArea, public DObject
 {
     Q_OBJECT
 
@@ -18,6 +18,7 @@ class LIBDUISHARED_EXPORT DScrollArea : public QScrollArea
 
 public:
     explicit DScrollArea(QWidget *parent = 0);
+
     bool autoHideScrollBar() const;
 
 public slots:
@@ -30,11 +31,11 @@ private slots:
     void hideScrollBar(QScrollBar *bar);
     void showScrollBar(QScrollBar *bar);
 
+protected:
+    DScrollArea(DScrollAreaPrivate &dd, QWidget *parent = 0);
+
 private:
-    bool m_autoHideScrollBar;
-    DScrollBar *m_vBar, *m_hBar;
-    QPropertyAnimation *m_scrollBarAnimation;
-    QTimer *m_timer;
+    D_DECLARE_PRIVATE(DScrollArea)
 };
 
 DUI_END_NAMESPACE
