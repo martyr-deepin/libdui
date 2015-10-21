@@ -18,6 +18,10 @@ DBaseExpand::DBaseExpand(QWidget *parent) : QWidget(parent)
     m_headerLayout->setAlignment(Qt::AlignCenter);
 
     m_hSeparator = new DSeparatorHorizontal();
+    m_bottom_separator = new DSeparatorHorizontal;
+    m_bottom_separator->hide();
+
+    connect(this, &DBaseExpand::expandChange, m_bottom_separator, &DSeparatorHorizontal::setVisible);
 
     m_contentLayout = new QVBoxLayout();
     m_contentLayout->setAlignment(Qt::AlignCenter);
@@ -34,6 +38,7 @@ DBaseExpand::DBaseExpand(QWidget *parent) : QWidget(parent)
     mainLayout->addLayout(m_headerLayout);
     mainLayout->addWidget(m_hSeparator);
     mainLayout->addWidget(m_contentLoader);
+    mainLayout->addWidget(m_bottom_separator);
 
     setLayout(mainLayout);
 
@@ -92,11 +97,10 @@ void DBaseExpand::setHeaderHeight(int height)
 void DBaseExpand::setExpand(bool value)
 {
     m_expand = value;
+    emit expandChange(value);
 
     if (!m_content)
         return;
-
-    emit expandChange(value);
 
     if (value)
     {
@@ -145,6 +149,17 @@ void DBaseExpand::setAnimationEasingCurve(QEasingCurve curve)
 void DBaseExpand::setSeparatorVisible(bool arg)
 {
     m_hSeparator->setVisible(arg);
+}
+
+void DBaseExpand::setExpandedSeparatorVisible(bool arg)
+{
+    if(arg){
+        connect(this, &DBaseExpand::expandChange, m_bottom_separator, &DSeparatorHorizontal::setVisible);
+        m_bottom_separator->show();
+    }else{
+        disconnect(this, &DBaseExpand::expandChange, m_bottom_separator, &DSeparatorHorizontal::setVisible);
+        m_bottom_separator->hide();
+    }
 }
 
 

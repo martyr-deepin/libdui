@@ -36,6 +36,7 @@ public:
     void setAnimationDuration(int duration);
     void setAnimationEasingCurve(QEasingCurve curve);
     void setSeparatorVisible(bool arg);
+    void setExpandedSeparatorVisible(bool arg);
 
 signals:
     void expandChange(bool e);
@@ -48,6 +49,7 @@ private:
     QVBoxLayout *m_contentLayout = NULL;
     ContentLoader *m_contentLoader = NULL;
     DSeparatorHorizontal * m_hSeparator = NULL;
+    DSeparatorHorizontal *m_bottom_separator = NULL;
     QPropertyAnimation *m_animation = NULL;
     bool m_expand = false;
 };
