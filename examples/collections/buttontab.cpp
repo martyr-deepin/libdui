@@ -1,6 +1,7 @@
 #include "buttontab.h"
 
 #include <QDebug>
+#include "dbasebutton.h"
 
 DUI_USE_NAMESPACE
 
@@ -70,6 +71,12 @@ ButtonTab::ButtonTab(QWidget *parent) : QLabel(parent)
         widget->show();
         widget->setStyleSheet("background-color:black;");
     });
+
+    /////////////////////////////////////////////////////////////////////////////
+    DUI::DBaseButton *bf = new DUI::DBaseButton(this);
+    bf->setFixedSize(100, 30);
+    bf->move(10, 260);
+    bf->show();
 }
 
 void ButtonTab::buttonClickTest()

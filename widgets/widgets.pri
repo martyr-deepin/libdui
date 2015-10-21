@@ -44,7 +44,8 @@ HEADERS += $$PWD/dslider.h\
     $$PWD/darrowrectangle.h \
     $$PWD/dcalendar.h \
     $$PWD/dgraphicsgloweffect.h \
-    $$PWD/anchors.h
+    $$PWD/anchors.h \
+    $$PWD/dbasebutton.h
 
 SOURCES += $$PWD/dslider.cpp \
     $$PWD/dthememanager.cpp \
@@ -89,7 +90,8 @@ SOURCES += $$PWD/dslider.cpp \
     $$PWD/darrowrectangle.cpp \
     $$PWD/dcalendar.cpp \
     $$PWD/dgraphicsgloweffect.cpp \
-    $$PWD/anchors.cpp
+    $$PWD/anchors.cpp \
+    $$PWD/dbasebutton.cpp
 
 RESOURCES += \
     $$PWD/../themes/dui_theme_dark.qrc \
