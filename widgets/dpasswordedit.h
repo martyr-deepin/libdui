@@ -38,8 +38,12 @@ private slots:
     bool eventFilter(QObject *o, QEvent *e);
 
 private:
+    void initInsideFrame();
+
+private:
     QLineEdit m_edit;
     DImageButton m_btn;
+    QFrame *m_insideFrame = NULL;
 
     bool m_alert = false;
     bool m_echo = false;

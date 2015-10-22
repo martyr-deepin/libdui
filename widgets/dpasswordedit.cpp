@@ -14,17 +14,18 @@ DPasswordEdit::DPasswordEdit(QWidget *parent)
 {
     D_THEME_INIT_WIDGET(DPasswordEdit, isEchoMode, isAlertMode);
 
+    initInsideFrame();
+
     // default echo mode is password
     m_edit.setEchoMode(QLineEdit::Password);
     m_edit.installEventFilter(this);
 
-    QHBoxLayout *layout = new QHBoxLayout;
+    QHBoxLayout *layout = new QHBoxLayout(m_insideFrame);
     layout->addWidget(&m_edit);
     layout->addWidget(&m_btn);
-    layout->setMargin(0);
+    layout->setContentsMargins(0, 0, 0, 0);
     layout->setSpacing(0);
 
-    setLayout(layout);
     setEchoMode(m_echo);
 
     connect(&m_btn, &DImageButton::clicked, [this]() -> void {setEchoMode(!m_echo);});
@@ -63,6 +64,19 @@ bool DPasswordEdit::eventFilter(QObject *o, QEvent *e)
     }
 
     return false;
+}
+
+//Bypassing the problem here
+//qss can't draw box-shadow
+void DPasswordEdit::initInsideFrame()
+{
+    m_insideFrame = new QFrame(this);
+    m_insideFrame->raise();
+    m_insideFrame->setObjectName("DEditInsideFrame");
+    QHBoxLayout *insideLayout = new QHBoxLayout(this);
+    insideLayout->setContentsMargins(0, 0, 0, 1);
+    insideLayout->setSpacing(0);
+    insideLayout->addWidget(m_insideFrame);
 }
 
 DUI_END_NAMESPACE
