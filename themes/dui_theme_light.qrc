@@ -24,6 +24,7 @@
         <file>light/DLineEdit.theme</file>
         <file>light/DPasswordEdit.theme</file>
         <file>light/DBaseButton.theme</file>
+        <file>light/DComboBox.theme</file>
     </qresource>
     <qresource prefix="/images">
         <file>light/images/arrow_down_hover.png</file>

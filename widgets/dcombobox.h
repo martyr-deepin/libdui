@@ -36,6 +36,9 @@ private slots:
     void slotCurrentIndexChange(int index);
 
 private:
+    void initInsideFrame();
+
+private:
     QLabel *m_maskLabel = NULL;    //mask label
 
     QString m_normalTickImg = "";
@@ -43,6 +46,7 @@ private:
     QString m_insensitiveTickImg = "";
 
     const int MAX_VISIBLE_ITEMS = 16;
+    const int OUTSIDE_BORDER_WIDTH = 1;
 };
 
 DUI_END_NAMESPACE

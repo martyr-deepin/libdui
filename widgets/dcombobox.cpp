@@ -1,11 +1,16 @@
 #include "dcombobox.h"
 #include "dthememanager.h"
+#include "QHBoxLayout"
+#include <QFrame>
 
 DUI_USE_NAMESPACE
 
 DComboBox::DComboBox(QWidget *parent) : QComboBox(parent)
 {
     D_THEME_INIT_WIDGET(DComboBox);
+
+    initInsideFrame();
+
     //TODO, just work on ediable
     setMaxVisibleItems(MAX_VISIBLE_ITEMS);
 
@@ -45,6 +50,23 @@ void DComboBox::slotCurrentIndexChange(int index)
     if (w)
         m_maskLabel->setPixmap(w->grab());
 }
+
+//Bypassing the problem here
+//qss can't draw box-shadow
+void DComboBox::initInsideFrame()
+{
+    QFrame *insideFrame = new QFrame(this);
+    insideFrame->raise();
+    insideFrame->setAttribute(Qt::WA_TransparentForMouseEvents);
+    insideFrame->setObjectName("DComboxInsideFrame");
+    //the sub-widget of QCombobox can't Inherits the style sheet from QCombobox
+    //so, read the QCombobox's style sheet and set to it sub-widget
+    insideFrame->setStyleSheet(this->styleSheet());
+    QHBoxLayout *insideLayout = new QHBoxLayout(this);
+    insideLayout->setContentsMargins(OUTSIDE_BORDER_WIDTH, OUTSIDE_BORDER_WIDTH, OUTSIDE_BORDER_WIDTH, OUTSIDE_BORDER_WIDTH);
+    insideLayout->addWidget(insideFrame);
+}
+
 QString DComboBox::insensitiveTickImg() const
 {
     return m_insensitiveTickImg;
