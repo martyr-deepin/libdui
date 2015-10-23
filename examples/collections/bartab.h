@@ -1,11 +1,12 @@
 #ifndef BARTAB_H
 #define BARTAB_H
 
-#include <QWidget>
+#include <QFrame>
 
-class BarTab : public QWidget
+class BarTab : public QFrame
 {
     Q_OBJECT
+
 public:
     explicit BarTab(QWidget *parent = 0);
 };

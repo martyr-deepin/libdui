@@ -401,6 +401,7 @@ void DButtonGrid::clear()
 }
 
 void DButtonGrid::handleClosed(QString url){
+    Q_UNUSED(url)
     emit requestRefreshed(static_cast<ImageButton*>(sender())->getId());
 }
 

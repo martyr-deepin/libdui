@@ -52,7 +52,8 @@ HEADERS += $$PWD/dslider.h\
     $$PWD/dobject.h \
     $$PWD/private/dobject_p.h \
     $$PWD/dboxwidget.h \
-    $$PWD/private/dboxwidget_p.h
+    $$PWD/private/dboxwidget_p.h \
+    $$PWD/dcircleprogress.h
 
 SOURCES += $$PWD/dslider.cpp \
     $$PWD/dthememanager.cpp \
@@ -101,7 +102,8 @@ SOURCES += $$PWD/dslider.cpp \
     $$PWD/dbasebutton.cpp \
     $$PWD/dlistwidget.cpp \
     $$PWD/dobject.cpp \
-    $$PWD/dboxwidget.cpp
+    $$PWD/dboxwidget.cpp \
+    $$PWD/dcircleprogress.cpp
 
 RESOURCES += \
     $$PWD/../themes/dui_theme_dark.qrc \
