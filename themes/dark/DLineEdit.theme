@@ -1,12 +1,16 @@
-
 DUI--DLineEdit {
-    background-color:#0cffffff;
-    color:#fff;
-    border:1px solid black;
-    border-radius:3px;
-    border-bottom-color:#4d4d4d;
+    color: #fff;
+    border-radius: 3;
+    background-color: rgba(255, 255, 255, 26);/*use as outside border*/
 }
 
-DUI--DLineEdit[alert="true"] {
-    border-color:#FF8F00;
+DUI--DLineEdit[alert="true"] QFrame#LineEditInsideFrame{
+    border-color: #FF8F00;
+}
+
+QFrame#LineEditInsideFrame {/*outside frame*/
+    background-color: rgba(0, 0, 0, 50);
+    border: 1px solid;
+    border-radius: 3;
+    border-color: black;
 }

@@ -24,18 +24,20 @@ InputTab::InputTab(QWidget *parent) : QLabel(parent)
     DUI::DSearchEdit *searchEdit = new DUI::DSearchEdit(this);
     //searchEdit->setSearchIcon(":/images/button.png");
     //searchEdit->setFixedWidth(300);
-    searchEdit->move(20, 80);
+    searchEdit->move(20, 120);
 
     DUI::DLineEdit *lineEdit = new DUI::DLineEdit(this);
     lineEdit->setText("LineEdit");
-    lineEdit->move(20, 110);
+    lineEdit->move(20, 180);
+    lineEdit->setFixedSize(200, 30);
     connect(lineEdit, &DUI::DLineEdit::focusChanged, [](bool focus) {qDebug() << "focus: " << focus;});
 
     DUI::DLineEdit *lineEditAlert = new DUI::DLineEdit(this);
     lineEditAlert->setText("AlertLineEdit");
     lineEditAlert->setAlert(true);
-    lineEditAlert->move(150, 110);
+    lineEditAlert->setFixedSize(200, 30);
+    lineEditAlert->move(20, 230);
 
     DUI::DShortcutEdit *shortcutEdit = new DUI::DShortcutEdit(this);
-    shortcutEdit->move(20, 140);
+    shortcutEdit->move(20, 300);
 }

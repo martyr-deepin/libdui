@@ -1,9 +1,6 @@
-
 DUI--DSearchEdit {
-    background-color:#0cffffff;
-    border:1px solid black;
-    border-bottom-color:#4d4d4d;
-    border-radius:3px;
+    border-radius: 3;
+    background-color: rgba(255, 255, 255, 26);/*use as outside border*/
 }
 
 DUI--DSearchEdit #SearchIcon {
@@ -26,4 +23,11 @@ DUI--DSearchEdit #Edit {
     color:#fff;
     border:none;
     padding-right:15px;
+}
+
+DUI--DSearchEdit QFrame#DEditInsideFrame {
+    background-color: rgba(0, 0, 0, 50);
+    border: 1px solid;
+    border-radius: 3;
+    border-color: black;
 }

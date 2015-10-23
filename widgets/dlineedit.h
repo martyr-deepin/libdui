@@ -23,6 +23,7 @@ signals:
     void focusChanged(bool onFocus);
 
 private:
+    void initInsideFrame();
     inline void focusInEvent(QFocusEvent *e) {emit focusChanged(true); QLineEdit::focusInEvent(e);}
     inline void focusOutEvent(QFocusEvent *e) {emit focusChanged(false); QLineEdit::focusOutEvent(e);}
 

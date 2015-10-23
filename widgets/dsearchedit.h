@@ -41,6 +41,7 @@ private slots:
     void toEditMode();
 
 private:
+    void initInsideFrame();
     void resizeEvent(QResizeEvent *e);
 
 private:
@@ -48,6 +49,7 @@ private:
     QLineEdit *m_edt;
     DImageButton *m_searchBtn;
     DImageButton *m_clearBtn;
+    QFrame *m_insideFrame = NULL;
 
     QPropertyAnimation *m_animation;
     QEasingCurve m_showCurve = QEasingCurve::OutCubic;

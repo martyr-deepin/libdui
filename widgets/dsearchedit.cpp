@@ -15,6 +15,8 @@ DSearchEdit::DSearchEdit(QWidget *parent)
 {
     D_THEME_INIT_WIDGET(DSearchEdit);
 
+    initInsideFrame();
+
     m_searchBtn = new DImageButton;
     m_searchBtn->setObjectName("SearchIcon");
     m_clearBtn = new DImageButton;
@@ -30,7 +32,7 @@ DSearchEdit::DSearchEdit(QWidget *parent)
     m_edt->setFixedWidth(0);
     m_edt->installEventFilter(this);
 
-    QHBoxLayout *layout = new QHBoxLayout;
+    QHBoxLayout *layout = new QHBoxLayout(m_insideFrame);
     layout->addStretch();
     layout->addWidget(m_searchBtn);
     layout->setAlignment(m_searchBtn, Qt::AlignCenter);
@@ -42,7 +44,6 @@ DSearchEdit::DSearchEdit(QWidget *parent)
     layout->setSpacing(0);
     layout->setContentsMargins(3, 0, 3, 0);
 
-    setLayout(layout);
     setAutoFillBackground(true);
 
     connect(m_clearBtn, &DImageButton::clicked, m_edt, static_cast<void (QLineEdit::*)()>(&QLineEdit::setFocus));
@@ -92,6 +93,19 @@ void DSearchEdit::toEditMode()
 
     m_edt->show();
     m_edt->setFocus();
+}
+
+//Bypassing the problem here
+//qss can't draw box-shadow
+void DSearchEdit::initInsideFrame()
+{
+    m_insideFrame = new QFrame(this);
+    m_insideFrame->raise();
+    m_insideFrame->setObjectName("DEditInsideFrame");
+    QHBoxLayout *insideLayout = new QHBoxLayout(this);
+    insideLayout->setContentsMargins(0, 0, 0, 1);
+    insideLayout->setSpacing(0);
+    insideLayout->addWidget(m_insideFrame);
 }
 
 void DSearchEdit::resizeEvent(QResizeEvent *e)
