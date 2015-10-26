@@ -44,6 +44,16 @@ void DBaseLine::setRightContent(QWidget *content)
     m_rightLayout->addWidget(content);
 }
 
+QBoxLayout *DBaseLine::leftLayout()
+{
+    return m_leftLayout;
+}
+
+QBoxLayout *DBaseLine::rightLayout()
+{
+    return m_rightLayout;
+}
+
 void DBaseLine::setLeftMargin(int margin)
 {
     m_leftMargin = margin;

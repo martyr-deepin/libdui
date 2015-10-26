@@ -37,6 +37,8 @@ public:
     void setTitle(const QString &title);
     void setExpand(bool value);
 
+    DBaseLine *header();
+
 private:
     void setHeader(QWidget *header);
     void resizeEvent(QResizeEvent *e);

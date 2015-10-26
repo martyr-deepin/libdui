@@ -57,6 +57,11 @@ void DArrowLineExpand::setExpand(bool value)
     DBaseExpand::setExpand(value);
 }
 
+DBaseLine *DArrowLineExpand::headerLine()
+{
+    return m_headerLine;
+}
+
 void DArrowLineExpand::setHeader(QWidget *header)
 {
     DBaseExpand::setHeader(header);

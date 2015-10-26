@@ -11,7 +11,7 @@ DHeaderLine::DHeaderLine(QWidget *parent) : DBaseLine(parent)
     setFixedHeight(DUI::EXPAND_HEADER_HEIGHT);
     m_titleLabel = new QLabel(this);
     m_titleLabel->setObjectName("DHeaderLineTitle");
-    setLeftContent(m_titleLabel);
+    DBaseLine::setLeftContent(m_titleLabel);
 }
 
 void DHeaderLine::setTitle(const QString &title)
@@ -21,18 +21,8 @@ void DHeaderLine::setTitle(const QString &title)
 
 void DHeaderLine::setContent(QWidget *content)
 {
-    setRightContent(content);
-    setFixedHeight(DUI::CONTENT_HEADER_HEIGHT);
-}
-
-void DHeaderLine::setLeftContent(QWidget *content)
-{
-    DBaseLine::setLeftContent(content);
-}
-
-void DHeaderLine::setRightContent(QWidget *content)
-{
     DBaseLine::setRightContent(content);
+    setFixedHeight(DUI::CONTENT_HEADER_HEIGHT);
 }
 
 DUI_END_NAMESPACE

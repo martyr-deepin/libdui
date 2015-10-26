@@ -19,6 +19,9 @@ public:
     void setLeftContent(QWidget *content);
     void setRightContent(QWidget *content);
 
+    QBoxLayout *leftLayout();
+    QBoxLayout *rightLayout();
+
     void setLeftMargin(int margin);
     void setRightMargin(int margin);
     int leftMargin() const;

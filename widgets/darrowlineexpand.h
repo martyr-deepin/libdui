@@ -6,6 +6,7 @@
 #include "libdui_global.h"
 #include "dbaseexpand.h"
 #include "darrowbutton.h"
+#include "dbaseline.h"
 #include "dheaderline.h"
 
 DUI_BEGIN_NAMESPACE
@@ -35,6 +36,7 @@ public:
     explicit DArrowLineExpand(QWidget *parent = 0);
     void setTitle(const QString &title);
     void setExpand(bool value);
+    DBaseLine *headerLine();
 
 private:
     void setHeader(QWidget *header);

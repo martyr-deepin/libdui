@@ -46,6 +46,11 @@ void DSwitchLineExpand::setExpand(bool value)
     DBaseExpand::setExpand(value);
 }
 
+DBaseLine *DSwitchLineExpand::header()
+{
+    return m_headerLine;
+}
+
 void DSwitchLineExpand::setHeader(QWidget *header)
 {
     DBaseExpand::setHeader(header);
