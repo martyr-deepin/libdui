@@ -7,7 +7,7 @@ BarTab::BarTab(QWidget *parent) : QFrame(parent)
 {
     setStyleSheet("background-color:gray;");
 
-    DCircleProgress *circleProgess = new DCircleProgress(this);
+    DUI::DCircleProgress *circleProgess = new DUI::DCircleProgress(this);
     circleProgess->setFixedSize(100, 100);
     circleProgess->move(50, 50);
 
@@ -18,7 +18,7 @@ BarTab::BarTab(QWidget *parent) : QFrame(parent)
     slider->setFixedHeight(20);
     slider->move(50, 150);
 
-    connect(slider, &DUI::DSlider::valueChanged, circleProgess, &DCircleProgress::setValue);
+    connect(slider, &DUI::DSlider::valueChanged, circleProgess, &DUI::DCircleProgress::setValue);
     connect(slider, &DUI::DSlider::valueChanged, [circleProgess] (const int value) {
         circleProgess->setText(QString::number(value) + "%");
     });

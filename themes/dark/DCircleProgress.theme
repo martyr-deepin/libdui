@@ -1,0 +1,9 @@
+DUI--DCircleProgress {
+    qproperty-backgroundColor:#bababa;
+    qproperty-chunkColor:#26aeed;
+}
+
+DUI--DCircleProgress #DisplayLabel {
+    color:white;
+    font-size:10px;
+}

@@ -26,7 +26,6 @@ protected:
 private:
     void reverseArrowDirection();
     DArrowButton *m_arrowButton = NULL;
-
 };
 
 class LIBDUISHARED_EXPORT DArrowLineExpand : public DBaseExpand
