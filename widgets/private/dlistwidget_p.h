@@ -3,6 +3,7 @@
 
 #include "dscrollarea_p.h"
 #include "dlistwidget.h"
+#include "dboxwidget.h"
 
 class QVBoxLayout;
 
@@ -19,15 +20,15 @@ private:
 
     int itemWidth;
     int itemHeight;
-    QVBoxLayout *layout;
     QList<QWidget*> widgetList;
     QList<int> checkedList;
     DListWidget::CheckMode checkMode;
-    QWidget *mainWidget;
+    DBoxWidget *mainWidget;
     int visibleCount;
     QMap<const QWidget*, bool> mapVisible;
     bool checkable;
     bool toggleable;
+    bool enableHorizontalScroll;
     bool enableVerticalScroll;
 
     D_DECLARE_PUBLIC(DListWidget)

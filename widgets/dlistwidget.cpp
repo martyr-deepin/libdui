@@ -13,12 +13,12 @@ DListWidgetPrivate::DListWidgetPrivate(DListWidget *qq):
         DScrollAreaPrivate(qq),
         itemWidth(-1),
         itemHeight(-1),
-        layout(new QVBoxLayout),
         checkMode(DListWidget::Radio),
-        mainWidget(new QWidget),
+        mainWidget(new DBoxWidget(QBoxLayout::TopToBottom)),
         visibleCount(0),
         checkable(false),
         toggleable(false),
+        enableHorizontalScroll(false),
         enableVerticalScroll(false)
 {
 
@@ -33,21 +33,15 @@ void DListWidgetPrivate::init()
 {
     Q_Q(DListWidget);
 
-    layout->setMargin(0);
-    layout->setSpacing(0);
-    layout->addStretch(1);
-
     mainWidget->setObjectName("MainWidget");
-    mainWidget->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
-    mainWidget->setLayout(layout);
-    mainWidget->setFixedHeight(0);
 
-    q->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Maximum);
+    q->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
     q->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     q->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     q->setAlignment(Qt::AlignHCenter);
     q->setWidget(mainWidget);
-    q->setMaximumHeight(0);
+
+    QObject::connect(mainWidget, &DBoxWidget::sizeChanged, q, &DListWidget::updateSize);
 }
 
 DListWidget::DListWidget(CheckMode checkMode, QWidget *parent) :
@@ -59,16 +53,26 @@ DListWidget::DListWidget(CheckMode checkMode, QWidget *parent) :
     d_func()->init();
 }
 
+DListWidget::DListWidget(QBoxLayout::Direction direction, DListWidget::CheckMode checkMode, QWidget *parent) :
+    DScrollArea(*new DListWidgetPrivate(this), parent)
+{
+    D_THEME_INIT_WIDGET(DListWidget);
+
+    d_func()->mainWidget->setDirection(direction);
+    d_func()->checkMode = checkMode;
+    d_func()->init();
+}
+
 int DListWidget::addWidget(QWidget *w, Qt::Alignment a)
 {
-    insertWidget(count(), w, a);
+    insertWidget(-1, w, a);
 
     return count()-1;
 }
 
 void DListWidget::addWidgets(const QList<QWidget*> &ws, Qt::Alignment a)
 {
-    insertWidgets(count(), ws, a);
+    insertWidgets(-1, ws, a);
 }
 
 void DListWidget::insertWidget(int index, QWidget *w, Qt::Alignment a)
@@ -78,24 +82,27 @@ void DListWidget::insertWidget(int index, QWidget *w, Qt::Alignment a)
     if(w==NULL || d->widgetList.contains(w))
         return;
 
-    d->widgetList.insert(index, w);
-
     if(d->itemWidth>0){
         w->setFixedWidth(d->itemWidth);
-    }else{
-        d->mainWidget->setFixedWidth(w->width());
     }
+
     if(d->itemHeight>0){
         w->setFixedHeight(d->itemHeight);
     }
 
-    d->layout->insertWidget(index, w, 0, a);
+    if(index < 0) {
+        d->widgetList << w;
+        d->mainWidget->layout()->addWidget(w, 0, a);
+    } else {
+        d->widgetList.insert(index, w);
+        d->mainWidget->layout()->insertWidget(index, w, 0, a);
+    }
+
     if(d->checkable)
         w->installEventFilter(this);
 
     d->mapVisible[w] = true;
 
-    setHeight(d->mainWidget->height() + w->height() + d->layout->spacing());
     setVisibleCount(d->visibleCount + 1);
 
     emit countChanged(count());
@@ -103,8 +110,14 @@ void DListWidget::insertWidget(int index, QWidget *w, Qt::Alignment a)
 
 void DListWidget::insertWidgets(int index, const QList<QWidget*> &ws, Qt::Alignment a)
 {
-    foreach (QWidget *w, ws) {
-        insertWidget(index++, w, a);
+    if(index < 0) {
+        foreach (QWidget *w, ws) {
+            insertWidget(-1, w, a);
+        }
+    } else {
+        foreach (QWidget *w, ws) {
+            insertWidget(index++, w, a);
+        }
     }
 }
 
@@ -117,8 +130,6 @@ void DListWidget::setItemSize(int w, int h)
 
     if(d->itemWidth <= 0 && d->itemHeight <= 0)
         return;
-
-    d->mainWidget->setFixedWidth(w);
 
     foreach (QWidget *w, d->widgetList) {
         if(d->itemWidth>0)
@@ -134,7 +145,7 @@ void DListWidget::clear(bool isDelete)
     Q_D(DListWidget);
 
     for(int i=0;i<count();++i){
-        d->layout->removeItem(d->layout->takeAt(i));
+        d->mainWidget->layout()->removeItem(d->mainWidget->layout()->takeAt(i));
         d->widgetList[i]->removeEventFilter(this);
         d->widgetList[i]->setParent(NULL);
         if(isDelete)
@@ -144,9 +155,8 @@ void DListWidget::clear(bool isDelete)
     d->mapVisible.clear();
     d->widgetList.clear();
     d->checkedList.clear();
-    d->mainWidget->setFixedHeight(0);
 
-    setMaximumHeight(0);
+    resize(0, 0);
     setVisibleCount(0);
 
     emit countChanged(count());
@@ -159,12 +169,10 @@ void DListWidget::removeWidget(int index, bool isDelete)
     QWidget *w = getWidget(index);
 
     d->widgetList.removeAt(index);
-    d->layout->removeItem(d->layout->takeAt(index));
+    d->mainWidget->layout()->removeItem(d->mainWidget->layout()->takeAt(index));
     d->checkedList.removeOne(index);
 
     if(d->mapVisible.value(w, false)){
-        qDebug() << w->height() << d->mainWidget->height();
-        setHeight(d->mainWidget->height() - w->height() - d->layout->spacing());
         setVisibleCount(d->visibleCount -1);
     }
     d->mapVisible.remove(w);
@@ -187,7 +195,6 @@ void DListWidget::showWidget(int index)
         w->show();
         d->mapVisible[w] = true;
         setVisibleCount(d->visibleCount+1);
-        setHeight(d->mainWidget->height() + w->height() + d->layout->spacing());
     }
 }
 
@@ -201,7 +208,6 @@ void DListWidget::hideWidget(int index)
         w->hide();
         d->mapVisible[w] = false;
         setVisibleCount(d->visibleCount-1);
-        setHeight(d->mainWidget->height() - w->height() - d->layout->spacing());
     }
 }
 
@@ -276,6 +282,20 @@ void DListWidget::setToggleable(bool enableUncheck)
     emit toggleableChanged(enableUncheck);
 }
 
+void DListWidget::setEnableHorizontalScroll(bool enableHorizontalScroll)
+{
+    Q_D(DListWidget);
+
+    if (d->enableHorizontalScroll == enableHorizontalScroll)
+        return;
+
+    d->enableHorizontalScroll = enableHorizontalScroll;
+
+    updateSize();
+
+    emit enableHorizontalScrollChanged(enableHorizontalScroll);
+}
+
 void DListWidget::setEnableVerticalScroll(bool enableVerticalScroll)
 {
     Q_D(DListWidget);
@@ -284,8 +304,10 @@ void DListWidget::setEnableVerticalScroll(bool enableVerticalScroll)
         return;
 
     d->enableVerticalScroll = enableVerticalScroll;
+
+    updateSize();
+
     emit enableVerticalScrollChanged(enableVerticalScroll);
-    updateGeometry();
 }
 
 int DListWidget::count() const
@@ -408,16 +430,24 @@ void DListWidget::setVisibleCount(int count)
     emit visibleCountChanged(count);
 }
 
-void DListWidget::setHeight(int height)
+void DListWidget::updateSize()
 {
     Q_D(DListWidget);
 
-    d->mainWidget->setFixedHeight(height);
-    if(!d->enableVerticalScroll){
-        setFixedHeight(d->mainWidget->height());
-    }else{
-        resize(d->mainWidget->size());
+    if(!d->enableHorizontalScroll) {
+        setFixedWidth(d->mainWidget->width());
+    } else {
+        setMinimumWidth(0);
+        resize(d->mainWidget->width(), height());
     }
+
+    if(!d->enableVerticalScroll) {
+        setFixedHeight(d->mainWidget->height());
+    } else {
+        setMinimumHeight(0);
+        resize(width(), d->mainWidget->height());
+    }
+
     updateGeometry();
 }
 
@@ -433,6 +463,13 @@ QSize DListWidget::itemSize() const
     Q_D(const DListWidget);
 
     return QSize(d->itemWidth, d->itemHeight);
+}
+
+bool DListWidget::enableHorizontalScroll() const
+{
+    Q_D(const DListWidget);
+
+    return d->enableHorizontalScroll;
 }
 
 bool DListWidget::enableVerticalScroll() const

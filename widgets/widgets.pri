@@ -50,7 +50,9 @@ HEADERS += $$PWD/dslider.h\
     $$PWD/private/dscrollarea_p.h \
     $$PWD/private/dlistwidget_p.h \
     $$PWD/dobject.h \
-    $$PWD/private/dobject_p.h
+    $$PWD/private/dobject_p.h \
+    $$PWD/dboxwidget.h \
+    $$PWD/private/dboxwidget_p.h
 
 SOURCES += $$PWD/dslider.cpp \
     $$PWD/dthememanager.cpp \
@@ -98,7 +100,8 @@ SOURCES += $$PWD/dslider.cpp \
     $$PWD/anchors.cpp \
     $$PWD/dbasebutton.cpp \
     $$PWD/dlistwidget.cpp \
-    $$PWD/dobject.cpp
+    $$PWD/dobject.cpp \
+    $$PWD/dboxwidget.cpp
 
 RESOURCES += \
     $$PWD/../themes/dui_theme_dark.qrc \

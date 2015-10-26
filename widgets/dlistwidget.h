@@ -2,6 +2,7 @@
 #define DLISTWIDGET_H
 
 #include <QMap>
+#include <QBoxLayout>
 
 #include "dscrollarea.h"
 #include "libdui_global.h"
@@ -18,6 +19,7 @@ class DListWidget : public DScrollArea
     Q_PROPERTY(int visibleCount READ visibleCount NOTIFY visibleCountChanged FINAL)
     Q_PROPERTY(bool checkable READ checkable WRITE setCheckable)
     Q_PROPERTY(bool toggleable READ toggleable WRITE setToggleable NOTIFY toggleableChanged)
+    Q_PROPERTY(bool enableHorizontalScroll READ enableHorizontalScroll WRITE setEnableHorizontalScroll NOTIFY enableHorizontalScrollChanged)
     Q_PROPERTY(bool enableVerticalScroll READ enableVerticalScroll WRITE setEnableVerticalScroll NOTIFY enableVerticalScrollChanged)
     Q_PROPERTY(CheckMode checkMode READ checkMode)
 
@@ -29,6 +31,7 @@ public:
     };
 
     explicit DListWidget(CheckMode checkMode = Radio, QWidget *parent = 0);
+    explicit DListWidget(QBoxLayout::Direction direction, CheckMode checkMode = Radio, QWidget *parent = 0);
 
 public slots:
     int addWidget(QWidget *w, Qt::Alignment a = Qt::AlignHCenter);
@@ -44,6 +47,7 @@ public slots:
     void setCheckMode(CheckMode checkMode);
     void setCheckable(bool checkable);
     void setToggleable(bool toggleable);
+    void setEnableHorizontalScroll(bool enableHorizontalScroll);
     void setEnableVerticalScroll(bool enableVerticalScroll);
 
 public:
@@ -59,6 +63,7 @@ public:
     CheckMode checkMode() const;
     QList<QWidget*> widgetList() const;
     QSize itemSize() const;
+    bool enableHorizontalScroll() const;
     bool enableVerticalScroll() const;
 
 signals:
@@ -69,7 +74,11 @@ signals:
     void toggleableChanged(bool toggleable);
     void visibleCountChanged(int visibleCount);
     void clicked(int index);
+    void enableHorizontalScrollChanged(bool enableHorizontalScroll);
     void enableVerticalScrollChanged(bool enableVerticalScroll);
+
+private slots:
+    void updateSize();
 
 protected:
     DListWidget(DListWidgetPrivate &dd, QWidget *parent);
@@ -77,7 +86,6 @@ protected:
     bool eventFilter(QObject *, QEvent *) Q_DECL_OVERRIDE;
     QSize sizeHint() const Q_DECL_OVERRIDE;
     void setVisibleCount(int count);
-    void setHeight(int height);
 
 private:
     Q_DISABLE_COPY(DListWidget)
