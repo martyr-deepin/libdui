@@ -55,6 +55,11 @@ QBoxLayout *DBoxWidget::layout() const
     return d->layout;
 }
 
+void DBoxWidget::addWidget(QWidget *widget)
+{
+    layout()->addWidget(widget);
+}
+
 void DBoxWidget::setDirection(QBoxLayout::Direction direction)
 {
     Q_D(DBoxWidget);
@@ -68,15 +73,29 @@ void DBoxWidget::setDirection(QBoxLayout::Direction direction)
 
 bool DBoxWidget::event(QEvent *ee)
 {
-    if(ee->type() == QEvent::LayoutRequest) {
-        Q_D(const DBoxWidget);
+    Q_D(const DBoxWidget);
 
-        setFixedSize(d->layout->sizeHint());
+    if(ee->type() == QEvent::LayoutRequest) {
+        if(size() != d->layout->sizeHint()) {
+            setFixedSize(d->layout->sizeHint());
+            updateGeometry();
+        }
     } else if(ee->type() == QEvent::Resize) {
         emit sizeChanged(size());
+    } else if(ee->type() == QEvent::ChildAdded) {
+        setFixedSize(d->layout->sizeHint());
+    } else if(ee->type() == QEvent::ChildRemoved) {
+        setFixedSize(d->layout->sizeHint());
     }
 
     return QWidget::event(ee);
+}
+
+QSize DBoxWidget::sizeHint() const
+{
+    Q_D(const DBoxWidget);
+
+    return d->layout->sizeHint();
 }
 
 DHBoxWidget::DHBoxWidget(QWidget *parent):
