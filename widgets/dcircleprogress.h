@@ -18,6 +18,9 @@ class LIBDUISHARED_EXPORT DCircleProgress : public QWidget, public DObject
     Q_PROPERTY(QColor backgroundColor READ backgroundColor WRITE setBackgroundColor DESIGNABLE true)
     Q_PROPERTY(QColor chunkColor READ chunkColor WRITE setChunkColor DESIGNABLE true)
 
+signals:
+    void clicked();
+
 public:
     explicit DCircleProgress(QWidget *parent = 0);
 
@@ -33,6 +36,9 @@ public:
     const QColor chunkColor() const;
     void setChunkColor(const QColor &color);
 
+    const int lineWidth() const;
+    void setLineWidth(const int width);
+
     void setPixmap(const QPixmap &pm);
 
 signals:
@@ -40,6 +46,7 @@ signals:
 
 protected:
     void paintEvent(QPaintEvent *e);
+    void mouseReleaseEvent(QMoveEvent *e);
 
 private:
     D_DECLARE_PRIVATE(DCircleProgress)

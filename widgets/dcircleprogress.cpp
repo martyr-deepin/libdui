@@ -124,6 +124,20 @@ void DCircleProgress::setChunkColor(const QColor &color)
     d->m_chunkColor = color;
 }
 
+const int DCircleProgress::lineWidth() const
+{
+    Q_D(const DCircleProgress);
+
+    return d->m_lineWidth;
+}
+
+void DCircleProgress::setLineWidth(const int width)
+{
+    Q_D(DCircleProgress);
+
+    d->m_lineWidth = width;
+}
+
 void DCircleProgress::paintEvent(QPaintEvent *e)
 {
     Q_D(DCircleProgress);
@@ -132,5 +146,12 @@ void DCircleProgress::paintEvent(QPaintEvent *e)
     d->paint(&p);
 
     QWidget::paintEvent(e);
+}
+
+void DCircleProgress::mouseReleaseEvent(QMoveEvent *e)
+{
+    Q_UNUSED(e)
+
+    emit clicked();
 }
 
