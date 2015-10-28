@@ -404,20 +404,6 @@ bool DListWidget::eventFilter(QObject *obj, QEvent *e)
     return false;
 }
 
-QSize DListWidget::sizeHint() const
-{
-    Q_D(const DListWidget);
-
-    QSize size;
-    size.setWidth(d->mainWidget->width());
-    if(d->enableVerticalScroll)
-        size.setHeight(qMin(maximumHeight(), d->mainWidget->height()));
-    else
-        size.setHeight(d->mainWidget->height());
-
-    return size;
-}
-
 void DListWidget::setVisibleCount(int count)
 {
     Q_D(DListWidget);
@@ -437,18 +423,14 @@ void DListWidget::updateSize()
     if(!d->enableHorizontalScroll) {
         setFixedWidth(d->mainWidget->width());
     } else {
-        setMinimumWidth(0);
-        resize(d->mainWidget->width(), height());
+        setMinimumWidth(qMin(d->mainWidget->width(), maximumWidth()));
     }
 
     if(!d->enableVerticalScroll) {
         setFixedHeight(d->mainWidget->height());
     } else {
-        setMinimumHeight(0);
-        resize(width(), d->mainWidget->height());
+        setMinimumHeight(qMin(d->mainWidget->height(), maximumHeight()));
     }
-
-    updateGeometry();
 }
 
 QList<QWidget*> DListWidget::widgetList() const
