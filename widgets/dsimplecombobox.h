@@ -57,7 +57,7 @@ signals:
     void currentTextChanged(const QString &);
 
 private:
-    void onCurrentIndexChange(int index);
+    Q_SLOT void onCurrentIndexChange(int index);
 
 private:
     DComboBoxModel *m_simpleModel = NULL;
