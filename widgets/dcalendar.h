@@ -51,10 +51,10 @@ public slots:
     void updateCurrentDate();
 
 private:
-    bool eventFilter(QObject *o, QEvent *e);
+    bool eventFilter(QObject *o, QEvent *e) Q_DECL_OVERRIDE;
 
 private slots:
-    void showEvent(QEvent *);
+    void showEvent(QShowEvent *) Q_DECL_OVERRIDE;
     void viewDateChanged(const QDate &date, const CaLunarDayInfo &detail);
     void aniToPrev();
     void aniToNext();

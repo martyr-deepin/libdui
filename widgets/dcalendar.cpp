@@ -206,7 +206,7 @@ bool DCalendar::eventFilter(QObject *o, QEvent *e)
     return false;
 }
 
-void DCalendar::showEvent(QEvent *)
+void DCalendar::showEvent(QShowEvent *)
 {
     updateCurrentDate();
 }

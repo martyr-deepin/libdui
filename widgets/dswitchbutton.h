@@ -51,8 +51,8 @@ Q_SIGNALS:
     void checkedChanged(bool arg);
 
 protected:
-    void paintEvent(QPaintEvent *e);
-    void mousePressEvent(QMouseEvent *);
+    void paintEvent(QPaintEvent *e) Q_DECL_OVERRIDE;
+    void mousePressEvent(QMouseEvent *) Q_DECL_OVERRIDE;
 private:
     bool m_checked;
 

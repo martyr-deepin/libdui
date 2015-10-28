@@ -36,7 +36,7 @@ public:
     const QColor chunkColor() const;
     void setChunkColor(const QColor &color);
 
-    const int lineWidth() const;
+    int lineWidth() const;
     void setLineWidth(const int width);
 
     void setPixmap(const QPixmap &pm);
@@ -45,8 +45,8 @@ signals:
     void valueChanged(const int value) const;
 
 protected:
-    void paintEvent(QPaintEvent *e);
-    void mouseReleaseEvent(QMoveEvent *e);
+    void paintEvent(QPaintEvent *e) Q_DECL_OVERRIDE;
+    void mouseReleaseEvent(QMouseEvent *e) Q_DECL_OVERRIDE;
 
 private:
     D_DECLARE_PRIVATE(DCircleProgress)
