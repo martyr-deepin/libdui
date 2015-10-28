@@ -84,7 +84,6 @@ protected:
     DListWidget(DListWidgetPrivate &dd, QWidget *parent);
 
     bool eventFilter(QObject *, QEvent *) Q_DECL_OVERRIDE;
-    QSize sizeHint() const Q_DECL_OVERRIDE;
     void setVisibleCount(int count);
 
 private:
