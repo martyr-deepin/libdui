@@ -82,8 +82,7 @@ private slots:
 
 protected:
     DListWidget(DListWidgetPrivate &dd, QWidget *parent);
-
-    bool eventFilter(QObject *, QEvent *) Q_DECL_OVERRIDE;
+    void mouseReleaseEvent(QMouseEvent *e) Q_DECL_OVERRIDE;
     void setVisibleCount(int count);
 
 private:

@@ -1,6 +1,7 @@
 #include <QWidget>
 #include <QVBoxLayout>
 #include <QEvent>
+#include <QMouseEvent>
 #include <QDebug>
 
 #include "dthememanager.h"
@@ -98,9 +99,6 @@ void DListWidget::insertWidget(int index, QWidget *w, Qt::Alignment a)
         d->mainWidget->layout()->insertWidget(index, w, 0, a);
     }
 
-    if(d->checkable)
-        w->installEventFilter(this);
-
     d->mapVisible[w] = true;
 
     setVisibleCount(d->visibleCount + 1);
@@ -146,7 +144,6 @@ void DListWidget::clear(bool isDelete)
 
     for(int i=0;i<count();++i){
         d->mainWidget->layout()->removeItem(d->mainWidget->layout()->takeAt(i));
-        d->widgetList[i]->removeEventFilter(this);
         d->widgetList[i]->setParent(NULL);
         if(isDelete)
             d->widgetList[i]->deleteLater();
@@ -177,7 +174,6 @@ void DListWidget::removeWidget(int index, bool isDelete)
     }
     d->mapVisible.remove(w);
 
-    w->removeEventFilter(this);
     w->setParent(NULL);
     if(isDelete)
         w->deleteLater();
@@ -259,16 +255,6 @@ void DListWidget::setCheckable(bool checkable)
         return;
 
     d->checkable = checkable;
-
-    if(checkable){
-        foreach (QWidget *w, d->widgetList) {
-            w->installEventFilter(this);
-        }
-    }else{
-        foreach (QWidget *w, d->widgetList) {
-            w->removeEventFilter(this);
-        }
-    }
 }
 
 void DListWidget::setToggleable(bool enableUncheck)
@@ -380,28 +366,29 @@ DListWidget::CheckMode DListWidget::checkMode() const
     return d->checkMode;
 }
 
-bool DListWidget::eventFilter(QObject *obj, QEvent *e)
+void DListWidget::mouseReleaseEvent(QMouseEvent *e)
 {
-    Q_D(DListWidget);
-
-    if(!d->checkable || e->type() != QEvent::MouseButtonRelease)
-        return false;
-
-    QWidget *w = qobject_cast<QWidget*>(obj);
-
-    if(w){
-        int index = indexOf(w);
-        if(index>=0){
-            if(d->toggleable)
-                setChecked(index, !isChecked(index));
-            else
-                setChecked(index, true);
-
-            emit clicked(index);
-        }
+    if(!checkable()){
+        return DScrollArea::mouseReleaseEvent(e);
     }
 
-    return false;
+    Q_D(DListWidget);
+
+    QWidget *widget = childAt(e->pos());
+
+    while(widget && widget->parentWidget() != d->mainWidget) {
+        widget = widget->parentWidget();
+    }
+
+    int index = indexOf(widget);
+    if(index>=0){
+        if(toggleable())
+            setChecked(index, !isChecked(index));
+        else
+            setChecked(index, true);
+
+        emit clicked(index);
+    }
 }
 
 void DListWidget::setVisibleCount(int count)
