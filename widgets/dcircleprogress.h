@@ -20,6 +20,8 @@ class LIBDUISHARED_EXPORT DCircleProgress : public QWidget, public DObject
 
 signals:
     void clicked();
+    void mouseEntered();
+    void mouseLeaved();
 
 public:
     explicit DCircleProgress(QWidget *parent = 0);
@@ -47,6 +49,8 @@ signals:
 protected:
     void paintEvent(QPaintEvent *e) Q_DECL_OVERRIDE;
     void mouseReleaseEvent(QMouseEvent *e) Q_DECL_OVERRIDE;
+    void enterEvent(QEvent *e) Q_DECL_OVERRIDE;
+    void leaveEvent(QEvent *e) Q_DECL_OVERRIDE;
 
 private:
     D_DECLARE_PRIVATE(DCircleProgress)

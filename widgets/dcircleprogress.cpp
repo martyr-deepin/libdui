@@ -155,3 +155,17 @@ void DCircleProgress::mouseReleaseEvent(QMouseEvent *e)
     emit clicked();
 }
 
+void DCircleProgress::enterEvent(QEvent *e)
+{
+    emit mouseEntered();
+
+    QWidget::enterEvent(e);
+}
+
+void DCircleProgress::leaveEvent(QEvent *e)
+{
+    emit mouseLeaved();
+
+    QWidget::leaveEvent(e);
+}
+
