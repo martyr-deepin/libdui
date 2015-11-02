@@ -17,6 +17,7 @@ class LIBDUISHARED_EXPORT DCircleProgress : public QWidget, public DObject
     Q_OBJECT
     Q_PROPERTY(QColor backgroundColor READ backgroundColor WRITE setBackgroundColor DESIGNABLE true)
     Q_PROPERTY(QColor chunkColor READ chunkColor WRITE setChunkColor DESIGNABLE true)
+    Q_PROPERTY(int lineWidth READ lineWidth WRITE setLineWidth DESIGNABLE true)
 
 signals:
     void clicked();
@@ -41,7 +42,8 @@ public:
     int lineWidth() const;
     void setLineWidth(const int width);
 
-    void setPixmap(const QPixmap &pm);
+    QLabel *topLabel();
+    QLabel *bottomLabel();
 
 signals:
     void valueChanged(const int value) const;

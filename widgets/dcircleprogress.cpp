@@ -11,13 +11,18 @@ DUI_USE_NAMESPACE
 DCircleProgressPrivate::DCircleProgressPrivate(DCircleProgress *q)
     : DObjectPrivate(q)
 {
-    m_displayLabel.setAttribute(Qt::WA_TranslucentBackground);
-    m_displayLabel.setAlignment(Qt::AlignCenter);
-    m_displayLabel.setObjectName("DisplayLabel");
+    m_topLabel.setAttribute(Qt::WA_TranslucentBackground);
+    m_topLabel.setAlignment(Qt::AlignCenter);
+    m_topLabel.setObjectName("TopLabel");
+    m_bottomLabel.setAttribute(Qt::WA_TranslucentBackground);
+    m_bottomLabel.setAlignment(Qt::AlignCenter);
+    m_bottomLabel.setObjectName("BottomLabel");
+    m_bottomLabel.hide();
 
     QBoxLayout *mainLayout = new QVBoxLayout;
     mainLayout->addStretch();
-    mainLayout->addWidget(&m_displayLabel);
+    mainLayout->addWidget(&m_topLabel);
+    mainLayout->addWidget(&m_bottomLabel);
     mainLayout->addStretch();
     mainLayout->setSpacing(0);
     mainLayout->setMargin(0);
@@ -79,21 +84,14 @@ const QString DCircleProgress::text() const
 {
     Q_D(const DCircleProgress);
 
-    return d->m_displayLabel.text();
+    return d->m_topLabel.text();
 }
 
 void DCircleProgress::setText(const QString &text)
 {
     Q_D(DCircleProgress);
 
-    return d->m_displayLabel.setText(text);
-}
-
-void DCircleProgress::setPixmap(const QPixmap &pm)
-{
-    Q_D(DCircleProgress);
-
-    d->m_displayLabel.setPixmap(pm);
+    return d->m_topLabel.setText(text);
 }
 
 const QColor DCircleProgress::backgroundColor() const
@@ -136,6 +134,20 @@ void DCircleProgress::setLineWidth(const int width)
     Q_D(DCircleProgress);
 
     d->m_lineWidth = width;
+}
+
+QLabel *DCircleProgress::topLabel()
+{
+    Q_D(DCircleProgress);
+
+    return &d->m_topLabel;
+}
+
+QLabel *DCircleProgress::bottomLabel()
+{
+    Q_D(DCircleProgress);
+
+    return &d->m_bottomLabel;
 }
 
 void DCircleProgress::paintEvent(QPaintEvent *e)

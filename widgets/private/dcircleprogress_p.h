@@ -26,7 +26,8 @@ private:
     int m_minmumValue = 0;
     int m_maximumValue = 100;
 
-    QLabel m_displayLabel;
+    QLabel m_topLabel;
+    QLabel m_bottomLabel;
 
     QColor m_chunkColor = Qt::cyan;
     QColor m_backgroundColor = Qt::darkCyan;
