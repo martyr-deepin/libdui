@@ -86,6 +86,8 @@ bool DBoxWidget::event(QEvent *ee)
         setFixedSize(d->layout->sizeHint());
     } else if(ee->type() == QEvent::ChildRemoved) {
         setFixedSize(d->layout->sizeHint());
+    } else if(ee->type() == QEvent::Show) {
+        setFixedSize(d->layout->sizeHint());
     }
 
     return QWidget::event(ee);
