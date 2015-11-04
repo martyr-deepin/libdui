@@ -56,7 +56,8 @@ HEADERS += $$PWD/dslider.h\
     $$PWD/dcircleprogress.h \
     $$PWD/private/dcircleprogress_p.h \
     $$PWD/dstackwidget.h \
-    $$PWD/private/dstackwidget_p.h
+    $$PWD/private/dstackwidget_p.h \
+    $$PWD/dcheckbox.h
 
 SOURCES += $$PWD/dslider.cpp \
     $$PWD/dthememanager.cpp \
@@ -107,7 +108,8 @@ SOURCES += $$PWD/dslider.cpp \
     $$PWD/dobject.cpp \
     $$PWD/dboxwidget.cpp \
     $$PWD/dcircleprogress.cpp \
-    $$PWD/dstackwidget.cpp
+    $$PWD/dstackwidget.cpp \
+    $$PWD/dcheckbox.cpp
 
 RESOURCES += \
     $$PWD/../themes/dui_theme_dark.qrc \
