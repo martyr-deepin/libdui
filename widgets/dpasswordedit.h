@@ -15,6 +15,7 @@ class LIBDUISHARED_EXPORT DPasswordEdit : public QFrame
     Q_OBJECT
     Q_PROPERTY(bool isEchoMode READ isEchoMode NOTIFY echoModeChanged)
     Q_PROPERTY(bool isAlertMode READ isAlertMode NOTIFY alertModeChanged)
+    Q_PROPERTY(QString placeholderText READ placeholderText WRITE setPlaceholderText)
 
 public:
     explicit DPasswordEdit(QWidget *parent = 0);
@@ -22,6 +23,7 @@ public:
     inline QString text() const {return m_edit.text();}
     inline bool isEchoMode() const {return m_echo;}
     inline bool isAlertMode() const {return m_alert;}
+    inline QString placeholderText() const {return m_edit.placeholderText();}
 
 signals:
     void echoModeChanged();
@@ -33,6 +35,8 @@ public slots:
     inline void setPassword(const QString & password) {m_edit.setText(password);}
     void setEchoMode(const bool isEcho);
     void setAlertMode(const bool isAlert);
+    inline void setPlaceholderText(const QString & placeholderText)
+    {m_edit.setPlaceholderText(placeholderText);}
 
 private slots:
     bool eventFilter(QObject *o, QEvent *e);
