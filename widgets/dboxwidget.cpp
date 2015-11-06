@@ -11,6 +11,7 @@
 #include <QDebug>
 #include <QResizeEvent>
 
+#include "dthememanager.h"
 #include "dboxwidget.h"
 #include "private/dboxwidget_p.h"
 
@@ -37,6 +38,8 @@ DBoxWidget::DBoxWidget(QBoxLayout::Direction direction, QWidget *parent):
     QWidget(parent),
     DObject(*new DBoxWidgetPrivate(this))
 {
+    D_THEME_INIT_WIDGET(DBoxWidget);
+
     d_func()->layout->setDirection(direction);
     d_func()->init();
 }

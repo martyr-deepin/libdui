@@ -1,5 +1,6 @@
 #include <QDebug>
 
+#include "dthememanager.h"
 #include "dstackwidget.h"
 #include "private/dstackwidget_p.h"
 
@@ -141,6 +142,8 @@ DStackWidget::DStackWidget(QWidget *parent) :
     QWidget(parent),
     DObject(*new DStackWidgetPrivate(this))
 {
+    D_THEME_INIT_WIDGET(DStackWidget)
+
     d_func()->init();
 }
 
@@ -336,6 +339,8 @@ DStackWidget::DStackWidget(DStackWidgetPrivate &dd, QWidget *parent):
     QWidget(parent),
     DObject(dd)
 {
+    D_THEME_INIT_WIDGET(DStackWidget)
+
     d_func()->init();
 }
 

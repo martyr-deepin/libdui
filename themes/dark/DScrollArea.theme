@@ -6,7 +6,3 @@ DUI--DScrollArea{
 DUI--DScrollArea::corner{
     background-color: transparent;
 }
-
-DUI--DScrollArea QWidget{
-    background: transparent;
-}

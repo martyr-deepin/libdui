@@ -33,6 +33,8 @@
         <file>dark/DBaseButton.theme</file>
         <file>dark/DCircleProgress.theme</file>
         <file>dark/DCheckBox.theme</file>
+        <file>dark/DBoxWidget.theme</file>
+        <file>dark/DStackWidget.theme</file>
     </qresource>
     <qresource prefix="/images">
         <file>dark/images/add_hover.png</file>
