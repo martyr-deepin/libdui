@@ -3,7 +3,6 @@ DUI--DComboBox {
     border-color: black;
     border-radius: 3px;
     padding: 1px 18px 1px 3px;
-    min-width: 6em;
     color: #b4b4b4;
     font-size: 12px;
 
