@@ -1,7 +1,7 @@
 #ifndef DBOXWIDGET_H
 #define DBOXWIDGET_H
 
-#include <QWidget>
+#include <QFrame>
 #include <QBoxLayout>
 
 #include "dobject.h"
@@ -9,7 +9,7 @@
 DUI_BEGIN_NAMESPACE
 
 class DBoxWidgetPrivate;
-class DBoxWidget : public QWidget, public DObject
+class DBoxWidget : public QFrame, public DObject
 {
     Q_OBJECT
 

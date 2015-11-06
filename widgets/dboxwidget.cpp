@@ -35,7 +35,7 @@ void DBoxWidgetPrivate::init()
 }
 
 DBoxWidget::DBoxWidget(QBoxLayout::Direction direction, QWidget *parent):
-    QWidget(parent),
+    QFrame(parent),
     DObject(*new DBoxWidgetPrivate(this))
 {
     D_THEME_INIT_WIDGET(DBoxWidget);
