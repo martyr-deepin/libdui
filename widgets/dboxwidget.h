@@ -31,6 +31,7 @@ signals:
     void directionChanged(QBoxLayout::Direction direction);
 
 protected:
+    virtual void updateSize(const QSize &size);
     bool event(QEvent *ee) Q_DECL_OVERRIDE;
     QSize sizeHint() const Q_DECL_OVERRIDE;
 

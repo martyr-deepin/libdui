@@ -71,23 +71,36 @@ void DBoxWidget::setDirection(QBoxLayout::Direction direction)
     emit directionChanged(direction);
 }
 
+void DBoxWidget::updateSize(const QSize &size)
+{
+    if(direction() == QBoxLayout::TopToBottom || QBoxLayout::BottomToTop) {
+        setFixedHeight(size.height());
+        setMinimumWidth(size.width());
+        setMaximumWidth(16777215);
+    } else {
+        setFixedWidth(size.width());
+        setMinimumHeight(size.height());
+        setMaximumHeight(16777215);
+    }
+}
+
 bool DBoxWidget::event(QEvent *ee)
 {
     Q_D(const DBoxWidget);
 
     if(ee->type() == QEvent::LayoutRequest) {
         if(size() != d->layout->sizeHint()) {
-            setFixedSize(d->layout->sizeHint());
+            updateSize(d->layout->sizeHint());
             updateGeometry();
         }
     } else if(ee->type() == QEvent::Resize) {
         emit sizeChanged(size());
     } else if(ee->type() == QEvent::ChildAdded) {
-        setFixedSize(d->layout->sizeHint());
+        updateSize(d->layout->sizeHint());
     } else if(ee->type() == QEvent::ChildRemoved) {
-        setFixedSize(d->layout->sizeHint());
+        updateSize(d->layout->sizeHint());
     } else if(ee->type() == QEvent::Show) {
-        setFixedSize(d->layout->sizeHint());
+        updateSize(d->layout->sizeHint());
     }
 
     return QWidget::event(ee);
