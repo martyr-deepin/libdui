@@ -7,6 +7,7 @@
 #include <QDebug>
 #include <QEvent>
 #include <QResizeEvent>
+#include <QTimer>
 
 DUI_USE_NAMESPACE
 
@@ -24,6 +25,8 @@ DSearchEdit::DSearchEdit(QWidget *parent)
     m_clearBtn->hide();
     m_edt = new QLineEdit;
     m_edt->setObjectName("Edit");
+    m_placeHolder = new QLabel;
+    m_placeHolder->setObjectName("PlaceHolder");
 
     m_animation = new QPropertyAnimation(m_edt, "minimumWidth");
 
@@ -36,6 +39,8 @@ DSearchEdit::DSearchEdit(QWidget *parent)
     layout->addStretch();
     layout->addWidget(m_searchBtn);
     layout->setAlignment(m_searchBtn, Qt::AlignCenter);
+    layout->addWidget(m_placeHolder);
+    layout->setAlignment(m_placeHolder, Qt::AlignCenter);
     layout->addWidget(m_edt);
     layout->setAlignment(m_edt, Qt::AlignCenter);
     layout->addStretch();
@@ -78,6 +83,9 @@ bool DSearchEdit::eventFilter(QObject *o, QEvent *e)
         m_animation->setEndValue(0);
         m_animation->setEasingCurve(m_hideCurve);
         m_animation->start();
+
+        QTimer::singleShot(200, m_placeHolder, SLOT(show()));
+//        m_placeHolder->show();
     }
 
     return QFrame::eventFilter(o, e);
@@ -91,7 +99,7 @@ void DSearchEdit::toEditMode()
     m_animation->setEasingCurve(m_showCurve);
     m_animation->start();
 
-    m_edt->show();
+    m_placeHolder->hide();
     m_edt->setFocus();
 }
 

@@ -31,3 +31,9 @@ DUI--DSearchEdit QFrame#DEditInsideFrame {
     border-radius: 3;
     border-color: black;
 }
+
+DUI--DSearchEdit #PlaceHolder {
+    color:#999;
+    margin:0 0 0 3px;
+    font-size:12px;
+}

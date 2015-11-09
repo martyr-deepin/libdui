@@ -32,6 +32,7 @@ public:
 public slots:
     void setText(const QString & text) {if (m_edt) m_edt->setText(text);}
     inline void clear() {m_edt->clear();}
+    inline void setPlaceHolder(const QString &text) {m_placeHolder->setText(text);}
 
 signals:
     void textChanged();
@@ -49,6 +50,7 @@ private:
     QLineEdit *m_edt;
     DImageButton *m_searchBtn;
     DImageButton *m_clearBtn;
+    QLabel *m_placeHolder;
     QFrame *m_insideFrame = NULL;
 
     QPropertyAnimation *m_animation;
