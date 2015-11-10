@@ -220,36 +220,35 @@ void DStackWidget::popWidget(QWidget *widget, bool isDelete, int count, bool ena
 {
     Q_D(DStackWidget);
 
-    bool isCurrentWidget = (widget == currentWidget());
-    int i = !isCurrentWidget ? indexOf(widget) : currentIndex();
+    int i = widget ? indexOf(widget) : currentIndex();
 
     if(i < 0 || i >= depth())
         return;
 
-    while(count > 0){
-        --count;
+    bool current_widget_deleted = false;
 
+    while(count-- > 0){
         QWidget *tmp_widget = d->widgetList[i];
-        if(isDelete && tmp_widget != currentWidget()) {
+
+        if(tmp_widget == currentWidget()) {
+            current_widget_deleted = true;
+        } else if(isDelete) {
             tmp_widget->deleteLater();
         }
 
         d->widgetList.removeAt(i);
     }
 
-    if(isDelete){
-        if(enableTransition && isCurrentWidget && depth()){
-            if(isDelete)
-                d->trashWidgetList << widget;
-        } else {
-            if(d->currentWidget) {
-                d->currentWidget->deleteLater();
-                d->currentWidget = nullptr;
-            }
+    if(current_widget_deleted && isDelete){
+        if(enableTransition && depth()){
+            d->trashWidgetList << d->currentWidget;
+        } else if(d->currentWidget) {
+            d->currentWidget->deleteLater();
+            d->currentWidget = nullptr;
         }
     }
 
-    setCurrentIndex(depth() - 1, DAbstractStackWidgetTransition::Pop, enableTransition && isCurrentWidget);
+    setCurrentIndex(depth() - 1, DAbstractStackWidgetTransition::Pop, enableTransition && current_widget_deleted);
 }
 
 void DStackWidget::clear()
@@ -280,7 +279,7 @@ void DStackWidget::setCurrentIndex(int currentIndex, DAbstractStackWidgetTransit
 {
     Q_D(DStackWidget);
 
-    if(enableTransition && currentWidget()) {
+    if(enableTransition && currentWidget() && currentIndex >= 0) {
         DAbstractStackWidgetTransition::TransitionInfo info;
         info.stackWidget = this;
         info.oldWidget = currentWidget();
@@ -288,9 +287,14 @@ void DStackWidget::setCurrentIndex(int currentIndex, DAbstractStackWidgetTransit
         info.type = type;
 
         d->transition->beginTransition(info);
-    }
 
-    d->setCurrentIndex(currentIndex);
+        d->setCurrentIndex(currentIndex);
+    } else {
+        d->setCurrentIndex(currentIndex);
+
+        currentWidget()->move(0, 0);
+        currentWidget()->show();
+    }
 }
 
 void DStackWidget::setCurrentWidget(QWidget *currentWidget, DAbstractStackWidgetTransition::TransitionType type,
