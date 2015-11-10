@@ -220,7 +220,8 @@ void DStackWidget::popWidget(QWidget *widget, bool isDelete, int count, bool ena
 {
     Q_D(DStackWidget);
 
-    int i = widget ? indexOf(widget) : currentIndex();
+    bool isCurrentWidget = (widget == currentWidget());
+    int i = !isCurrentWidget ? indexOf(widget) : currentIndex();
 
     if(i < 0 || i >= depth())
         return;
@@ -237,9 +238,9 @@ void DStackWidget::popWidget(QWidget *widget, bool isDelete, int count, bool ena
     }
 
     if(isDelete){
-        if(enableTransition && !widget && depth()){
+        if(enableTransition && isCurrentWidget && depth()){
             if(isDelete)
-                d->trashWidgetList << currentWidget();
+                d->trashWidgetList << widget;
         } else {
             if(d->currentWidget) {
                 d->currentWidget->deleteLater();
@@ -248,7 +249,7 @@ void DStackWidget::popWidget(QWidget *widget, bool isDelete, int count, bool ena
         }
     }
 
-    setCurrentIndex(depth() - 1, DAbstractStackWidgetTransition::Pop, enableTransition && !widget);
+    setCurrentIndex(depth() - 1, DAbstractStackWidgetTransition::Pop, enableTransition && isCurrentWidget);
 }
 
 void DStackWidget::clear()
