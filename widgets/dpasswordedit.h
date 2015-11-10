@@ -16,6 +16,7 @@ class LIBDUISHARED_EXPORT DPasswordEdit : public QFrame
     Q_PROPERTY(bool isEchoMode READ isEchoMode NOTIFY echoModeChanged)
     Q_PROPERTY(bool isAlertMode READ isAlertMode NOTIFY alertModeChanged)
     Q_PROPERTY(QString placeholderText READ placeholderText WRITE setPlaceholderText)
+    Q_PROPERTY(QString text READ text WRITE setText NOTIFY textChanged)
 
 public:
     explicit DPasswordEdit(QWidget *parent = 0);
@@ -32,7 +33,8 @@ signals:
     void textChanged(const QString text);
 
 public slots:
-    inline void setPassword(const QString & password) {m_edit.setText(password);}
+    inline void setText(const QString & password) {m_edit.setText(password);}
+    inline void setPassword(const QString & password){setText(password);} DUI_DECL_DEPRECATED
     void setEchoMode(const bool isEcho);
     void setAlertMode(const bool isAlert);
     inline void setPlaceholderText(const QString & placeholderText)
