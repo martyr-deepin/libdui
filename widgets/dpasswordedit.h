@@ -34,7 +34,7 @@ signals:
 
 public slots:
     inline void setText(const QString & password) {m_edit.setText(password);}
-    inline void setPassword(const QString & password){setText(password);} DUI_DECL_DEPRECATED
+    inline void setPassword(const QString & password) DUI_DECL_DEPRECATED {setText(password);}
     void setEchoMode(const bool isEcho);
     void setAlertMode(const bool isAlert);
     inline void setPlaceholderText(const QString & placeholderText)

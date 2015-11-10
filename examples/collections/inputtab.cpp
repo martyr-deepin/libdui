@@ -10,11 +10,11 @@ InputTab::InputTab(QWidget *parent) : QLabel(parent)
     setFocusPolicy(Qt::ClickFocus);
 
     DUI::DPasswordEdit *pwdEdit = new DUI::DPasswordEdit(this);
-    pwdEdit->setPassword("password");
+    pwdEdit->setText("password");
     pwdEdit->move(20, 20);
 
     DUI::DPasswordEdit *pwdEdit2 = new DUI::DPasswordEdit(this);
-    pwdEdit2->setPassword("password");
+    pwdEdit2->setText("password");
     pwdEdit2->setEchoMode(true);
     pwdEdit2->setAlertMode(true);
     pwdEdit2->move(20, 50);
@@ -25,6 +25,7 @@ InputTab::InputTab(QWidget *parent) : QLabel(parent)
     //searchEdit->setSearchIcon(":/images/button.png");
     //searchEdit->setFixedWidth(300);
     searchEdit->move(20, 120);
+    searchEdit->setPlaceHolder("Tes");
 
     DUI::DLineEdit *lineEdit = new DUI::DLineEdit(this);
     lineEdit->setText("LineEdit");
