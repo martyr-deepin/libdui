@@ -1,5 +1,6 @@
 #include "darrowrectangle.h"
 #include <X11/extensions/shape.h>
+#include <QApplication>
 
 DUI_USE_NAMESPACE
 
@@ -106,79 +107,20 @@ QSize DArrowRectangle::getFixedSize()
 
 void DArrowRectangle::move(int x, int y)
 {
-    QDesktopWidget dw;
-    QRect dRect = dw.screenGeometry();
-
-    qreal delta = shadowBlurRadius() - shadowDistance();
-    int xLeftValue = x - (width() - delta) / 2;
-    int xRightValue = x + (width() - delta) / 2 - dRect.width();
-    int yTopValue = y - m_arrowY;
-    int yBottomValue = y + (height() - m_arrowY);
     switch (m_arrowDirection)
     {
     case ArrowLeft:
-        if (yTopValue < dRect.y())
-        {
-            setArrowY(m_arrowWidth / 2);
-            yTopValue = dRect.y();
-        }
-        else if (yBottomValue > (dRect.height() + dRect.y()))
-        {
-            setArrowY((dRect.height() + dRect.y()) - m_arrowWidth / 2);
-            yTopValue = dRect.height() - height();
-        }
-        QWidget::move(x,yTopValue);
-        break;
     case ArrowRight:
-        if (yTopValue < dRect.y())
-        {
-            setArrowY(m_arrowWidth / 2);
-            yTopValue = dRect.y();
-        }
-        else if (yBottomValue > (dRect.height() + dRect.y()))
-        {
-            setArrowY((dRect.height() + dRect.y()) - m_arrowWidth / 2);
-            yTopValue = dRect.height() - height();
-        }
-        QWidget::move(x - width(),yTopValue);
+        verticalMove(x, y);
         break;
     case ArrowTop:
-        if (xLeftValue < dRect.x())//out of screen in left side
-        {
-            setArrowX(width() / 2 - delta + xLeftValue);
-            xLeftValue = dRect.x() - delta;
-        }
-        else if(xRightValue > 0)//out of screen in right side
-        {
-            setArrowX(width() / 2 - delta * 2 + xRightValue);
-            xLeftValue = dRect.width() - width() + delta;
-        }
-        else
-            xLeftValue = x - width() / 2;
-
-        QWidget::move(xLeftValue,y);
-        break;
     case ArrowBottom:
-        if (xLeftValue < dRect.x())//out of screen in left side
-        {
-            setArrowX(width() / 2 - delta + xLeftValue);
-            xLeftValue = dRect.x() - delta;
-        }
-        else if(xRightValue > 0)//out of screen in right side
-        {
-            setArrowX(width() / 2 - delta * 2 + xRightValue);
-            xLeftValue = dRect.width() - width() + delta;
-        }
-        else
-            xLeftValue = x - width() / 2;
-
-        QWidget::move(xLeftValue,y - height());
+        horizontalMove(x, y);
         break;
     default:
-        QWidget::move(x,y);
+        QWidget::move(x, y);
         break;
     }
-
 }
 
 // override methods
@@ -489,6 +431,78 @@ QPainterPath DArrowRectangle::getBottomCornerPath()
     border.arcTo(topLeft.x(), topLeft.y(), 2 * radius, 2 * radius, 180, -90);
 
     return border;
+}
+
+void DArrowRectangle::verticalMove(int x, int y)
+{
+    QRect dRect = QApplication::desktop()->geometry();
+    qreal delta = shadowBlurRadius() - shadowDistance();
+
+    int lRelativeY = y - dRect.y() - (height() - delta) / 2;
+    int rRelativeY = y - dRect.y() + (height() - delta) / 2 - dRect.height();
+    int absoluteY = 0;
+
+    if (lRelativeY < 0)//out of screen in top side
+    {
+        //arrowY use relative coordinates
+        setArrowY(height() / 2 - delta + lRelativeY);
+        absoluteY = dRect.y() - delta;
+    }
+    else if(rRelativeY > 0)//out of screen in bottom side
+    {
+        setArrowY(height() / 2 - delta * 2 + rRelativeY);
+        absoluteY = dRect.y() + dRect.height() - height() + delta;
+    }
+    else
+        absoluteY = y - height() / 2;
+
+    switch (m_arrowDirection)
+    {
+    case ArrowLeft:
+        QWidget::move(x, absoluteY);
+        break;
+    case ArrowBottom:
+        QWidget::move(x - width(), absoluteY);
+        break;
+    default:
+        break;
+    }
+}
+
+void DArrowRectangle::horizontalMove(int x, int y)
+{
+    QRect dRect = QApplication::desktop()->geometry();
+    qreal delta = shadowBlurRadius() - shadowDistance();
+
+    int lRelativeX = x - dRect.x() - (width() - delta) / 2;
+    int rRelativeX = x - dRect.x() + (width() - delta) / 2 - dRect.width();
+    int absoluteX = 0;
+
+    if (lRelativeX < 0)//out of screen in left side
+    {
+        //arrowX use relative coordinates
+        setArrowX(width() / 2 - delta + lRelativeX);
+        absoluteX = dRect.x() - delta;
+    }
+    else if(rRelativeX > 0)//out of screen in right side
+    {
+        setArrowX(width() / 2 - delta * 2 + rRelativeX);
+        absoluteX = dRect.x() + dRect.width() - width() + delta;
+    }
+    else
+        absoluteX = x - width() / 2;
+
+    switch (m_arrowDirection)
+    {
+    case ArrowTop:
+        QWidget::move(absoluteX, y);
+        break;
+    case ArrowBottom:
+        QWidget::move(absoluteX, y - height());
+        break;
+    default:
+        break;
+    }
 }
 
 DArrowRectangle::~DArrowRectangle()

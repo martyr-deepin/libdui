@@ -84,6 +84,15 @@ protected:
     void paintEvent(QPaintEvent *);
 
 private:
+    QPainterPath getLeftCornerPath();
+    QPainterPath getRightCornerPath();
+    QPainterPath getTopCornerPath();
+    QPainterPath getBottomCornerPath();
+
+    void verticalMove(int x, int y);
+    void horizontalMove(int x, int y);
+
+private:
     int m_radius = 3;
     int m_arrowHeight = 8;
     int m_arrowWidth = 12;
@@ -104,13 +113,6 @@ private:
     QPoint m_lastPos = QPoint(0, 0);
 
     QWidget *m_content = NULL;
-
-private:
-    QPainterPath getLeftCornerPath();
-    QPainterPath getRightCornerPath();
-    QPainterPath getTopCornerPath();
-    QPainterPath getBottomCornerPath();
-
 };
 
 DUI_END_NAMESPACE
