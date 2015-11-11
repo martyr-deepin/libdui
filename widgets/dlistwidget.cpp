@@ -296,6 +296,20 @@ void DListWidget::setEnableVerticalScroll(bool enableVerticalScroll)
     emit enableVerticalScrollChanged(enableVerticalScroll);
 }
 
+void DListWidget::setSpacing(int spacing)
+{
+    Q_D(DListWidget);
+
+    d->mainWidget->layout()->setSpacing(spacing);
+}
+
+void DListWidget::setDirection(QBoxLayout::Direction direction)
+{
+    Q_D(DListWidget);
+
+    d->mainWidget->layout()->setDirection(direction);
+}
+
 int DListWidget::count() const
 {
     Q_D(const DListWidget);
@@ -359,6 +373,20 @@ int DListWidget::visibleCount() const
     return d->visibleCount;
 }
 
+int DListWidget::spacing() const
+{
+    Q_D(const DListWidget);
+
+    return d->mainWidget->layout()->spacing();
+}
+
+QBoxLayout::Direction DListWidget::direction() const
+{
+    Q_D(const DListWidget);
+
+    return d->mainWidget->direction();
+}
+
 DListWidget::CheckMode DListWidget::checkMode() const
 {
     Q_D(const DListWidget);
@@ -408,13 +436,19 @@ void DListWidget::updateSize()
     Q_D(DListWidget);
 
     if(!d->enableHorizontalScroll) {
-        setFixedWidth(d->mainWidget->width());
+        if(direction() == QBoxLayout::LeftToRight || direction() == QBoxLayout::RightToLeft)
+            setFixedWidth(d->mainWidget->width());
+        else
+            setMinimumWidth(d->mainWidget->width());
     } else {
         setMinimumWidth(qMin(d->mainWidget->width(), maximumWidth()));
     }
 
     if(!d->enableVerticalScroll) {
-        setFixedHeight(d->mainWidget->height());
+        if(direction() == QBoxLayout::TopToBottom || direction() == QBoxLayout::BottomToTop)
+            setFixedHeight(d->mainWidget->height());
+        else
+            setMinimumHeight(d->mainWidget->height());
     } else {
         setMinimumHeight(qMin(d->mainWidget->height(), maximumHeight()));
     }
@@ -446,6 +480,46 @@ bool DListWidget::enableVerticalScroll() const
     Q_D(const DListWidget);
 
     return d->enableVerticalScroll;
+}
+
+void DListWidget::setContentsMargins(int left, int top, int right, int bottom)
+{
+    Q_D(DListWidget);
+
+    d->mainWidget->layout()->setContentsMargins(left, top, right, bottom);
+}
+
+void DListWidget::setContentsMargins(const QMargins &margins)
+{
+    Q_D(DListWidget);
+
+    d->mainWidget->layout()->setContentsMargins(margins);
+}
+
+void DListWidget::getContentsMargins(int *left, int *top, int *right, int *bottom) const
+{
+    Q_D(const DListWidget);
+
+    d->mainWidget->layout()->getContentsMargins(left, top, right, bottom);
+}
+
+QMargins DListWidget::contentsMargins() const
+{
+    Q_D(const DListWidget);
+
+    return d->mainWidget->layout()->contentsMargins();
+}
+
+QRect DListWidget::contentsRect() const
+{
+    Q_D(const DListWidget);
+
+    return d->mainWidget->layout()->contentsRect();
+}
+
+QSize DListWidget::sizeHint() const
+{
+    return minimumSize();
 }
 
 DListWidget::DListWidget(DListWidgetPrivate &dd, QWidget *parent):

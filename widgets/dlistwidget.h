@@ -17,6 +17,8 @@ class DListWidget : public DScrollArea
     Q_PROPERTY(int firstChecked READ firstChecked NOTIFY firstCheckedChanged)
     Q_PROPERTY(int count READ count NOTIFY countChanged FINAL)
     Q_PROPERTY(int visibleCount READ visibleCount NOTIFY visibleCountChanged FINAL)
+    Q_PROPERTY(int spacing READ spacing WRITE setSpacing)
+    Q_PROPERTY(QBoxLayout::Direction direction READ direction WRITE setDirection)
     Q_PROPERTY(bool checkable READ checkable WRITE setCheckable)
     Q_PROPERTY(bool toggleable READ toggleable WRITE setToggleable NOTIFY toggleableChanged)
     Q_PROPERTY(bool enableHorizontalScroll READ enableHorizontalScroll WRITE setEnableHorizontalScroll NOTIFY enableHorizontalScrollChanged)
@@ -49,6 +51,8 @@ public slots:
     void setToggleable(bool toggleable);
     void setEnableHorizontalScroll(bool enableHorizontalScroll);
     void setEnableVerticalScroll(bool enableVerticalScroll);
+    void setSpacing(int spacing);
+    void setDirection(QBoxLayout::Direction direction);
 
 public:
     int count() const;
@@ -60,11 +64,21 @@ public:
     bool toggleable() const;
     bool isChecked(int index) const;
     int visibleCount() const;
+    int spacing() const;
+    QBoxLayout::Direction direction() const;
     CheckMode checkMode() const;
     QList<QWidget*> widgetList() const;
     QSize itemSize() const;
     bool enableHorizontalScroll() const;
     bool enableVerticalScroll() const;
+    void setContentsMargins(int left, int top, int right, int bottom);
+    void setContentsMargins(const QMargins &margins);
+    void getContentsMargins(int *left, int *top, int *right, int *bottom) const;
+    QMargins contentsMargins() const;
+
+    QRect contentsRect() const;
+
+    QSize sizeHint() const Q_DECL_OVERRIDE;
 
 signals:
     void firstCheckedChanged(int index);
