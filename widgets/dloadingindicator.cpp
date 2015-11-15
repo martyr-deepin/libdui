@@ -46,7 +46,6 @@ void DLoadingIndicator::setLoadingItem(QGraphicsItem *item)
     item->setTransformOriginPoint(itemSize.width()/2, itemSize.height()/2);
 
     scene()->clear();
-    scene()->setSceneRect(0, 0, width(), height());
     scene()->addItem(item);
 }
 
@@ -103,6 +102,13 @@ void DLoadingIndicator::setSmooth(bool smooth)
         if(item)
             item->setTransformationMode(Qt::FastTransformation);
     }
+}
+
+void DUI::DLoadingIndicator::resizeEvent(QResizeEvent *e)
+{
+    QGraphicsView::resizeEvent(e);
+
+    setSceneRect(QRectF(rect()));
 }
 
 void DLoadingIndicator::setLoading(bool flag)

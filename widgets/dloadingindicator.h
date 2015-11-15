@@ -53,6 +53,9 @@ public slots:
     void setAniEasingType(QEasingCurve::Type aniEasingType);
     void setSmooth(bool smooth);
 
+protected:
+    void resizeEvent(QResizeEvent *e) Q_DECL_OVERRIDE;
+
 private:
     void initAniProperty();
     void setLoadingItem(QGraphicsItem *item);
