@@ -16,8 +16,8 @@ class LIBDUISHARED_EXPORT DBaseLine : public QLabel
 public:
     explicit DBaseLine(QWidget *parent = 0);
 
-    void setLeftContent(QWidget *content);
-    void setRightContent(QWidget *content);
+    void setLeftContent(QWidget *content, Qt::Alignment alignment = Qt::AlignLeft);
+    void setRightContent(QWidget *content, Qt::Alignment alignment = Qt::AlignRight);
 
     QBoxLayout *leftLayout();
     QBoxLayout *rightLayout();
