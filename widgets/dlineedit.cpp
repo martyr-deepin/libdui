@@ -1,35 +1,59 @@
-#include <QHBoxLayout>
 #include "dlineedit.h"
 #include "dthememanager.h"
+#include "private/dlineedit_p.h"
+
+#include <QHBoxLayout>
 
 DUI_USE_NAMESPACE
 
 DLineEdit::DLineEdit(QWidget *parent)
-    : QLineEdit(parent)
+    : QLineEdit(parent),
+      DObject(*new DLineEditPrivate(this))
 {
     D_THEME_INIT_WIDGET(DLineEdit, alert);
-
-    initInsideFrame();
 }
 
 void DLineEdit::setAlert(bool isAlert)
 {
-    if (m_isAlert == isAlert)
+    Q_D(DLineEdit);
+
+    if (isAlert == d->m_isAlert)
         return;
-    m_isAlert = isAlert;
+
+    d->m_isAlert = isAlert;
     emit alertChanged();
 }
 
-//Bypassing the problem here
-//qss can't draw box-shadow
-void DLineEdit::initInsideFrame()
+bool DLineEdit::isAlert() const
+{
+    Q_D(const DLineEdit);
+
+    return d->m_isAlert;
+}
+
+void DLineEdit::focusInEvent(QFocusEvent *e)
+{
+    emit focusChanged(true);
+    QLineEdit::focusInEvent(e);
+}
+
+void DLineEdit::focusOutEvent(QFocusEvent *e)
+{
+    emit focusChanged(false);
+    QLineEdit::focusOutEvent(e);
+}
+
+DUI::DLineEditPrivate::DLineEditPrivate(DUI::DLineEdit *q)
+    : DObjectPrivate(q)
 {
     QFrame *insideFrame = new QFrame;
     insideFrame->raise();
     insideFrame->setAttribute(Qt::WA_TransparentForMouseEvents);
     insideFrame->setObjectName("LineEditInsideFrame");
-    QHBoxLayout *insideLayout = new QHBoxLayout(this);
-    insideLayout->setContentsMargins(0, 0, 0, 1);
-    insideLayout->addWidget(insideFrame);
-}
 
+    m_centeralLayout = new QHBoxLayout;
+    m_centeralLayout->setContentsMargins(0, 0, 0, 1);
+    m_centeralLayout->addWidget(insideFrame);
+
+    q->setLayout(m_centeralLayout);
+}
