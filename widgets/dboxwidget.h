@@ -22,6 +22,7 @@ public:
     QBoxLayout *layout() const;
 
     void addWidget(QWidget *widget);
+    QSize sizeHint() const Q_DECL_OVERRIDE;
 
 public slots:
     void setDirection(QBoxLayout::Direction direction);
@@ -33,7 +34,6 @@ signals:
 protected:
     virtual void updateSize(const QSize &size);
     bool event(QEvent *ee) Q_DECL_OVERRIDE;
-    QSize sizeHint() const Q_DECL_OVERRIDE;
 
 private:
     D_DECLARE_PRIVATE(DBoxWidget)

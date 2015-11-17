@@ -27,9 +27,14 @@ DBaseExpand::DBaseExpand(QWidget *parent) : QWidget(parent)
     m_contentLoader = new ContentLoader();
     m_contentLoader->setFixedHeight(0); // default to not expanded.
 
-    m_boxWidget = new DVBoxWidget(m_contentLoader);
-
+    m_boxWidget = new DVBoxWidget;
     m_contentLayout = m_boxWidget->layout();
+
+    QVBoxLayout *layout_contentLoader = new QVBoxLayout(m_contentLoader);
+
+    layout_contentLoader->setMargin(0);
+    layout_contentLoader->setSpacing(0);
+    layout_contentLoader->addWidget(m_boxWidget);
 
     m_animation = new QPropertyAnimation(m_contentLoader, "height");
     m_animation->setDuration(200);
