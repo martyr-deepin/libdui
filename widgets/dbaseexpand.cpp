@@ -1,5 +1,6 @@
 #include "dbaseexpand.h"
 #include "dthememanager.h"
+#include "dboxwidget.h"
 
 #include <QResizeEvent>
 
@@ -23,12 +24,12 @@ DBaseExpand::DBaseExpand(QWidget *parent) : QWidget(parent)
 
     connect(this, &DBaseExpand::expandChange, m_bottom_separator, &DSeparatorHorizontal::setVisible);
 
-    m_contentLayout = new QVBoxLayout();
-    m_contentLayout->setAlignment(Qt::AlignCenter);
-    m_contentLayout->setContentsMargins(0, 0, 0, 0);
     m_contentLoader = new ContentLoader();
     m_contentLoader->setFixedHeight(0); // default to not expanded.
-    m_contentLoader->setLayout(m_contentLayout);
+
+    m_boxWidget = new DVBoxWidget(m_contentLoader);
+
+    m_contentLayout = m_boxWidget->layout();
 
     m_animation = new QPropertyAnimation(m_contentLoader, "height");
     m_animation->setDuration(200);
@@ -42,7 +43,17 @@ DBaseExpand::DBaseExpand(QWidget *parent) : QWidget(parent)
 
     setLayout(mainLayout);
 
-    updateContentHeight();
+    connect(m_boxWidget, &DBoxWidget::sizeChanged, this, [this] {
+        if (m_expand) {
+            int endHeight = 0;
+            endHeight = m_boxWidget->height();
+
+            m_animation->setStartValue(m_contentLoader->height());
+            m_animation->setEndValue(endHeight);
+            m_animation->stop();
+            m_animation->start();
+        }
+    });
 }
 
 DBaseExpand::~DBaseExpand()
@@ -119,16 +130,6 @@ void DBaseExpand::setExpand(bool value)
 
 void DBaseExpand::updateContentHeight()
 {
-    int endHeight = 0;
-    if (m_content){
-        if (m_expand)
-            endHeight = m_content->height();
-    }
-
-    m_animation->setStartValue(m_contentLoader->height());
-    m_animation->setEndValue(endHeight);
-    m_animation->stop();
-    m_animation->start();
 }
 
 bool DBaseExpand::expand() const

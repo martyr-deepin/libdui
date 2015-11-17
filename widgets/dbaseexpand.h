@@ -12,13 +12,15 @@
 
 DUI_BEGIN_NAMESPACE
 
-class ContentLoader : public QLabel
+class ContentLoader : public QFrame
 {
     Q_OBJECT
     Q_PROPERTY(int height READ height WRITE setFixedHeight)
 public:
-    explicit ContentLoader(QWidget *parent = 0) : QLabel(parent){}
+    explicit ContentLoader(QWidget *parent = 0) : QFrame(parent){}
 };
+
+class DBoxWidget;
 
 class LIBDUISHARED_EXPORT DBaseExpand : public QWidget
 {
@@ -32,7 +34,7 @@ public:
     inline QWidget *getContent() const {return m_content;}
     void setHeaderHeight(int height);
     virtual void setExpand(bool value);
-    void updateContentHeight();
+    void updateContentHeight() DUI_DECL_DEPRECATED;
     bool expand() const;
     void setAnimationDuration(int duration);
     void setAnimationEasingCurve(QEasingCurve curve);
@@ -46,8 +48,9 @@ signals:
 private:
     QWidget *m_header = NULL;
     QWidget *m_content = NULL;
+    DBoxWidget *m_boxWidget = NULL;
     QVBoxLayout *m_headerLayout = NULL;
-    QVBoxLayout *m_contentLayout = NULL;
+    QBoxLayout *m_contentLayout = NULL;
     ContentLoader *m_contentLoader = NULL;
     DSeparatorHorizontal * m_hSeparator = NULL;
     DSeparatorHorizontal *m_bottom_separator = NULL;
