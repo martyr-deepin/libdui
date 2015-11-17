@@ -290,6 +290,10 @@ void DStackWidget::setCurrentIndex(int currentIndex, DAbstractStackWidgetTransit
 
         d->setCurrentIndex(currentIndex);
     } else {
+        if(currentWidget()) {
+            currentWidget()->hide();
+        }
+
         d->setCurrentIndex(currentIndex);
 
         if(currentWidget()) {
