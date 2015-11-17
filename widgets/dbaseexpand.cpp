@@ -35,11 +35,14 @@ DBaseExpand::DBaseExpand(QWidget *parent) : QWidget(parent)
     layout_contentLoader->setMargin(0);
     layout_contentLoader->setSpacing(0);
     layout_contentLoader->addWidget(m_boxWidget);
+    layout_contentLoader->addStretch();
 
     m_animation = new QPropertyAnimation(m_contentLoader, "height");
     m_animation->setDuration(200);
     m_animation->setEasingCurve(QEasingCurve::InSine);
-    connect(m_animation, &QPropertyAnimation::valueChanged, this, &DBaseExpand::adjustSize);
+    connect(m_animation, &QPropertyAnimation::valueChanged, this, [this] {
+        setFixedHeight(sizeHint().height());
+    });
 
     mainLayout->addLayout(m_headerLayout);
     mainLayout->addWidget(m_hSeparator);
@@ -112,20 +115,20 @@ void DBaseExpand::setHeaderHeight(int height)
 
 void DBaseExpand::setExpand(bool value)
 {
+    if(m_expand == value)
+        return;
+
     m_expand = value;
     emit expandChange(value);
 
-    if (!m_content)
-        return;
-
     if (value)
     {
-        m_animation->setStartValue(m_contentLoader->height());
-        m_animation->setEndValue(m_content->height());
+        m_animation->setStartValue(0);
+        m_animation->setEndValue(m_boxWidget->height());
     }
     else
     {
-        m_animation->setStartValue(m_contentLoader->height());
+        m_animation->setStartValue(m_boxWidget->height());
         m_animation->setEndValue(0);
     }
 
