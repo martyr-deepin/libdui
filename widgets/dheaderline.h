@@ -15,7 +15,7 @@ class LIBDUISHARED_EXPORT DHeaderLine : public DBaseLine
 public:
     explicit DHeaderLine(QWidget *parent = 0);
     void setTitle(const QString &title);
-    void setContent(QWidget *content, Qt::Alignment alignment = Qt::AlignRight);
+    void setContent(QWidget *content);
 
 private:
     void setLeftContent(QWidget *content);

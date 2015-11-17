@@ -19,9 +19,9 @@ void DHeaderLine::setTitle(const QString &title)
     m_titleLabel->setText(title);
 }
 
-void DHeaderLine::setContent(QWidget *content, Qt::Alignment alignment)
+void DHeaderLine::setContent(QWidget *content)
 {
-    DBaseLine::setRightContent(content, alignment);
+    DBaseLine::setRightContent(content);
     setFixedHeight(DUI::CONTENT_HEADER_HEIGHT);
 }
 

@@ -18,29 +18,30 @@ DBaseLine::DBaseLine(QWidget *parent) : QLabel(parent)
     m_mainLayout = new QHBoxLayout();
     m_mainLayout->setContentsMargins(m_leftMargin, 0, m_rightMargin, 0);
     m_mainLayout->addLayout(m_leftLayout);
+    m_mainLayout->addStretch();
     m_mainLayout->addLayout(m_rightLayout);
 
     this->setLayout(m_mainLayout);
 }
 
-void DBaseLine::setLeftContent(QWidget *content, Qt::Alignment alignment)
+void DBaseLine::setLeftContent(QWidget *content)
 {
     QLayoutItem *child;
     while ((child = m_leftLayout->takeAt(0)) != 0) {
         m_leftLayout->removeItem(child);
     }
 
-    m_leftLayout->addWidget(content, 0, alignment);
+    m_leftLayout->addWidget(content);
 }
 
-void DBaseLine::setRightContent(QWidget *content, Qt::Alignment alignment)
+void DBaseLine::setRightContent(QWidget *content)
 {
     QLayoutItem *child;
     while ((child = m_rightLayout->takeAt(0)) != 0) {
         m_rightLayout->removeItem(child);
     }
 
-    m_rightLayout->addWidget(content, 0, alignment);
+    m_rightLayout->addWidget(content);
 }
 
 QBoxLayout *DBaseLine::leftLayout()
