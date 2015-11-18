@@ -66,7 +66,7 @@ DSearchEdit::~DSearchEdit()
 
 const QString DSearchEdit::text() const
 {
-    return std::move(m_edt->text());
+    return m_edt->text();
 }
 
 void DSearchEdit::mousePressEvent(QMouseEvent *)

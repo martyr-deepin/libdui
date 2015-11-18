@@ -103,8 +103,6 @@ void DBaseExpand::setContent(QWidget *content)
     m_contentLayout->addWidget(content);
     m_contentLayout->addStretch(1);
     m_content = content;
-
-    updateContentHeight();
 }
 
 void DBaseExpand::setHeaderHeight(int height)
@@ -134,10 +132,6 @@ void DBaseExpand::setExpand(bool value)
 
     m_animation->stop();
     m_animation->start();
-}
-
-void DBaseExpand::updateContentHeight()
-{
 }
 
 bool DBaseExpand::expand() const

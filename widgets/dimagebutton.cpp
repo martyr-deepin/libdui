@@ -57,6 +57,8 @@ DImageButton::~DImageButton()
 
 void DImageButton::enterEvent(QEvent *event)
 {
+    setCursor(Qt::PointingHandCursor);
+
     if (!m_isChecked){
         m_state = Hover;
         changeState();

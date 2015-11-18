@@ -35,6 +35,7 @@
         <file>dark/DCheckBox.theme</file>
         <file>dark/DBoxWidget.theme</file>
         <file>dark/DStackWidget.theme</file>
+        <file>dark/DFileChooserEdit.theme</file>
     </qresource>
     <qresource prefix="/images">
         <file>dark/images/add_hover.png</file>

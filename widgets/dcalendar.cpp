@@ -134,7 +134,7 @@ void DCalendar::setCurrentDate(const QDate &date)
 
 void DCalendar::selectDate(const QDate &date)
 {
-    qDebug() << m_showDate << date;
+//    qDebug() << m_showDate << date;
     const QDate oldDate = m_showDate;
     m_showDate = date;
 
@@ -213,7 +213,7 @@ void DCalendar::showEvent(QShowEvent *)
 
 void DCalendar::viewDateChanged(const QDate &date, const CaLunarDayInfo &lunarInfo)
 {
-    qDebug() << date << lunarInfo;
+//    qDebug() << date << lunarInfo;
     if (sender() != m_viewCurrent)
         return;
 

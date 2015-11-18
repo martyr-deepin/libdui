@@ -29,11 +29,6 @@ public:
 
     ~DImageButton();
 
-    void enterEvent(QEvent * event) ;
-    void leaveEvent(QEvent * event) ;
-    void mousePressEvent(QMouseEvent * event) ;
-    void mouseReleaseEvent(QMouseEvent * event) ;
-
     void setChecked(bool flag);
     void setCheckable(bool flag);
     bool isChecked();
@@ -56,6 +51,12 @@ public:
 signals:
     void clicked();
     void stateChanged();
+
+protected:
+    void enterEvent(QEvent * event);
+    void leaveEvent(QEvent * event);
+    void mousePressEvent(QMouseEvent * event);
+    void mouseReleaseEvent(QMouseEvent * event);
 
 private:
     void changeState();

@@ -34,7 +34,6 @@ public:
     inline QWidget *getContent() const {return m_content;}
     void setHeaderHeight(int height);
     virtual void setExpand(bool value);
-    void updateContentHeight() DUI_DECL_DEPRECATED;
     bool expand() const;
     void setAnimationDuration(int duration);
     void setAnimationEasingCurve(QEasingCurve curve);

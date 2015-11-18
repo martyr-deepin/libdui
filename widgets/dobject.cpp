@@ -3,8 +3,8 @@
 
 DUI_BEGIN_NAMESPACE
 
-DObjectPrivate::DObjectPrivate(DObject *qq):
-    q_ptr(qq)
+DObjectPrivate::DObjectPrivate(DObject *qq)
+    : q_ptr(qq)
 {
 
 }

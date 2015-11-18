@@ -218,7 +218,7 @@ QString DShortcutEdit::convertShortcutKeys(const QString &keys)
     for (const QString & k : m_keyMapping.keys())
         newKeys.replace(k, m_keyMapping[k]);
 
-    return std::move(newKeys);
+    return newKeys;
 }
 
 DShortcutEditLabel::DShortcutEditLabel(QWidget *parent)

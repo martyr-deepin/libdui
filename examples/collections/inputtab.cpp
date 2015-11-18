@@ -1,5 +1,6 @@
 #include "inputtab.h"
 #include "dshortcutedit.h"
+#include "dfilechooseredit.h"
 
 #include <QPixmap>
 #include <QDebug>
@@ -30,9 +31,12 @@ InputTab::InputTab(QWidget *parent) : QLabel(parent)
     DUI::DLineEdit *lineEdit = new DUI::DLineEdit(this);
     lineEdit->setText("LineEdit");
     lineEdit->move(20, 180);
-    lineEdit->setAlert(true);
+//    lineEdit->setAlert(true);
 //    lineEdit->setFixedSize(200, 30);
     connect(lineEdit, &DUI::DLineEdit::focusChanged, [](bool focus) {qDebug() << "focus: " << focus;});
+
+    DUI::DFileChooserEdit *fileChooser = new DUI::DFileChooserEdit(this);
+    fileChooser->move(150, 180);
 
     DUI::DLineEdit *lineEditAlert = new DUI::DLineEdit(this);
     lineEditAlert->setText("AlertLineEdit");

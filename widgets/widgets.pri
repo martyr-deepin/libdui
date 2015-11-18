@@ -47,17 +47,12 @@ HEADERS += $$PWD/dslider.h\
     $$PWD/anchors.h \
     $$PWD/dbasebutton.h \
     $$PWD/dlistwidget.h \
-    $$PWD/private/dscrollarea_p.h \
-    $$PWD/private/dlistwidget_p.h \
     $$PWD/dobject.h \
-    $$PWD/private/dobject_p.h \
     $$PWD/dboxwidget.h \
-    $$PWD/private/dboxwidget_p.h \
     $$PWD/dcircleprogress.h \
-    $$PWD/private/dcircleprogress_p.h \
     $$PWD/dstackwidget.h \
-    $$PWD/private/dstackwidget_p.h \
-    $$PWD/dcheckbox.h
+    $$PWD/dcheckbox.h \
+    $$PWD/dfilechooseredit.h
 
 SOURCES += $$PWD/dslider.cpp \
     $$PWD/dthememanager.cpp \
@@ -109,7 +104,8 @@ SOURCES += $$PWD/dslider.cpp \
     $$PWD/dboxwidget.cpp \
     $$PWD/dcircleprogress.cpp \
     $$PWD/dstackwidget.cpp \
-    $$PWD/dcheckbox.cpp
+    $$PWD/dcheckbox.cpp \
+    $$PWD/dfilechooseredit.cpp
 
 RESOURCES += \
     $$PWD/../themes/dui_theme_dark.qrc \
