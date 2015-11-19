@@ -30,7 +30,7 @@ public:
     ~DBaseExpand();
 
     void setHeader(QWidget *header);
-    void setContent(QWidget *content);
+    void setContent(QWidget *content, Qt::Alignment alignment = Qt::AlignHCenter);
     inline QWidget *getContent() const {return m_content;}
     void setHeaderHeight(int height);
     virtual void setExpand(bool value);

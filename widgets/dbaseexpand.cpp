@@ -90,7 +90,7 @@ void DBaseExpand::setHeader(QWidget *header)
     m_header = header;
 }
 
-void DBaseExpand::setContent(QWidget *content)
+void DBaseExpand::setContent(QWidget *content, Qt::Alignment alignment)
 {
     if (!content)
         return;
@@ -100,7 +100,7 @@ void DBaseExpand::setContent(QWidget *content)
         m_contentLayout->removeItem(child);
     }
 
-    m_contentLayout->addWidget(content);
+    m_contentLayout->addWidget(content, 0, alignment);
     m_contentLayout->addStretch(1);
     m_content = content;
 }
