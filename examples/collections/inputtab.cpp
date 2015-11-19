@@ -37,6 +37,7 @@ InputTab::InputTab(QWidget *parent) : QLabel(parent)
 
     DUI::DFileChooserEdit *fileChooser = new DUI::DFileChooserEdit(this);
     fileChooser->move(150, 180);
+    fileChooser->setDialogDisplayPosition(DUI::DFileChooserEdit::CurrentMonitorCenter);
 
     DUI::DLineEdit *lineEditAlert = new DUI::DLineEdit(this);
     lineEditAlert->setText("AlertLineEdit");

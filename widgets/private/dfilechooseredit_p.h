@@ -20,6 +20,8 @@ public:
 
 public:
     void _q_showFileChooserDialog();
+
+    DFileChooserEdit::DialogDisplayPosition dialogDisplayPosition = DFileChooserEdit::FoloowParentWindow;
 };
 
 DUI_END_NAMESPACE

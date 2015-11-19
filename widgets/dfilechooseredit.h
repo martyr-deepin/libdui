@@ -9,16 +9,32 @@ class DFileChooserEditPrivate;
 class LIBDUISHARED_EXPORT DFileChooserEdit : public DLineEdit
 {
     Q_OBJECT
-    Q_DISABLE_COPY(DFileChooserEdit)
-    D_DECLARE_PRIVATE(DFileChooserEdit)
+
+    Q_PROPERTY(DialogDisplayPosition dialogDisplayPosition READ dialogDisplayPosition WRITE setDialogDisplayPosition)
 
 public:
+    enum DialogDisplayPosition{
+        FoloowParentWindow,
+        CurrentMonitorCenter
+    };
+
+    Q_ENUM(DialogDisplayPosition)
+
     DFileChooserEdit(QWidget *parent = nullptr);
+
+    DialogDisplayPosition dialogDisplayPosition() const;
+
+public Q_SLOTS:
+    void setDialogDisplayPosition(DialogDisplayPosition dialogDisplayPosition);
 
 Q_SIGNALS:
     void fileChoosed(const QString &fileName);
+    void dialogOpened();
+    void dialogClosed(int code);
 
 protected:
+    Q_DISABLE_COPY(DFileChooserEdit)
+    D_DECLARE_PRIVATE(DFileChooserEdit)
     Q_PRIVATE_SLOT(d_func(), void _q_showFileChooserDialog())
 };
 
