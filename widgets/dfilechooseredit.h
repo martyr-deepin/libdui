@@ -10,6 +10,7 @@ class LIBDUISHARED_EXPORT DFileChooserEdit : public DLineEdit
 {
     Q_OBJECT
 
+    Q_ENUMS(DialogDisplayPosition)
     Q_PROPERTY(DialogDisplayPosition dialogDisplayPosition READ dialogDisplayPosition WRITE setDialogDisplayPosition)
 
 public:
@@ -18,7 +19,6 @@ public:
         CurrentMonitorCenter
     };
 
-    Q_ENUM(DialogDisplayPosition)
 
     DFileChooserEdit(QWidget *parent = nullptr);
 
