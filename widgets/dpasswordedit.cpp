@@ -1,82 +1,60 @@
 #include "dpasswordedit.h"
 #include "dthememanager.h"
+#include "private/dpasswordedit_p.h"
 
-#include <QHBoxLayout>
-#include <QStyle>
 #include <QDebug>
-#include <QEvent>
 
 DUI_BEGIN_NAMESPACE
 
 DPasswordEdit::DPasswordEdit(QWidget *parent)
-    : QFrame(parent),
-      m_btn(this)
+    : DLineEdit(*new DPasswordEditPrivate(this), parent)
 {
-    D_THEME_INIT_WIDGET(DPasswordEdit, isEchoMode, isAlertMode);
+    D_THEME_INIT_WIDGET(DPasswordEdit);
+    D_D(DPasswordEdit);
 
-    initInsideFrame();
-
-    // default echo mode is password
-    m_edit.setEchoMode(QLineEdit::Password);
-    m_edit.installEventFilter(this);
-
-    QHBoxLayout *layout = new QHBoxLayout(m_insideFrame);
-    layout->addWidget(&m_edit);
-    layout->addWidget(&m_btn);
-    layout->setContentsMargins(0, 0, 0, 0);
-    layout->setSpacing(0);
-
-    setEchoMode(m_echo);
-
-    connect(&m_btn, &DImageButton::clicked, [this]() -> void {setEchoMode(!m_echo);});
-    connect(&m_edit, &QLineEdit::textChanged, this, &DPasswordEdit::textChanged);
+    d->init();
 }
 
-void DPasswordEdit::setEchoMode(const bool isEcho)
+bool DPasswordEdit::isEchoMode() const
 {
-    if (m_echo == isEcho) {
-        return;
-    }
-
-    m_echo = isEcho;
-    m_edit.setEchoMode(isEcho ? QLineEdit::Normal : QLineEdit::Password);
-    emit echoModeChanged();
+    return echoMode() == Normal;
 }
 
-void DPasswordEdit::setAlertMode(const bool isAlert)
+void DPasswordEdit::setEchoMode(QLineEdit::EchoMode mode)
 {
-    if (m_alert == isAlert) {
-        return;
-    }
+    QLineEdit::setEchoMode(mode);
 
-    m_alert = isAlert;
-    emit alertModeChanged();
+    setStyleSheet(styleSheet());
 }
 
-bool DPasswordEdit::eventFilter(QObject *o, QEvent *e)
+DPasswordEditPrivate::DPasswordEditPrivate(DPasswordEdit *q)
+    : DLineEditPrivate(q)
 {
-    if (o == &m_edit) {
-        if (e->type() == QEvent::FocusIn) {
-            emit focusChanged(true);
-        } else if (e->type() == QEvent::FocusOut) {
-            emit focusChanged(false);
-        }
-    }
 
-    return false;
 }
 
-//Bypassing the problem here
-//qss can't draw box-shadow
-void DPasswordEdit::initInsideFrame()
+void DPasswordEditPrivate::init()
 {
-    m_insideFrame = new QFrame(this);
-    m_insideFrame->raise();
-    m_insideFrame->setObjectName("DEditInsideFrame");
-    QHBoxLayout *insideLayout = new QHBoxLayout(this);
-    insideLayout->setContentsMargins(0, 0, 0, 1);
-    insideLayout->setSpacing(0);
-    insideLayout->addWidget(m_insideFrame);
+    D_Q(DPasswordEdit);
+
+    q->setEchoMode(q->Password);
+    q->setTextMargins(0, 0, 16, 0);
+    q->setIconVisible(true);
+
+    q->connect(q, SIGNAL(iconClicked()), q, SLOT(_q_toggleEchoMode()));
+}
+
+void DPasswordEditPrivate::_q_toggleEchoMode()
+{
+    D_Q(DPasswordEdit);
+
+    if (q->isEchoMode())
+        q->setEchoMode(q->Password);
+    else
+        q->setEchoMode(q->Normal);
 }
 
 DUI_END_NAMESPACE
+
+#include "moc_dpasswordedit.cpp"
+

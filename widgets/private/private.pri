@@ -9,7 +9,8 @@ HEADERS += \
     $$PWD/dscrollarea_p.h \
     $$PWD/dobject_p.h \
     $$PWD/dlistwidget_p.h \
-    $$PWD/dboxwidget_p.h
+    $$PWD/dboxwidget_p.h \
+    $$PWD/dpasswordedit_p.h
 
 SOURCES += $$PWD/dthemehelper.cpp \
     $$PWD/DCalendarWidget/dcalendardbus.cpp \

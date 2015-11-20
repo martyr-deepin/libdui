@@ -16,8 +16,8 @@ InputTab::InputTab(QWidget *parent) : QLabel(parent)
 
     DUI::DPasswordEdit *pwdEdit2 = new DUI::DPasswordEdit(this);
     pwdEdit2->setText("password");
-    pwdEdit2->setEchoMode(true);
-    pwdEdit2->setAlertMode(true);
+    pwdEdit2->setEchoMode(DUI::DPasswordEdit::Normal);
+    pwdEdit2->setAlert(true);
     pwdEdit2->move(20, 50);
     connect(pwdEdit2, &DUI::DPasswordEdit::focusChanged, [](bool focus) {qDebug() << "focus: " << focus;});
     connect(pwdEdit2, &DUI::DPasswordEdit::textChanged, [](const QString &text) {qDebug() << "text: " << text;});

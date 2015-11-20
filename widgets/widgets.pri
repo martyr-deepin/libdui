@@ -16,7 +16,6 @@ HEADERS += $$PWD/dslider.h\
     $$PWD/dimagebutton.h \
     $$PWD/dtextbutton.h \
     $$PWD/dloadingindicator.h \
-    $$PWD/dpasswordedit.h \
     $$PWD/dsearchedit.h \
     $$PWD/dswitchbutton.h \
     $$PWD/dsegmentedcontrol.h \
@@ -52,7 +51,8 @@ HEADERS += $$PWD/dslider.h\
     $$PWD/dcircleprogress.h \
     $$PWD/dstackwidget.h \
     $$PWD/dcheckbox.h \
-    $$PWD/dfilechooseredit.h
+    $$PWD/dfilechooseredit.h \
+    $$PWD/dpasswordedit.h
 
 SOURCES += $$PWD/dslider.cpp \
     $$PWD/dthememanager.cpp \
@@ -69,7 +69,6 @@ SOURCES += $$PWD/dslider.cpp \
     $$PWD/dimagebutton.cpp \
     $$PWD/dtextbutton.cpp \
     $$PWD/dloadingindicator.cpp \
-    $$PWD/dpasswordedit.cpp \
     $$PWD/dsearchedit.cpp \
     $$PWD/dswitchbutton.cpp\
     $$PWD/dsegmentedcontrol.cpp \
@@ -105,7 +104,8 @@ SOURCES += $$PWD/dslider.cpp \
     $$PWD/dcircleprogress.cpp \
     $$PWD/dstackwidget.cpp \
     $$PWD/dcheckbox.cpp \
-    $$PWD/dfilechooseredit.cpp
+    $$PWD/dfilechooseredit.cpp \
+    $$PWD/dpasswordedit.cpp
 
 RESOURCES += \
     $$PWD/../themes/dui_theme_dark.qrc \
