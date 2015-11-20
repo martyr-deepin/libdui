@@ -69,14 +69,18 @@ void DFileChooserEditPrivate::_q_showFileChooserDialog()
     }
 
     q->dialogOpened();
-    q->dialogClosed(dialog.exec());
 
-    if(!dialog.selectedFiles().isEmpty()) {
+    int code = dialog.exec();
+
+
+    if(code == QDialog::Accepted && !dialog.selectedFiles().isEmpty()) {
         const QString fileName = dialog.selectedFiles().first();
 
         q->setText(fileName);
         emit q->fileChoosed(fileName);
     }
+
+    q->dialogClosed(code);
 }
 
 DUI_END_NAMESPACE
