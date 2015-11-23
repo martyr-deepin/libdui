@@ -1,3 +1,4 @@
-DUI--DBaseLine {
+/*DUI--DBaseLine {
     background-color: #fafafa
-}
+}*/
+/*use default background color(transparent)*/
