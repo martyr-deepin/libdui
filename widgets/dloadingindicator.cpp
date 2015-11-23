@@ -109,6 +109,13 @@ void DUI::DLoadingIndicator::resizeEvent(QResizeEvent *e)
     QGraphicsView::resizeEvent(e);
 
     setSceneRect(QRectF(rect()));
+
+    for(QGraphicsItem *item : items()) {
+        QSizeF itemSize = item->boundingRect().size();
+
+        item->setPos((width()-itemSize.width())/2,
+                                 (height()-itemSize.height())/2);
+    }
 }
 
 void DLoadingIndicator::setLoading(bool flag)
