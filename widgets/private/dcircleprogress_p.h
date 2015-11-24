@@ -1,5 +1,5 @@
-#ifndef DCIRCLEPROGRESSPRIVATE_H
-#define DCIRCLEPROGRESSPRIVATE_H
+#ifndef DCIRCLEPROGRESS_P_H
+#define DCIRCLEPROGRESS_P_H
 
 #include "dcircleprogress.h"
 #include "dobject.h"
@@ -35,4 +35,4 @@ private:
 
 DUI_END_NAMESPACE
 
-#endif // DCIRCLEPROGRESSPRIVATE_H
+#endif // DCIRCLEPROGRESS_P_H

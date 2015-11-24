@@ -1,5 +1,5 @@
-#ifndef DBOXWIDGET_P
-#define DBOXWIDGET_P
+#ifndef DBOXWIDGET_P_H
+#define DBOXWIDGET_P_H
 
 #include "dobject_p.h"
 #include "dboxwidget.h"
@@ -21,5 +21,5 @@ class DBoxWidgetPrivate : public DObjectPrivate
 
 DUI_END_NAMESPACE
 
-#endif // DBOXWIDGET_P
+#endif // DBOXWIDGET_P_H
 

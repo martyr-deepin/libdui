@@ -10,8 +10,11 @@ HEADERS += \
     $$PWD/dobject_p.h \
     $$PWD/dlistwidget_p.h \
     $$PWD/dboxwidget_p.h \
-    $$PWD/dpasswordedit_p.h
+    $$PWD/dpasswordedit_p.h \
+    $$PWD/dabstractdialogprivate_p.h \
+    $$PWD/ddialog_p.h
 
-SOURCES += $$PWD/dthemehelper.cpp \
+SOURCES += \
+    $$PWD/dthemehelper.cpp \
     $$PWD/DCalendarWidget/dcalendardbus.cpp \
     $$PWD/DCalendarWidget/calendarview.cpp

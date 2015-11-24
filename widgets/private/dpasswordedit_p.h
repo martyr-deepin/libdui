@@ -1,5 +1,5 @@
-#ifndef DPASSWORDEDITPRIVATE
-#define DPASSWORDEDITPRIVATE
+#ifndef DPASSWORDEDIT_P_H
+#define DPASSWORDEDIT_P_H
 
 #include "dlineedit_p.h"
 #include "dpasswordedit.h"
@@ -21,5 +21,5 @@ protected:
 
 DUI_END_NAMESPACE
 
-#endif // DPASSWORDEDITPRIVATE
+#endif // DPASSWORDEDIT_P_H
 

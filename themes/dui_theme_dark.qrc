@@ -36,6 +36,7 @@
         <file>dark/DBoxWidget.theme</file>
         <file>dark/DStackWidget.theme</file>
         <file>dark/DFileChooserEdit.theme</file>
+        <file>dark/dialogs/DDialog.theme</file>
     </qresource>
     <qresource prefix="/images">
         <file>dark/images/add_hover.png</file>
@@ -162,5 +163,16 @@
         <file>dark/images/dock_preview_close_hover.png</file>
         <file>dark/images/dock_preview_close_normal.png</file>
         <file>dark/images/dock_preview_close_press.png</file>
+        <file>dark/dialogs/images/check_focus.png</file>
+        <file>dark/dialogs/images/dark_check_checked_hover.png</file>
+        <file>dark/dialogs/images/dark_check_checked.png</file>
+        <file>dark/dialogs/images/dark_check.png</file>
+        <file>dark/dialogs/images/dark_close_small_hover.png</file>
+        <file>dark/dialogs/images/dark_close_small_normal.png</file>
+        <file>dark/dialogs/images/dark_close_small_press.png</file>
+        <file>dark/dialogs/images/dark_minimise_small_hover.png</file>
+        <file>dark/dialogs/images/dark_minimise_small_normal.png</file>
+        <file>dark/dialogs/images/dark_minimise_small_press.png</file>
+        <file>dark/dialogs/images/user-trash-full.png</file>
     </qresource>
 </RCC>

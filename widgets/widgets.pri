@@ -1,4 +1,5 @@
 include(private/private.pri)
+include(dialogs.pri)
 
 HEADERS += $$PWD/dslider.h\
     $$PWD/dthememanager.h \

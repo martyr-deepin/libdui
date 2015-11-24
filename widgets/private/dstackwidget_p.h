@@ -1,5 +1,5 @@
-#ifndef DSTACKWIDGET_P
-#define DSTACKWIDGET_P
+#ifndef DSTACKWIDGET_P_H
+#define DSTACKWIDGET_P_H
 
 #include "libdui_global.h"
 #include "dobject_p.h"
