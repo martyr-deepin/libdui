@@ -40,6 +40,8 @@ void DListWidgetPrivate::init()
     q->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     q->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     q->setAlignment(Qt::AlignHCenter);
+    q->setFrameStyle(QFrame::NoFrame);
+    q->setFrameShape(QFrame::NoFrame);
     q->setWidget(mainWidget);
 
     QObject::connect(mainWidget, &DBoxWidget::sizeChanged, q, &DListWidget::updateSize);
