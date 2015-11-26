@@ -116,7 +116,8 @@ void DStackWidgetPrivate::init()
 
     currentIndex = -1;
     currentWidget = nullptr;
-    transition = new DSlideStackWidgetTransition(q);
+    transition = nullptr;
+    q->setTransition(new DSlideStackWidgetTransition(q));
 }
 
 void DStackWidgetPrivate::setCurrentIndex(int index)
