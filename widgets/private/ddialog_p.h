@@ -4,30 +4,37 @@
 #include "ddialog.h"
 #include "dabstractdialogprivate_p.h"
 
+class QHBoxLayout;
+
 DUI_BEGIN_NAMESPACE
 
+class DVBoxWidget;
+class DHBoxWidget;
 class DDialogPrivate : public DAbstractDialogPrivate
 {
     DDialogPrivate(DDialog *qq);
 
-    QString icon;
+    QIcon icon;
+    QString title;
     QString message;
-    QString tipMessage;
-    QStringList buttonKeys;
-    QStringList buttonTexts;
-    int defaultWidth = 380;
-    int defaultHeight = 120;
+    Qt::TextFormat textFormat;
 
     QLabel* iconLabel;
     QLabel* messageLabel;
-    QLabel* tipMessageLabel;
-    QButtonGroup* buttonGroup;
+    QLabel* titleLabel;
 
-    QVBoxLayout* messageLayout;
-    int messageLabelMaxWidth;
     QPushButton* closeButton;
+    DVBoxWidget *boxWidget;
+    QHBoxLayout *iconLayout;
+    QHBoxLayout *buttonLayout;
+
+    QList<QAbstractButton*> buttonList;
+    QList<QWidget*> contentList;
+
+    int clickedButtonIndex;
 
     void init();
+    void _q_onButtonClicked();
 
     Q_DECLARE_PUBLIC(DDialog)
 };

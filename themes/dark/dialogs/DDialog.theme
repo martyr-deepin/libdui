@@ -108,19 +108,19 @@ QCheckBox::indicator:checked:hover {
     image: url(:/images/dark/dialogs/images/dark_check_checked_hover.png);
 }
 
-QLabel#MessageLabel{
+QLabel#TitleLabel{
     padding-top: 2px;
     padding-bottom: 2px;
     color: white;
 }
 
-QLabel#TipMessageLabel{
+QLabel#MessageLabel{
     padding-top: 2px;
     padding-bottom: 2px;
     color: #ffa530;
 }
 
-QLabel#TaskTipMessageLabel{
+QLabel#TaskTitleLabel{
   padding-top: 2px;
   padding-bottom: 2px;
   font-size: 10px;

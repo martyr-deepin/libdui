@@ -2,7 +2,7 @@
 #include <QApplication>
 #include <QDesktopWidget>
 #include <QPushButton>
-#include <QResizeEvent>
+#include <QScreen>
 #include <QPainter>
 #include <QWidget>
 #include <QDebug>
@@ -26,6 +26,25 @@ void DAbstractDialogPrivate::init()
     q->setAttribute(Qt::WA_TranslucentBackground);
 }
 
+QRect DAbstractDialogPrivate::getParentGeometry() const
+{
+    D_QC(DAbstractDialog);
+
+    if (q->parentWidget()) {
+        return q->parentWidget()->geometry();
+    } else {
+        QPoint pos = QCursor::pos();
+
+        for (QScreen *screen : qApp->screens()) {
+            if (screen->geometry().contains(pos)) {
+                return screen->geometry();
+            }
+        }
+    }
+
+    return qApp->desktop()->geometry();
+}
+
 DAbstractDialog::DAbstractDialog(QWidget *parent) :
     QDialog(parent),
     DObject(*new DAbstractDialogPrivate(this))
@@ -33,44 +52,27 @@ DAbstractDialog::DAbstractDialog(QWidget *parent) :
     d_func()->init();
 }
 
-void DAbstractDialog::setMovableHeight(int height)
+void DAbstractDialog::moveToCenter()
 {
-    D_D(DAbstractDialog);
+    D_DC(DAbstractDialog);
 
-    d->movableHeight = height;
+    moveToCenterByRect(d->getParentGeometry());
 }
 
-void DAbstractDialog::moveCenter(){
-    QRect qr = frameGeometry();
-    QPoint cp;
-    if (parent()){
-        cp = static_cast<QWidget*>(parent())->geometry().center();
-    }else{
-        cp = qApp->desktop()->availableGeometry().center();
-    }
-    qr.moveCenter(cp);
-    move(qr.topLeft());
-}
-
-void DAbstractDialog::moveTopRight()
+void DAbstractDialog::moveToTopRight()
 {
-    QRect pRect;
-    if (parent()){
-        pRect = static_cast<QWidget*>(parent())->geometry();
-    }else{
-        pRect = qApp->desktop()->availableGeometry();
-    }
-    int x = pRect.width() - width();
-    move(QPoint(x, 0));
+    D_DC(DAbstractDialog);
+
+    moveToTopRightByRect(d->getParentGeometry());
 }
 
-void DAbstractDialog::moveTopRightByRect(QRect rect)
+void DAbstractDialog::moveToTopRightByRect(const QRect &rect)
 {
     int x = rect.x() + rect.width() - width();
     move(QPoint(x, 0));
 }
 
-void DAbstractDialog::moveCenterByRect(QRect rect)
+void DAbstractDialog::moveToCenterByRect(const QRect &rect)
 {
     QRect qr = frameGeometry();
     qr.moveCenter(rect.center());
@@ -79,18 +81,13 @@ void DAbstractDialog::moveCenterByRect(QRect rect)
 
 void DAbstractDialog::mousePressEvent(QMouseEvent *event)
 {
-    if(event->button() & Qt::LeftButton)
-    {
+    if (event->button() == Qt::LeftButton) {
         D_D(DAbstractDialog);
 
         d->dragPosition = event->globalPos() - frameGeometry().topLeft();
     }
-    QDialog::mousePressEvent(event);
-}
 
-void DAbstractDialog::mouseReleaseEvent(QMouseEvent *event)
-{
-    QDialog::mouseReleaseEvent(event);
+    QDialog::mousePressEvent(event);
 }
 
 void DAbstractDialog::mouseMoveEvent(QMouseEvent *event)
@@ -98,22 +95,20 @@ void DAbstractDialog::mouseMoveEvent(QMouseEvent *event)
     D_DC(DAbstractDialog);
 
     move(event->globalPos() - d->dragPosition);
-    QDialog::mouseMoveEvent(event);
-}
 
-void DAbstractDialog::resizeEvent(QResizeEvent *event)
-{
-    QDialog::resizeEvent(event);
+    QDialog::mouseMoveEvent(event);
 }
 
 void DAbstractDialog::paintEvent(QPaintEvent *event)
 {
     QPainter painter(this);
+
     painter.setPen(QPen(QColor(255, 255, 255, 51), 2));
     painter.setBrush(QColor(0, 0 , 0, 204));
     painter.setRenderHint(QPainter::Antialiasing, true);
     QRect r(1, 1, width() - 2, height() - 2);
     painter.drawRoundedRect(r, 2, 2, Qt::RelativeSize);
+
     QDialog::paintEvent(event);
 }
 

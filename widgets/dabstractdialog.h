@@ -22,18 +22,15 @@ public:
     DAbstractDialog(QWidget *parent = 0);
 
 public slots:
-    void setMovableHeight(int height);
-    void moveCenter();
-    void moveTopRight();
-    void moveCenterByRect(QRect rect);
-    void moveTopRightByRect(QRect rect);
+    void moveToCenter();
+    void moveToTopRight();
+    void moveToCenterByRect(const QRect &rect);
+    void moveToTopRightByRect(const QRect &rect);
 
 protected:
-    void mouseMoveEvent(QMouseEvent *event);
-    void mousePressEvent(QMouseEvent *event);
-    void mouseReleaseEvent(QMouseEvent *event);
-    void resizeEvent(QResizeEvent* event);
-    void paintEvent(QPaintEvent* event);
+    void mouseMoveEvent(QMouseEvent *event) Q_DECL_OVERRIDE;
+    void mousePressEvent(QMouseEvent *event) Q_DECL_OVERRIDE;
+    void paintEvent(QPaintEvent* event) Q_DECL_OVERRIDE;
 
 protected:
     DAbstractDialog(DAbstractDialogPrivate &dd, QWidget *parent = 0);

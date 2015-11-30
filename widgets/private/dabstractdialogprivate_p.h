@@ -14,10 +14,10 @@ public:
     DAbstractDialogPrivate(DAbstractDialog *qq);
 
 private:
-    QPoint dragPosition;
-    int movableHeight = 30;
-
     void init();
+    QRect getParentGeometry() const;
+
+    QPoint dragPosition;
 
     Q_DECLARE_PUBLIC(DAbstractDialog)
 };
