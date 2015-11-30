@@ -87,6 +87,7 @@ void DDialogPrivate::_q_onButtonClicked()
     if(button) {
         clickedButtonIndex = buttonList.indexOf(button);
         q->buttonClicked(clickedButtonIndex, button->text());
+        q->done(clickedButtonIndex);
     }
 }
 
@@ -453,6 +454,7 @@ int DDialog::exec()
 void DDialog::closeEvent(QCloseEvent *event)
 {
     emit aboutToClose();
+    done(-1);
     DAbstractDialog::closeEvent(event);
     emit closed();
 }
