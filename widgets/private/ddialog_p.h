@@ -14,6 +14,7 @@ class DDialogPrivate : public DAbstractDialogPrivate
 {
     DDialogPrivate(DDialog *qq);
 
+    bool onButtonClickedDone = true;
     QIcon icon;
     QString title;
     QString message;

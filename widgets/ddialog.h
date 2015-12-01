@@ -23,6 +23,7 @@ class DDialog : public DAbstractDialog
     Q_PROPERTY(QIcon icon READ icon WRITE setIcon)
     Q_PROPERTY(QPixmap iconPixmap READ iconPixmap WRITE setIconPixmap)
     Q_PROPERTY(Qt::TextFormat textFormat READ textFormat WRITE setTextFormat NOTIFY textFormatChanged)
+    Q_PROPERTY(bool onButtonClickedDone READ onButtonClickedDone WRITE setOnButtonClickedDone)
 
 public:
     explicit DDialog(QWidget *parent = 0);
@@ -40,6 +41,7 @@ public:
     QIcon icon() const;
     QPixmap iconPixmap() const;
     Qt::TextFormat textFormat() const;
+    bool onButtonClickedDone() const;
 
 signals:
     void aboutToClose();
@@ -70,10 +72,12 @@ public slots:
     void setIcon(const QIcon &icon);
     void setIconPixmap(const QPixmap &iconPixmap);
     void setTextFormat(Qt::TextFormat textFormat);
+    void setOnButtonClickedDone(bool onButtonClickedDone);
     int exec() Q_DECL_OVERRIDE;
 
 protected:
     void closeEvent(QCloseEvent* event) Q_DECL_OVERRIDE;
+    void resizeEvent(QResizeEvent *event) Q_DECL_OVERRIDE;
 
 private:
     D_DECLARE_PRIVATE(DDialog)

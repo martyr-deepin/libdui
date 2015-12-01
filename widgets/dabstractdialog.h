@@ -18,14 +18,23 @@ class DAbstractDialog : public QDialog, public DObject
 {
     Q_OBJECT
 
+    Q_PROPERTY(QColor backgroundColor READ backgroundColor WRITE setBackgroundColor)
+    Q_PROPERTY(QColor borderColor READ borderColor WRITE setBorderColor)
+
 public:
     DAbstractDialog(QWidget *parent = 0);
+
+    QColor backgroundColor() const;
+    QColor borderColor() const;
 
 public slots:
     void moveToCenter();
     void moveToTopRight();
     void moveToCenterByRect(const QRect &rect);
     void moveToTopRightByRect(const QRect &rect);
+
+    void setBackgroundColor(QColor backgroundColor);
+    void setBorderColor(QColor borderColor);
 
 protected:
     void mouseMoveEvent(QMouseEvent *event) Q_DECL_OVERRIDE;

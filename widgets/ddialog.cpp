@@ -7,7 +7,7 @@
 
 #include "private/ddialog_p.h"
 
-#include "button_constants.h"
+#include "dialog_constants.h"
 #include "ddialog.h"
 #include "dthememanager.h"
 #include "dboxwidget.h"
@@ -29,28 +29,27 @@ void DDialogPrivate::init()
 
     buttonLayout->setMargin(0);
     buttonLayout->setSpacing(0);
-    buttonLayout->setContentsMargins(BUTTON::BUTTON_LAYOUT_LEFT_MARGIN,
-                                     BUTTON::BUTTON_LAYOUT_TOP_MARGIN,
-                                     BUTTON::BUTTON_LAYOUT_RIGHT_MARGIN,
-                                     BUTTON::BUTTON_LAYOUT_BOTTOM_MARGIN);
+    buttonLayout->setContentsMargins(DIALOG::BUTTON_LAYOUT_LEFT_MARGIN,
+                                     DIALOG::BUTTON_LAYOUT_TOP_MARGIN,
+                                     DIALOG::BUTTON_LAYOUT_RIGHT_MARGIN,
+                                     DIALOG::BUTTON_LAYOUT_BOTTOM_MARGIN);
 
     closeButton = new QPushButton(q);
 
     closeButton->setObjectName("CloseButton");
-    closeButton->setFixedSize(BUTTON::CLOSE_BUTTON_WIDTH, BUTTON::CLOSE_BUTTON_WIDTH);
+    closeButton->setFixedSize(DIALOG::CLOSE_BUTTON_WIDTH, DIALOG::CLOSE_BUTTON_WIDTH);
     closeButton->setAttribute(Qt::WA_NoMousePropagation);
-
-    QFrame* contentFrame = new QFrame(boxWidget);
-    contentFrame->setObjectName("ContentFrame");
 
     iconLabel = new QLabel;
     iconLabel->hide();
 
     messageLabel = new QLabel;
     messageLabel->setObjectName("MessageLabel");
+    messageLabel->hide();
 
     titleLabel = new QLabel;
     titleLabel->setObjectName("TitleLabel");
+    titleLabel->hide();
 
     QVBoxLayout *layout_message = new QVBoxLayout;
 
@@ -60,10 +59,10 @@ void DDialogPrivate::init()
 
     iconLayout = new QHBoxLayout;
 
-    iconLayout->setContentsMargins(BUTTON::ICON_LAYOUT_LEFT_MARGIN,
-                                   BUTTON::ICON_LAYOUT_TOP_MARGIN,
-                                   BUTTON::ICON_LAYOUT_RIGHT_MARGIN,
-                                   BUTTON::ICON_LAYOUT_BOTTOM_MARGIN);
+    iconLayout->setContentsMargins(DIALOG::ICON_LAYOUT_LEFT_MARGIN,
+                                   DIALOG::ICON_LAYOUT_TOP_MARGIN,
+                                   DIALOG::ICON_LAYOUT_RIGHT_MARGIN,
+                                   DIALOG::ICON_LAYOUT_BOTTOM_MARGIN);
     iconLayout->addWidget(iconLabel);
     iconLayout->addLayout(layout_message);
 
@@ -87,7 +86,9 @@ void DDialogPrivate::_q_onButtonClicked()
     if(button) {
         clickedButtonIndex = buttonList.indexOf(button);
         q->buttonClicked(clickedButtonIndex, button->text());
-        q->done(clickedButtonIndex);
+
+        if(onButtonClickedDone)
+            q->done(clickedButtonIndex);
     }
 }
 
@@ -203,6 +204,13 @@ Qt::TextFormat DDialog::textFormat() const
     return d->textFormat;
 }
 
+bool DDialog::onButtonClickedDone() const
+{
+    D_DC(DDialog);
+
+    return d->onButtonClickedDone;
+}
+
 int DDialog::addButton(const QString &text)
 {
     int index = buttonCount();
@@ -227,7 +235,7 @@ void DDialog::insertButton(int index, const QString &text)
 
     button->setObjectName("ActionButton");
     button->setAttribute(Qt::WA_NoMousePropagation);
-    button->setFixedHeight(BUTTON::BUTTON_HEIGHT);
+    button->setFixedHeight(DIALOG::BUTTON_HEIGHT);
 
     insertButton(index, button);
 }
@@ -330,7 +338,7 @@ void DDialog::insertContent(int index, QWidget *widget)
 {
     D_D(DDialog);
 
-    d->boxWidget->layout()->insertWidget(index + BUTTON::CONTENT_INSERT_OFFSET,
+    d->boxWidget->layout()->insertWidget(index + DIALOG::CONTENT_INSERT_OFFSET,
                                          widget, 0, Qt::AlignHCenter);
     d->contentList << widget;
 }
@@ -351,8 +359,8 @@ void DDialog::clearContents(bool isDelete)
 {
     D_D(DDialog);
 
-    while(d->boxWidget->layout()->count() >  + BUTTON::CONTENT_INSERT_OFFSET + 1) {
-        d->boxWidget->layout()->removeItem(d->boxWidget->layout()->itemAt(BUTTON::CONTENT_INSERT_OFFSET));
+    while(d->boxWidget->layout()->count() >  + DIALOG::CONTENT_INSERT_OFFSET + 1) {
+        d->boxWidget->layout()->removeItem(d->boxWidget->layout()->itemAt(DIALOG::CONTENT_INSERT_OFFSET));
     }
 
     if(isDelete) {
@@ -385,6 +393,7 @@ void DDialog::setTitle(const QString &title)
 
     d->title = title;
     d->titleLabel->setText(title);
+    d->titleLabel->setHidden(title.isEmpty());
 
     emit titleChanged(title);
 }
@@ -398,6 +407,7 @@ void DDialog::setMessage(const QString &message)
 
     d->message = message;
     d->messageLabel->setText(message);
+    d->messageLabel->setHidden(message.isEmpty());
 
     emit messageChanged(message);
 }
@@ -421,7 +431,7 @@ void DDialog::setIconPixmap(const QPixmap &iconPixmap)
         d->iconLabel->hide();
         d->iconLayout->setSpacing(0);
     } else {
-        d->iconLayout->setSpacing(BUTTON::ICON_LAYOUT_SPACING);
+        d->iconLayout->setSpacing(DIALOG::ICON_LAYOUT_SPACING);
         d->iconLabel->show();
     }
 }
@@ -438,6 +448,13 @@ void DDialog::setTextFormat(Qt::TextFormat textFormat)
     d->messageLabel->setTextFormat(textFormat);
 
     emit textFormatChanged(textFormat);
+}
+
+void DDialog::setOnButtonClickedDone(bool onButtonClickedDone)
+{
+    D_D(DDialog);
+
+    d->onButtonClickedDone = onButtonClickedDone;
 }
 
 int DDialog::exec()
@@ -457,6 +474,15 @@ void DDialog::closeEvent(QCloseEvent *event)
     done(-1);
     DAbstractDialog::closeEvent(event);
     emit closed();
+}
+
+void DDialog::resizeEvent(QResizeEvent *event)
+{
+    DAbstractDialog::resizeEvent(event);
+
+    D_D(DDialog);
+
+    d->boxWidget->setFixedWidth(qMax(event->size().width(), d->boxWidget->sizeHint().width()));
 }
 
 DUI_END_NAMESPACE

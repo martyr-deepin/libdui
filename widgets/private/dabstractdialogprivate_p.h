@@ -18,6 +18,8 @@ private:
     QRect getParentGeometry() const;
 
     QPoint dragPosition;
+    QColor backgroundColor;
+    QColor borderColor;
 
     Q_DECLARE_PUBLIC(DAbstractDialog)
 };

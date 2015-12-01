@@ -5,7 +5,9 @@
 
 DUI_BEGIN_NAMESPACE
 
-namespace BUTTON {
+namespace DIALOG {
+    const int DEFAULT_WIDTH = 200;
+    const int BORDER_SHADOW_WIDTH = 2;
     const int CONTENT_INSERT_OFFSET = 2;
     const int BUTTON_HEIGHT = 28;
     const int CLOSE_BUTTON_WIDTH = 25;
@@ -17,7 +19,7 @@ namespace BUTTON {
     const int BUTTON_LAYOUT_TOP_MARGIN = 10;
     const int BUTTON_LAYOUT_BOTTOM_MARGIN = 2;
     const int BUTTON_LAYOUT_LEFT_MARGIN = 2;
-    const int BUTTON_LAYOUT_RIGHT_MARGIN = 22;
+    const int BUTTON_LAYOUT_RIGHT_MARGIN = 2;
 }
 
 DUI_END_NAMESPACE

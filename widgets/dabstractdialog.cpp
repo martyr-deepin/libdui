@@ -7,6 +7,7 @@
 #include <QWidget>
 #include <QDebug>
 
+#include "dialog_constants.h"
 #include "dabstractdialog.h"
 #include "private/dabstractdialogprivate_p.h"
 
@@ -24,6 +25,7 @@ void DAbstractDialogPrivate::init()
 
     q->setWindowFlags(Qt::FramelessWindowHint | Qt::Dialog);
     q->setAttribute(Qt::WA_TranslucentBackground);
+    q->resize(DIALOG::DEFAULT_WIDTH, q->height());
 }
 
 QRect DAbstractDialogPrivate::getParentGeometry() const
@@ -52,6 +54,20 @@ DAbstractDialog::DAbstractDialog(QWidget *parent) :
     d_func()->init();
 }
 
+QColor DAbstractDialog::backgroundColor() const
+{
+    D_DC(DAbstractDialog);
+
+    return d->backgroundColor;
+}
+
+QColor DAbstractDialog::borderColor() const
+{
+    D_DC(DAbstractDialog);
+
+    return d->borderColor;
+}
+
 void DAbstractDialog::moveToCenter()
 {
     D_DC(DAbstractDialog);
@@ -70,6 +86,24 @@ void DAbstractDialog::moveToTopRightByRect(const QRect &rect)
 {
     int x = rect.x() + rect.width() - width();
     move(QPoint(x, 0));
+}
+
+void DAbstractDialog::setBackgroundColor(QColor backgroundColor)
+{
+    D_D(DAbstractDialog);
+
+    d->backgroundColor = backgroundColor;
+
+    update();
+}
+
+void DAbstractDialog::setBorderColor(QColor borderColor)
+{
+    D_D(DAbstractDialog);
+
+    d->borderColor = borderColor;
+
+    update();
 }
 
 void DAbstractDialog::moveToCenterByRect(const QRect &rect)
@@ -101,13 +135,16 @@ void DAbstractDialog::mouseMoveEvent(QMouseEvent *event)
 
 void DAbstractDialog::paintEvent(QPaintEvent *event)
 {
+    D_DC(DAbstractDialog);
+
     QPainter painter(this);
 
-    painter.setPen(QPen(QColor(255, 255, 255, 51), 2));
-    painter.setBrush(QColor(0, 0 , 0, 204));
+    painter.setPen(QPen(d->borderColor, DIALOG::BORDER_SHADOW_WIDTH));
+    painter.setBrush(d->backgroundColor);
     painter.setRenderHint(QPainter::Antialiasing, true);
-    QRect r(1, 1, width() - 2, height() - 2);
-    painter.drawRoundedRect(r, 2, 2, Qt::RelativeSize);
+    QRectF r(DIALOG::BORDER_SHADOW_WIDTH / 2.0, DIALOG::BORDER_SHADOW_WIDTH / 2.0,
+            width() - DIALOG::BORDER_SHADOW_WIDTH, height() - DIALOG::BORDER_SHADOW_WIDTH);
+    painter.drawRoundedRect(r, DIALOG::BORDER_SHADOW_WIDTH, DIALOG::BORDER_SHADOW_WIDTH);
 
     QDialog::paintEvent(event);
 }

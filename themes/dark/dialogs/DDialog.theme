@@ -1,3 +1,8 @@
+DUI--DDialog{
+    qproperty-backgroundColor: rgba(0, 0, 0, 0.8);
+    qproperty-borderColor: rgba(255, 255, 255, 0.2);
+}
+
 QFrame#ButtonFrame{
     border:1px solid rgba(255, 255, 255, 0.3);
     border-radius: 2px;
