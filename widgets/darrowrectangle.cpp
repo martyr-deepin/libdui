@@ -28,7 +28,7 @@ void DArrowRectangle::show(int x, int y)
         QWidget::show();
 
     resizeWithContent();
-    repaint();
+    update();
 }
 
 void DArrowRectangle::setContent(QWidget *content)
@@ -62,14 +62,14 @@ void DArrowRectangle::setContent(QWidget *content)
         break;
     }
 
-    repaint();
+    update();
 }
 
 void DArrowRectangle::resizeWithContent()
 {
     setFixedSize(getFixedSize());
 
-    repaint();
+    update();
 
     //Shadow Transparent For MouseEvents
     qreal delta = shadowBlurRadius() + shadowDistance();
