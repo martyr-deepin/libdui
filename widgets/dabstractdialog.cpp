@@ -25,7 +25,7 @@ void DAbstractDialogPrivate::init()
 
     q->setWindowFlags(Qt::FramelessWindowHint | Qt::Dialog);
     q->setAttribute(Qt::WA_TranslucentBackground);
-    q->resize(DIALOG::DEFAULT_WIDTH, q->height());
+    q->resize(DIALOG::DEFAULT_WIDTH, DIALOG::DEFAULT_HEIGHT);
 }
 
 QRect DAbstractDialogPrivate::getParentGeometry() const

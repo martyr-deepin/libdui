@@ -23,7 +23,7 @@ class DDialog : public DAbstractDialog
     Q_PROPERTY(QIcon icon READ icon WRITE setIcon)
     Q_PROPERTY(QPixmap iconPixmap READ iconPixmap WRITE setIconPixmap)
     Q_PROPERTY(Qt::TextFormat textFormat READ textFormat WRITE setTextFormat NOTIFY textFormatChanged)
-    Q_PROPERTY(bool onButtonClickedDone READ onButtonClickedDone WRITE setOnButtonClickedDone)
+    Q_PROPERTY(bool onButtonClickedClose READ onButtonClickedClose WRITE setOnButtonClickedClose)
 
 public:
     explicit DDialog(QWidget *parent = 0);
@@ -41,7 +41,10 @@ public:
     QIcon icon() const;
     QPixmap iconPixmap() const;
     Qt::TextFormat textFormat() const;
-    bool onButtonClickedDone() const;
+    bool onButtonClickedClose() const;
+    void setFixedWidth(int width);
+    void setFixedHeight(int height);
+    void setFixedSize(const QSize &size);
 
 signals:
     void aboutToClose();
@@ -72,17 +75,21 @@ public slots:
     void setIcon(const QIcon &icon);
     void setIconPixmap(const QPixmap &iconPixmap);
     void setTextFormat(Qt::TextFormat textFormat);
-    void setOnButtonClickedDone(bool onButtonClickedDone);
+    void setOnButtonClickedClose(bool onButtonClickedClose);
     int exec() Q_DECL_OVERRIDE;
 
 protected:
+    explicit DDialog(DDialogPrivate &dd, QWidget *parent = 0);
+
     void closeEvent(QCloseEvent* event) Q_DECL_OVERRIDE;
-    void resizeEvent(QResizeEvent *event) Q_DECL_OVERRIDE;
+    void showEvent(QShowEvent *event) Q_DECL_OVERRIDE;
 
 private:
     D_DECLARE_PRIVATE(DDialog)
 
     Q_PRIVATE_SLOT(d_func(), void _q_onButtonClicked())
+    Q_PRIVATE_SLOT(d_func(), void _q_updateSize())
+    Q_PRIVATE_SLOT(d_func(), void _q_updateLabelMaxWidth())
 };
 
 DUI_END_NAMESPACE

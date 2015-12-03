@@ -4,6 +4,9 @@
 #include <QDebug>
 #include <QCloseEvent>
 #include <QApplication>
+#include <QSpacerItem>
+#include <QDesktopWidget>
+#include <QScreen>
 
 #include "private/ddialog_p.h"
 
@@ -54,8 +57,10 @@ void DDialogPrivate::init()
     QVBoxLayout *layout_message = new QVBoxLayout;
 
     layout_message->setMargin(0);
+    layout_message->setSpacing(0);
     layout_message->addWidget(titleLabel);
     layout_message->addWidget(messageLabel);
+    layout_message->addStretch();
 
     iconLayout = new QHBoxLayout;
 
@@ -65,16 +70,34 @@ void DDialogPrivate::init()
                                    DIALOG::ICON_LAYOUT_BOTTOM_MARGIN);
     iconLayout->addWidget(iconLabel);
     iconLayout->addLayout(layout_message);
+    iconLayout->addStretch();
+
+    spacerWidget = new QWidget;
+    spacerWidget->setFixedHeight(0);
 
     boxWidget->layout()->addWidget(closeButton, 0, Qt::AlignRight);
     boxWidget->layout()->addLayout(iconLayout);
+    boxWidget->layout()->addWidget(spacerWidget);
     boxWidget->layout()->addLayout(buttonLayout);
 
     QObject::connect(closeButton, SIGNAL(clicked()), q, SLOT(close()));
-    QObject::connect(boxWidget, &DVBoxWidget::sizeChanged,
-                     q, static_cast<void (DDialog::*)(const QSize&)>(&DDialog::resize));
+    QObject::connect(boxWidget, SIGNAL(sizeChanged(QSize)), q, SLOT(_q_updateSize()));
 
     boxWidget->setParent(q);
+}
+
+const QScreen *DDialogPrivate::getScreen() const
+{
+    D_QC(DDialog);
+
+    const QScreen *screen = qApp->screens()[qApp->desktop()->screenNumber(q)];
+
+    if(screen)
+        return screen;
+
+    screen = qApp->screens()[qApp->desktop()->screenNumber(QCursor::pos())];
+
+    return screen;
 }
 
 void DDialogPrivate::_q_onButtonClicked()
@@ -87,8 +110,56 @@ void DDialogPrivate::_q_onButtonClicked()
         clickedButtonIndex = buttonList.indexOf(button);
         q->buttonClicked(clickedButtonIndex, button->text());
 
-        if(onButtonClickedDone)
+        if(onButtonClickedClose)
             q->done(clickedButtonIndex);
+    }
+}
+
+void DDialogPrivate::_q_updateSize()
+{
+    D_Q(DDialog);
+
+    int boxWidget_height = boxWidget->sizeHint().height()- spacerWidget->height();
+
+    if(boxWidget_height < DIALOG::DEFAULT_HEIGHT) {
+        if(boxWidget->sizeHint().height() < DIALOG::DEFAULT_HEIGHT) {
+            spacerWidget->setFixedHeight(DIALOG::DEFAULT_HEIGHT - boxWidget_height);
+            spacerWidget->show();
+        }
+    } else {
+        spacerWidget->setFixedHeight(0);
+        spacerWidget->hide();
+    }
+
+    q->resize(boxWidget->sizeHint());
+}
+
+void DDialogPrivate::_q_updateLabelMaxWidth()
+{
+    if(!targetScreen)
+        return;
+
+    D_Q(DDialog);
+
+    int labelMaxWidth = targetScreen->geometry().width() / 2;
+    QFontMetrics fm = titleLabel->fontMetrics();
+
+    if (fm.width(title) > labelMaxWidth){
+        int label_old_width = titleLabel->sizeHint().width();
+        QString text = fm.elidedText(title, Qt::ElideRight, labelMaxWidth);
+
+        titleLabel->setText(text);
+        boxWidget->setFixedWidth(boxWidget->width() - label_old_width + titleLabel->sizeHint().width());
+    }
+
+    fm = messageLabel->fontMetrics();
+
+    if (fm.width(message) > labelMaxWidth){
+        int label_old_width = messageLabel->sizeHint().width();
+        QString text = fm.elidedText(message, Qt::ElideRight, labelMaxWidth);
+
+        messageLabel->setText(text);
+        boxWidget->setFixedWidth(boxWidget->width() - label_old_width + messageLabel->sizeHint().width());
     }
 }
 
@@ -204,11 +275,32 @@ Qt::TextFormat DDialog::textFormat() const
     return d->textFormat;
 }
 
-bool DDialog::onButtonClickedDone() const
+bool DDialog::onButtonClickedClose() const
 {
     D_DC(DDialog);
 
-    return d->onButtonClickedDone;
+    return d->onButtonClickedClose;
+}
+
+void DDialog::setFixedWidth(int width)
+{
+    D_D(DDialog);
+
+    d->boxWidget->setFixedWidth(width);
+}
+
+void DDialog::setFixedHeight(int height)
+{
+    D_D(DDialog);
+
+    d->boxWidget->setFixedHeight(height);
+}
+
+void DDialog::setFixedSize(const QSize &size)
+{
+    D_D(DDialog);
+
+    d->boxWidget->setFixedSize(size);
 }
 
 int DDialog::addButton(const QString &text)
@@ -394,6 +486,7 @@ void DDialog::setTitle(const QString &title)
     d->title = title;
     d->titleLabel->setText(title);
     d->titleLabel->setHidden(title.isEmpty());
+    d->_q_updateLabelMaxWidth();
 
     emit titleChanged(title);
 }
@@ -408,6 +501,7 @@ void DDialog::setMessage(const QString &message)
     d->message = message;
     d->messageLabel->setText(message);
     d->messageLabel->setHidden(message.isEmpty());
+    d->_q_updateLabelMaxWidth();
 
     emit messageChanged(message);
 }
@@ -450,11 +544,11 @@ void DDialog::setTextFormat(Qt::TextFormat textFormat)
     emit textFormatChanged(textFormat);
 }
 
-void DDialog::setOnButtonClickedDone(bool onButtonClickedDone)
+void DDialog::setOnButtonClickedClose(bool onButtonClickedClose)
 {
     D_D(DDialog);
 
-    d->onButtonClickedDone = onButtonClickedDone;
+    d->onButtonClickedClose = onButtonClickedClose;
 }
 
 int DDialog::exec()
@@ -468,6 +562,14 @@ int DDialog::exec()
     return d->clickedButtonIndex >= 0 ? d->clickedButtonIndex : code;
 }
 
+DDialog::DDialog(DDialogPrivate &dd, QWidget *parent) :
+    DAbstractDialog(dd, parent)
+{
+    D_THEME_INIT_WIDGET(dialogs/DDialog);
+
+    d_func()->init();
+}
+
 void DDialog::closeEvent(QCloseEvent *event)
 {
     emit aboutToClose();
@@ -476,13 +578,17 @@ void DDialog::closeEvent(QCloseEvent *event)
     emit closed();
 }
 
-void DDialog::resizeEvent(QResizeEvent *event)
+void DDialog::showEvent(QShowEvent *event)
 {
-    DAbstractDialog::resizeEvent(event);
-
     D_D(DDialog);
 
-    d->boxWidget->setFixedWidth(qMax(event->size().width(), d->boxWidget->sizeHint().width()));
+    disconnect(d->targetScreen, SIGNAL(geometryChanged(QRect)), this, SLOT(_q_updateLabelMaxWidth()));
+    d->targetScreen = d->getScreen();
+    connect(d->targetScreen, SIGNAL(geometryChanged(QRect)), this, SLOT(_q_updateLabelMaxWidth()));
+
+    d->_q_updateLabelMaxWidth();
+
+    DAbstractDialog::showEvent(event);
 }
 
 DUI_END_NAMESPACE

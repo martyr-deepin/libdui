@@ -79,11 +79,9 @@ void DBoxWidget::updateSize(const QSize &size)
     if(direction() == QBoxLayout::TopToBottom || QBoxLayout::BottomToTop) {
         setFixedHeight(size.height());
         setMinimumWidth(size.width());
-        setMaximumWidth(16777215);
     } else {
         setFixedWidth(size.width());
         setMinimumHeight(size.height());
-        setMaximumHeight(16777215);
     }
 }
 

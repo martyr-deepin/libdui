@@ -6,7 +6,8 @@
 DUI_BEGIN_NAMESPACE
 
 namespace DIALOG {
-    const int DEFAULT_WIDTH = 200;
+    const int DEFAULT_WIDTH = 380;
+    const int DEFAULT_HEIGHT = 120;
     const int BORDER_SHADOW_WIDTH = 2;
     const int CONTENT_INSERT_OFFSET = 2;
     const int BUTTON_HEIGHT = 28;

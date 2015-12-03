@@ -12,9 +12,11 @@ class DVBoxWidget;
 class DHBoxWidget;
 class DDialogPrivate : public DAbstractDialogPrivate
 {
+protected:
     DDialogPrivate(DDialog *qq);
 
-    bool onButtonClickedDone = true;
+private:
+    bool onButtonClickedClose = true;
     QIcon icon;
     QString title;
     QString message;
@@ -28,6 +30,8 @@ class DDialogPrivate : public DAbstractDialogPrivate
     DVBoxWidget *boxWidget;
     QHBoxLayout *iconLayout;
     QHBoxLayout *buttonLayout;
+    QWidget *spacerWidget;
+    const QScreen *targetScreen = nullptr;
 
     QList<QAbstractButton*> buttonList;
     QList<QWidget*> contentList;
@@ -35,7 +39,11 @@ class DDialogPrivate : public DAbstractDialogPrivate
     int clickedButtonIndex;
 
     void init();
+    const QScreen *getScreen() const;
+
     void _q_onButtonClicked();
+    void _q_updateSize();
+    void _q_updateLabelMaxWidth();
 
     Q_DECLARE_PUBLIC(DDialog)
 };
