@@ -14,10 +14,12 @@
 #include <QDebug>
 
 #include "libdui_global.h"
+#include "dobject.h"
 
 DUI_BEGIN_NAMESPACE
 
-class LIBDUISHARED_EXPORT DLoadingIndicator : public QGraphicsView
+class DLoadingIndicatorPrivate;
+class LIBDUISHARED_EXPORT DLoadingIndicator : public QGraphicsView, public DObject
 {
     Q_OBJECT
 
@@ -28,8 +30,17 @@ class LIBDUISHARED_EXPORT DLoadingIndicator : public QGraphicsView
     Q_PROPERTY(QWidget* widgetSource READ widgetSource WRITE setWidgetSource)
     Q_PROPERTY(int aniDuration READ aniDuration WRITE setAniDuration)
     Q_PROPERTY(QEasingCurve::Type aniEasingType READ aniEasingType WRITE setAniEasingType)
+    Q_PROPERTY(RotationDirection direction READ direction WRITE setDirection NOTIFY directionChanged)
+    Q_PROPERTY(qreal rotate READ rotate WRITE setRotate NOTIFY rotateChanged)
 
 public:
+    enum RotationDirection{
+        Clockwise,
+        Counterclockwise
+    };
+
+    Q_ENUMS(RotationDirection)
+
     DLoadingIndicator(QWidget * parent = 0);
     ~DLoadingIndicator();
 
@@ -41,8 +52,12 @@ public:
     QEasingCurve::Type aniEasingType() const;
     QSize sizeHint() const Q_DECL_OVERRIDE;
     bool smooth() const;
+    RotationDirection direction() const;
+    qreal rotate() const;
 
 public slots:
+    void start();
+    void stop();
     void setLoading(bool flag);
     void setAniDuration(int msecs);
     void setAniEasingCurve(const QEasingCurve & easing);
@@ -52,18 +67,17 @@ public slots:
     void setImageSource(const QPixmap &imageSource);
     void setAniEasingType(QEasingCurve::Type aniEasingType);
     void setSmooth(bool smooth);
+    void setDirection(RotationDirection direction);
+
+signals:
+    void directionChanged(RotationDirection direction);
+    void rotateChanged(qreal rotate);
 
 protected:
     void resizeEvent(QResizeEvent *e) Q_DECL_OVERRIDE;
 
 private:
-    void initAniProperty();
-    void setLoadingItem(QGraphicsItem *item);
-
-    QVariantAnimation m_rotateAni;
-    bool m_loading;
-    QWidget* m_widgetSource = NULL;
-    bool m_smooth = false;
+    D_DECLARE_PRIVATE(DLoadingIndicator)
 };
 
 DUI_END_NAMESPACE

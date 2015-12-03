@@ -12,7 +12,8 @@ HEADERS += \
     $$PWD/dboxwidget_p.h \
     $$PWD/dpasswordedit_p.h \
     $$PWD/dabstractdialogprivate_p.h \
-    $$PWD/ddialog_p.h
+    $$PWD/ddialog_p.h \
+    $$PWD/dloadingindicator_p.h
 
 SOURCES += \
     $$PWD/dthemehelper.cpp \

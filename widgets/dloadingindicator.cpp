@@ -2,51 +2,67 @@
 #include <QLabel>
 
 #include "dloadingindicator.h"
+#include "private/dloadingindicator_p.h"
 #include "dthememanager.h"
 
 DUI_BEGIN_NAMESPACE
 
+DLoadingIndicatorPrivate::DLoadingIndicatorPrivate(DLoadingIndicator *qq) :
+    DObjectPrivate(qq)
+{
+
+}
+
+void DLoadingIndicatorPrivate::init()
+{
+    D_Q(DLoadingIndicator);
+
+    q->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
+    q->setScene(new QGraphicsScene(q));
+
+    rotateAni.setDuration(1000);
+    rotateAni.setEasingCurve(QEasingCurve::OutInQuad);
+
+    rotateAni.setLoopCount(-1);
+    rotateAni.setStartValue(QVariant(qreal(0.0)));
+    rotateAni.setEndValue(QVariant(qreal(360.0)));
+
+    q->connect(&rotateAni, SIGNAL(valueChanged(QVariant)), q, SLOT(setRotate(QVariant)));
+}
+
+void DLoadingIndicatorPrivate::setLoadingItem(QGraphicsItem *item)
+{
+    D_QC(DLoadingIndicator);
+
+    QSizeF itemSize = item->boundingRect().size();
+
+    item->setPos((q->width()-itemSize.width())/2,
+                 (q->height()-itemSize.height())/2);
+    item->setTransformOriginPoint(itemSize.width()/2, itemSize.height()/2);
+
+    q->scene()->clear();
+    q->scene()->addItem(item);
+}
+
 DLoadingIndicator::DLoadingIndicator(QWidget *parent) :
-    QGraphicsView(parent)
+    QGraphicsView(parent),
+    DObject(*new DLoadingIndicatorPrivate(this))
 {
     D_THEME_INIT_WIDGET(DLoadingIndicator);
 
-    setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
-    setScene(new QGraphicsScene(this));
-
-    initAniProperty();
-    connect(&m_rotateAni, SIGNAL(valueChanged(QVariant)), this, SLOT(setRotate(QVariant)));
+    d_func()->init();
 }
 
 DLoadingIndicator::~DLoadingIndicator()
 {
-    m_widgetSource->deleteLater();
+    D_DC(DLoadingIndicator);
+
+    d->widgetSource->deleteLater();
 }
 
 QColor DLoadingIndicator::backgroundColor() const
 {
     return scene()->backgroundBrush().color();
-}
-
-void DLoadingIndicator::initAniProperty(){
-    m_rotateAni.setDuration(1000);
-    m_rotateAni.setEasingCurve(QEasingCurve::OutInQuad);
-
-    m_rotateAni.setLoopCount(-1);
-    m_rotateAni.setStartValue(QVariant(qreal(0.0)));
-    m_rotateAni.setEndValue(QVariant(qreal(360.0)));
-}
-
-void DLoadingIndicator::setLoadingItem(QGraphicsItem *item)
-{
-    QSizeF itemSize = item->boundingRect().size();
-
-    item->setPos((width()-itemSize.width())/2,
-                             (height()-itemSize.height())/2);
-    item->setTransformOriginPoint(itemSize.width()/2, itemSize.height()/2);
-
-    scene()->clear();
-    scene()->addItem(item);
 }
 
 void DLoadingIndicator::setRotate(QVariant angle)
@@ -57,22 +73,30 @@ void DLoadingIndicator::setRotate(QVariant angle)
 
 void DLoadingIndicator::setWidgetSource(QWidget *widgetSource)
 {
-    if(m_widgetSource)
-        m_widgetSource->deleteLater();
+    D_D(DLoadingIndicator);
 
-    m_widgetSource = widgetSource;
+    if(d->widgetSource)
+        d->widgetSource->deleteLater();
+
+    d->widgetSource = widgetSource;
 
     QGraphicsProxyWidget *proxy = new QGraphicsProxyWidget;
+
     proxy->setWidget(widgetSource);
-    setLoadingItem(proxy);
+
+    d->setLoadingItem(proxy);
 }
 
 void DLoadingIndicator::setImageSource(const QPixmap &imageSource)
 {
+    D_D(DLoadingIndicator);
+
     QGraphicsPixmapItem * item = new QGraphicsPixmapItem(imageSource);
-    if(m_smooth)
+
+    if(d->smooth)
         item->setTransformationMode(Qt::SmoothTransformation);
-    setLoadingItem(item);
+
+    d->setLoadingItem(item);
 }
 
 void DLoadingIndicator::setAniEasingType(QEasingCurve::Type aniEasingType)
@@ -82,10 +106,12 @@ void DLoadingIndicator::setAniEasingType(QEasingCurve::Type aniEasingType)
 
 void DLoadingIndicator::setSmooth(bool smooth)
 {
-    if(m_smooth == smooth)
+    D_D(DLoadingIndicator);
+
+    if(d->smooth == smooth)
         return;
 
-    m_smooth = smooth;
+    d->smooth = smooth;
 
     QGraphicsPixmapItem * item = nullptr;
 
@@ -102,6 +128,26 @@ void DLoadingIndicator::setSmooth(bool smooth)
         if(item)
             item->setTransformationMode(Qt::FastTransformation);
     }
+}
+
+void DLoadingIndicator::setDirection(DLoadingIndicator::RotationDirection direction)
+{
+    D_D(DLoadingIndicator);
+
+    if (d->direction == direction)
+        return;
+
+    d->direction = direction;
+
+    if(direction == Clockwise) {
+        d->rotateAni.setStartValue(QVariant(qreal(0.0)));
+        d->rotateAni.setEndValue(QVariant(qreal(360.0)));
+    } else {
+        d->rotateAni.setStartValue(QVariant(qreal(0.0)));
+        d->rotateAni.setEndValue(QVariant(qreal(-360.0)));
+    }
+
+    emit directionChanged(direction);
 }
 
 void DUI::DLoadingIndicator::resizeEvent(QResizeEvent *e)
@@ -121,20 +167,24 @@ void DUI::DLoadingIndicator::resizeEvent(QResizeEvent *e)
 void DLoadingIndicator::setLoading(bool flag)
 {
     if (flag == true){
-        m_rotateAni.start();
+        start();
     } else {
-        m_rotateAni.stop();
+        stop();
     }
 }
 
 void DLoadingIndicator::setAniDuration(int msecs)
 {
-    m_rotateAni.setDuration(msecs);
+    D_D(DLoadingIndicator);
+
+    d->rotateAni.setDuration(msecs);
 }
 
 void DLoadingIndicator::setAniEasingCurve(const QEasingCurve & easing)
 {
-    m_rotateAni.setEasingCurve(easing);
+    D_D(DLoadingIndicator);
+
+    d->rotateAni.setEasingCurve(easing);
 }
 
 void DLoadingIndicator::setBackgroundColor(const QColor &color)
@@ -144,12 +194,16 @@ void DLoadingIndicator::setBackgroundColor(const QColor &color)
 
 bool DLoadingIndicator::loading() const
 {
-    return m_rotateAni.state() == QVariantAnimation::Running;
+    D_DC(DLoadingIndicator);
+
+    return d->rotateAni.state() == QVariantAnimation::Running;
 }
 
 QWidget *DLoadingIndicator::widgetSource() const
 {
-    return m_widgetSource;
+    D_DC(DLoadingIndicator);
+
+    return d->widgetSource;
 }
 
 QPixmap DLoadingIndicator::imageSource() const
@@ -164,12 +218,16 @@ QPixmap DLoadingIndicator::imageSource() const
 
 int DLoadingIndicator::aniDuration() const
 {
-    return m_rotateAni.duration();
+    D_DC(DLoadingIndicator);
+
+    return d->rotateAni.duration();
 }
 
 QEasingCurve::Type DLoadingIndicator::aniEasingType() const
 {
-    return m_rotateAni.easingCurve().type();
+    D_DC(DLoadingIndicator);
+
+    return d->rotateAni.easingCurve().type();
 }
 
 QSize DLoadingIndicator::sizeHint() const
@@ -179,7 +237,39 @@ QSize DLoadingIndicator::sizeHint() const
 
 bool DLoadingIndicator::smooth() const
 {
-    return m_smooth;
+    D_DC(DLoadingIndicator);
+
+    return d->smooth;
 }
+
+DLoadingIndicator::RotationDirection DLoadingIndicator::direction() const
+{
+    D_DC(DLoadingIndicator);
+
+    return d->direction;
+}
+
+qreal DLoadingIndicator::rotate() const
+{
+    if(!scene()->items().isEmpty())
+        return scene()->items().first()->rotation();
+
+    return 0;
+}
+
+void DLoadingIndicator::start()
+{
+    D_D(DLoadingIndicator);
+
+    d->rotateAni.start();
+}
+
+void DLoadingIndicator::stop()
+{
+    D_D(DLoadingIndicator);
+
+    d->rotateAni.stop();
+}
+
 
 DUI_END_NAMESPACE
