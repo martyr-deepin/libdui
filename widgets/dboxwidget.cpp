@@ -32,6 +32,7 @@ void DBoxWidgetPrivate::init()
     layout->setSpacing(0);
 
     q->setLayout(layout);
+    q->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
 }
 
 DBoxWidget::DBoxWidget(QBoxLayout::Direction direction, QWidget *parent):
@@ -78,10 +79,14 @@ void DBoxWidget::updateSize(const QSize &size)
 {
     if(direction() == QBoxLayout::TopToBottom || QBoxLayout::BottomToTop) {
         setFixedHeight(size.height());
-        setMinimumWidth(size.width());
+
+        if(size.width() > minimumWidth())
+            setMinimumWidth(qMin(size.width(), maximumWidth()));
     } else {
         setFixedWidth(size.width());
-        setMinimumHeight(size.height());
+
+        if(size.height() > minimumHeight())
+            setMinimumHeight(qMin(size.height(), maximumHeight()));
     }
 }
 

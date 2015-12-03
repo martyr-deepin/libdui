@@ -131,7 +131,12 @@ void DDialogPrivate::_q_updateSize()
         spacerWidget->hide();
     }
 
-    q->resize(boxWidget->sizeHint());
+    if(boxWidget->sizeHint().width() < DIALOG::DEFAULT_WIDTH) {
+        boxWidget->resize(DIALOG::DEFAULT_WIDTH, boxWidget->height());
+    }
+
+    q->resize(boxWidget->size());
+
 }
 
 void DDialogPrivate::_q_updateLabelMaxWidth()
@@ -149,7 +154,13 @@ void DDialogPrivate::_q_updateLabelMaxWidth()
         QString text = fm.elidedText(title, Qt::ElideRight, labelMaxWidth);
 
         titleLabel->setText(text);
-        boxWidget->setFixedWidth(boxWidget->width() - label_old_width + titleLabel->sizeHint().width());
+        boxWidget->setFixedWidth(qMax(boxWidget->width()
+                                        - label_old_width
+                                        + titleLabel->sizeHint().width(),
+                                        DIALOG::DEFAULT_WIDTH));
+        boxWidget->setMinimumWidth(DIALOG::DEFAULT_WIDTH);
+
+        /// 在此处必须要使用setFixedWidth 然后setMinimumWidth，只使用setMaximumWidth时宽度不会改变（会大于最大宽）
     }
 
     fm = messageLabel->fontMetrics();
@@ -159,7 +170,11 @@ void DDialogPrivate::_q_updateLabelMaxWidth()
         QString text = fm.elidedText(message, Qt::ElideRight, labelMaxWidth);
 
         messageLabel->setText(text);
-        boxWidget->setFixedWidth(boxWidget->width() - label_old_width + messageLabel->sizeHint().width());
+        boxWidget->setFixedWidth(qMax(boxWidget->width()
+                                        - label_old_width
+                                        + messageLabel->sizeHint().width(),
+                                        DIALOG::DEFAULT_WIDTH));
+        boxWidget->setMinimumWidth(DIALOG::DEFAULT_WIDTH);
     }
 }
 
