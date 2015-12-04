@@ -53,7 +53,9 @@ HEADERS += $$PWD/dslider.h\
     $$PWD/dstackwidget.h \
     $$PWD/dcheckbox.h \
     $$PWD/dfilechooseredit.h \
-    $$PWD/dpasswordedit.h
+    $$PWD/dpasswordedit.h \
+    $$PWD/dipv4lineedit.h \
+    $$PWD/dspinbox.h
 
 SOURCES += $$PWD/dslider.cpp \
     $$PWD/dthememanager.cpp \
@@ -106,7 +108,9 @@ SOURCES += $$PWD/dslider.cpp \
     $$PWD/dstackwidget.cpp \
     $$PWD/dcheckbox.cpp \
     $$PWD/dfilechooseredit.cpp \
-    $$PWD/dpasswordedit.cpp
+    $$PWD/dpasswordedit.cpp \
+    $$PWD/dipv4lineedit.cpp \
+    $$PWD/dspinbox.cpp
 
 RESOURCES += \
     $$PWD/../themes/dui_theme_dark.qrc \

@@ -1,6 +1,8 @@
 #include "inputtab.h"
 #include "dshortcutedit.h"
 #include "dfilechooseredit.h"
+#include "dipv4lineedit.h"
+#include "dspinbox.h"
 
 #include <QPixmap>
 #include <QDebug>
@@ -47,4 +49,12 @@ InputTab::InputTab(QWidget *parent) : QLabel(parent)
 
     DUI::DShortcutEdit *shortcutEdit = new DUI::DShortcutEdit(this);
     shortcutEdit->move(20, 300);
+
+    DUI::DIpv4LineEdit *ipv4 = new DUI::DIpv4LineEdit(this);
+
+    ipv4->move(300, 20);
+
+    DUI::DSpinBox *spinbox = new DUI::DSpinBox(this);
+
+    spinbox->move(300, 50);
 }

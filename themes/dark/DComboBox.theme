@@ -2,13 +2,15 @@ DUI--DComboBox {
     border: 1px solid;
     border-color: black;
     border-radius: 3px;
-    padding: 1px 18px 1px 3px;
+    padding: 1px 1px 1px 3px;
     color: #b4b4b4;
     font-size: 12px;
 
     qproperty-insensitiveTickImg: url(:/images/dark/images/tick_insensitive.png);
     qproperty-hoverTickImg: url(:/images/dark/images/tick_hover.png);
     qproperty-normalTickImg: url(:/images/dark/images/tick_normal.png);
+
+    background-color: rgba(255, 255, 255, 26);/*use as outside border*/
 }
 
 DUI--DComboBox:!editable, DComboBox::drop-down:editable {
