@@ -11,6 +11,8 @@ class DSpinBox : public QSpinBox
 {
 public:
     explicit DSpinBox(QWidget *parent = 0);
+
+    QLineEdit *lineEdit() const;
 };
 
 DUI_END_NAMESPACE

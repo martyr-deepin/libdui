@@ -10,4 +10,9 @@ DSpinBox::DSpinBox(QWidget *parent) :
     D_THEME_INIT_WIDGET(DSpinBox);
 }
 
+QLineEdit *DSpinBox::lineEdit() const
+{
+    return QSpinBox::lineEdit();
+}
+
 DUI_END_NAMESPACE

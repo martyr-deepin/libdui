@@ -14,7 +14,7 @@ class LIBDUISHARED_EXPORT DLineEdit : public QLineEdit, public DObject
     Q_OBJECT
     Q_DISABLE_COPY(DLineEdit)
     D_DECLARE_PRIVATE(DLineEdit)
-    Q_PROPERTY(bool alert READ isAlert NOTIFY alertChanged)
+    Q_PROPERTY(bool alert READ isAlert WRITE setAlert NOTIFY alertChanged)
     Q_PROPERTY(QString normalIcon READ normalIcon WRITE setNormalIcon DESIGNABLE true)
     Q_PROPERTY(QString hoverIcon READ hoverIcon WRITE setHoverIcon DESIGNABLE true)
     Q_PROPERTY(QString pressIcon READ pressIcon WRITE setPressIcon DESIGNABLE true)
