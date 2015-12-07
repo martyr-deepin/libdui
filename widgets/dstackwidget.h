@@ -110,13 +110,15 @@ public slots:
     void setAnimationType(QEasingCurve::Type animationType);
 
 signals:
-    void busyChanged(int busy);
-    void depthChanged(bool depth);
+    void busyChanged(bool busy);
+    void depthChanged(int depth);
 
     void currentIndexChanged(int currentIndex);
     void currentWidgetChanged(QWidget* currentWidget);
 
     void widgetDepthChanged(QWidget *widget, int depth);
+
+    void switchWidgetFinished();
 
 protected:
     explicit DStackWidget(DStackWidgetPrivate &dd, QWidget *parent = 0);

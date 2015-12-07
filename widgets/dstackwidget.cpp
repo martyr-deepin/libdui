@@ -287,9 +287,8 @@ void DStackWidget::setCurrentIndex(int currentIndex, DAbstractStackWidgetTransit
         info.newWidget = getWidgetByIndex(depth() - 1);
         info.type = type;
 
-        d->transition->beginTransition(info);
-
         d->setCurrentIndex(currentIndex);
+        d->transition->beginTransition(info);
     } else {
         if(currentWidget()) {
             currentWidget()->hide();
@@ -301,6 +300,8 @@ void DStackWidget::setCurrentIndex(int currentIndex, DAbstractStackWidgetTransit
             currentWidget()->move(0, 0);
             currentWidget()->show();
         }
+
+        emit switchWidgetFinished();
     }
 }
 
@@ -327,6 +328,8 @@ void DStackWidget::setTransition(DAbstractStackWidgetTransition *transition)
             busyChanged(false);
             qDeleteAll(d->trashWidgetList);
             d->trashWidgetList.clear();
+
+            emit switchWidgetFinished();
         } else if(oldState == QVariantAnimation::Stopped) {
             busyChanged(true);
         }
