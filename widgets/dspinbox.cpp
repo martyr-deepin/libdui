@@ -15,4 +15,10 @@ QLineEdit *DSpinBox::lineEdit() const
     return QSpinBox::lineEdit();
 }
 
+DDoubleSpinBox::DDoubleSpinBox(QWidget *parent) :
+    QDoubleSpinBox(parent)
+{
+    D_THEME_INIT_WIDGET(DSpinBox);
+}
+
 DUI_END_NAMESPACE

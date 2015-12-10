@@ -15,6 +15,13 @@ public:
     QLineEdit *lineEdit() const;
 };
 
+class DDoubleSpinBox : public QDoubleSpinBox
+{
+    Q_OBJECT
+public:
+    explicit DDoubleSpinBox(QWidget *parent = 0);
+};
+
 DUI_END_NAMESPACE
 
 #endif // DSPINBOX_H

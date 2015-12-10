@@ -53,6 +53,7 @@ signals:
     void titleChanged(QString title);
     void messageChanged(QString massage);
     void textFormatChanged(Qt::TextFormat textFormat);
+    void sizeChanged(QSize size);
 
 public slots:
     int addButton(const QString &text);

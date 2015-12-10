@@ -1,0 +1,5 @@
+#ifndef DINPUTDIALOG_P_H
+#define DINPUTDIALOG_P_H
+
+#endif // DINPUTDIALOG_P_H
+

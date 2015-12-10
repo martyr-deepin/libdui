@@ -136,7 +136,7 @@ void DDialogPrivate::_q_updateSize()
     }
 
     q->resize(boxWidget->size());
-
+    q->sizeChanged(q->size());
 }
 
 void DDialogPrivate::_q_updateLabelMaxWidth()
