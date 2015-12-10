@@ -35,8 +35,6 @@ void DArrowRectangle::setContent(QWidget *content)
 {
     if (!content)
         return;
-    if (m_content)
-        m_content->setParent(NULL);
 
     m_content = content;
     m_content->setParent(this);
