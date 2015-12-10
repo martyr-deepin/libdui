@@ -202,8 +202,6 @@ void DSlider::mousePressEvent(QMouseEvent *event)
 
         event->accept();
     }
-
-    QSlider::mousePressEvent(event);
 }
 
 void DSlider::paintEvent(QPaintEvent *event)
