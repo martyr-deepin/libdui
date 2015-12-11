@@ -26,6 +26,7 @@ void DAbstractDialogPrivate::init()
     q->setWindowFlags(Qt::FramelessWindowHint | Qt::Dialog);
     q->setAttribute(Qt::WA_TranslucentBackground);
     q->resize(DIALOG::DEFAULT_WIDTH, DIALOG::DEFAULT_HEIGHT);
+    q->setMaximumWidth(getParentGeometry().width() / 1.5);
 }
 
 QRect DAbstractDialogPrivate::getParentGeometry() const
@@ -33,7 +34,7 @@ QRect DAbstractDialogPrivate::getParentGeometry() const
     D_QC(DAbstractDialog);
 
     if (q->parentWidget()) {
-        return q->parentWidget()->geometry();
+        return q->parentWidget()->window()->geometry();
     } else {
         QPoint pos = QCursor::pos();
 
@@ -44,7 +45,7 @@ QRect DAbstractDialogPrivate::getParentGeometry() const
         }
     }
 
-    return qApp->desktop()->geometry();
+    return qApp->primaryScreen()->geometry();
 }
 
 DAbstractDialog::DAbstractDialog(QWidget *parent) :
@@ -66,6 +67,13 @@ QColor DAbstractDialog::borderColor() const
     D_DC(DAbstractDialog);
 
     return d->borderColor;
+}
+
+DAbstractDialog::DisplayPostion DAbstractDialog::displayPostion() const
+{
+    D_DC(DAbstractDialog);
+
+    return d->displayPostion;
 }
 
 void DAbstractDialog::moveToCenter()
@@ -106,6 +114,24 @@ void DAbstractDialog::setBorderColor(QColor borderColor)
     update();
 }
 
+void DAbstractDialog::setDisplayPostion(DAbstractDialog::DisplayPostion displayPostion)
+{
+    D_D(DAbstractDialog);
+
+    d->displayPostion = displayPostion;
+
+    switch (displayPostion) {
+    case DisplayCenter:
+        moveToCenter();
+        break;
+    case DisplayTopRight:
+        moveToTopRight();
+        break;
+    default:
+        break;
+    }
+}
+
 void DAbstractDialog::moveToCenterByRect(const QRect &rect)
 {
     QRect qr = frameGeometry();
@@ -126,9 +152,11 @@ void DAbstractDialog::mousePressEvent(QMouseEvent *event)
 
 void DAbstractDialog::mouseMoveEvent(QMouseEvent *event)
 {
-    D_DC(DAbstractDialog);
+    D_D(DAbstractDialog);
 
     move(event->globalPos() - d->dragPosition);
+
+    d->mouseMoved = true;
 
     QDialog::mouseMoveEvent(event);
 }
@@ -147,6 +175,18 @@ void DAbstractDialog::paintEvent(QPaintEvent *event)
     painter.drawRoundedRect(r, DIALOG::BORDER_SHADOW_WIDTH, DIALOG::BORDER_SHADOW_WIDTH);
 
     QDialog::paintEvent(event);
+}
+
+void DAbstractDialog::resizeEvent(QResizeEvent *event)
+{
+    QDialog::resizeEvent(event);
+
+    D_DC(DAbstractDialog);
+
+    if(!d->mouseMoved)
+        setDisplayPostion(displayPostion());
+
+    emit sizeChanged(event->size());
 }
 
 DAbstractDialog::DAbstractDialog(DAbstractDialogPrivate &dd, QWidget *parent):

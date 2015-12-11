@@ -36,7 +36,8 @@ void DLineEdit::setAlert(bool isAlert)
         return;
 
     d->m_isAlert = isAlert;
-    emit alertChanged();
+
+    emit alertChanged(isAlert);
 }
 
 bool DLineEdit::isAlert() const

@@ -27,10 +27,9 @@ private:
     QLabel* titleLabel;
 
     QPushButton* closeButton;
-    DVBoxWidget *boxWidget;
     QHBoxLayout *iconLayout;
+    QVBoxLayout *contentLayout;
     QHBoxLayout *buttonLayout;
-    QWidget *spacerWidget;
     const QScreen *targetScreen = nullptr;
 
     QList<QAbstractButton*> buttonList;
@@ -42,7 +41,6 @@ private:
     const QScreen *getScreen() const;
 
     void _q_onButtonClicked();
-    void _q_updateSize();
     void _q_updateLabelMaxWidth();
 
     Q_DECLARE_PUBLIC(DDialog)

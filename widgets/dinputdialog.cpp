@@ -6,6 +6,7 @@
 #include "dspinbox.h"
 #include "dcombobox.h"
 #include "dlabel.h"
+#include "dpasswordedit.h"
 
 DUI_BEGIN_NAMESPACE
 
@@ -25,34 +26,21 @@ void DInputDialogPrivate::init()
     cancelButton = q->getButton(0);
     okButton = q->getButton(1);
 
-    label = new DLabel;
     lineEdit = new DLineEdit;
     spinBox = new DSpinBox;
     doubleSpinBox = new DDoubleSpinBox;
     comboBox = new DComboBox;
 
-    label->setObjectName("input_dialog_label");
+    q->addSpacing(10);
+    q->addContent(lineEdit);
+    q->addContent(spinBox);
+    q->addContent(doubleSpinBox);
+    q->addContent(comboBox);
 
-    QWidget *main_widget = new QWidget;
-    QHBoxLayout *h_layout = new QHBoxLayout;
-    QVBoxLayout *v_layout = new QVBoxLayout;
-
-    h_layout->setMargin(0);
-    h_layout->addWidget(label);
-    h_layout->addLayout(v_layout);
-
-    v_layout->setMargin(0);
-    v_layout->addWidget(lineEdit);
-    v_layout->addWidget(spinBox);
-    v_layout->addWidget(doubleSpinBox);
-    v_layout->addWidget(comboBox);
-
-    main_widget->setLayout(h_layout);
-
-    q->addContent(main_widget);
     q->setInputMode(DInputDialog::TextInput);
 
     q->connect(lineEdit, &DLineEdit::textChanged, q, &DInputDialog::textValueChanged);
+    q->connect(lineEdit, &DLineEdit::alertChanged, q, &DInputDialog::textAlertChanged);
     q->connect(comboBox, &DComboBox::currentTextChanged, q, &DInputDialog::textValueChanged);
     q->connect(comboBox->lineEdit(), &QLineEdit::textChanged, q, &DInputDialog::textValueChanged);
     q->connect(comboBox, SIGNAL(currentTextChanged(QString)), q, SIGNAL(textValueChanged(QString)));
@@ -82,9 +70,6 @@ void DInputDialogPrivate::init()
         default:
             break;
         }
-    });
-    q->connect(q, &DInputDialog::sizeChanged, q, [this] (const QSize &size) {
-        lineEdit->setMinimumWidth(size.width() / 2.5);
     });
 }
 
@@ -154,30 +139,31 @@ QString DInputDialog::textValue() const
     return inputMode() == ComboBox ? d->comboBox->currentText() : d->lineEdit->text();
 }
 
-QString DInputDialog::labelText() const
-{
-    D_DC(DInputDialog);
-
-    return d->label->text();
-}
-
-void DInputDialog::setLabelText(QString labelText)
-{
-    D_D(DInputDialog);
-
-    if (this->labelText() == labelText)
-        return;
-
-    d->label->setText(labelText);
-
-    emit labelTextChanged(labelText);
-}
-
 void DInputDialog::setTextEchoMode(QLineEdit::EchoMode mode)
 {
     D_D(DInputDialog);
 
-    d->lineEdit->setEchoMode(mode);
+    if(mode == d->lineEdit->echoMode())
+        return;
+
+    DLineEdit *edit;
+
+    if(mode == DLineEdit::Normal) {
+        edit = new DLineEdit;
+    } else {
+        edit = new DPasswordEdit;
+
+        edit->setEchoMode(mode);
+    }
+
+    disconnect(d->lineEdit, &DLineEdit::alertChanged, this, &DInputDialog::textAlertChanged);
+    connect(edit, &DLineEdit::alertChanged, this, &DInputDialog::textAlertChanged);
+
+    edit->setText(d->lineEdit->text());
+    removeContent(d->lineEdit);
+    addContent(edit);
+
+    d->lineEdit = edit;
 }
 
 QLineEdit::EchoMode DInputDialog::textEchoMode() const
@@ -390,14 +376,28 @@ QString DInputDialog::cancelButtonText() const
     return d->cancelButton->text();
 }
 
-QString DInputDialog::getText(QWidget *parent, const QString &title, const QString &label,
+void DInputDialog::setTextAlert(bool textAlert)
+{
+    D_D(DInputDialog);
+
+    d->lineEdit->setAlert(textAlert);
+}
+
+bool DInputDialog::isTextAlert() const
+{
+    D_DC(DInputDialog);
+
+    return d->lineEdit->isAlert();
+}
+
+QString DInputDialog::getText(QWidget *parent, const QString &title, const QString &message,
                               QLineEdit::EchoMode echo, const QString &text, bool *ok,
                               Qt::WindowFlags flags, Qt::InputMethodHints inputMethodHints)
 {
     DInputDialog dialog(parent);
 
     dialog.setTitle(title);
-    dialog.setLabelText(label);
+    dialog.setMessage(message);
     dialog.setTextEchoMode(echo);
     dialog.setTextValue(text);
     dialog.setWindowFlags(flags);
@@ -408,7 +408,7 @@ QString DInputDialog::getText(QWidget *parent, const QString &title, const QStri
     return dialog.textValue();
 }
 
-QString DInputDialog::getItem(QWidget *parent, const QString &title, const QString &label,
+QString DInputDialog::getItem(QWidget *parent, const QString &title, const QString &message,
                               const QStringList &items, int current, bool editable, bool *ok,
                               Qt::WindowFlags flags, Qt::InputMethodHints inputMethodHints)
 {
@@ -418,7 +418,7 @@ QString DInputDialog::getItem(QWidget *parent, const QString &title, const QStri
     dialog.setComboBoxEditable(editable);
     dialog.setComboBoxCurrentIndex(current);
     dialog.setTitle(title);
-    dialog.setLabelText(label);
+    dialog.setMessage(message);
     dialog.setWindowFlags(flags);
     dialog.setInputMethodHints(inputMethodHints);
 
@@ -427,7 +427,7 @@ QString DInputDialog::getItem(QWidget *parent, const QString &title, const QStri
     return dialog.textValue();
 }
 
-int DInputDialog::getInt(QWidget *parent, const QString &title, const QString &label,
+int DInputDialog::getInt(QWidget *parent, const QString &title, const QString &message,
                          int value, int minValue, int maxValue, int step, bool *ok,
                          Qt::WindowFlags flags)
 {
@@ -437,7 +437,7 @@ int DInputDialog::getInt(QWidget *parent, const QString &title, const QString &l
     dialog.setIntRange(minValue, maxValue);
     dialog.setIntStep(step);
     dialog.setTitle(title);
-    dialog.setLabelText(label);
+    dialog.setMessage(message);
     dialog.setWindowFlags(flags);
 
     *ok = dialog.exec() == QDialog::Accepted;
@@ -445,7 +445,7 @@ int DInputDialog::getInt(QWidget *parent, const QString &title, const QString &l
     return dialog.intValue();
 }
 
-double DInputDialog::getDouble(QWidget *parent, const QString &title, const QString &label,
+double DInputDialog::getDouble(QWidget *parent, const QString &title, const QString &message,
                                double value, double minValue, double maxValue, int decimals,
                                bool *ok, Qt::WindowFlags flags)
 {
@@ -455,7 +455,7 @@ double DInputDialog::getDouble(QWidget *parent, const QString &title, const QStr
     dialog.setDoubleRange(minValue, maxValue);
     dialog.setDoubleDecimals(decimals);
     dialog.setTitle(title);
-    dialog.setLabelText(label);
+    dialog.setMessage(message);
     dialog.setWindowFlags(flags);
 
     *ok = dialog.exec() == QDialog::Accepted;

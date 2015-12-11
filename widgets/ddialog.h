@@ -42,9 +42,6 @@ public:
     QPixmap iconPixmap() const;
     Qt::TextFormat textFormat() const;
     bool onButtonClickedClose() const;
-    void setFixedWidth(int width);
-    void setFixedHeight(int height);
-    void setFixedSize(const QSize &size);
 
 signals:
     void aboutToClose();
@@ -65,10 +62,14 @@ public slots:
     void removeButton(QAbstractButton *button);
     void removeButtonByText(const QString &text);
     void clearButtons();
-    int addContent(QWidget *widget);
-    void insertContent(int index, QWidget *widget);
+    void addContent(QWidget *widget, Qt::Alignment alignment = 0);
+    void insertContent(int index, QWidget *widget, Qt::Alignment alignment = 0);
     void removeContent(QWidget *widget, bool isDelete = true);
     void clearContents(bool isDelete = true);
+    void setSpacing(int spacing);
+    void addSpacing(int spacing);
+    void insertSpacing(int index, int spacing);
+    void clearSpacing();
     void setButtonText(int index, const QString &text);
     void setButtonIcon(int index, const QIcon &icon);
     void setTitle(const QString &title);
@@ -89,7 +90,6 @@ private:
     D_DECLARE_PRIVATE(DDialog)
 
     Q_PRIVATE_SLOT(d_func(), void _q_onButtonClicked())
-    Q_PRIVATE_SLOT(d_func(), void _q_updateSize())
     Q_PRIVATE_SLOT(d_func(), void _q_updateLabelMaxWidth())
 };
 

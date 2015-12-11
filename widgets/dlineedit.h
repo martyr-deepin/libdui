@@ -37,7 +37,7 @@ public:
 
 Q_SIGNALS:
     void iconClicked() const;
-    void alertChanged() const;
+    void alertChanged(bool alert) const;
     void focusChanged(bool onFocus) const;
     void sizeChanged(const QSize &size) const;
 

@@ -27,7 +27,6 @@ void DDialogPrivate::init()
 {
     D_Q(DDialog);
 
-    boxWidget = new DVBoxWidget;
     buttonLayout = new QHBoxLayout;
 
     buttonLayout->setMargin(0);
@@ -54,13 +53,12 @@ void DDialogPrivate::init()
     titleLabel->setObjectName("TitleLabel");
     titleLabel->hide();
 
-    QVBoxLayout *layout_message = new QVBoxLayout;
+    contentLayout = new QVBoxLayout;
 
-    layout_message->setMargin(0);
-    layout_message->setSpacing(0);
-    layout_message->addWidget(titleLabel);
-    layout_message->addWidget(messageLabel);
-    layout_message->addStretch();
+    contentLayout->setMargin(0);
+    contentLayout->setSpacing(0);
+    contentLayout->addWidget(titleLabel);
+    contentLayout->addWidget(messageLabel);
 
     iconLayout = new QHBoxLayout;
 
@@ -69,21 +67,19 @@ void DDialogPrivate::init()
                                    DIALOG::ICON_LAYOUT_RIGHT_MARGIN,
                                    DIALOG::ICON_LAYOUT_BOTTOM_MARGIN);
     iconLayout->addWidget(iconLabel);
-    iconLayout->addLayout(layout_message);
-    iconLayout->addStretch();
+    iconLayout->addLayout(contentLayout);
 
-    spacerWidget = new QWidget;
-    spacerWidget->setFixedHeight(0);
+    QVBoxLayout *main_layout = new QVBoxLayout;
 
-    boxWidget->layout()->addWidget(closeButton, 0, Qt::AlignRight);
-    boxWidget->layout()->addLayout(iconLayout);
-    boxWidget->layout()->addWidget(spacerWidget);
-    boxWidget->layout()->addLayout(buttonLayout);
+    main_layout->setMargin(0);
+    main_layout->addWidget(closeButton, 0, Qt::AlignRight);
+    main_layout->addLayout(iconLayout);
+    main_layout->addLayout(buttonLayout);
 
     QObject::connect(closeButton, SIGNAL(clicked()), q, SLOT(close()));
-    QObject::connect(boxWidget, SIGNAL(sizeChanged(QSize)), q, SLOT(_q_updateSize()));
+    QObject::connect(q, SIGNAL(sizeChanged(QSize)), q, SLOT(_q_updateLabelMaxWidth()));
 
-    boxWidget->setParent(q);
+    q->setLayout(main_layout);
 }
 
 const QScreen *DDialogPrivate::getScreen() const
@@ -115,66 +111,26 @@ void DDialogPrivate::_q_onButtonClicked()
     }
 }
 
-void DDialogPrivate::_q_updateSize()
-{
-    D_Q(DDialog);
-
-    int boxWidget_height = boxWidget->sizeHint().height()- spacerWidget->height();
-
-    if(boxWidget_height < DIALOG::DEFAULT_HEIGHT) {
-        if(boxWidget->sizeHint().height() < DIALOG::DEFAULT_HEIGHT) {
-            spacerWidget->setFixedHeight(DIALOG::DEFAULT_HEIGHT - boxWidget_height);
-            spacerWidget->show();
-        }
-    } else {
-        spacerWidget->setFixedHeight(0);
-        spacerWidget->hide();
-    }
-
-    if(boxWidget->sizeHint().width() < DIALOG::DEFAULT_WIDTH) {
-        boxWidget->resize(DIALOG::DEFAULT_WIDTH, boxWidget->height());
-    }
-
-    q->resize(boxWidget->size());
-    q->sizeChanged(q->size());
-}
-
 void DDialogPrivate::_q_updateLabelMaxWidth()
 {
-    if(!targetScreen)
-        return;
-
     D_Q(DDialog);
 
-    int labelMaxWidth = targetScreen->geometry().width() / 2;
+    int labelMaxWidth = q->maximumWidth() - titleLabel->x() - DIALOG::CLOSE_BUTTON_WIDTH;
+
     QFontMetrics fm = titleLabel->fontMetrics();
 
     if (fm.width(title) > labelMaxWidth){
-        int label_old_width = titleLabel->sizeHint().width();
         QString text = fm.elidedText(title, Qt::ElideRight, labelMaxWidth);
 
         titleLabel->setText(text);
-        boxWidget->setFixedWidth(qMax(boxWidget->width()
-                                        - label_old_width
-                                        + titleLabel->sizeHint().width(),
-                                        DIALOG::DEFAULT_WIDTH));
-        boxWidget->setMinimumWidth(DIALOG::DEFAULT_WIDTH);
-
-        /// 在此处必须要使用setFixedWidth 然后setMinimumWidth，只使用setMaximumWidth时宽度不会改变（会大于最大宽）
     }
 
     fm = messageLabel->fontMetrics();
 
     if (fm.width(message) > labelMaxWidth){
-        int label_old_width = messageLabel->sizeHint().width();
         QString text = fm.elidedText(message, Qt::ElideRight, labelMaxWidth);
 
         messageLabel->setText(text);
-        boxWidget->setFixedWidth(qMax(boxWidget->width()
-                                        - label_old_width
-                                        + messageLabel->sizeHint().width(),
-                                        DIALOG::DEFAULT_WIDTH));
-        boxWidget->setMinimumWidth(DIALOG::DEFAULT_WIDTH);
     }
 }
 
@@ -199,8 +155,6 @@ DDialog::DDialog(const QString &title, const QString &message, QWidget *parent) 
 
 int DDialog::getButtonIndexByText(const QString &text) const
 {
-    D_DC(DDialog);
-
     int i = -1;
 
     for(const QAbstractButton *button : getButtons()) {
@@ -295,27 +249,6 @@ bool DDialog::onButtonClickedClose() const
     D_DC(DDialog);
 
     return d->onButtonClickedClose;
-}
-
-void DDialog::setFixedWidth(int width)
-{
-    D_D(DDialog);
-
-    d->boxWidget->setFixedWidth(width);
-}
-
-void DDialog::setFixedHeight(int height)
-{
-    D_D(DDialog);
-
-    d->boxWidget->setFixedHeight(height);
-}
-
-void DDialog::setFixedSize(const QSize &size)
-{
-    D_D(DDialog);
-
-    d->boxWidget->setFixedSize(size);
 }
 
 int DDialog::addButton(const QString &text)
@@ -430,23 +363,21 @@ void DDialog::clearButtons()
     }
 }
 
-int DDialog::addContent(QWidget *widget)
+void DDialog::addContent(QWidget *widget, Qt::Alignment alignment)
 {
     D_DC(DDialog);
 
-    int index = d->contentList.count();
+    int index = d->contentLayout->count();
 
-    insertContent(index, widget);
-
-    return index;
+    insertContent(index, widget, alignment);
 }
 
-void DDialog::insertContent(int index, QWidget *widget)
+void DDialog::insertContent(int index, QWidget *widget, Qt::Alignment alignment)
 {
     D_D(DDialog);
 
-    d->boxWidget->layout()->insertWidget(index + DIALOG::CONTENT_INSERT_OFFSET,
-                                         widget, 0, Qt::AlignHCenter);
+    d->contentLayout->insertWidget(index + DIALOG::CONTENT_INSERT_OFFSET,
+                                         widget, 0, alignment);
     d->contentList << widget;
 }
 
@@ -454,7 +385,7 @@ void DDialog::removeContent(QWidget *widget, bool isDelete)
 {
     D_D(DDialog);
 
-    d->boxWidget->layout()->removeWidget(widget);
+    d->contentLayout->removeWidget(widget);
 
     if(isDelete)
         widget->deleteLater();
@@ -466,15 +397,48 @@ void DDialog::clearContents(bool isDelete)
 {
     D_D(DDialog);
 
-    while(d->boxWidget->layout()->count() >  + DIALOG::CONTENT_INSERT_OFFSET + 1) {
-        d->boxWidget->layout()->removeItem(d->boxWidget->layout()->itemAt(DIALOG::CONTENT_INSERT_OFFSET));
-    }
+    for(QWidget *widget : d->contentList)
+        d->contentLayout->removeWidget(widget);
 
     if(isDelete) {
         qDeleteAll(d->contentList);
     }
 
     d->contentList.clear();
+}
+
+void DDialog::setSpacing(int spacing)
+{
+    D_D(DDialog);
+
+    d->contentLayout->setSpacing(spacing);
+}
+
+void DDialog::addSpacing(int spacing)
+{
+    D_D(DDialog);
+
+    d->contentLayout->addSpacing(spacing);
+}
+
+void DDialog::insertSpacing(int index, int spacing)
+{
+    D_D(DDialog);
+
+    d->contentLayout->insertSpacing(index, spacing);
+}
+
+void DDialog::clearSpacing()
+{
+    D_D(DDialog);
+
+    for(int i = 0; i < d->contentLayout->count(); ++i) {
+        QLayoutItem *item = d->contentLayout->itemAt(i);
+
+        if(item->spacerItem()) {
+            d->contentLayout->removeItem(item);
+        }
+    }
 }
 
 void DDialog::setButtonText(int index, const QString &text)
@@ -527,8 +491,14 @@ void DDialog::setIcon(const QIcon &icon)
 
     d->icon = icon;
 
-    if(!icon.isNull())
-        setIconPixmap(icon.pixmap(icon.availableSizes().first()));
+    if(!icon.isNull()) {
+        const QList<QSize> &sizes = icon.availableSizes();
+
+        if(!sizes.isEmpty())
+            setIconPixmap(icon.pixmap(sizes.first()));
+        else
+            setIconPixmap(icon.pixmap(height() / 3));
+    }
 }
 
 void DDialog::setIconPixmap(const QPixmap &iconPixmap)
@@ -597,13 +567,9 @@ void DDialog::showEvent(QShowEvent *event)
 {
     D_D(DDialog);
 
-    disconnect(d->targetScreen, SIGNAL(geometryChanged(QRect)), this, SLOT(_q_updateLabelMaxWidth()));
-    d->targetScreen = d->getScreen();
-    connect(d->targetScreen, SIGNAL(geometryChanged(QRect)), this, SLOT(_q_updateLabelMaxWidth()));
+    DAbstractDialog::showEvent(event);
 
     d->_q_updateLabelMaxWidth();
-
-    DAbstractDialog::showEvent(event);
 }
 
 DUI_END_NAMESPACE

@@ -17,7 +17,6 @@ class DInputDialogPrivate : public DDialogPrivate
 
     QAbstractButton *cancelButton = nullptr;
     QAbstractButton *okButton = nullptr;
-    DLabel *label = nullptr;
     DLineEdit *lineEdit = nullptr;
     DSpinBox* spinBox = nullptr;
     DDoubleSpinBox *doubleSpinBox = nullptr;
