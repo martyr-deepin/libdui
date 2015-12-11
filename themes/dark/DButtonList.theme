@@ -1,6 +1,12 @@
 DUI--DButtonList {
     background-color: #1A1B1B;
     border: none;
+    outline: none;
+}
+
+DUI--DButtonList::item {
+    border: none;
+    outline: none;
 }
 
 DUI--DButtonList QPushButton:hover{
