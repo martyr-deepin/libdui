@@ -138,7 +138,6 @@ Q_SIGNALS:
 
 private:
     D_DECLARE_PRIVATE(DInputDialog)
-    bool m_textAlert;
 };
 
 DUI_END_NAMESPACE

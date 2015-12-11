@@ -60,6 +60,7 @@ protected:
     DSlider(DSliderPrivate &d);
     void paintEvent(QPaintEvent *event);
     void mousePressEvent(QMouseEvent *event);
+    void mouseReleaseEvent(QMouseEvent *event);
     void mouseMoveEvent(QMouseEvent *event);
 
 private slots:
