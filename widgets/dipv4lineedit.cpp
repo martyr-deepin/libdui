@@ -37,7 +37,6 @@ void DIpv4LineEditPrivate::init()
 
     editMainWidget->setLayout(hbox_layout);
 
-    q->setAttribute(Qt::WA_InputMethodEnabled, false);
     q->DLineEdit::setReadOnly(true);
 
     QObject::connect(q, &DIpv4LineEdit::sizeChanged,
@@ -63,6 +62,7 @@ QLineEdit *DIpv4LineEditPrivate::getEdit()
     edit->setObjectName("DIpv4LineEdit_Edit");
     edit->setValidator(new QRegularExpressionValidator(QRegularExpression("(2[0-4]\\d|25[0-5]|[01]?\\d\\d?)"), edit));
     edit->setAlignment(Qt::AlignHCenter);
+    edit->setAttribute(Qt::WA_InputMethodEnabled, false);
     edit->installEventFilter(q);
 
     editList << edit;
