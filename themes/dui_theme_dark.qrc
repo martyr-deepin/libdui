@@ -38,6 +38,7 @@
         <file>dark/DFileChooserEdit.theme</file>
         <file>dark/dialogs/DDialog.theme</file>
         <file>dark/DSpinBox.theme</file>
+        <file>dark/DIpv4LineEdit.theme</file>
     </qresource>
     <qresource prefix="/images">
         <file>dark/images/add_hover.png</file>

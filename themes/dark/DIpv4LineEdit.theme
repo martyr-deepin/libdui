@@ -1,0 +1,13 @@
+#DIpv4LineEdit_Edit{
+    border: none;
+    background: transparent;
+    color: #fff;
+}
+
+#DIpv4LineEdit_Label{
+    color: #fff;
+}
+
+DUI--DIpv4LineEdit{
+    color: transparent;
+}
