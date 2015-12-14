@@ -196,7 +196,7 @@ void CalendarView::getDbusData() const
     if (queue->isEmpty())
         return;
 
-    qApp->processEvents();
+    qApp->processEvents(QEventLoop::ExcludeUserInputEvents);
 
     const int pos = queue->head();
     queue->pop_front();
