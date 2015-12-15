@@ -7,6 +7,7 @@
 #include <QSpacerItem>
 #include <QDesktopWidget>
 #include <QScreen>
+#include <QAction>
 
 #include "private/ddialog_p.h"
 
@@ -66,8 +67,9 @@ void DDialogPrivate::init()
                                    DIALOG::ICON_LAYOUT_TOP_MARGIN,
                                    DIALOG::ICON_LAYOUT_RIGHT_MARGIN,
                                    DIALOG::ICON_LAYOUT_BOTTOM_MARGIN);
-    iconLayout->addWidget(iconLabel);
+    iconLayout->addWidget(iconLabel, 0, Qt::AlignLeft);
     iconLayout->addLayout(contentLayout);
+    iconLayout->addStretch();
 
     QVBoxLayout *main_layout = new QVBoxLayout;
 
@@ -76,10 +78,19 @@ void DDialogPrivate::init()
     main_layout->addLayout(iconLayout);
     main_layout->addLayout(buttonLayout);
 
+    QAction *button_action = new QAction(q);
+
+    button_action->setShortcuts(QKeySequence::InsertParagraphSeparator);
+    button_action->setAutoRepeat(false);
+
     QObject::connect(closeButton, SIGNAL(clicked()), q, SLOT(close()));
     QObject::connect(q, SIGNAL(sizeChanged(QSize)), q, SLOT(_q_updateLabelMaxWidth()));
+    QObject::connect(button_action, SIGNAL(triggered(bool)), q, SLOT(_q_defaultButtonTriggered()));
 
     q->setLayout(main_layout);
+    q->addAction(button_action);
+    q->setFocusPolicy(Qt::ClickFocus);
+    q->setFocus();
 }
 
 const QScreen *DDialogPrivate::getScreen() const
@@ -132,6 +143,12 @@ void DDialogPrivate::_q_updateLabelMaxWidth()
 
         messageLabel->setText(text);
     }
+}
+
+void DDialogPrivate::_q_defaultButtonTriggered()
+{
+    if(defaultButton)
+        defaultButton->click();
 }
 
 DDialog::DDialog(QWidget *parent) :
@@ -251,11 +268,11 @@ bool DDialog::onButtonClickedClose() const
     return d->onButtonClickedClose;
 }
 
-int DDialog::addButton(const QString &text)
+int DDialog::addButton(const QString &text, bool isDefault)
 {
     int index = buttonCount();
 
-    insertButton(index, text);
+    insertButton(index, text, isDefault);
 
     return index;
 }
@@ -269,7 +286,7 @@ int DDialog::addButtons(const QStringList &text)
     return index;
 }
 
-void DDialog::insertButton(int index, const QString &text)
+void DDialog::insertButton(int index, const QString &text, bool isDefault)
 {
     QPushButton *button = new QPushButton(text);
 
@@ -277,10 +294,10 @@ void DDialog::insertButton(int index, const QString &text)
     button->setAttribute(Qt::WA_NoMousePropagation);
     button->setFixedHeight(DIALOG::BUTTON_HEIGHT);
 
-    insertButton(index, button);
+    insertButton(index, button, isDefault);
 }
 
-void DDialog::insertButton(int index, QAbstractButton *button)
+void DDialog::insertButton(int index, QAbstractButton *button, bool isDefault)
 {
     D_D(DDialog);
 
@@ -300,6 +317,10 @@ void DDialog::insertButton(int index, QAbstractButton *button)
     d->buttonLayout->insertWidget(index * 2 + 1, label);
 
     connect(button, SIGNAL(clicked(bool)), this, SLOT(_q_onButtonClicked()));
+
+    if(isDefault) {
+        setDefaultButton(button);
+    }
 }
 
 void DDialog::insertButtons(int index, const QStringList &text)
@@ -361,6 +382,28 @@ void DDialog::clearButtons()
         item->widget()->deleteLater();
         delete item;
     }
+}
+
+bool DDialog::setDefaultButton(int index)
+{
+    if(index < 0)
+        return false;
+
+    setDefaultButton(getButton(index));
+
+    return true;
+}
+
+bool DDialog::setDefaultButton(const QString &str)
+{
+    return setDefaultButton(getButtonIndexByText(str));
+}
+
+void DDialog::setDefaultButton(QAbstractButton *button)
+{
+    D_D(DDialog);
+
+    d->defaultButton = button;
 }
 
 void DDialog::addContent(QWidget *widget, Qt::Alignment alignment)

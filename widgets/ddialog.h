@@ -53,15 +53,18 @@ signals:
     void sizeChanged(QSize size);
 
 public slots:
-    int addButton(const QString &text);
+    int addButton(const QString &text, bool isDefault = false);
     int addButtons(const QStringList &text);
-    void insertButton(int index, const QString &text);
-    void insertButton(int index, QAbstractButton* button);
+    void insertButton(int index, const QString &text, bool isDefault = false);
+    void insertButton(int index, QAbstractButton* button, bool isDefault = false);
     void insertButtons(int index, const QStringList &text);
     void removeButton(int index);
     void removeButton(QAbstractButton *button);
     void removeButtonByText(const QString &text);
     void clearButtons();
+    bool setDefaultButton(int index);
+    bool setDefaultButton(const QString &str);
+    void setDefaultButton(QAbstractButton *button);
     void addContent(QWidget *widget, Qt::Alignment alignment = 0);
     void insertContent(int index, QWidget *widget, Qt::Alignment alignment = 0);
     void removeContent(QWidget *widget, bool isDelete = true);
@@ -78,6 +81,7 @@ public slots:
     void setIconPixmap(const QPixmap &iconPixmap);
     void setTextFormat(Qt::TextFormat textFormat);
     void setOnButtonClickedClose(bool onButtonClickedClose);
+
     int exec() Q_DECL_OVERRIDE;
 
 protected:
@@ -91,6 +95,7 @@ private:
 
     Q_PRIVATE_SLOT(d_func(), void _q_onButtonClicked())
     Q_PRIVATE_SLOT(d_func(), void _q_updateLabelMaxWidth())
+    Q_PRIVATE_SLOT(d_func(), void _q_defaultButtonTriggered())
 };
 
 DUI_END_NAMESPACE

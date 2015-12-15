@@ -1,6 +1,8 @@
 #ifndef DDIALOG_P_H
 #define DDIALOG_P_H
 
+#include <QPointer>
+
 #include "ddialog.h"
 #include "dabstractdialogprivate_p.h"
 
@@ -35,6 +37,8 @@ private:
     QList<QAbstractButton*> buttonList;
     QList<QWidget*> contentList;
 
+    QPointer<QAbstractButton> defaultButton;
+
     int clickedButtonIndex;
 
     void init();
@@ -42,6 +46,7 @@ private:
 
     void _q_onButtonClicked();
     void _q_updateLabelMaxWidth();
+    void _q_defaultButtonTriggered();
 
     Q_DECLARE_PUBLIC(DDialog)
 };
