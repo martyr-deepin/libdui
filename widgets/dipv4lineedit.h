@@ -25,13 +25,14 @@ public:
     QString displayText() const;
     int cursorPosition() const;
     Qt::Alignment alignment() const;
-    QString selectedText() const;
     bool hasAcceptableInput() const;
     bool isReadOnly() const;
 
 public slots:
     void setCursorPosition(int cursorPosition);
     void setReadOnly(bool readOnly);
+    void setSelection(int start, int length);
+    void selectAll();
 
 protected:
     bool eventFilter(QObject *obj, QEvent *e) Q_DECL_OVERRIDE;

@@ -144,6 +144,7 @@ void DLineEditPrivate::init()
     m_centeralHLayout->setMargin(0);
 
     q->setLayout(m_centeralHLayout);
+    q->setContextMenuPolicy(Qt::NoContextMenu);
 
     q->connect(m_rightIcon, &DImageButton::clicked, q, &DLineEdit::iconClicked);
     q->connect(q, SIGNAL(sizeChanged(QSize)), q, SLOT(_q_resizeInsideFrame(QSize)));

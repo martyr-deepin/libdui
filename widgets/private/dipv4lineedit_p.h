@@ -20,7 +20,9 @@ class DIpv4LineEditPrivate : public DLineEditPrivate
 
     QList<QLineEdit*> editList;
     QWidget *editMainWidget;
-    QString text;
+
+    bool enableUpdateLineEditText = true;
+    bool enableSetIpLineEditText = true;
 
     D_DECLARE_PUBLIC(DIpv4LineEdit)
 };
