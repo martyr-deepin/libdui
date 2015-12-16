@@ -32,6 +32,9 @@ public:
     QString insensitiveTickImg() const;
     void setInsensitiveTickImg(const QString &insensitiveTickImg);
 
+public Q_SLOTS:
+    void setEditable(bool editable);
+
 private slots:
     void slotCurrentIndexChange(int index);
 

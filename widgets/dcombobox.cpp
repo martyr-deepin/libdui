@@ -1,13 +1,16 @@
+#include <QFrame>
+#include <QHBoxLayout>
+#include <QLineEdit>
+#include <QJsonDocument>
+
 #include "dcombobox.h"
 #include "dthememanager.h"
-#include "QHBoxLayout"
-#include <QFrame>
 
 DUI_USE_NAMESPACE
 
 DComboBox::DComboBox(QWidget *parent) : QComboBox(parent)
 {
-    D_THEME_INIT_WIDGET(DComboBox);
+    D_THEME_INIT_WIDGET(DComboBox, editable);
 
     initInsideFrame();
 
@@ -16,6 +19,7 @@ DComboBox::DComboBox(QWidget *parent) : QComboBox(parent)
 
     //default view not support ::item sub-control
     setView(new QListView());
+
     view()->setObjectName("DComboBoxItemView");
     view()->setAutoScroll(true);
 
@@ -44,11 +48,21 @@ void DComboBox::setFixedSize(QSize size)
 
 void DComboBox::slotCurrentIndexChange(int index)
 {
-    DComboBoxModel *m = static_cast<DComboBoxModel *>(model());
-    QWidget *w = view()->indexWidget(m->getModelIndex(index));
+    if(isEditable()) {
+        if(currentText().isEmpty()) {
+            DComboBoxModel *m = static_cast<DComboBoxModel *>(model());
 
-    if (w)
-        m_maskLabel->setPixmap(w->grab());
+            lineEdit()->setText(m->getJsonData(index)["itemText"].toString());
+        } else {
+            lineEdit()->setText(currentText());
+        }
+    } else {
+        DComboBoxModel *m = static_cast<DComboBoxModel *>(model());
+        QWidget *w = view()->indexWidget(m->getModelIndex(index));
+
+        if (w)
+            m_maskLabel->setPixmap(w->grab());
+    }
 }
 
 //Bypassing the problem here
@@ -75,6 +89,14 @@ QString DComboBox::insensitiveTickImg() const
 void DComboBox::setInsensitiveTickImg(const QString &insensitiveTickImg)
 {
     m_insensitiveTickImg = insensitiveTickImg;
+}
+
+void DComboBox::setEditable(bool editable)
+{
+    QComboBox::setEditable(editable);
+
+    view()->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+    lineEdit()->setStyleSheet(styleSheet());
 }
 
 QString DComboBox::hoverTickImg() const

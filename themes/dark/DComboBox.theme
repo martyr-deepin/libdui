@@ -85,3 +85,22 @@ QFrame#DComboxInsideFrame {
                                         stop: 1.0 rgba(255,255,255,5));
     border-bottom-color: rgba(255, 255, 255, 5);
 }
+
+DUI--DComboBox:editable{
+    border: 2px solid transparent;
+    border-bottom: 1px solid #15FFFFFF;
+    padding: 0px 0px 1px 0px;
+    min-height: 22px;
+    background-color: rgba(255, 255, 255, 26);
+}
+
+QLineEdit {
+    background: transparent;
+    border-right: 1px solid rgba(255, 255, 255, 50);
+    margin-right: 3px;
+}
+
+DUI--DComboBox[editable="true"] QFrame#DComboxInsideFrame {/*outside frame*/
+    background-color: rgba(0, 0, 0, 50);
+    border: 1px solid black;
+}

@@ -44,7 +44,7 @@ ComboBoxTab::ComboBoxTab(QWidget *parent) : QLabel(parent)
         simpleList << QString::number(i);
     }
     simpleBox->addItems(simpleList);
-
+    simpleBox->setEditable(true);
 }
 
 
