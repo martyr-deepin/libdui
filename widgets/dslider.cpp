@@ -224,6 +224,8 @@ void DSlider::mousePressEvent(QMouseEvent *event)
 
         d->clickOffset = d->pick(event->pos() - sr.topLeft());
         d->mousePressed = true;
+
+        emit sliderPressed();
     }
 }
 
@@ -233,6 +235,8 @@ void DSlider::mouseReleaseEvent(QMouseEvent *event)
 
     if(event->button() == Qt::LeftButton) {
         d_func()->mousePressed = false;
+
+        emit sliderReleased();
     }
 }
 
@@ -293,6 +297,8 @@ void DSlider::mouseMoveEvent(QMouseEvent *event)
     if(d->mousePressed) {
         int newPosition = d->pixelPosToRangeValue(d->pick(event->pos()) - d->clickOffset);
         setSliderPosition(newPosition);
+
+        emit sliderMoved(newPosition);
     }
 
     if (!d->m_hoverShowValue) {
