@@ -39,11 +39,11 @@ void DIpv4LineEditPrivate::init()
 
     q->DLineEdit::setReadOnly(true);
     q->setFocusProxy(editList.first());
+    q->setValidator(new QRegularExpressionValidator(QRegularExpression("((2[0-4]\\d|25[0-5]|[01]?\\d\\d?)?\\.){0,3}(2[0-4]\\d|25[0-5]|[01]?\\d\\d?)?")));
 
     QObject::connect(q, &DIpv4LineEdit::sizeChanged,
                      editMainWidget, static_cast<void (QWidget::*)(const QSize&)>(&QWidget::resize));
-
-    _q_updateLineEditText();
+    QObject::connect(q, SIGNAL(textChanged(QString)), q, SLOT(_q_setIpLineEditText(QString)), Qt::QueuedConnection);
 }
 
 QLabel *DIpv4LineEditPrivate::getLabel()
@@ -71,17 +71,13 @@ QLineEdit *DIpv4LineEditPrivate::getEdit()
 
     editList << edit;
 
-    QObject::connect(edit, SIGNAL(textChanged(QString)), q, SLOT(_q_updateLineEditText()), Qt::DirectConnection);
-    QObject::connect(q, SIGNAL(textChanged(QString)), q, SLOT(_q_setIpLineEditText(QString)), Qt::DirectConnection);
+    QObject::connect(edit, SIGNAL(textChanged(QString)), q, SLOT(_q_updateLineEditText()));
 
     return edit;
 }
 
 void DIpv4LineEditPrivate::_q_updateLineEditText()
 {
-    if(!enableUpdateLineEditText)
-        return;
-
     D_Q(DIpv4LineEdit);
 
     QString text;
@@ -90,25 +86,25 @@ void DIpv4LineEditPrivate::_q_updateLineEditText()
         text.append(".").append(edit->text());
     }
 
-    if(enableSetIpLineEditText) {
-        enableSetIpLineEditText = false;
+    QObject::disconnect(q, SIGNAL(textChanged(QString)), q, SLOT(_q_setIpLineEditText(QString)));
+
+    if(text == "....")
+        q->setText("");
+    else
         q->setText(text.mid(1));
-        enableSetIpLineEditText = true;
-    } else {
-        q->setText(text.mid(1));
-    }
+
+    QObject::connect(q, SIGNAL(textChanged(QString)), q, SLOT(_q_setIpLineEditText(QString)), Qt::QueuedConnection);
 
     q->DLineEdit::setCursorPosition(q->cursorPosition());
 }
 
 void DIpv4LineEditPrivate::_q_setIpLineEditText(const QString &text)
 {
-    if(!enableSetIpLineEditText)
-        return;
+    D_QC(DIpv4LineEdit);
 
-    QRegExp rx("((2[0-4]\\d|25[0-5]|[01]?\\d\\d?)\\.){0,3}(2[0-4]\\d|25[0-5]|[01]?\\d\\d?)?");
+    int pos = 0;
 
-    if(!rx.exactMatch(text)) {
+    if(q->validator()->validate(const_cast<QString&>(text), pos) != QValidator::Acceptable) {
         _q_updateLineEditText();
         return;
     }
@@ -117,20 +113,19 @@ void DIpv4LineEditPrivate::_q_setIpLineEditText(const QString &text)
 
     int min_count = qMin(editList.count(), text_list.count());
 
-    bool bak_enableUpdateLineEditText = enableSetIpLineEditText;
-
     for(int i = 0; i < min_count; ++i ) {
         QLineEdit *edit = editList[i];
-
-        enableSetIpLineEditText = false;
+        QObject::disconnect(edit, SIGNAL(textChanged(QString)), q, SLOT(_q_updateLineEditText()));
         edit->setText(text_list[i]);
-        enableSetIpLineEditText = bak_enableUpdateLineEditText;
+        QObject::connect(edit, SIGNAL(textChanged(QString)), q, SLOT(_q_updateLineEditText()));
     }
 
-    for(int i = min_count; i < editList.count(); ++i)
-        editList[i]->clear();
-
-    _q_updateLineEditText();
+    for(int i = min_count; i < editList.count(); ++i) {
+        QLineEdit *edit = editList[i];
+        QObject::disconnect(edit, SIGNAL(textChanged(QString)), q, SLOT(_q_updateLineEditText()));
+        edit->clear();
+        QObject::connect(edit, SIGNAL(textChanged(QString)), q, SLOT(_q_updateLineEditText()));
+    }
 }
 
 DIpv4LineEdit::DIpv4LineEdit(QWidget *parent) :
@@ -263,66 +258,91 @@ bool DIpv4LineEdit::eventFilter(QObject *obj, QEvent *e)
             if(event) {
                 D_D(DIpv4LineEdit);
 
-                if(event->key() == Qt::Key_Backspace) {
-                    bool accept = false;
-
-                    for(QLineEdit *edit : d->editList) {
-                        if(!edit->selectedText().isEmpty()) {
-                            edit->setText(edit->text().remove(edit->selectedText()));
-                            accept = true;
-                        }
-                    }
-
-                    if(accept)
-                        return true;
-                }
-
-                if(event->key() == Qt::Key_Left
-                          || (event->key() == Qt::Key_Backspace
-                              && edit->cursorPosition() == 0)) {
-                    setCursorPosition(cursorPosition() - 1);
-
-                    return true;
-                }
-
-                if(event->key() == Qt::Key_Right) {
-                    setCursorPosition(cursorPosition() + 1);
-
-                    return true;
-                }
-
-                if(event->key() == Qt::Key_Period || event->key() == Qt::Key_Space) {
-                    int index = d->editList.indexOf(edit);
-
-                    if(index < d->editList.count() - 1) {
-                        d->editList[index + 1]->setFocus();
-                    }
-
-                    return true;
-                }
-
-                if(event->modifiers() == Qt::ControlModifier) {
-                    if(event->key() == Qt::Key_V) {
-                        QString text = qApp->clipboard()->text();
-
+                if(event->key() <= Qt::Key_9 && event->key() >= Qt::Key_0) {
+                    if(edit->cursorPosition() == edit->text().count()) {
                         QRegExp rx("(2[0-4]\\d|25[0-5]|[01]?\\d\\d?)");
 
-                        if(rx.exactMatch(text)) {
-                            edit->setText(edit->text().insert(edit->cursorPosition(), text));
-                        } else {
-                            d->_q_setIpLineEditText(text);
+                        const QString number = QString::number(event->key() - Qt::Key_0);
+
+                        if(!rx.exactMatch(edit->text().append(number))) {
+                            int index = d->editList.indexOf(edit) + 1;
+
+                            if(index < d->editList.count()) {
+                                d->editList[index]->setFocus();
+
+                                if(d->editList[index]->text().isEmpty()) {
+                                    d->editList[index]->setText(number);
+                                }
+                            }
+
+                            return true;
+                        }
+                    }
+                } else {
+                    if(event->key() == Qt::Key_Backspace) {
+                        bool accept = false;
+
+                        for(QLineEdit *edit : d->editList) {
+                            if(!edit->selectedText().isEmpty()) {
+                                edit->setText(edit->text().remove(edit->selectedText()));
+                                accept = true;
+                            }
+                        }
+
+                        if(accept)
+                            return true;
+                    }
+
+                    if(event->key() == Qt::Key_Left
+                              || (event->key() == Qt::Key_Backspace
+                                  && edit->cursorPosition() == 0)) {
+                        setCursorPosition(cursorPosition() - 1);
+
+                        return true;
+                    }
+
+                    if(event->key() == Qt::Key_Right) {
+                        setCursorPosition(cursorPosition() + 1);
+
+                        return true;
+                    }
+
+                    if(event->key() == Qt::Key_Period || event->key() == Qt::Key_Space) {
+                        int index = d->editList.indexOf(edit) + 1;
+
+                        if(index < d->editList.count()) {
+                            d->editList[index]->setFocus();
                         }
 
                         return true;
-                    } else if(event->key() == Qt::Key_A) {
-                        selectAll();
-                    } else if(event->key() == Qt::Key_X) {
-                        cut();
-                    } else {
-                        DLineEdit::keyPressEvent(event);
                     }
 
-                    return true;
+                    if(event->modifiers() == Qt::ControlModifier) {
+                        if(event->key() == Qt::Key_V) {
+                            QString text = qApp->clipboard()->text();
+
+                            QRegExp rx("(2[0-4]\\d|25[0-5]|[01]?\\d\\d?)");
+
+                            if(rx.exactMatch(text)) {
+                                edit->setText(edit->text().insert(edit->cursorPosition(), text));
+                            } else {
+                                int pos = 0;
+
+                                if(this->validator()->validate(text, pos) == QValidator::Acceptable)
+                                    d->_q_setIpLineEditText(text);
+                            }
+
+                            return true;
+                        } else if(event->key() == Qt::Key_A) {
+                            selectAll();
+                        } else if(event->key() == Qt::Key_X) {
+                            cut();
+                        } else {
+                            DLineEdit::keyPressEvent(event);
+                        }
+
+                        return true;
+                    }
                 }
             }
         }

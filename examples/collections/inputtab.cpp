@@ -46,6 +46,7 @@ InputTab::InputTab(QWidget *parent) : QLabel(parent)
     lineEditAlert->setAlert(true);
     lineEditAlert->setFixedSize(200, 30);
     lineEditAlert->move(20, 230);
+    lineEditAlert->setValidator(new QRegExpValidator(QRegExp("((2[0-4]\\d|25[0-5]|[01]?\\d\\d?)\\.){0,3}(2[0-4]\\d|25[0-5]|[01]?\\d\\d?)?")));
 
     DUI::DShortcutEdit *shortcutEdit = new DUI::DShortcutEdit(this);
     shortcutEdit->move(20, 300);
@@ -53,6 +54,12 @@ InputTab::InputTab(QWidget *parent) : QLabel(parent)
     DUI::DIpv4LineEdit *ipv4 = new DUI::DIpv4LineEdit(this);
 
     ipv4->move(300, 20);
+
+    connect(ipv4, &DUI::DIpv4LineEdit::textChanged, this, [this, ipv4](const QString &text) {
+        qDebug() << "text changed:" <<text << ipv4->text();
+    });
+
+    ipv4->setText("192.168.31.55");
 
     DUI::DSpinBox *spinbox = new DUI::DSpinBox(this);
 

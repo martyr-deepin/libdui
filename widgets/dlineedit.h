@@ -28,11 +28,13 @@ public:
     void setIconVisible(bool visible);
     bool iconVisible() const;
 
-    const QString normalIcon();
+    QString normalIcon() const;
+    QString hoverIcon() const;
+    QString pressIcon() const;
+
+public Q_SLOTS:
     void setNormalIcon(const QString &normalIcon);
-    const QString hoverIcon();
     void setHoverIcon(const QString &hoverIcon);
-    const QString pressIcon();
     void setPressIcon(const QString &pressIcon);
 
 Q_SIGNALS:

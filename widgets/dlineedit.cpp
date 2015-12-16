@@ -64,9 +64,9 @@ bool DLineEdit::iconVisible() const
     return d->m_rightIcon->isVisible();
 }
 
-const QString DLineEdit::normalIcon()
+QString DLineEdit::normalIcon() const
 {
-    Q_D(DLineEdit);
+    D_DC(DLineEdit);
 
     return d->m_rightIcon->getNormalPic();
 }
@@ -78,9 +78,9 @@ void DLineEdit::setNormalIcon(const QString &normalIcon)
     d->m_rightIcon->setNormalPic(normalIcon);
 }
 
-const QString DLineEdit::hoverIcon()
+QString DLineEdit::hoverIcon() const
 {
-    Q_D(DLineEdit);
+    D_DC(DLineEdit);
 
     return d->m_rightIcon->getHoverPic();
 }
@@ -92,9 +92,9 @@ void DLineEdit::setHoverIcon(const QString &hoverIcon)
     d->m_rightIcon->setHoverPic(hoverIcon);
 }
 
-const QString DLineEdit::pressIcon()
+QString DLineEdit::pressIcon() const
 {
-    Q_D(DLineEdit);
+    D_DC(DLineEdit);
 
     return d->m_rightIcon->getPressPic();
 }
