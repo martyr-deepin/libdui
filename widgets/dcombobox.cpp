@@ -10,7 +10,7 @@ DUI_USE_NAMESPACE
 
 DComboBox::DComboBox(QWidget *parent) : QComboBox(parent)
 {
-    D_THEME_INIT_WIDGET(DComboBox, editable);
+    D_THEME_INIT_WIDGET(DComboBox);
 
     initInsideFrame();
 
@@ -96,7 +96,9 @@ void DComboBox::setEditable(bool editable)
     QComboBox::setEditable(editable);
 
     view()->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
-    lineEdit()->setStyleSheet(styleSheet());
+
+    if(lineEdit())
+        lineEdit()->setStyleSheet(styleSheet());
 }
 
 QString DComboBox::hoverTickImg() const

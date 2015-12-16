@@ -90,7 +90,7 @@ DUI--DComboBox:editable{
     border: 2px solid transparent;
     border-bottom: 1px solid #15FFFFFF;
     padding: 0px 0px 1px 0px;
-    min-height: 22px;
+    min-height: 21px;
     background-color: rgba(255, 255, 255, 26);
 }
 
