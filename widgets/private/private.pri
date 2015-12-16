@@ -15,7 +15,8 @@ HEADERS += \
     $$PWD/ddialog_p.h \
     $$PWD/dloadingindicator_p.h \
     $$PWD/dinputdialog_p.h \
-    $$PWD/dipv4lineedit_p.h
+    $$PWD/dipv4lineedit_p.h \
+    $$PWD/dspinbox_p.h
 
 SOURCES += \
     $$PWD/dthemehelper.cpp \

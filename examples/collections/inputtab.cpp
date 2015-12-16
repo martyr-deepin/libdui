@@ -63,5 +63,7 @@ InputTab::InputTab(QWidget *parent) : QLabel(parent)
 
     DUI::DSpinBox *spinbox = new DUI::DSpinBox(this);
 
+    spinbox->resize(100, 22);
+
     spinbox->move(300, 50);
 }
