@@ -39,7 +39,7 @@ void DIpv4LineEditPrivate::init()
 
     q->DLineEdit::setReadOnly(true);
     q->setFocusProxy(editList.first());
-    q->setValidator(new QRegularExpressionValidator(QRegularExpression("((2[0-4]\\d|25[0-5]|[01]?\\d\\d?)?\\.){0,3}(2[0-4]\\d|25[0-5]|[01]?\\d\\d?)?")));
+    q->setValidator(new QRegularExpressionValidator(QRegularExpression("((2[0-4]\\d|25[0-5]|[01]?\\d\\d?)?\\.){0,3}(2[0-4]\\d|25[0-5]|[01]?\\d\\d?)?"), q));
 
     QObject::connect(q, &DIpv4LineEdit::sizeChanged,
                      editMainWidget, static_cast<void (QWidget::*)(const QSize&)>(&QWidget::resize));
