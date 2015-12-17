@@ -5,9 +5,11 @@
 #include "dspinbox.h"
 
 class QFrame;
+class QLabel;
 
 DUI_BEGIN_NAMESPACE
 
+class DImageButton;
 class DSpinBoxPrivate : public DObjectPrivate
 {
     DSpinBoxPrivate(DSpinBox *parent);
@@ -17,6 +19,8 @@ class DSpinBoxPrivate : public DObjectPrivate
     void _q_resizeInsideFrame(const QSize &size);
 
     QFrame *insideFrame;
+    bool alert = false;
+    int defaultValue = 0;
 
     D_DECLARE_PUBLIC(DSpinBox)
 };
@@ -30,6 +34,8 @@ class DDoubleSpinBoxPrivate : public DObjectPrivate
     void _q_resizeInsideFrame(const QSize &size);
 
     QFrame *insideFrame;
+    bool alert = false;
+    double defaultValue = 0;
 
     D_DECLARE_PUBLIC(DDoubleSpinBox)
 };
