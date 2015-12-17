@@ -115,16 +115,16 @@ void DIpv4LineEditPrivate::_q_setIpLineEditText(const QString &text)
 
     for(int i = 0; i < min_count; ++i ) {
         QLineEdit *edit = editList[i];
-        QObject::disconnect(edit, SIGNAL(textChanged(QString)), q, SLOT(_q_updateLineEditText()));
+        bool edit_blocked = edit->blockSignals(true);
         edit->setText(text_list[i]);
-        QObject::connect(edit, SIGNAL(textChanged(QString)), q, SLOT(_q_updateLineEditText()));
+        edit->blockSignals(edit_blocked);
     }
 
     for(int i = min_count; i < editList.count(); ++i) {
         QLineEdit *edit = editList[i];
-        QObject::disconnect(edit, SIGNAL(textChanged(QString)), q, SLOT(_q_updateLineEditText()));
+        bool edit_blocked = edit->blockSignals(true);
         edit->clear();
-        QObject::connect(edit, SIGNAL(textChanged(QString)), q, SLOT(_q_updateLineEditText()));
+        edit->blockSignals(edit_blocked);
     }
 }
 
