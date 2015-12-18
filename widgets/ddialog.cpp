@@ -54,12 +54,24 @@ void DDialogPrivate::init()
     titleLabel->setObjectName("TitleLabel");
     titleLabel->hide();
 
+    QHBoxLayout *label_hlayout = new QHBoxLayout;
+    QVBoxLayout *label_vlayout = new QVBoxLayout;
+
+    label_hlayout->setMargin(0);
+    label_hlayout->setSpacing(0);
+    label_vlayout->setMargin(0);
+    label_vlayout->setSpacing(0);
+
+    label_vlayout->addWidget(titleLabel);
+    label_vlayout->addWidget(messageLabel);
+    label_hlayout->addLayout(label_vlayout);
+    label_hlayout->addStretch();
+
     contentLayout = new QVBoxLayout;
 
     contentLayout->setMargin(0);
     contentLayout->setSpacing(0);
-    contentLayout->addWidget(titleLabel);
-    contentLayout->addWidget(messageLabel);
+    contentLayout->addLayout(label_hlayout);
 
     iconLayout = new QHBoxLayout;
 
@@ -69,7 +81,6 @@ void DDialogPrivate::init()
                                    DIALOG::ICON_LAYOUT_BOTTOM_MARGIN);
     iconLayout->addWidget(iconLabel, 0, Qt::AlignLeft);
     iconLayout->addLayout(contentLayout);
-    iconLayout->addStretch();
 
     QVBoxLayout *main_layout = new QVBoxLayout;
 
