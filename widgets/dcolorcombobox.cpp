@@ -109,9 +109,9 @@ void DColorComboBox::addData(const QColor &color, const QString &title)
     colorObj.insert("itemTitle", QJsonValue(title));
     colorObj.insert("itemColor", color.name(QColor::HexArgb));
 
-    model()->append(colorObj);
+    dcomboBoxModel()->append(colorObj);
     // Make the combo boxes always displayed.
-    view()->openPersistentEditor(model()->getModelIndex(model()->count() - 1));
+    view()->openPersistentEditor(dcomboBoxModel()->getModelIndex(dcomboBoxModel()->count() - 1));
 }
 
 void DColorComboBox::addData(const QString &color, const QString &title)
@@ -120,14 +120,14 @@ void DColorComboBox::addData(const QString &color, const QString &title)
     colorObj.insert("itemTitle", QJsonValue(title));
     colorObj.insert("itemColor", color);
 
-    model()->append(colorObj);
+    dcomboBoxModel()->append(colorObj);
     // Make the combo boxes always displayed.
-    view()->openPersistentEditor(model()->getModelIndex(model()->count() - 1));
+    view()->openPersistentEditor(dcomboBoxModel()->getModelIndex(dcomboBoxModel()->count() - 1));
 }
 
 void DColorComboBox::onCurrentIndexChange(int index)
 {
-    QJsonObject colorObj = model()->getJsonData(index);
+    QJsonObject colorObj = dcomboBoxModel()->getJsonData(index);
 
     emit currentColorChange(QColor(colorObj["itemColor"].toString()));
 }

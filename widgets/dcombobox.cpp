@@ -127,7 +127,7 @@ bool DComboBox::isAlert() const
     return d->alert;
 }
 
-DComboBoxModel *DComboBox::model() const
+DComboBoxModel *DComboBox::dcomboBoxModel() const
 {
     return qobject_cast<DComboBoxModel*>(QComboBox::model());
 }

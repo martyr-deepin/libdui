@@ -89,14 +89,14 @@ void DFontComboBox::addFontItem(const QString &family, const QString &title)
     nameObj.insert("itemFontFamily", QJsonValue(family));
     nameObj.insert("itemTitle", QJsonValue(title));
 
-    model()->append(nameObj);
+    dcomboBoxModel()->append(nameObj);
     // Make the combo boxes always displayed.
-    view()->openPersistentEditor(model()->getModelIndex(model()->count() - 1));
+    view()->openPersistentEditor(dcomboBoxModel()->getModelIndex(dcomboBoxModel()->count() - 1));
 }
 
 void DFontComboBox::onCurrentIndexChange(int index)
 {
-    QJsonObject nameObj = model()->getJsonData(index);
+    QJsonObject nameObj = dcomboBoxModel()->getJsonData(index);
 
     emit currentFontNameChange(nameObj["itemFont"].toString());
 }

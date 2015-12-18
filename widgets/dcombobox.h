@@ -37,7 +37,7 @@ public:
     QString insensitiveTickImg() const;
     bool isAlert() const;
 
-    DComboBoxModel *model() const;
+    DComboBoxModel *dcomboBoxModel() const;
 
 public Q_SLOTS:
     void setEditable(bool editable);

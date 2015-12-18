@@ -74,9 +74,9 @@ void DSimpleComboBox::addItem(const QString &text)
     QJsonObject nameObj;
     nameObj.insert("itemText", QJsonValue(text));
 
-    model()->append(nameObj);
+    dcomboBoxModel()->append(nameObj);
     // Make the combo boxes always displayed.
-    view()->openPersistentEditor(model()->getModelIndex(model()->count() - 1));
+    view()->openPersistentEditor(dcomboBoxModel()->getModelIndex(dcomboBoxModel()->count() - 1));
 }
 
 void DSimpleComboBox::addItems(const QStringList &texts)
@@ -88,7 +88,7 @@ void DSimpleComboBox::addItems(const QStringList &texts)
 
 void DSimpleComboBox::onCurrentIndexChange(int index)
 {
-    QJsonObject nameObj = model()->getJsonData(index);
+    QJsonObject nameObj = dcomboBoxModel()->getJsonData(index);
 
     emit currentTextChanged(nameObj["itemText"].toString());
 }
