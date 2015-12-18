@@ -33,7 +33,7 @@ QAbstractItemView#DComboBoxItemView {
      selection-background-color: rgba(0,0,0,0.4);
      background: #191919;
      margin: 0;
-     font-size: 12pt;
+     font-size: 12px;
 }
 
 QAbstractItemView#DComboBoxItemView::item {
