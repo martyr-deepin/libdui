@@ -2,6 +2,7 @@
 #include <QHBoxLayout>
 #include <QLineEdit>
 #include <QJsonDocument>
+#include <QResizeEvent>
 
 #include "private/dcombobox_p.h"
 #include "dcombobox.h"
@@ -75,8 +76,11 @@ void DComboBoxPrivate::_q_slotCurrentIndexChange(int index)
         DComboBoxModel *m = static_cast<DComboBoxModel *>(q->model());
         QWidget *w = q->view()->indexWidget(m->getModelIndex(index));
 
-        if (w)
-            maskLabel->setPixmap(w->grab());
+        if (w) {
+            w->setFixedWidth(q->width());
+
+            maskLabel->setPixmap(w->grab(q->rect()));
+        }
     }
 }
 
@@ -121,6 +125,11 @@ bool DComboBox::isAlert() const
     D_DC(DComboBox);
 
     return d->alert;
+}
+
+DComboBoxModel *DComboBox::model() const
+{
+    return qobject_cast<DComboBoxModel*>(QComboBox::model());
 }
 
 void DComboBox::setInsensitiveTickImg(const QString &insensitiveTickImg)
@@ -186,6 +195,14 @@ DComboBox::DComboBox(DComboBoxPrivate &dd, QWidget *parent) :
     D_THEME_INIT_WIDGET(DComboBox, alert);
 
     d_func()->init();
+}
+
+void DComboBox::resizeEvent(QResizeEvent *e)
+{
+    QComboBox::resizeEvent(e);
+
+    if(!isEditable())
+        d_func()->_q_slotCurrentIndexChange(currentIndex());
 }
 
 DUI_END_NAMESPACE

@@ -37,6 +37,7 @@ public:
     QString insensitiveTickImg() const;
     bool isAlert() const;
 
+    DComboBoxModel *model() const;
 
 public Q_SLOTS:
     void setEditable(bool editable);
@@ -50,6 +51,8 @@ Q_SIGNALS:
 
 protected:
     explicit DComboBox(DComboBoxPrivate &dd, QWidget *parent = 0);
+
+    void resizeEvent(QResizeEvent *e) Q_DECL_OVERRIDE;
 
 private:
     D_DECLARE_PRIVATE(DComboBox)

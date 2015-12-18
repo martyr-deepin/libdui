@@ -1,6 +1,26 @@
+#include <QFontMetrics>
+
 #include "dfontcombobox.h"
 
-DUI_USE_NAMESPACE
+DUI_BEGIN_NAMESPACE
+
+class FontDelegateItem : public QLabel
+{
+    Q_OBJECT
+
+public:
+    explicit FontDelegateItem(QWidget *parent = 0);
+
+    void setItemFont(const QString &family, const QString &title);
+};
+
+class DComboBoxFontDelegate : public DAbstractComboBoxDelegate
+{
+public:
+    explicit DComboBoxFontDelegate(QObject *parent = 0);
+    QWidget *createEditor(QWidget *parent, const QStyleOptionViewItem &option, const QModelIndex &index) const;
+    void setEditorData(QWidget *editor, const QModelIndex &index) const;
+};
 
 FontDelegateItem::FontDelegateItem(QWidget *parent) : QLabel(parent)
 {
@@ -10,47 +30,13 @@ FontDelegateItem::FontDelegateItem(QWidget *parent) : QLabel(parent)
 
 void FontDelegateItem::setItemFont(const QString &family, const QString &title)
 {
-    m_fontFamily = family;
-    m_fontTitle = title.isEmpty() ? family : title;
-    repaint();
-}
+    QFont font = this->font();
 
-void FontDelegateItem::paintEvent(QPaintEvent *event)
-{
-    Q_UNUSED(event)
+    font.setFamily(family);
 
-    QPainter painter(this);
-    painter.setRenderHint(QPainter::Antialiasing);
+    setFont(font);
 
-    QRect rect(DUI::MENU_ITEM_LEFT_MARGIN, 0, width(), height());
-
-    QFont f;
-    f.setFamily(m_fontFamily);
-    f.setPixelSize(m_fontPixelSize);
-    painter.setFont(f);
-    QPen p(m_fontNormalColor);
-    painter.setPen(p);
-
-    painter.drawText(rect, Qt::AlignVCenter | Qt::AlignLeft, m_fontTitle);
-}
-int FontDelegateItem::fontPixelSize() const
-{
-    return m_fontPixelSize;
-}
-
-void FontDelegateItem::setFontPixelSize(int fontPixelSize)
-{
-    m_fontPixelSize = fontPixelSize;
-}
-
-QColor FontDelegateItem::fontNormalColor() const
-{
-    return m_fontNormalColor;
-}
-
-void FontDelegateItem::setFontNormalColor(const QColor &fontNormalColor)
-{
-    m_fontNormalColor = fontNormalColor;
+    setText(title.isEmpty() ? family : title);
 }
 
 DComboBoxFontDelegate::DComboBoxFontDelegate(QObject *parent) : DAbstractComboBoxDelegate(parent)
@@ -85,7 +71,6 @@ void DComboBoxFontDelegate::setEditorData(QWidget *editor, const QModelIndex &in
         family = dataObj.value("itemFontFamily").toString();
 
     fontItem->setItemFont(family, title);
-
 }
 
 DFontComboBox::DFontComboBox(QWidget *parent) : DComboBox(parent)
@@ -93,8 +78,7 @@ DFontComboBox::DFontComboBox(QWidget *parent) : DComboBox(parent)
     DComboBoxFontDelegate *dbfb = new DComboBoxFontDelegate(this);
     setItemDelegate(dbfb);
 
-    m_fontModel = new DComboBoxModel(this);
-    setModel(m_fontModel);
+    setModel(new DComboBoxModel(this));
 
     connect(this, SIGNAL(currentIndexChanged(int)), this, SLOT(onCurrentIndexChange(int)));
 }
@@ -105,15 +89,18 @@ void DFontComboBox::addFontItem(const QString &family, const QString &title)
     nameObj.insert("itemFontFamily", QJsonValue(family));
     nameObj.insert("itemTitle", QJsonValue(title));
 
-    m_fontModel->append(nameObj);
+    model()->append(nameObj);
     // Make the combo boxes always displayed.
-    view()->openPersistentEditor(m_fontModel->getModelIndex(m_fontModel->count() - 1));
+    view()->openPersistentEditor(model()->getModelIndex(model()->count() - 1));
 }
 
 void DFontComboBox::onCurrentIndexChange(int index)
 {
-    QJsonObject nameObj = m_fontModel->getJsonData(index);
+    QJsonObject nameObj = model()->getJsonData(index);
 
     emit currentFontNameChange(nameObj["itemFont"].toString());
 }
 
+DUI_END_NAMESPACE
+
+#include "dfontcombobox.moc"
