@@ -78,6 +78,16 @@ QLineEdit *DIpv4LineEditPrivate::getEdit()
     return edit;
 }
 
+void DIpv4LineEditPrivate::setFocus(bool focus)
+{
+    if(this->focus == focus)
+        return;
+
+    this->focus = focus;
+
+    emit q_func()->focusChanged(focus);
+}
+
 void DIpv4LineEditPrivate::_q_updateLineEditText()
 {
     D_Q(DIpv4LineEdit);
@@ -367,12 +377,21 @@ bool DIpv4LineEdit::eventFilter(QObject *obj, QEvent *e)
         if(edit) {
             DLineEdit::setCursorPosition(cursorPosition());
         }
+
+        d_func()->setFocus(true);
     } else if(e->type() == QEvent::FocusOut || e->type() == QEvent::MouseButtonPress) {
         D_D(DIpv4LineEdit);
 
+        bool focus = false;
+
         for(QLineEdit *edit : d->editList) {
             edit->setSelection(edit->cursorPosition(), 0);
+
+            focus = edit->hasFocus() | focus;
         }
+
+        if(!focus)
+            d_func()->setFocus(false);
     }
 
     return DLineEdit::eventFilter(obj, e);

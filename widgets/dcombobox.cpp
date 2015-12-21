@@ -216,7 +216,7 @@ void DComboBox::focusOutEvent(QFocusEvent *e)
 {
     QComboBox::focusOutEvent(e);
 
-    emit focusChanged(e);
+    emit focusChanged(false);
 }
 
 DUI_END_NAMESPACE

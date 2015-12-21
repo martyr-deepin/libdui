@@ -15,11 +15,15 @@ class DIpv4LineEditPrivate : public DLineEditPrivate
     QLabel *getLabel();
     QLineEdit *getEdit();
 
+    void setFocus(bool focus);
+
     void _q_updateLineEditText();
     void _q_setIpLineEditText(const QString &text);
 
     QList<QLineEdit*> editList;
     QWidget *editMainWidget;
+
+    bool focus = false;
 
     D_DECLARE_PUBLIC(DIpv4LineEdit)
 };
