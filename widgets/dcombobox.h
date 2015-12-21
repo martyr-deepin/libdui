@@ -48,11 +48,14 @@ public Q_SLOTS:
 
 Q_SIGNALS:
     void alertChanged(bool alert);
+    void focusChanged(bool focus);
 
 protected:
     explicit DComboBox(DComboBoxPrivate &dd, QWidget *parent = 0);
 
     void resizeEvent(QResizeEvent *e) Q_DECL_OVERRIDE;
+    void focusInEvent(QFocusEvent *e) Q_DECL_OVERRIDE;
+    void focusOutEvent(QFocusEvent *e) Q_DECL_OVERRIDE;
 
 private:
     D_DECLARE_PRIVATE(DComboBox)

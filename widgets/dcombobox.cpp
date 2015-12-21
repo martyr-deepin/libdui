@@ -205,6 +205,20 @@ void DComboBox::resizeEvent(QResizeEvent *e)
         d_func()->_q_slotCurrentIndexChange(currentIndex());
 }
 
+void DComboBox::focusInEvent(QFocusEvent *e)
+{
+    QComboBox::focusInEvent(e);
+
+    emit focusChanged(true);
+}
+
+void DComboBox::focusOutEvent(QFocusEvent *e)
+{
+    QComboBox::focusOutEvent(e);
+
+    emit focusChanged(e);
+}
+
 DUI_END_NAMESPACE
 
 #include "moc_dcombobox.cpp"
