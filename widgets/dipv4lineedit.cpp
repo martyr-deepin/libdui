@@ -1,4 +1,4 @@
-#include <QRegExpValidator>
+#include <QRegularExpressionValidator>
 #include <QHBoxLayout>
 #include <QGuiApplication>
 #include <QClipboard>
@@ -10,6 +10,8 @@
 #include "private/dipv4lineedit_p.h"
 
 DUI_BEGIN_NAMESPACE
+
+#define RX_PATTERN_IP "^(2[0-4]\\d|25[0-5]|[01]?\\d\\d?)$"
 
 DIpv4LineEditPrivate::DIpv4LineEditPrivate(DIpv4LineEdit *parent) :
     DLineEditPrivate(parent)
@@ -63,7 +65,7 @@ QLineEdit *DIpv4LineEditPrivate::getEdit()
     QLineEdit *edit = new QLineEdit;
 
     edit->setObjectName("DIpv4LineEdit_Edit");
-    edit->setValidator(new QRegularExpressionValidator(QRegularExpression("(2[0-4]\\d|25[0-5]|[01]?\\d\\d?)"), edit));
+    edit->setValidator(new QRegularExpressionValidator(QRegularExpression(RX_PATTERN_IP), edit));
     edit->setAlignment(Qt::AlignHCenter);
     edit->setAttribute(Qt::WA_InputMethodEnabled, false);
     edit->setContextMenuPolicy(Qt::NoContextMenu);
@@ -71,7 +73,7 @@ QLineEdit *DIpv4LineEditPrivate::getEdit()
 
     editList << edit;
 
-    QObject::connect(edit, SIGNAL(textChanged(QString)), q, SLOT(_q_updateLineEditText()));
+    QObject::connect(edit, SIGNAL(textEdited(QString)), q, SLOT(_q_updateLineEditText()));
 
     return edit;
 }
@@ -88,10 +90,19 @@ void DIpv4LineEditPrivate::_q_updateLineEditText()
 
     QObject::disconnect(q, SIGNAL(textChanged(QString)), q, SLOT(_q_setIpLineEditText(QString)));
 
-    if(text == "....")
-        q->setText("");
-    else
-        q->setText(text.mid(1));
+    if(text == "....") {
+        if(!q->text().isEmpty()) {
+            q->setText("");
+            emit q->textEdited(q->text());
+        }
+    } else {
+        text = text.mid(1);
+
+        if(text != q->text()) {
+            q->setText(text);
+            emit q->textEdited(q->text());
+        }
+    }
 
     QObject::connect(q, SIGNAL(textChanged(QString)), q, SLOT(_q_setIpLineEditText(QString)), Qt::QueuedConnection);
 
@@ -260,11 +271,11 @@ bool DIpv4LineEdit::eventFilter(QObject *obj, QEvent *e)
 
                 if(event->key() <= Qt::Key_9 && event->key() >= Qt::Key_0) {
                     if(edit->cursorPosition() == edit->text().count()) {
-                        QRegExp rx("(2[0-4]\\d|25[0-5]|[01]?\\d\\d?)");
+                        QRegularExpression rx(RX_PATTERN_IP);
 
                         const QString number = QString::number(event->key() - Qt::Key_0);
 
-                        if(!rx.exactMatch(edit->text().append(number))) {
+                        if(!rx.match(edit->text().append(number)).hasMatch()) {
                             int index = d->editList.indexOf(edit) + 1;
 
                             if(index < d->editList.count()) {
@@ -272,6 +283,7 @@ bool DIpv4LineEdit::eventFilter(QObject *obj, QEvent *e)
 
                                 if(d->editList[index]->text().isEmpty()) {
                                     d->editList[index]->setText(number);
+                                    d->_q_updateLineEditText();
                                 }
                             }
 
@@ -285,6 +297,7 @@ bool DIpv4LineEdit::eventFilter(QObject *obj, QEvent *e)
                         for(QLineEdit *edit : d->editList) {
                             if(!edit->selectedText().isEmpty()) {
                                 edit->setText(edit->text().remove(edit->selectedText()));
+                                d->_q_updateLineEditText();
                                 accept = true;
                             }
                         }
@@ -319,17 +332,19 @@ bool DIpv4LineEdit::eventFilter(QObject *obj, QEvent *e)
 
                     if(event->modifiers() == Qt::ControlModifier) {
                         if(event->key() == Qt::Key_V) {
-                            QString text = qApp->clipboard()->text();
+                            QString clipboarg_text = qApp->clipboard()->text();
+                            QString text = edit->text().insert(edit->cursorPosition(), clipboarg_text);
 
-                            QRegExp rx("(2[0-4]\\d|25[0-5]|[01]?\\d\\d?)");
+                            QRegularExpression rx(RX_PATTERN_IP);
 
-                            if(rx.exactMatch(text)) {
-                                edit->setText(edit->text().insert(edit->cursorPosition(), text));
+                            if(rx.match(text).hasMatch()) {
+                                edit->setText(text);
+                                d->_q_updateLineEditText();
                             } else {
                                 int pos = 0;
 
-                                if(this->validator()->validate(text, pos) == QValidator::Acceptable)
-                                    d->_q_setIpLineEditText(text);
+                                if(this->validator()->validate(clipboarg_text, pos) == QValidator::Acceptable)
+                                    d->_q_setIpLineEditText(clipboarg_text);
                             }
 
                             return true;
