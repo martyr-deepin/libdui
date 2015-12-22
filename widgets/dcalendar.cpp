@@ -96,6 +96,7 @@ DCalendar::DCalendar(QWidget *parent) : QWidget(parent)
     mainLayout->addWidget(m_topControlPanel);
     mainLayout->addWidget(m_solarLunarWidget);
     mainLayout->addWidget(m_detailLabel);
+    mainLayout->addSpacing(10);
     mainLayout->addWidget(m_viewOuterWidget);
 
     connect(m_viewLeft, &CalendarView::dateSelected, this, &DCalendar::viewDateChanged, Qt::QueuedConnection);
@@ -228,7 +229,7 @@ void DCalendar::viewDateChanged(const QDate &date, const CaLunarDayInfo &lunarIn
         detail += ' ' + lunarInfo.mLunarFestival;
 
     m_detailLabel->setText(detail);
-    m_solarLabel->setText(date.toString(tr("dddd, MMMM dd, yyyy")));
+    m_solarLabel->setText(date.toString(m_solarDisplayFormat));
     m_lunarLabel->setText(QString(tr("农历%1%2")).arg(lunarInfo.mLunarMonthName)
                                                 .arg(lunarInfo.mLunarDayName));
 

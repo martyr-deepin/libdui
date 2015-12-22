@@ -49,6 +49,7 @@ public slots:
     void setLunarFestivalHighlight(bool highlight);
     void setSelectionMode(SelectionMode mode);
     void updateCurrentDate();
+    inline void setSolarDisplayFormat(const QString &format) {m_solarDisplayFormat = format;}
 
 private:
     bool eventFilter(QObject *o, QEvent *e) Q_DECL_OVERRIDE;
@@ -77,6 +78,8 @@ private:
     QWidget *m_viewInnerWidget;
 
     QPropertyAnimation *m_animation;
+
+    QString m_solarDisplayFormat = "dddd, MMMM dd, yyyy";
 
     QSize m_viewSize;
     QDate m_currentDate;
