@@ -22,6 +22,7 @@ void DInputDialogPrivate::init()
 
     q->addButtons(QStringList() << QObject::tr("Cancel") << QObject::tr("Confirm"));
     q->setOnButtonClickedClose(false);
+    q->setDefaultButton(1);
 
     cancelButton = q->getButton(0);
     okButton = q->getButton(1);

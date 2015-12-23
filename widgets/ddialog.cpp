@@ -609,14 +609,6 @@ DDialog::DDialog(DDialogPrivate &dd, QWidget *parent) :
     d_func()->init();
 }
 
-void DDialog::closeEvent(QCloseEvent *event)
-{
-    emit aboutToClose();
-    done(-1);
-    DAbstractDialog::closeEvent(event);
-    emit closed();
-}
-
 void DDialog::showEvent(QShowEvent *event)
 {
     D_D(DDialog);
@@ -624,6 +616,20 @@ void DDialog::showEvent(QShowEvent *event)
     DAbstractDialog::showEvent(event);
 
     d->_q_updateLabelMaxWidth();
+
+    emit visibleChanged(isVisible());
+}
+
+void DDialog::hideEvent(QHideEvent *event)
+{
+    emit aboutToClose();
+
+    DAbstractDialog::hideEvent(event);
+
+    done(-1);
+
+    emit visibleChanged(isVisible());
+    emit closed();
 }
 
 DUI_END_NAMESPACE

@@ -51,6 +51,7 @@ signals:
     void messageChanged(QString massage);
     void textFormatChanged(Qt::TextFormat textFormat);
     void sizeChanged(QSize size);
+    void visibleChanged(bool visible);
 
 public slots:
     int addButton(const QString &text, bool isDefault = false);
@@ -87,8 +88,8 @@ public slots:
 protected:
     explicit DDialog(DDialogPrivate &dd, QWidget *parent = 0);
 
-    void closeEvent(QCloseEvent* event) Q_DECL_OVERRIDE;
     void showEvent(QShowEvent *event) Q_DECL_OVERRIDE;
+    void hideEvent(QHideEvent *event) Q_DECL_OVERRIDE;
 
 private:
     D_DECLARE_PRIVATE(DDialog)
