@@ -49,10 +49,12 @@ void DDialogPrivate::init()
     messageLabel = new QLabel;
     messageLabel->setObjectName("MessageLabel");
     messageLabel->hide();
+    messageLabel->setAttribute(Qt::WA_TransparentForMouseEvents);
 
     titleLabel = new QLabel;
     titleLabel->setObjectName("TitleLabel");
     titleLabel->hide();
+    titleLabel->setAttribute(Qt::WA_TransparentForMouseEvents);
 
     QHBoxLayout *label_hlayout = new QHBoxLayout;
     QVBoxLayout *label_vlayout = new QVBoxLayout;

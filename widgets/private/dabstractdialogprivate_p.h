@@ -20,7 +20,8 @@ private:
 
     bool mouseMoved = false;
     /// 记录是否收到过鼠标移动事件.
-    ///
+    bool mousePressed = false;
+
     QPoint dragPosition;
     QColor backgroundColor;
     QColor borderColor;

@@ -145,18 +145,29 @@ void DAbstractDialog::mousePressEvent(QMouseEvent *event)
         D_D(DAbstractDialog);
 
         d->dragPosition = event->globalPos() - frameGeometry().topLeft();
+        d->mousePressed = true;
     }
 
     QDialog::mousePressEvent(event);
+}
+
+void DAbstractDialog::mouseReleaseEvent(QMouseEvent *event)
+{
+    D_D(DAbstractDialog);
+
+    d->mousePressed = false;
+
+    QDialog::mouseReleaseEvent(event);
 }
 
 void DAbstractDialog::mouseMoveEvent(QMouseEvent *event)
 {
     D_D(DAbstractDialog);
 
-    move(event->globalPos() - d->dragPosition);
-
-    d->mouseMoved = true;
+    if(d->mousePressed) {
+        move(event->globalPos() - d->dragPosition);
+        d->mouseMoved = true;
+    }
 
     QDialog::mouseMoveEvent(event);
 }
