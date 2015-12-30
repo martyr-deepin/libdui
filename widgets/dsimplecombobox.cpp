@@ -1,8 +1,9 @@
 #include "dsimplecombobox.h"
+#include "private/dcombobox_p.h"
 
 DUI_BEGIN_NAMESPACE
 
-class SimpleDelegateItem : public QLabel
+class SimpleDelegateItem : public DComboBoxItem
 {
     Q_OBJECT
 
@@ -18,10 +19,10 @@ public:
     void setEditorData(QWidget *editor, const QModelIndex &index) const;
 };
 
-SimpleDelegateItem::SimpleDelegateItem(QWidget *parent) : QLabel(parent)
+SimpleDelegateItem::SimpleDelegateItem(QWidget *parent) :
+    DComboBoxItem(parent)
 {
-    setAttribute(Qt::WA_TransparentForMouseEvents);
-    setAttribute(Qt::WA_TranslucentBackground);
+
 }
 
 DComboBoxSimpleDelegate::DComboBoxSimpleDelegate(QObject *parent) : DAbstractComboBoxDelegate(parent)

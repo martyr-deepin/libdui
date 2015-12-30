@@ -6,26 +6,65 @@
 
 DUI_BEGIN_NAMESPACE
 
+class DComboBoxItem;
+
 class DComboBoxPrivate : public DObjectPrivate
 {
+protected:
     DComboBoxPrivate(DComboBox *parent);
 
+    void setMaskLabel(DComboBoxItem *label);
+
+private:
     void init();
     void initInsideFrame();
+    void restylePopupEnds();
 
     void _q_slotCurrentIndexChange(int index);
 
-    QLabel *maskLabel = NULL;    //mask label
+    DComboBoxItem *maskLabel = NULL;    //mask label
 
+    QModelIndex hoverIndex;
     QString normalTickImg = "";
     QString hoverTickImg = "";
     QString insensitiveTickImg = "";
     bool alert = false;
 
+    QPointer<DComboBoxItem> checkedItem;
+    QPointer<DComboBoxItem> hoveredItem;
+
     const int MAX_VISIBLE_ITEMS = 16;
     const int OUTSIDE_BORDER_WIDTH = 1;
 
     D_DECLARE_PUBLIC(DComboBox)
+};
+
+class DComboBoxItem : public QLabel
+{
+    Q_OBJECT
+
+    Q_PROPERTY(bool checked READ checked WRITE setChecked NOTIFY checkedChanged)
+    Q_PROPERTY(bool hovered READ hovered WRITE setHovered NOTIFY hoveredChanged)
+
+public:
+    explicit DComboBoxItem(QWidget *parent = 0);
+
+    bool checked() const;
+    Q_SLOT void setChecked(bool value);
+
+    bool hovered() const;
+    Q_SLOT void setHovered(bool value);
+
+    virtual QVariantMap data() const;
+    virtual void setData(const QVariantMap &map);
+
+Q_SIGNALS:
+    void checkedChanged(bool checked);
+    void hoveredChanged(bool hovered);
+
+private:
+    bool m_checked = false;
+    bool m_hovered = false;
 };
 
 DUI_END_NAMESPACE

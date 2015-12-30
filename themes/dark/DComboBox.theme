@@ -8,7 +8,7 @@ DUI--DComboBox {
 
     qproperty-insensitiveTickImg: url(:/images/dark/images/tick_insensitive.png);
     qproperty-hoverTickImg: url(:/images/dark/images/tick_hover.png);
-    qproperty-normalTickImg: url(:/images/dark/images/tick_normal.png);
+    qproperty-normalTickImg: url(:/images/dark/images/tick_hover.png);
 
     background-color: rgba(255, 255, 255, 26);/*use as outside border*/
 }
@@ -59,12 +59,25 @@ DUI--DComboBox::down-arrow:hover {
     image: url(:/images/dark/images/arrow_down_hover.png);
 }
 
-DUI--FontDelegateItem, DUI--ColorDelegateItem, DUI--SimpleDelegateItem {
+QAbstractItemView DUI--DComboBoxItem {
     color: #b4b4b4;
     font-size: 12px;
 
     margin-left: 24;
     margin-bottom: 3;
+}
+
+QAbstractItemView DUI--DComboBoxItem[hovered="true"] {
+    color: white;
+}
+
+QAbstractItemView DUI--DComboBoxItem[checked="true"] {
+    color: #01BDFF;
+}
+
+#DComboBoxTitleMask{
+    color: #b4b4b4;
+    padding-left: 10px;
 }
 
 QFrame#DComboxInsideFrame {
@@ -87,6 +100,27 @@ QFrame#DComboxInsideFrame {
                                         stop: 0 rgba(255,255,255,26),
                                         stop: 1.0 rgba(255,255,255,5));
     border-bottom-color: rgba(255, 255, 255, 5);
+}
+
+QFrame#ComboboxPopupTopEnd {
+    border-bottom: 1px solid  rgba（255，255，255，25）;
+    border-top-left-radius: 4;
+    border-top-right-radius: 4;
+
+    background: #191919 url(:/images/dark/images/combobox_up_arrow.png);
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+
+QFrame#ComboboxPopupBottomEnd {
+    border-top: 1px solid  rgba（255，255，255，25）;
+    border-bottom-left-radius: 4;
+    border-bottom-right-radius: 4;
+
+    background: #191919 url(:/images/dark/images/combobox_down_arrow.png);
+    background-repeat: no-repeat;
+    background-position: center;
 }
 
 DUI--DComboBox:editable{

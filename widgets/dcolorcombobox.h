@@ -19,6 +19,7 @@
 
 DUI_BEGIN_NAMESPACE
 
+class DColorComboBoxPrivate;
 class LIBDUISHARED_EXPORT DColorComboBox : public DComboBox
 {
     Q_OBJECT
@@ -32,6 +33,9 @@ signals:
 
 public slots:
     void onCurrentIndexChange(int index);
+
+private:
+    D_DECLARE_PRIVATE(DColorComboBox)
 };
 
 DUI_END_NAMESPACE

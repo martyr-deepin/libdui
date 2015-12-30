@@ -31,11 +31,22 @@ void DComboBoxPrivate::init()
     q->view()->setObjectName("DComboBoxItemView");
     q->view()->setAutoScroll(true);
 
-    maskLabel = new QLabel(q);
-    maskLabel->setAttribute(Qt::WA_TranslucentBackground);
-    maskLabel->setObjectName("DComboBoxTitleMask");
+    setMaskLabel(new DComboBoxItem(q));
 
     q->connect(q, SIGNAL(currentIndexChanged(int)), q, SLOT(_q_slotCurrentIndexChange(int)));
+    QObject::connect(q->view(), &QAbstractItemView::entered, q, [=] (QModelIndex index) {
+        if(hoveredItem)
+            hoveredItem->setHovered(false);
+
+        DComboBoxItem *item =  qobject_cast<DComboBoxItem*>(q->view()->indexWidget(index));
+
+        if(item) {
+            item->setHovered(true);
+            hoveredItem = item;
+        }
+
+        hoverIndex = index;
+    });
 }
 
 //Bypassing the problem here
@@ -60,6 +71,36 @@ void DComboBoxPrivate::initInsideFrame()
     insideLayout->addWidget(insideFrame);
 }
 
+void DComboBoxPrivate::restylePopupEnds()
+{
+    D_Q(DComboBox);
+
+    QList<QWidget *> childs = q->findChildren<QWidget *>();
+    QList<QWidget *> ends;  //end of popup frame
+    for (QWidget * w : childs) {
+        if (QString(w->metaObject()->className()) == "QComboBoxPrivateScroller") {
+            ends << w;
+            w->setFixedHeight(12);
+        }
+    }
+
+    for (int i = 0; i < ends.length(); i ++) {
+        QWidget *w  = ends.at(i);
+        w->parentWidget()->setAttribute(Qt::WA_TranslucentBackground);
+        w->setStyleSheet("background: transparent");
+        QHBoxLayout *layout = new QHBoxLayout(w);
+        layout->setContentsMargins(0, 0, 0, 0);
+        QFrame *f = new QFrame(w);
+        if (i == 0)
+            f->setObjectName("ComboboxPopupTopEnd");
+        else
+            f->setObjectName("ComboboxPopupBottomEnd");
+        f->setStyleSheet(q->styleSheet());
+        f->resize(w->size());
+        layout->addWidget(f);
+    }
+}
+
 void DComboBoxPrivate::_q_slotCurrentIndexChange(int index)
 {
     D_Q(DComboBox);
@@ -79,9 +120,99 @@ void DComboBoxPrivate::_q_slotCurrentIndexChange(int index)
         if (w) {
             w->setFixedWidth(q->width());
 
-            maskLabel->setPixmap(w->grab(q->rect()));
+            QRect rect = q->rect();
+            rect.setHeight(-1);
+
+            if(checkedItem)
+                checkedItem->setChecked(false);
+
+            DComboBoxItem *item = qobject_cast<DComboBoxItem*>(w);
+
+            if(item) {
+                item->setChecked(true);
+                checkedItem = item;
+
+                maskLabel->setData(item->data());
+            } else {
+                maskLabel->setPixmap(w->grab(rect));
+            }
         }
     }
+}
+
+void DComboBoxPrivate::setMaskLabel(DComboBoxItem *label)
+{
+    D_Q(DComboBox);
+
+    if(maskLabel)
+        maskLabel->deleteLater();
+
+    maskLabel = label;
+    maskLabel->setObjectName("DComboBoxTitleMask");
+    maskLabel->setParent(q);
+    maskLabel->setStyleSheet(q->styleSheet());
+
+    maskLabel->setFixedSize(q->size());
+}
+
+DComboBoxItem::DComboBoxItem(QWidget *parent) :
+    QLabel(parent)
+{
+    setAttribute(Qt::WA_TransparentForMouseEvents);
+    setAttribute(Qt::WA_TranslucentBackground);
+}
+
+bool DComboBoxItem::checked() const
+{
+    return m_checked;
+}
+
+void DComboBoxItem::setChecked(bool value)
+{
+    if(value == m_checked)
+        return;
+
+    m_checked = value;
+
+    style()->unpolish(this);
+    style()->polish(this);
+
+    emit checkedChanged(m_checked);
+}
+
+bool DComboBoxItem::hovered() const
+{
+    return m_hovered;
+}
+
+void DComboBoxItem::setHovered(bool value)
+{
+    if(value == m_hovered)
+        return;
+
+    m_hovered = value;
+
+    style()->unpolish(this);
+    style()->polish(this);
+
+    emit hoveredChanged(m_hovered);
+}
+
+QVariantMap DComboBoxItem::data() const
+{
+    QVariantMap map;
+
+    map["text"] = text();
+
+    return map;
+}
+
+void DComboBoxItem::setData(const QVariantMap &map)
+{
+    if(map.isEmpty())
+        return;
+
+    setText(map.values().first().toString());
 }
 
 DComboBox::DComboBox(QWidget *parent) :
@@ -91,6 +222,7 @@ DComboBox::DComboBox(QWidget *parent) :
     D_THEME_INIT_WIDGET(DComboBox, alert);
 
     d_func()->init();
+    d_func()->restylePopupEnds();
 }
 
 void DComboBox::setFixedSize(int w, int h)
@@ -100,7 +232,6 @@ void DComboBox::setFixedSize(int w, int h)
     QComboBox::setFixedSize(w, h);
 
     d->maskLabel->setFixedSize(size());
-    d->maskLabel->move(-DUI::MENU_ITEM_LEFT_MARGIN + DUI::HEADER_LEFT_MARGIN, 0);
 }
 
 void DComboBox::setFixedSize(QSize size)
@@ -110,7 +241,13 @@ void DComboBox::setFixedSize(QSize size)
     QComboBox::setFixedSize(size);
 
     d->maskLabel->setFixedSize(size);
-    d->maskLabel->move(-DUI::MENU_ITEM_LEFT_MARGIN + DUI::HEADER_LEFT_MARGIN, 0);
+}
+
+QModelIndex DComboBox::hoverIndex() const
+{
+    D_DC(DComboBox);
+
+    return d->hoverIndex;
 }
 
 QString DComboBox::insensitiveTickImg() const

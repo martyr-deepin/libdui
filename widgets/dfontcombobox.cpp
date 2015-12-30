@@ -1,10 +1,11 @@
 #include <QFontMetrics>
 
 #include "dfontcombobox.h"
+#include "private/dcombobox_p.h"
 
 DUI_BEGIN_NAMESPACE
 
-class FontDelegateItem : public QLabel
+class FontDelegateItem : public DComboBoxItem
 {
     Q_OBJECT
 
@@ -22,10 +23,10 @@ public:
     void setEditorData(QWidget *editor, const QModelIndex &index) const;
 };
 
-FontDelegateItem::FontDelegateItem(QWidget *parent) : QLabel(parent)
+FontDelegateItem::FontDelegateItem(QWidget *parent) :
+    DComboBoxItem(parent)
 {
-    setAttribute(Qt::WA_TransparentForMouseEvents);
-    setAttribute(Qt::WA_TranslucentBackground);
+
 }
 
 void FontDelegateItem::setItemFont(const QString &family, const QString &title)

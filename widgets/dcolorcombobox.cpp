@@ -1,14 +1,17 @@
 #include "dcolorcombobox.h"
+#include "private/dcombobox_p.h"
 
 DUI_BEGIN_NAMESPACE
 
-class ColorDelegateItem : public QLabel
+class ColorDelegateItem : public DComboBoxItem
 {
     Q_OBJECT
 
 public:
     explicit ColorDelegateItem(QWidget *parent = 0);
     void setData(const QString &color, const QString &title);
+    void setData(const QVariantMap &map) Q_DECL_OVERRIDE;
+    QVariantMap data() const Q_DECL_OVERRIDE;
 
 protected:
     void paintEvent(QPaintEvent *);
@@ -28,10 +31,23 @@ public:
     void setEditorData(QWidget *editor, const QModelIndex &index) const;
 };
 
-ColorDelegateItem::ColorDelegateItem(QWidget *parent) : QLabel(parent)
+class DColorComboBoxPrivate : public DComboBoxPrivate
 {
-    setAttribute(Qt::WA_TransparentForMouseEvents);
-    setAttribute(Qt::WA_TranslucentBackground);
+    DColorComboBoxPrivate(DColorComboBox *qq);
+
+    D_DECLARE_PUBLIC(DColorComboBox)
+};
+
+DColorComboBoxPrivate::DColorComboBoxPrivate(DColorComboBox *qq) :
+    DComboBoxPrivate(qq)
+{
+
+}
+
+ColorDelegateItem::ColorDelegateItem(QWidget *parent) :
+    DComboBoxItem(parent)
+{
+
 }
 
 void ColorDelegateItem::setData(const QString &color, const QString &title)
@@ -43,12 +59,27 @@ void ColorDelegateItem::setData(const QString &color, const QString &title)
     update();
 }
 
+void ColorDelegateItem::setData(const QVariantMap &map)
+{
+    setData(map["color"].toString(), map["title"].toString());
+}
+
+QVariantMap ColorDelegateItem::data() const
+{
+    QVariantMap map;
+
+    map["color"] = m_color.name();
+    map["title"] = text();
+
+    return map;
+}
+
 void ColorDelegateItem::paintEvent(QPaintEvent *)
 {
     QPainter painter(this);
     painter.setRenderHint(QPainter::Antialiasing);
 
-    QRect colorRect(DUI::MENU_ITEM_LEFT_MARGIN, (DUI::MENU_ITEM_HEIGHT - 10) / 2,
+    QRect colorRect(DUI::MENU_ITEM_LEFT_MARGIN, height() / 2 - COLOR_BLOCK_HEIGHT / 2,
                     COLOR_BLOCK_WIDTH, COLOR_BLOCK_HEIGHT);
     QBrush b(m_color);
     painter.fillRect(colorRect, b);    //draw header color
@@ -93,12 +124,14 @@ void DComboBoxColorDelegate::setEditorData(QWidget *editor, const QModelIndex &i
         colorItem->setData(color, title);
 }
 
-DColorComboBox::DColorComboBox(QWidget *parent) : DComboBox(parent)
+DColorComboBox::DColorComboBox(QWidget *parent) :
+    DComboBox(*new DColorComboBoxPrivate(this), parent)
 {
     DComboBoxColorDelegate *d = new DComboBoxColorDelegate(this);
     setItemDelegate(d);
 
     setModel(new DComboBoxModel(this));
+    d_func()->setMaskLabel(new ColorDelegateItem(this));
 
     connect(this, SIGNAL(currentIndexChanged(int)), this, SLOT(onCurrentIndexChange(int)));
 }

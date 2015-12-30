@@ -14,7 +14,7 @@ void DAbstractComboBoxDelegate::paint(QPainter *painter, const QStyleOptionViewI
     if (cb){
         QModelIndex currentIndex = index.model()->index(cb->currentIndex(),0,QModelIndex());
         if (index == currentIndex){
-            QPixmap pixmap(cb->normalTickImg());//TODO need hover state
+            QPixmap pixmap((cb->hoverIndex()  != currentIndex) ? cb->normalTickImg() : cb->hoverTickImg());
             QRect rect = option.rect;
             rect.setX(DUI::TEXT_LEFT_MARGIN);
             rect.setY(rect.y() + (rect.height() - pixmap.height()) / 2);//draw in vertical center

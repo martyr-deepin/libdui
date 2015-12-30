@@ -7,6 +7,7 @@
 #include <QComboBox>
 #include <QListView>
 #include <QAbstractItemView>
+#include <QPointer>
 
 #include "libdui_global.h"
 #include "dobject.h"
@@ -32,6 +33,7 @@ public:
     void setFixedSize(int w, int h);
     void setFixedSize(QSize size);
 
+    QModelIndex hoverIndex() const;
     QString normalTickImg() const;
     QString hoverTickImg() const;
     QString insensitiveTickImg() const;
