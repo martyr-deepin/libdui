@@ -18,6 +18,9 @@ public slots:
     void handleClicked(QString label);
     void handleEnterEvent(QString label);
     void handleLeaveEvent(QString label);
+
+    void handleEnterIndex(int index);
+    void handleLeaveIndex(int index);
 private:
     QStringList m_buttons;
 };

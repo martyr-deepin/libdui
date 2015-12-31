@@ -70,6 +70,8 @@ public:
 signals:
     void mouseEntered(QString buttonId);
     void mouseLeaved(QString buttonId);
+    void mouseEntered(int index);
+    void mouseLeaved(int index);
 protected:
     void enterEvent(QEvent* event);
     void leaveEvent(QEvent* event);
@@ -103,10 +105,15 @@ public slots:
 
 private slots:
     void setButtonChecked(int id);
-
+    int getButtonEnteredIndex(QString text);
+    int getButtonLeavedIndex(QString text);
 signals:
     void buttonChecked(QString label);
     void buttonCheckedIndexChanged(int index);
+
+    void buttonEnteredIndexChanged(int index);
+    void buttonLeavedIndexChanged(int index);
+
     void buttonMouseEntered(QString label);
     void buttonMouseLeaved(QString label);
 

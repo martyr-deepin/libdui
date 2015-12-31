@@ -37,6 +37,9 @@ void ButtonGridTab::initUI(){
     connect(buttonGridGroup, SIGNAL(buttonMouseEntered(QString)), this, SLOT(handleEnterEvent(QString)));
     connect(buttonGridGroup, SIGNAL(buttonMouseLeaved(QString)), this, SLOT(handleLeaveEvent(QString)));
 
+    connect(buttonGridGroup, SIGNAL(buttonEnteredIndexChanged(int)), this, SLOT(handleEnterIndex(int)));
+    connect(buttonGridGroup, SIGNAL(buttonLeavedIndexChanged(int)), this, SLOT(handleLeaveIndex(int)));
+
     QHBoxLayout* layout = new QHBoxLayout;
     layout->addWidget(buttonGridGroup);
     layout->setContentsMargins(50, 50, 50, 50);
@@ -63,4 +66,12 @@ void ButtonGridTab::handleEnterEvent(QString label) {
 }
 void ButtonGridTab::handleLeaveEvent(QString label) {
      qDebug() << "leaveEvent" << label;
+}
+
+void ButtonGridTab::handleEnterIndex(int index) {
+    qDebug() << "Enter index:" << index;
+}
+
+void ButtonGridTab::handleLeaveIndex(int index) {
+    qDebug() << "Leave index:" << index;
 }

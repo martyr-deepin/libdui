@@ -229,6 +229,8 @@ void DButtonGrid::init(){
 
 void DButtonGrid::initConnect(){
     connect(m_buttonGroup, SIGNAL(buttonClicked(int)), this, SLOT(setButtonChecked(int)));
+    connect(this, SIGNAL(buttonMouseEntered(QString)), this, SLOT(getButtonEnteredIndex(QString)));
+    connect(this, SIGNAL(buttonMouseLeaved(QString)), this, SLOT(getButtonLeavedIndex(QString)));
 }
 
 void DButtonGrid::setItemSize(int width, int height){
@@ -278,11 +280,11 @@ void DButtonGrid::addButton(const QString &label, int index){
     button->setFixedWidth(width + 20);
     button->setFixedHeight(fm.height() + 10);
     button->setCheckable(true);
-    connect(button, SIGNAL(mouseEntered(QString)), this,
-        SIGNAL(buttonMouseEntered(QString)));
-    connect(button, SIGNAL(mouseLeaved(QString)), this,
-        SIGNAL(buttonMouseLeaved(QString)));
+    connect(button, SIGNAL(mouseEntered(QString)), this, SIGNAL(buttonMouseEntered(QString)));
+    connect(button, SIGNAL(mouseLeaved(QString)), this, SIGNAL(buttonMouseLeaved(QString)));
+
     addButtonWidget(button, index);
+
 }
 
 void DButtonGrid::addButtons(const QStringList &listLabels){
@@ -346,6 +348,18 @@ void DButtonGrid::setButtonChecked(int id){
    }else{
        emit buttonChecked(button->text());
    }
+}
+
+int DButtonGrid::getButtonEnteredIndex(QString text) {
+    int tmpIndex = m_buttonLabels.indexOf(text);
+    emit buttonEnteredIndexChanged(tmpIndex);
+    return tmpIndex;
+}
+
+int DButtonGrid::getButtonLeavedIndex(QString text) {
+    int tmpIndex = m_buttonLabels.indexOf(text);
+    emit buttonLeavedIndexChanged(tmpIndex);
+    return tmpIndex;
 }
 
 void DButtonGrid::checkButtonByIndex(int index){
