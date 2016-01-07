@@ -11,7 +11,7 @@
 
 DUI_BEGIN_NAMESPACE
 
-#define RX_PATTERN_IP "^(2[0-4]\\d|25[0-5]|[01]?\\d\\d?)$"
+#define RX_PATTERN_IP "^(2[0-4]\\d|25[0-5]|[01]?\\d\\d?)?$"
 
 DIpv4LineEditPrivate::DIpv4LineEditPrivate(DIpv4LineEdit *parent) :
     DLineEditPrivate(parent)
