@@ -201,7 +201,7 @@ bool DCalendar::eventFilter(QObject *o, QEvent *e)
         if (m_viewCurrent == m_viewLeft)
             m_viewInnerWidget->setGeometry(0, 0, m_viewSize.width() * 2, m_viewSize.height());
         else
-            m_viewInnerWidget->setGeometry(m_viewSize.width(), 0, m_viewSize.width() * 2, m_viewSize.height());
+            m_viewInnerWidget->setGeometry(-m_viewSize.width(), 0, m_viewSize.width() * 2, m_viewSize.height());
     }
 
     return false;
