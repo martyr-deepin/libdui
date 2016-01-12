@@ -39,6 +39,8 @@
         <file>dark/dialogs/DDialog.theme</file>
         <file>dark/DSpinBox.theme</file>
         <file>dark/DIpv4LineEdit.theme</file>
+        <file>dark/DOptionList.theme</file>
+        <file>dark/DOption.theme</file>
     </qresource>
     <qresource prefix="/images">
         <file>dark/images/add_hover.png</file>
@@ -178,5 +180,6 @@
         <file>dark/dialogs/images/user-trash-full.png</file>
         <file>dark/images/combobox_up_arrow.png</file>
         <file>dark/images/combobox_down_arrow.png</file>
+        <file>dark/images/tick_transparent.png</file>
     </qresource>
 </RCC>

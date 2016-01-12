@@ -1,0 +1,44 @@
+DUI--DOptionList {
+    background-color: #1A1B1B;
+    border: none;
+    outline: none;
+}
+
+DUI--DOptionList::item {
+    border: none;
+    outline: none;
+}
+
+/*
+DUI--DOptionList QPushButton:hover{
+    color: white;
+}
+
+DUI--DButtonList QFrame#BorderFrame{
+  background-color: transparent;
+}
+
+DUI--DButtonList QPushButton{
+    background-color: transparent;
+    color: #b4b4b4;
+    border: none;
+    border-radius:3px;
+    text-align: left center;
+    padding-left: 40px;
+}
+
+DUI--DButtonList QPushButton:checked{
+    background-color: #66000000;
+    color: #2ca7f8;
+}
+
+DUI--DButtonList QPushButton:checked[state="OnlyOne"]{
+    background-color: transparent;
+    color:#01BDFF;
+}
+
+DUI--DButtonList QPushButton:checked[state="normal"]{
+    background-color: lightblack;
+    color:#01BDFF;
+}
+*/

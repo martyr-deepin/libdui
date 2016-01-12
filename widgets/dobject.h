@@ -13,6 +13,7 @@ DUI_BEGIN_NAMESPACE
 #define D_Q(Class) Q_Q(Class)
 #define D_DC(Class) Q_D(const Class)
 #define D_QC(Class) Q_Q(const Class)
+#define D_PRIVATE_SLOT(Func) Q_PRIVATE_SLOT(d_func(), Func)
 
 class DObjectPrivate;
 class DObject
