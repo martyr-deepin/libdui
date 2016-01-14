@@ -34,7 +34,7 @@ void DCircleProgressPrivate::paint(QPainter *painter)
 {
     Q_Q(const DCircleProgress);
 
-    painter->setRenderHints(QPainter::HighQualityAntialiasing);
+    painter->setRenderHints(QPainter::Antialiasing);
 
     QPen pen(m_chunkColor);
     pen.setWidth(m_lineWidth);
@@ -44,9 +44,9 @@ void DCircleProgressPrivate::paint(QPainter *painter)
     outerCircleRect.setWidth(outerCircleRect.width() - (m_lineWidth - 1) * 2);
     outerCircleRect.setHeight(outerCircleRect.height() - (m_lineWidth - 1) * 2);
     if (outerCircleRect.width() < outerCircleRect.height())
-     outerCircleRect.setHeight(outerCircleRect.width());
+        outerCircleRect.setHeight(outerCircleRect.width());
     else
-     outerCircleRect.setWidth(outerCircleRect.height());
+        outerCircleRect.setWidth(outerCircleRect.height());
     outerCircleRect.setTop((widgetRect.height() - outerCircleRect.height()) / 2);
     outerCircleRect.setLeft((widgetRect.width() - outerCircleRect.width()) / 2);
 

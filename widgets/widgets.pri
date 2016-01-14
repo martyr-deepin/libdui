@@ -57,7 +57,8 @@ HEADERS += $$PWD/dslider.h\
     $$PWD/dipv4lineedit.h \
     $$PWD/dspinbox.h \
     $$PWD/doptionlist.h \
-    $$PWD/doption.h
+    $$PWD/doption.h \
+    $$PWD/dpicturesequenceview.h
 
 SOURCES += $$PWD/dslider.cpp \
     $$PWD/dthememanager.cpp \
@@ -114,7 +115,8 @@ SOURCES += $$PWD/dslider.cpp \
     $$PWD/dipv4lineedit.cpp \
     $$PWD/dspinbox.cpp \
     $$PWD/doptionlist.cpp \
-    $$PWD/doption.cpp
+    $$PWD/doption.cpp \
+    $$PWD/dpicturesequenceview.cpp
 
 RESOURCES += \
     $$PWD/../themes/dui_theme_dark.qrc \
