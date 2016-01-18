@@ -11,6 +11,7 @@ DUI--DButtonGrid QFrame QPushButton{
     background-color: rgba(0, 0, 0, 0);
     color: #b4b4b4;
     border: none;
+    font-size: 12px;
 }
 
 DUI--DButtonGrid QFrame QPushButton:hover{
@@ -23,7 +24,6 @@ DUI--DButtonGrid QFrame QPushButton:pressed{
 
 DUI--DButtonGrid QFrame QPushButton:checked{
     color: #19A9F9;
-    font-size: 12px;
     background-color: #66000000;
     border-radius: 3px;
     border: none;
