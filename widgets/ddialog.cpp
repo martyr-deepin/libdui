@@ -492,7 +492,7 @@ void DDialog::clearSpacing()
         QLayoutItem *item = d->contentLayout->itemAt(i);
 
         if(item->spacerItem()) {
-            d->contentLayout->removeItem(item);
+            delete d->contentLayout->takeAt(i);
         }
     }
 }

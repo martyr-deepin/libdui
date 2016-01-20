@@ -83,7 +83,7 @@ void DBaseExpand::setHeader(QWidget *header)
 
     QLayoutItem *child;
     while ((child = m_headerLayout->takeAt(0)) != 0) {
-        m_headerLayout->removeItem(child);
+        delete child;
     }
 
     m_headerLayout->addWidget(header);
@@ -97,7 +97,7 @@ void DBaseExpand::setContent(QWidget *content, Qt::Alignment alignment)
 
     QLayoutItem *child;
     while ((child = m_contentLayout->takeAt(0)) != 0) {
-        m_contentLayout->removeItem(child);
+        delete child;
     }
 
     m_contentLayout->addWidget(content, 0, alignment);

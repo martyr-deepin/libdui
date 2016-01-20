@@ -145,7 +145,7 @@ void DListWidget::clear(bool isDelete)
     Q_D(DListWidget);
 
     for(int i=0;i<count();++i){
-        d->mainWidget->layout()->removeItem(d->mainWidget->layout()->takeAt(i));
+        delete d->mainWidget->layout()->takeAt(i);
         d->widgetList[i]->setParent(NULL);
         if(isDelete)
             d->widgetList[i]->deleteLater();
@@ -168,7 +168,7 @@ void DListWidget::removeWidget(int index, bool isDelete)
     QWidget *w = getWidget(index);
 
     d->widgetList.removeAt(index);
-    d->mainWidget->layout()->removeItem(d->mainWidget->layout()->takeAt(index));
+    delete d->mainWidget->layout()->takeAt(index);
     d->checkedList.removeOne(index);
 
     if(d->mapVisible.value(w, false)){

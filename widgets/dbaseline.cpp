@@ -28,7 +28,7 @@ void DBaseLine::setLeftContent(QWidget *content)
 {
     QLayoutItem *child;
     while ((child = m_leftLayout->takeAt(0)) != 0) {
-        m_leftLayout->removeItem(child);
+        delete child;
     }
 
     m_leftLayout->addWidget(content);
@@ -38,7 +38,7 @@ void DBaseLine::setRightContent(QWidget *content)
 {
     QLayoutItem *child;
     while ((child = m_rightLayout->takeAt(0)) != 0) {
-        m_rightLayout->removeItem(child);
+        delete child;
     }
 
     m_rightLayout->addWidget(content);

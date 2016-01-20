@@ -151,7 +151,7 @@ void DSegmentedControl::removeSegmented(int index)
     if(index == m_currentIndex)
         setCurrentIndex(-1);
 
-    m_hLayout->removeItem(m_hLayout->itemAt(index));
+    delete m_hLayout->takeAt(index);
 
     QToolButton *button = at(index);
     m_tabList.removeAt(index);
@@ -162,7 +162,7 @@ void DSegmentedControl::removeSegmented(int index)
 void DSegmentedControl::clear()
 {
     for(int i=0; i<count(); ++i){
-        m_hLayout->removeItem(m_hLayout->itemAt(i));
+        delete m_hLayout->takeAt(i);
 
         QToolButton *button = at(i);
         if(button)
