@@ -15,14 +15,19 @@ class DPictureSequenceView : public QGraphicsView, public DObject
     Q_DISABLE_COPY(DPictureSequenceView)
     D_DECLARE_PRIVATE(DPictureSequenceView)
     Q_PROPERTY(int speed READ speed WRITE setSpeed NOTIFY speedChanged)
+    Q_PROPERTY(bool singleShot READ singleShot WRITE setSingleShot)
 
 public:
     DPictureSequenceView(QWidget *parent = nullptr);
 
     void setPictureSequence(const QStringList &sequence);
+    void play();
 
     int speed() const;
     void setSpeed(int speed);
+
+    bool singleShot() const;
+    void setSingleShot(bool singleShot);
 
 Q_SIGNALS:
     void speedChanged(int speed) const;

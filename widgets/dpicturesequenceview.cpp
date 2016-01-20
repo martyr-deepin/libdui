@@ -27,6 +27,11 @@ void DPictureSequenceViewPrivate::init()
     q->connect(m_refreshTimer, &QTimer::timeout, [this] {refreshPicture();});
 }
 
+void DPictureSequenceViewPrivate::play()
+{
+    m_refreshTimer->start();
+}
+
 void DPictureSequenceViewPrivate::setPictureSequence(const QStringList &sequence)
 {
     for (const QString &pic : sequence)
@@ -43,6 +48,16 @@ void DPictureSequenceViewPrivate::setSpeed(int speed)
     m_refreshTimer->setInterval(speed);
 }
 
+bool DPictureSequenceViewPrivate::singleShot() const
+{
+    return m_singleShot;
+}
+
+void DPictureSequenceViewPrivate::setSingleShot(bool singleShot)
+{
+    m_singleShot = singleShot;
+}
+
 void DPictureSequenceViewPrivate::refreshPicture()
 {
     m_pictureList[m_lastItemPos++]->hide();
@@ -50,6 +65,9 @@ void DPictureSequenceViewPrivate::refreshPicture()
     if (m_lastItemPos == m_pictureList.count())
     {
         m_lastItemPos = 0;
+
+        if (m_singleShot)
+            m_refreshTimer->stop();
 
         D_QC(DPictureSequenceView);
 
@@ -84,6 +102,13 @@ void DPictureSequenceView::setPictureSequence(const QStringList &sequence)
     setStyleSheet("background-color:transparent;");
 }
 
+void DPictureSequenceView::play()
+{
+    D_D(DPictureSequenceView);
+
+    d->play();
+}
+
 int DPictureSequenceView::speed() const
 {
     D_DC(DPictureSequenceView);
@@ -96,6 +121,20 @@ void DPictureSequenceView::setSpeed(int speed)
     D_D(DPictureSequenceView);
 
     d->setSpeed(speed);
+}
+
+bool DPictureSequenceView::singleShot() const
+{
+    D_DC(DPictureSequenceView);
+
+    return d->singleShot();
+}
+
+void DPictureSequenceView::setSingleShot(bool singleShot)
+{
+    D_D(DPictureSequenceView);
+
+    d->setSingleShot(singleShot);
 }
 
 DUI_END_NAMESPACE

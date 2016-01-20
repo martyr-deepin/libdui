@@ -1,6 +1,7 @@
 #include "indicatortab.h"
 
 #include "dpicturesequenceview.h"
+#include "dlinkbutton.h"
 
 #include <QDebug>
 #include <QString>
@@ -82,4 +83,18 @@ IndicatorTab::IndicatorTab(QWidget *parent) :
     seqView6->move(250, 300);
     seqView6->setFixedSize(50, 50);
     seqView6->setSpeed(66);
+
+    DPictureSequenceView *seqViewOnce = new DPictureSequenceView(this);
+    seqViewOnce->setPictureSequence(seq);
+    seqViewOnce->move(400, 300);
+    seqViewOnce->setFixedSize(50, 50);
+    seqViewOnce->setSpeed(33);
+    seqViewOnce->setSingleShot(true);
+
+    DLinkButton *restart = new DLinkButton("restart", this);
+    restart->move(450, 320);
+
+    connect(restart, &DLinkButton::clicked, [seqViewOnce] {
+        seqViewOnce->play();
+    });
 }

@@ -19,10 +19,14 @@ public:
 
     void init();
 
+    void play();
     void setPictureSequence(const QStringList &sequence);
 
     int speed() const;
     void setSpeed(int speed);
+
+    bool singleShot() const;
+    void setSingleShot(bool singleShot);
 
 public slots:
     void refreshPicture();
@@ -33,6 +37,8 @@ protected:
 public:
     int m_lastItemPos = 0;
     int m_speed = 0;
+    bool m_singleShot = false;
+
     QGraphicsScene *m_scene;
     QTimer *m_refreshTimer;
     QList<QGraphicsPixmapItem *> m_pictureList;
