@@ -20,7 +20,8 @@ HEADERS += \
     $$PWD/dcombobox_p.h \
     $$PWD/doptionlist_p.h \
     $$PWD/doption_p.h \
-    $$PWD/dpicturesequenceview_p.h
+    $$PWD/dpicturesequenceview_p.h \
+    $$PWD/dflowlayout_p.h
 
 SOURCES += \
     $$PWD/dthemehelper.cpp \

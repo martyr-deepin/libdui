@@ -27,7 +27,8 @@ SOURCES += main.cpp\
     buttongridtab.cpp \
     imagebuttongridtab.cpp \
     cameraform.cpp \
-    graphicseffecttab.cpp
+    graphicseffecttab.cpp \
+    layouttab.cpp
 
 HEADERS  += mainwindow.h \
     buttontab.h \
@@ -43,7 +44,8 @@ HEADERS  += mainwindow.h \
     buttongridtab.h \
     imagebuttongridtab.h \
     cameraform.h \
-    graphicseffecttab.h
+    graphicseffecttab.h \
+    layouttab.h
 
 RESOURCES += \
     images.qrc

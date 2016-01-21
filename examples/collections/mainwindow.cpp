@@ -15,14 +15,13 @@
 #include "imagebuttongridtab.h"
 #include "cameraform.h"
 #include "graphicseffecttab.h"
+#include "layouttab.h"
 
 DUI_USE_NAMESPACE
 
 MainWindow::MainWindow(QWidget *parent)
     : QWidget(parent)
 {
-    this->setFixedSize(700, 500);
-
     DThemeManager * themeManager = DThemeManager::instance();
 
     initTabWidget();
@@ -52,42 +51,30 @@ MainWindow::MainWindow(QWidget *parent)
 void MainWindow::initTabWidget()
 {
     m_mainTab = new QTabWidget(this);
-    m_mainTab->setFixedSize(this->width(), 450);
 
     ComboBoxTab * comboBoxTab = new ComboBoxTab(this);
-    comboBoxTab->setFixedSize(m_mainTab->size());
 
     LineTab * lineTab = new LineTab(this);
-    lineTab->setFixedSize(m_mainTab->size());
 
     BarTab * barTab = new BarTab(this);
-    barTab->setFixedSize(m_mainTab->size());
 
     ButtonTab * buttonTab = new ButtonTab(this);
-    buttonTab->setFixedSize(m_mainTab->size());
 
     InputTab * inputTab = new InputTab(this);
-    inputTab->setFixedSize(m_mainTab->size());
 
     SliderTab * sliderTab = new SliderTab(this);
-    sliderTab->setFixedSize(m_mainTab->size());
 
     IndicatorTab * indicatorTab = new IndicatorTab(this);
-    indicatorTab->setFixedSize(m_mainTab->size());
 
     ButtonListTab* buttonListGroupTab = new ButtonListTab(this);
-    buttonListGroupTab->setFixedSize(m_mainTab->size());
 
     ButtonGridTab* buttonGridTab = new ButtonGridTab(this);
-    buttonGridTab->setFixedSize(m_mainTab->size());
 
     ImageButtonGridTab* imageButtonGridTab = new ImageButtonGridTab(this);
-    imageButtonGridTab->setFixedSize(m_mainTab->size());
 
     Segmentedcontrol *segmentedControl = new Segmentedcontrol(this);
 
     WidgetsTab *widgetsTab = new WidgetsTab(this);
-    widgetsTab->setFixedSize(m_mainTab->size());
 
     DColorPicker *picker = new DColorPicker(1, this);
 
@@ -111,6 +98,7 @@ void MainWindow::initTabWidget()
     m_mainTab->addTab(widgetsTab, "Widgets");
     m_mainTab->addTab(picker, "Color Picker");
     m_mainTab->addTab(cameraform, "Camera View");
+    m_mainTab->addTab(new LayoutTab, "Layout Tab");
 
     m_mainTab->setCurrentIndex(0);
 }
