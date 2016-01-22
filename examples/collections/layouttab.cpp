@@ -10,8 +10,17 @@ LayoutTab::LayoutTab(QWidget *parent) : QWidget(parent)
 {
     QWidget *widget = new QWidget;
     DUI::DFlowLayout *m_layout = new DUI::DFlowLayout(widget);
-    m_layout->setHorizontalSpacing(10);
-    m_layout->setVerticalSpacing(10);
+
+    m_layout->setSpacing(10);
+    m_layout->setFlow(QListView::TopToBottom);
+    widget->setLayoutDirection(Qt::RightToLeft);
+
+    connect(m_layout, &DUI::DFlowLayout::sizeHintChanged,
+            this, [widget, m_layout](const QSize &size) {
+        if(m_layout->flow() == DUI::DFlowLayout::Flow::TopToBottom) {
+            widget->setFixedWidth(size.width());
+        }
+    });
 
     int i = 99;
 
@@ -54,7 +63,8 @@ LayoutTab::LayoutTab(QWidget *parent) : QWidget(parent)
     main_layout->addWidget(scroll);
 
     scroll->setWidget(widget);
-    scroll->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+    scroll->setHorizontalScrollBarPolicy(Qt::ScrollBarAsNeeded);
+    scroll->setVerticalScrollBarPolicy(Qt::ScrollBarAsNeeded);
     scroll->setWidgetResizable(true);
 }
 

@@ -28,48 +28,115 @@ QSize DFlowLayoutPrivate::doLayout(const QRect &rect, bool testOnly) const
     q->getContentsMargins(&left, &top, &right, &bottom);
     QRect effectiveRect = rect.adjusted(+left, +top, -right, -bottom);
 
-    int x = effectiveRect.x();
+    int x = q->parentWidget()->layoutDirection() == Qt::RightToLeft
+            ? effectiveRect.right()
+            :effectiveRect.x();
     int y = effectiveRect.y();
-    int lineHeight = 0;
 
-    for (QLayoutItem *item : itemList) {
-        QWidget *wid = item->widget();
+    QSize size_hint;
 
-        int spaceX = horizontalSpacing;
-        if (spaceX == -1) {
-            int policy = wid->style()->pixelMetric(QStyle::PM_LayoutHorizontalSpacing);
+    if(flow == DFlowLayout::Flow::LeftToRight) {
+        int maxWidth = 0;
+        int lineHeight = 0;
 
-            spaceX = wid->style()->layoutSpacing((QSizePolicy::ControlType)policy,
-                                                 QSizePolicy::DefaultType, Qt::Horizontal);
+        if(q->parentWidget()->layoutDirection() == Qt::RightToLeft) {
+            for (QLayoutItem *item : itemList) {
+                int nextX = x - item->sizeHint().width() - horizontalSpacing;
+
+                if (nextX + horizontalSpacing < effectiveRect.x() && lineHeight > 0) {
+                    maxWidth = qMax(effectiveRect.right() - x, maxWidth);
+                    x = effectiveRect.right();
+                    y = y + lineHeight + verticalSpacing;
+                    nextX = x - item->sizeHint().width() - horizontalSpacing;
+                    lineHeight = 0;
+                }
+
+                if (!testOnly) {
+                    QRect item_geometry;
+
+                    item_geometry.setSize(item->sizeHint());
+                    item_geometry.moveTopRight(QPoint(x, y));
+                    item->setGeometry(item_geometry);
+                }
+
+                x = nextX;
+                lineHeight = qMax(lineHeight, item->sizeHint().height());
+            }
+
+            size_hint = QSize(maxWidth, y + lineHeight - rect.y() + bottom);
+        } else {
+            for (QLayoutItem *item : itemList) {
+                int nextX = x + item->sizeHint().width() + horizontalSpacing;
+
+                if (nextX - horizontalSpacing > effectiveRect.right() && lineHeight > 0) {
+                    maxWidth = qMax(x, maxWidth);
+                    x = effectiveRect.x();
+                    y = y + lineHeight + verticalSpacing;
+                    nextX = x + item->sizeHint().width() + horizontalSpacing;
+                    lineHeight = 0;
+                }
+
+                if (!testOnly)
+                    item->setGeometry(QRect(QPoint(x, y), item->sizeHint()));
+
+                x = nextX;
+                lineHeight = qMax(lineHeight, item->sizeHint().height());
+            }
+
+            size_hint = QSize(maxWidth, y + lineHeight - rect.y() + bottom);
         }
+    } else {
+        int maxHeight = 0;
+        int lineWidth = 0;
 
-        int spaceY = verticalSpacing;
-        if (spaceY == -1) {
-            int policy  = wid->style()->pixelMetric(QStyle::PM_LayoutVerticalSpacing);
+        if(q->parentWidget()->layoutDirection() == Qt::RightToLeft) {
+            for (QLayoutItem *item : itemList) {
+                int nextY = y + item->sizeHint().height() + verticalSpacing;
 
-            spaceY = wid->style()->layoutSpacing((QSizePolicy::ControlType)policy,
-                                                 QSizePolicy::DefaultType, Qt::Vertical);
+                if(nextY - verticalSpacing > effectiveRect.bottom() && lineWidth > 0) {
+                    maxHeight = qMax(y, maxHeight);
+                    y = effectiveRect.y();
+                    x = x - lineWidth - horizontalSpacing;
+                    nextY = y + item->sizeHint().height() + verticalSpacing;
+                    lineWidth = 0;
+                }
+
+                if (!testOnly)
+                    item->setGeometry(QRect(QPoint(x - item->sizeHint().width(), y), item->sizeHint()));
+
+                y = nextY;
+                lineWidth = qMax(lineWidth, item->sizeHint().width());
+            }
+
+            size_hint = QSize(rect.right() - x + lineWidth + right + 1, maxHeight);
+        } else {
+            for (QLayoutItem *item : itemList) {
+                int nextY = y + item->sizeHint().height() + verticalSpacing;
+
+                if(nextY - verticalSpacing > effectiveRect.bottom() && lineWidth > 0) {
+                    maxHeight = qMax(y, maxHeight);
+                    y = effectiveRect.y();
+                    x = x + lineWidth + horizontalSpacing;
+                    nextY = y + item->sizeHint().height() + verticalSpacing;
+                    lineWidth = 0;
+                }
+
+                if (!testOnly)
+                    item->setGeometry(QRect(QPoint(x, y), item->sizeHint()));
+
+                y = nextY;
+                lineWidth = qMax(lineWidth, item->sizeHint().width());
+            }
+
+            size_hint = QSize(x + lineWidth - rect.x() + right, maxHeight);
         }
-
-        int nextX = x + item->sizeHint().width() + spaceX;
-        if (nextX - spaceX > effectiveRect.right() && lineHeight > 0) {
-            x = effectiveRect.x();
-            y = y + lineHeight + spaceY;
-            nextX = x + item->sizeHint().width() + spaceX;
-            lineHeight = 0;
-        }
-
-        if (!testOnly)
-            item->setGeometry(QRect(QPoint(x, y), item->sizeHint()));
-
-        x = nextX;
-        lineHeight = qMax(lineHeight, item->sizeHint().height());
     }
 
-    QSize size_hint = QSize(rect.width(), y + lineHeight - rect.y() + bottom);
-
     if(!testOnly) {
-        sizeHint = size_hint;
+        if(sizeHint != size_hint) {
+            sizeHint = size_hint;
+            Q_EMIT q->sizeHintChanged(sizeHint);
+        }
     }
 
     return size_hint;
@@ -163,7 +230,9 @@ void DFlowLayout::addItem(QLayoutItem *item)
 
 bool DFlowLayout::hasHeightForWidth() const
 {
-    return true;
+    D_DC(DFlowLayout);
+
+    return d->flow == DFlowLayout::Flow::LeftToRight;
 }
 
 int DFlowLayout::heightForWidth(int width) const
@@ -253,6 +322,13 @@ int DFlowLayout::verticalSpacing() const
     return d_func()->verticalSpacing;
 }
 
+DFlowLayout::Flow DFlowLayout::flow() const
+{
+    D_DC(DFlowLayout);
+
+    return d->flow;
+}
+
 void DFlowLayout::setHorizontalSpacing(int horizontalSpacing)
 {
     D_D(DFlowLayout);
@@ -277,6 +353,25 @@ void DFlowLayout::setVerticalSpacing(int verticalSpacing)
     d->verticalSpacing = verticalSpacing;
 
     emit verticalSpacingChanged(verticalSpacing);
+
+    invalidate();
+}
+
+void DFlowLayout::setSpacing(int spacing)
+{
+    setHorizontalSpacing(spacing);
+    setVerticalSpacing(spacing);
+}
+
+void DFlowLayout::setFlow(Flow direction)
+{
+    D_D(DFlowLayout);
+
+    if (d->flow == direction)
+        return;
+
+    d->flow = direction;
+    emit flowChanged(direction);
 
     invalidate();
 }

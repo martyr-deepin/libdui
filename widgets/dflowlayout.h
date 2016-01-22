@@ -3,6 +3,7 @@
 
 #include <QLayout>
 #include <QWidget>
+#include <QListView>
 
 #include "dobject.h"
 
@@ -16,8 +17,13 @@ class DFlowLayout : public QLayout, public DObject
     Q_PROPERTY(int horizontalSpacing READ horizontalSpacing WRITE setHorizontalSpacing NOTIFY horizontalSpacingChanged)
     Q_PROPERTY(int verticalSpacing READ verticalSpacing WRITE setVerticalSpacing NOTIFY verticalSpacingChanged)
     Q_PROPERTY(int count READ count NOTIFY countChanged)
+    Q_PROPERTY(Flow flow READ flow WRITE setFlow NOTIFY flowChanged)
+    Q_PROPERTY(QSize sizeHint READ sizeHint NOTIFY sizeHintChanged)
 
 public:
+    typedef QListView::Flow Flow;
+    Q_ENUMS(Flow)
+
     explicit DFlowLayout(QWidget *parent);
     DFlowLayout();
     ~DFlowLayout();
@@ -45,15 +51,20 @@ public:
 
     int horizontalSpacing() const;
     int verticalSpacing() const;
+    Flow flow() const;
 
 public Q_SLOTS:
     void setHorizontalSpacing(int horizontalSpacing);
     void setVerticalSpacing(int verticalSpacing);
+    void setSpacing(int spacing);
+    void setFlow(Flow flow);
 
 Q_SIGNALS:
     void horizontalSpacingChanged(int horizontalSpacing);
     void verticalSpacingChanged(int verticalSpacing);
     void countChanged(int count);
+    void flowChanged(Flow flow);
+    void sizeHintChanged(QSize sizeHint) const;
 
 private:
     D_DECLARE_PRIVATE(DFlowLayout)

@@ -15,9 +15,10 @@ class DFlowLayoutPrivate : public DObjectPrivate
     QSize doLayout(const QRect &rect, bool testOnly) const;
 
     QList<QLayoutItem*> itemList;
-    int horizontalSpacing = -1;
-    int verticalSpacing = -1;
+    int horizontalSpacing = 0;
+    int verticalSpacing = 0;
     mutable QSize sizeHint;
+    DFlowLayout::Flow flow = DFlowLayout::Flow::LeftToRight;
 
     D_DECLARE_PUBLIC(DFlowLayout)
 };
