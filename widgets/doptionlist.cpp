@@ -52,18 +52,28 @@ void DOptionListPrivate::setCurrentSelected(int pos)
 {
     D_Q(DOptionList);
 
+    DOption *prevItem = m_optionList.value(q->currentItem(), nullptr);
+
+    if (prevItem)
+        prevItem->setChecked(false);
+
     QListWidgetItem *item = q->item(pos);
     q->setCurrentItem(item);
+
+    DOption *currentItem = m_optionList.value(item, nullptr);
+    if (currentItem)
+        currentItem->setChecked(true);
 }
 
 void DOptionListPrivate::setCurrentSelected(const QString &value)
 {
-    const QList<DOption *> list = m_optionList.values();
-    const int list_size = list.count();
+    D_Q(DOptionList);
 
-    for (int i(0); i != list_size; ++i)
-        if (list[i]->value() == value)
-            return setCurrentSelected(i);
+    const QList<DOption *> list = m_optionList.values();
+
+    for (DOption *option : list)
+        if (option->value() == value)
+            return setCurrentSelected(q->row(m_optionList.key(option)));
 }
 
 void DOptionListPrivate::_q_currentItemChanged(QListWidgetItem *current,QListWidgetItem *previous)

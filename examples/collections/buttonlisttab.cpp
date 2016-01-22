@@ -54,7 +54,9 @@ void ButtonListTab::initUI() {
 
         optionList2->addOption(option);
     }
-    optionList2->setCurrentSelected("value-4");
+    optionList2->blockSignals(true);
+    optionList2->setCurrentSelected("value-3");
+    optionList2->blockSignals(false);
 
     QHBoxLayout* layout = new QHBoxLayout;
     layout->addWidget(buttonListGroup);
@@ -74,6 +76,22 @@ void ButtonListTab::initUI() {
     buttonListGroup->clear();
     buttonListGroup->addButtons(m_buttons);
     buttonListGroup->checkButtonByIndex(4);
+
+    QPushButton *b1 = new QPushButton(this);
+    b1->setText("value-4");
+    b1->move(0, 0);
+
+    connect(b1, &QPushButton::clicked, [optionList2] {
+        optionList2->setCurrentSelected("value-4");
+    });
+
+    QPushButton *b2 = new QPushButton(this);
+    b2->setText("value-3");
+    b2->move(120, 0);
+
+    connect(b2, &QPushButton::clicked, [optionList2] {
+        optionList2->setCurrentSelected("value-3");
+    });
 }
 
 void ButtonListTab::handleEnter(QString text){
