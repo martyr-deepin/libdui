@@ -1,6 +1,14 @@
 include(private/private.pri)
 include(dialogs.pri)
 
+unix{
+    HEADERS += \
+        $$PWD/dcalendar.h
+
+    SOURCES += \
+        $$PWD/dcalendar.cpp
+}
+
 HEADERS += $$PWD/dslider.h\
     $$PWD/dthememanager.h \
     $$PWD/dapplication.h \
@@ -42,7 +50,6 @@ HEADERS += $$PWD/dslider.h\
     $$PWD/dscrollbar.h \
     $$PWD/dscrollarea.h \
     $$PWD/darrowrectangle.h \
-    $$PWD/dcalendar.h \
     $$PWD/dgraphicsgloweffect.h \
     $$PWD/anchors.h \
     $$PWD/dbasebutton.h \
@@ -104,7 +111,6 @@ SOURCES += $$PWD/dslider.cpp \
     $$PWD/dscrollbar.cpp \
     $$PWD/dscrollarea.cpp \
     $$PWD/darrowrectangle.cpp \
-    $$PWD/dcalendar.cpp \
     $$PWD/dgraphicsgloweffect.cpp \
     $$PWD/anchors.cpp \
     $$PWD/dbasebutton.cpp \

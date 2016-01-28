@@ -1,5 +1,9 @@
 #include "darrowrectangle.h"
+
+#ifdef Q_OS_UNIX
 #include <X11/extensions/shape.h>
+#include <QtX11Extras/QX11Info>
+#endif
 #include <QApplication>
 
 DUI_USE_NAMESPACE
@@ -69,6 +73,7 @@ void DArrowRectangle::resizeWithContent()
 
     update();
 
+#ifdef Q_OS_UNIX
     //Shadow Transparent For MouseEvents
     qreal delta = shadowBlurRadius() + shadowDistance();
 
@@ -81,6 +86,7 @@ void DArrowRectangle::resizeWithContent()
                             delta + shadowXOffset(),
                             delta + shadowYOffset(),
                             &m_contentXRect, 1, ShapeSet, YXBanded);
+#endif
 }
 
 QSize DArrowRectangle::getFixedSize()

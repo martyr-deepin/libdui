@@ -6,7 +6,9 @@
 
 include(widgets/widgets.pri)
 
-QT       += widgets dbus multimedia multimediawidgets x11extras
+QT       += multimedia multimediawidgets
+
+greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
 TARGET = dui
 VERSION = 1.0
@@ -23,12 +25,14 @@ isEmpty(LIB_INSTALL_DIR) {
 } else {
     target.path = $$LIB_INSTALL_DIR
 }
-INSTALLS += target
 
 includes.files += libdui_global.h widgets/*.h
 includes.path = /usr/include/libdui/
 
-INSTALLS += includes
+unix{
+    QT += x11extras dbus
+    INSTALLS += includes target
+}
 
 QMAKE_PKGCONFIG_NAME = DUI
 QMAKE_PKGCONFIG_DESCRIPTION = Deepin UI in Qt
