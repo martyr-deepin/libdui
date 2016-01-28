@@ -61,7 +61,8 @@ HEADERS += $$PWD/dslider.h\
     $$PWD/dpicturesequenceview.h \
     $$PWD/dflowlayout.h \
     $$PWD/dflowlistview.h \
-    $$PWD/dlistview.h
+    $$PWD/dlistview.h \
+    $$PWD/denhancedwidget.h
 
 SOURCES += $$PWD/dslider.cpp \
     $$PWD/dthememanager.cpp \
@@ -122,7 +123,8 @@ SOURCES += $$PWD/dslider.cpp \
     $$PWD/dpicturesequenceview.cpp \
     $$PWD/dflowlayout.cpp \
     $$PWD/dflowlistview.cpp \
-    $$PWD/dlistview.cpp
+    $$PWD/dlistview.cpp \
+    $$PWD/denhancedwidget.cpp
 
 RESOURCES += \
     $$PWD/../themes/dui_theme_dark.qrc \

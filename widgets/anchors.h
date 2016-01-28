@@ -8,45 +8,9 @@
 #include <QWidget>
 #include <QDebug>
 
-class ExtendWidgetPrivate;
-class ExtendWidget: public QObject
-{
-    Q_OBJECT
+#include "libdui_global.h"
 
-    Q_PROPERTY(QWidget *target READ target WRITE setTarget NOTIFY targetChanged)
-    Q_PROPERTY(bool enabled READ enabled WRITE setEnabled NOTIFY enabledChanged)
-
-public:
-    explicit ExtendWidget(QWidget *w, QObject *parent = 0);
-    ~ExtendWidget();
-
-    QWidget *target() const;
-    bool enabled() const;
-
-public slots:
-    void setTarget(QWidget *target);
-    void setEnabled(bool enabled);
-
-signals:
-    void xChanged(int x);
-    void yChanged(int y);
-    void positionChanged(const QPoint &point);
-    void widthChanged(int width);
-    void heightChanged(int height);
-    void sizeChanged(const QSize &size);
-    void targetChanged(QWidget *target);
-    void enabledChanged(bool enabled);
-
-protected:
-    bool eventFilter(QObject *o, QEvent *e) Q_DECL_OVERRIDE;
-
-private:
-    explicit ExtendWidget(ExtendWidgetPrivate *dd, QWidget *w, QObject *parent = 0);
-
-    ExtendWidgetPrivate *d_ptr;
-
-    Q_DECLARE_PRIVATE(ExtendWidget)
-};
+DUI_BEGIN_NAMESPACE
 
 class AnchorsBase;
 struct AnchorInfo {
@@ -312,5 +276,7 @@ public:
 private:
     T *m_widget;
 };
+
+DUI_END_NAMESPACE
 
 #endif // ANCHORS_H

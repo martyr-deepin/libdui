@@ -1,148 +1,9 @@
 #include <QDebug>
 
 #include "anchors.h"
+#include "denhancedwidget.h"
 
-class ExtendWidgetPrivate
-{
-    explicit ExtendWidgetPrivate(ExtendWidget *qq): q_ptr(qq) {}
-
-    QSize old_size;
-    QPoint old_pos;
-    QWidget *target = NULL;
-    bool enabled = true;
-
-    ExtendWidget *q_ptr;
-
-    Q_DECLARE_PUBLIC(ExtendWidget)
-};
-
-ExtendWidget::ExtendWidget(QWidget *w, QObject *parent):
-    QObject(parent),
-    d_ptr(new ExtendWidgetPrivate(this))
-{
-    if (w) {
-        Q_D(ExtendWidget);
-
-        d->target = w;
-        w->installEventFilter(this);
-    }
-}
-
-ExtendWidget::~ExtendWidget()
-{
-    delete d_ptr;
-}
-
-QWidget *ExtendWidget::target() const
-{
-    Q_D(const ExtendWidget);
-
-    return d->target;
-}
-
-bool ExtendWidget::enabled() const
-{
-    Q_D(const ExtendWidget);
-
-    return d->enabled;
-}
-
-void ExtendWidget::setTarget(QWidget *target)
-{
-    Q_D(ExtendWidget);
-
-    if (d->target == target) {
-        return;
-    }
-
-    if (d->enabled && d->target) {
-        d->target->removeEventFilter(this);
-    }
-    if (d->enabled && target) {
-        target->installEventFilter(this);
-    }
-    d->target = target;
-    emit targetChanged(target);
-}
-
-void ExtendWidget::setEnabled(bool enabled)
-{
-    Q_D(ExtendWidget);
-
-    if (d->enabled == enabled) {
-        return;
-    }
-
-    if (d->target) {
-        if (enabled) {
-            d->target->installEventFilter(this);
-        } else {
-            d->target->removeEventFilter(this);
-        }
-    }
-
-    d->enabled = enabled;
-    emit enabledChanged(enabled);
-}
-
-bool ExtendWidget::eventFilter(QObject *o, QEvent *e)
-{
-    Q_D(ExtendWidget);
-
-    if (o == d->target) {
-        if (e->type() == QEvent::Resize) {
-            QResizeEvent *event = static_cast<QResizeEvent *>(e);
-            if (event) {
-                QSize size = event->size();
-
-                if (size.width() != d->old_size.width()) {
-                    emit widthChanged(size.width());
-                }
-
-                if (size.height() != d->old_size.height()) {
-                    emit heightChanged(size.height());
-                }
-
-                if (size != d->old_size) {
-                    emit sizeChanged(size);
-                }
-
-                d->old_size = size;
-            }
-        } else if (e->type() == QEvent::Move) {
-            QMoveEvent *event = static_cast<QMoveEvent *>(e);
-
-            if (event) {
-                QPoint pos = event->pos();
-
-                if (pos.x() != d->old_pos.x()) {
-                    emit xChanged(pos.x());
-                }
-
-                if (pos.y() != d->old_pos.y()) {
-                    emit yChanged(pos.y());
-                }
-
-                if (pos != d->old_pos) {
-                    emit positionChanged(pos);
-                }
-
-                d->old_pos = pos;
-            }
-        }
-    }
-
-    return false;
-}
-
-ExtendWidget::ExtendWidget(ExtendWidgetPrivate *dd, QWidget *w, QObject *parent):
-    QObject(parent),
-    d_ptr(dd)
-{
-    if (w) {
-        w->installEventFilter(this);
-    }
-}
+DUI_BEGIN_NAMESPACE
 
 class AnchorsBasePrivate
 {
@@ -379,15 +240,15 @@ class AnchorsBasePrivate
 
     AnchorsBase *q_ptr;
 
-    ExtendWidget *extendWidget = NULL;
+    DEnhancedWidget *extendWidget = NULL;
     AnchorInfo *top = new AnchorInfo(q_ptr, Qt::AnchorTop);
     AnchorInfo *bottom = new AnchorInfo(q_ptr, Qt::AnchorBottom);
     AnchorInfo *left = new AnchorInfo(q_ptr, Qt::AnchorLeft);
     AnchorInfo *right = new AnchorInfo(q_ptr, Qt::AnchorRight);
     AnchorInfo *horizontalCenter = new AnchorInfo(q_ptr, Qt::AnchorHorizontalCenter);
     AnchorInfo *verticalCenter = new AnchorInfo(q_ptr, Qt::AnchorVerticalCenter);
-    ExtendWidget *fill = new ExtendWidget(NULL, q_ptr);
-    ExtendWidget *centerIn = new ExtendWidget(NULL, q_ptr);
+    DEnhancedWidget *fill = new DEnhancedWidget(NULL, q_ptr);
+    DEnhancedWidget *centerIn = new DEnhancedWidget(NULL, q_ptr);
     int margins = 0;
     int topMargin = 0;
     int bottomMargin = 0;
@@ -649,8 +510,8 @@ bool AnchorsBase::setAnchor(const Qt::AnchorPoint &p, QWidget *target, const Qt:
     Q_D(AnchorsBase);\
     if(*d->point == point)\
         return true;\
-    ExtendWidget *tmp_w1 = NULL;\
-    ExtendWidget *tmp_w2 = NULL;\
+    DEnhancedWidget *tmp_w1 = NULL;\
+    DEnhancedWidget *tmp_w2 = NULL;\
     if(d->point->targetInfo){\
         tmp_w1 = d->point->targetInfo->base->d_func()->extendWidget;\
     }\
@@ -1157,7 +1018,7 @@ AnchorsBase::AnchorsBase(QWidget *w, bool):
 {
     Q_D(AnchorsBase);
 
-    d->extendWidget = new ExtendWidget(w, this);
+    d->extendWidget = new DEnhancedWidget(w, this);
     connect(d->extendWidget, SIGNAL(enabledChanged(bool)), SIGNAL(enabledChanged(bool)));
     connect(d->fill, SIGNAL(sizeChanged(QSize)), SLOT(updateFill()));
     connect(d->centerIn, SIGNAL(sizeChanged(QSize)), SLOT(updateCenterIn()));
@@ -1214,3 +1075,5 @@ void ARect::setRight(int arg, Qt::AnchorPoint point)
     }
     QRect::setRight(arg);
 }
+
+DUI_END_NAMESPACE
