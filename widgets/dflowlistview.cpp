@@ -1,7 +1,5 @@
 #include <QDebug>
 #include <QScrollBar>
-#include <QApplication>
-#include <QWheelEvent>
 
 #include "dthememanager.h"
 #include "dscrollbar.h"
@@ -112,7 +110,7 @@ QWidget *DFlowListItemCreator::creatWidget(const QStyleOptionViewItem &option,
     QWidget *widget = 0;
 
     if(bufferList.isEmpty()) {
-        widget = view->itemDelegate()->createEditor(view->viewport(), option, index);
+        widget = view->itemDelegate()->createWidget(view->viewport(), option, index);
 
         if(!widget)
             return 0;
@@ -134,14 +132,13 @@ void DFlowListItemCreator::destroyWidget(QWidget *widget)
     widgetList.removeOne(widget);
 
     widget->hide();
-    widget->setParent(0);
 
     bufferList << widget;
 }
 
 void DFlowListItemCreator::setWidgetData(QWidget *widget, const QModelIndex &index)
 {
-    view->itemDelegate()->setEditorData(widget, index);
+    view->itemDelegate()->setWidgetData(widget, index);
 }
 
 void DFlowListItemCreator::clear()
@@ -159,6 +156,18 @@ void DFlowListItemCreator::clear()
 
 DFlowListItemDelegate::DFlowListItemDelegate(QObject *parent) :
     QStyledItemDelegate(parent)
+{
+
+}
+
+QWidget *DFlowListItemDelegate::createWidget(QWidget *,
+                                             const QStyleOptionViewItem &,
+                                             const QModelIndex &) const
+{
+    return 0;
+}
+
+void DFlowListItemDelegate::setWidgetData(QWidget *, const QModelIndex &) const
 {
 
 }
@@ -220,8 +229,8 @@ void DFlowListViewPrivate::onRowsAboutToBeRemoved(const QModelIndex &parent,
 
     int rowCount = q->model()->rowCount(parent);
 
-    for(int i = rowCount + last - first - 1; i < rowCount; ++i) {
-        creator->destroyWidget(q->getWidget(i));
+    for(int i = rowCount - last + first - 1; i < rowCount; ++i) {
+        creator->destroyWidget(indexToWidgetMap.take(i));
     }
 }
 
@@ -286,14 +295,16 @@ void DFlowListViewPrivate::_q_onItemPaint(const QStyleOptionViewItem &option,
         if(!widget) {
             widget = creator->creatWidget(option, index);
             q->setIndexWidget(index, widget);
+        } else {
+            creator->setWidgetData(widget, index);
         }
 
         if(q->isVisualRect(option.rect) && widget) {
             QRect rect = widget->rect();
 
             rect.moveCenter(option.rect.center());
-            widget->move(rect.topLeft());
-            creator->setWidgetData(widget, index);
+            widget->move(option.rect.topLeft());
+            widget->show();
         }
     }
 }
@@ -331,13 +342,15 @@ void DFlowListView::setItemDelegate(DFlowListItemDelegate *delegate)
 {
     DFlowListItemDelegate *old_delegate = itemDelegate();
 
-    disconnect(old_delegate, SIGNAL(itemPaint(QStyleOptionViewItem,QModelIndex)),
-               this, SLOT(_q_onItemPaint(QStyleOptionViewItem,QModelIndex)));
+    if(old_delegate)
+        disconnect(old_delegate, SIGNAL(itemPaint(QStyleOptionViewItem,QModelIndex)),
+                   this, SLOT(_q_onItemPaint(QStyleOptionViewItem,QModelIndex)));
 
     DListView::setItemDelegate(delegate);
 
-    connect(delegate, SIGNAL(itemPaint(QStyleOptionViewItem,QModelIndex)),
-            this, SLOT(_q_onItemPaint(QStyleOptionViewItem,QModelIndex)));
+    if(delegate)
+        connect(delegate, SIGNAL(itemPaint(QStyleOptionViewItem,QModelIndex)),
+                this, SLOT(_q_onItemPaint(QStyleOptionViewItem,QModelIndex)));
 }
 
 QWidget *DFlowListView::getWidget(int index) const
@@ -483,7 +496,7 @@ void DFlowListView::dataChanged(const QModelIndex &topLeft,
 void DFlowListView::rowsInserted(const QModelIndex &parent, int start, int end)
 {
     DListView::rowsInserted(parent, start, end);
-    d_func()->onRowsInserted(parent, start, end);
+    //d_func()->onRowsInserted(parent, start, end);
 }
 
 void DFlowListView::rowsAboutToBeRemoved(const QModelIndex &parent, int start, int end)

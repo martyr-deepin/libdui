@@ -26,10 +26,9 @@ public:
         painter->setPen(Qt::red);
         painter->drawRect(option.rect);
 
+        //QStyledItemDelegate::paint(painter, option, index);
 //        QStyleOptionViewItem opt = option;
-
 //        initStyleOption(&opt, index);
-
 //        opt.icon.paint(painter, opt.rect);
     }
 
@@ -54,7 +53,7 @@ public:
     }
 
     // editing
-    QWidget *createEditor(QWidget *parent,
+    QWidget *createWidget(QWidget *parent,
                           const QStyleOptionViewItem &option,
                           const QModelIndex &index) const Q_DECL_OVERRIDE
     {
@@ -71,7 +70,7 @@ public:
         return label;
     }
 
-    void setEditorData(QWidget *editor, const QModelIndex &index) const Q_DECL_OVERRIDE
+    void setWidgetData(QWidget *editor, const QModelIndex &index) const Q_DECL_OVERRIDE
     {
         QLabel *label = qobject_cast<QLabel*>(editor);
 

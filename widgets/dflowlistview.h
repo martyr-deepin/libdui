@@ -35,6 +35,11 @@ public:
                const QModelIndex &index) const Q_DECL_OVERRIDE
     {Q_EMIT itemPaint(option, index);}
 
+    virtual QWidget *createWidget(QWidget *parent,
+                          const QStyleOptionViewItem &option,
+                          const QModelIndex &index) const;
+    virtual void setWidgetData(QWidget *editor, const QModelIndex &index) const;
+
 Q_SIGNALS:
     void itemPaint(const QStyleOptionViewItem &option, const QModelIndex &index) const;
 };
