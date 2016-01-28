@@ -41,6 +41,7 @@
         <file>dark/DIpv4LineEdit.theme</file>
         <file>dark/DOptionList.theme</file>
         <file>dark/DOption.theme</file>
+        <file>dark/DListView.theme</file>
     </qresource>
     <qresource prefix="/images">
         <file>dark/images/add_hover.png</file>

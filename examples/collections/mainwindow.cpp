@@ -15,7 +15,7 @@
 #include "imagebuttongridtab.h"
 #include "cameraform.h"
 #include "graphicseffecttab.h"
-#include "layouttab.h"
+#include "flowwidgetlisttab.h"
 
 DUI_USE_NAMESPACE
 
@@ -98,7 +98,7 @@ void MainWindow::initTabWidget()
     m_mainTab->addTab(widgetsTab, "Widgets");
     m_mainTab->addTab(picker, "Color Picker");
     m_mainTab->addTab(cameraform, "Camera View");
-    m_mainTab->addTab(new LayoutTab, "Layout Tab");
+    m_mainTab->addTab(new FlowWidgetListTab, "Layout Tab");
 
     m_mainTab->setCurrentIndex(0);
 }

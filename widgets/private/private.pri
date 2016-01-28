@@ -21,7 +21,9 @@ HEADERS += \
     $$PWD/doptionlist_p.h \
     $$PWD/doption_p.h \
     $$PWD/dpicturesequenceview_p.h \
-    $$PWD/dflowlayout_p.h
+    $$PWD/dflowlayout_p.h \
+    $$PWD/dflowlistview_p.h \
+    $$PWD/dlistview_p.h
 
 SOURCES += \
     $$PWD/dthemehelper.cpp \

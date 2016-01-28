@@ -59,7 +59,9 @@ HEADERS += $$PWD/dslider.h\
     $$PWD/doptionlist.h \
     $$PWD/doption.h \
     $$PWD/dpicturesequenceview.h \
-    $$PWD/dflowlayout.h
+    $$PWD/dflowlayout.h \
+    $$PWD/dflowlistview.h \
+    $$PWD/dlistview.h
 
 SOURCES += $$PWD/dslider.cpp \
     $$PWD/dthememanager.cpp \
@@ -118,7 +120,9 @@ SOURCES += $$PWD/dslider.cpp \
     $$PWD/doptionlist.cpp \
     $$PWD/doption.cpp \
     $$PWD/dpicturesequenceview.cpp \
-    $$PWD/dflowlayout.cpp
+    $$PWD/dflowlayout.cpp \
+    $$PWD/dflowlistview.cpp \
+    $$PWD/dlistview.cpp
 
 RESOURCES += \
     $$PWD/../themes/dui_theme_dark.qrc \
