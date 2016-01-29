@@ -38,7 +38,12 @@ public:
     virtual QWidget *createWidget(QWidget *parent,
                           const QStyleOptionViewItem &option,
                           const QModelIndex &index) const;
-    virtual void setWidgetData(QWidget *editor, const QModelIndex &index) const;
+
+    virtual void setWidgetData(QWidget *widget, const QModelIndex &index) const;
+
+    virtual void updateWidgetGeometry(QWidget *widget,
+                                      const QStyleOptionViewItem &option,
+                                      const QModelIndex &index) const;
 
 Q_SIGNALS:
     void itemPaint(const QStyleOptionViewItem &option, const QModelIndex &index) const;

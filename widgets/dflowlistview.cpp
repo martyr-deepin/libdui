@@ -18,6 +18,9 @@ public:
     QWidget *creatWidget(const QStyleOptionViewItem &option, const QModelIndex &index);
     void destroyWidget(QWidget *widget);
     void setWidgetData(QWidget *widget, const QModelIndex &index);
+    void updateWidgetGeometry(QWidget *widget,
+                              const QStyleOptionViewItem &option,
+                              const QModelIndex &index) const;
     void clear();
 
 protected:
@@ -141,6 +144,13 @@ void DFlowListItemCreator::setWidgetData(QWidget *widget, const QModelIndex &ind
     view->itemDelegate()->setWidgetData(widget, index);
 }
 
+void DFlowListItemCreator::updateWidgetGeometry(QWidget *widget,
+                                                const QStyleOptionViewItem &option,
+                                                const QModelIndex &index) const
+{
+    view->itemDelegate()->updateWidgetGeometry(widget, option, index);
+}
+
 void DFlowListItemCreator::clear()
 {
     widgetList << bufferList;
@@ -170,6 +180,18 @@ QWidget *DFlowListItemDelegate::createWidget(QWidget *,
 void DFlowListItemDelegate::setWidgetData(QWidget *, const QModelIndex &) const
 {
 
+}
+
+void DFlowListItemDelegate::updateWidgetGeometry(QWidget *widget,
+                                                 const QStyleOptionViewItem &option,
+                                                 const QModelIndex &index) const
+{
+    Q_UNUSED(index)
+
+    if(!widget)
+        return;
+
+    widget->move(option.rect.topLeft());
 }
 
 DFlowListViewPrivate::DFlowListViewPrivate(DFlowListView *qq) :
@@ -300,10 +322,7 @@ void DFlowListViewPrivate::_q_onItemPaint(const QStyleOptionViewItem &option,
         }
 
         if(q->isVisualRect(option.rect) && widget) {
-            QRect rect = widget->rect();
-
-            rect.moveCenter(option.rect.center());
-            widget->move(option.rect.topLeft());
+            creator->updateWidgetGeometry(widget, option, index);
             widget->show();
         }
     }
@@ -465,6 +484,8 @@ void DFlowListView::clear()
 
     if(d->creator)
         d->creator->clear();
+
+    d->indexToWidgetMap.clear();
 }
 
 void DFlowListView::setCacheBuffer(int cacheBuffer)

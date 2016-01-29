@@ -10,6 +10,27 @@
 #include "dflowlayout.h"
 #include "anchors.h"
 #include "dflowlistview.h"
+#include "dboxwidget.h"
+
+class IconItem : public DUI::DVBoxWidget
+{
+public:
+    explicit IconItem(QWidget *parent = 0) :
+        DUI::DVBoxWidget(parent)
+    {
+        icon = new QLabel;
+        label = new QLabel;
+
+        label->setWordWrap(true);
+
+        layout()->addWidget(icon, 0, Qt::AlignHCenter);
+        layout()->addWidget(label, 0 , Qt::AlignHCenter);
+    }
+
+public:
+    QLabel *icon;
+    QLabel *label;
+};
 
 class ItemDelegate : public DUI::DFlowListItemDelegate
 {
@@ -21,20 +42,18 @@ public:
                const QStyleOptionViewItem &option,
                const QModelIndex &index) const Q_DECL_OVERRIDE
     {
-        DUI::DFlowListItemDelegate::paint(painter, option, index);
-
-        painter->setPen(Qt::red);
-        painter->drawRect(option.rect);
-
-        //QStyledItemDelegate::paint(painter, option, index);
-//        QStyleOptionViewItem opt = option;
-//        initStyleOption(&opt, index);
-//        opt.icon.paint(painter, opt.rect);
+        if(viewIsWrapping)
+            DUI::DFlowListItemDelegate::paint(painter, option, index);
+        else
+            QStyledItemDelegate::paint(painter, option, index);
     }
 
     QSize sizeHint(const QStyleOptionViewItem &option,
                    const QModelIndex &index) const Q_DECL_OVERRIDE
     {
+        if(!viewIsWrapping)
+            return DUI::DFlowListItemDelegate::sizeHint(option, index);
+
         Q_UNUSED(option);
         Q_UNUSED(index);
 
@@ -49,7 +68,7 @@ public:
 
         size.setWidth(qMin(label.maximumWidth(), size.width()));
 
-        return size;
+        return QSize(100, size.height() + 60);
     }
 
     // editing
@@ -57,29 +76,43 @@ public:
                           const QStyleOptionViewItem &option,
                           const QModelIndex &index) const Q_DECL_OVERRIDE
     {
+        if(!viewIsWrapping)
+            return 0;
+
         Q_UNUSED(option);
         Q_UNUSED(index);
 
-        QLabel *label = new QLabel(parent);
+        QStyleOptionViewItem opt = option;
 
-        label->setWordWrap(true);
-        label->setMaximumWidth(100);
-        label->setText(index.data().toString());
-        label->adjustSize();
+        initStyleOption(&opt, index);
 
-        return label;
+        IconItem *item = new IconItem(parent);
+
+        item->resize(option.rect.size());
+
+        setWidgetData(item, index);
+
+        return item;
     }
 
     void setWidgetData(QWidget *editor, const QModelIndex &index) const Q_DECL_OVERRIDE
     {
-        QLabel *label = qobject_cast<QLabel*>(editor);
+        QStyleOptionViewItem opt;
 
-        if(!label)
+        initStyleOption(&opt, index);
+
+        IconItem *item = static_cast<IconItem*>(editor);
+
+        if(!item)
             return;
 
-        label->setText(index.data().toString());
-        label->adjustSize();
+        item->icon->setPixmap(opt.icon.pixmap(QSize(60, 60)));
+        item->label->setMaximumWidth(100);
+        item->label->setText(index.data().toString());
+        item->label->adjustSize();
     }
+
+    bool viewIsWrapping = true;
 };
 
 FlowWidgetListTab::FlowWidgetListTab(QWidget *parent) : QWidget(parent)
@@ -87,7 +120,9 @@ FlowWidgetListTab::FlowWidgetListTab(QWidget *parent) : QWidget(parent)
     DUI::DFlowListView *listView = new DUI::DFlowListView(this);
     QFileSystemModel *model = new QFileSystemModel(this);
 
-    listView->setItemDelegate(new ItemDelegate(listView));
+    ItemDelegate *delegate = new ItemDelegate(listView);
+
+    listView->setItemDelegate(delegate);
     listView->setSpacing(10);
     listView->setResizeMode(QListView::Adjust);
     listView->setCacheBuffer(50);
@@ -101,11 +136,37 @@ FlowWidgetListTab::FlowWidgetListTab(QWidget *parent) : QWidget(parent)
         listView->setRootIndex(index);
     });
 
-    QHBoxLayout *main_layout = new QHBoxLayout(this);
+    QHBoxLayout *buttonLayout = new QHBoxLayout;
+    QPushButton *button_back = new QPushButton("^");
+    QPushButton *button_switch = new QPushButton("switch view mode");
+
+    connect(button_back, &QPushButton::clicked, listView, [listView] {
+        listView->setRootIndex(listView->rootIndex().parent());
+    });
+
+    connect(button_switch, &QPushButton::clicked,
+            button_switch, [listView, delegate] {
+        if(listView->isWrapping()) {
+            listView->setFlow(QListView::TopToBottom);
+            listView->setWrapping(false);
+            listView->clear();
+        } else {
+            listView->setFlow(QListView::LeftToRight);
+            listView->setWrapping(true);
+        }
+
+        delegate->viewIsWrapping = listView->isWrapping();
+    });
+
+    buttonLayout->addWidget(button_back);
+    buttonLayout->addWidget(button_switch);
+
+    QVBoxLayout *main_layout = new QVBoxLayout(this);
 
     main_layout->setMargin(0);
     main_layout->setSpacing(0);
 
+    main_layout->addLayout(buttonLayout);
     main_layout->addWidget(listView);
 }
 
