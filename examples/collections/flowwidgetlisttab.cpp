@@ -138,7 +138,8 @@ FlowWidgetListTab::FlowWidgetListTab(QWidget *parent) : QWidget(parent)
         listView->setRootIndex(index);
     });
 
-    QHBoxLayout *buttonLayout = new QHBoxLayout;
+    QWidget *button_widget = new QWidget;
+    QHBoxLayout *buttonLayout = new QHBoxLayout(button_widget);
     QPushButton *button_back = new QPushButton("^");
     QPushButton *button_switch = new QPushButton("switch view mode");
 
@@ -162,13 +163,13 @@ FlowWidgetListTab::FlowWidgetListTab(QWidget *parent) : QWidget(parent)
 
     buttonLayout->addWidget(button_back);
     buttonLayout->addWidget(button_switch);
+    listView->addFooterWidget(button_widget);
 
     QVBoxLayout *main_layout = new QVBoxLayout(this);
 
     main_layout->setMargin(0);
     main_layout->setSpacing(0);
 
-    main_layout->addLayout(buttonLayout);
     main_layout->addWidget(listView);
 }
 

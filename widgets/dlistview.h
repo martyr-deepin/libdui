@@ -73,6 +73,9 @@ public:
     QVariant getItemData(int index) const;
     QModelIndex getIndexByWidget(const QWidget *widget) const;
 
+    QWidget *getHeaderWidget(int index) const;
+    QWidget *getFooterWidget(int index) const;
+
     /// return true if rect intersects contentsVisualRect+qMax(cacheBuffer,cacheCount)
     bool isActiveRect(const QRect &rect) const;
     bool isVisualRect(const QRect &rect) const;
@@ -91,6 +94,13 @@ public Q_SLOTS:
     bool removeItems(int index, int count);
     void clear();
 
+    int addHeaderWidget(QWidget *widget);
+    void removeHeaderWidget(int index);
+    QWidget *takeHeaderWidget(int index);
+    int addFooterWidget(QWidget *widget);
+    void removeFooterWidget(int index);
+    QWidget *takeFooterWidget(int index);
+
     void setCacheBuffer(int cacheBuffer);
 
 Q_SIGNALS:
@@ -99,6 +109,7 @@ Q_SIGNALS:
 
 protected:
     void paintEvent(QPaintEvent *event) Q_DECL_OVERRIDE;
+    void resizeEvent(QResizeEvent *event) Q_DECL_OVERRIDE;
 
     void dataChanged(const QModelIndex &topLeft,
                      const QModelIndex &bottomRight,

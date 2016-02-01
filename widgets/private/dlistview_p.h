@@ -7,6 +7,7 @@
 DUI_BEGIN_NAMESPACE
 
 class DListItemCreator;
+class DBoxWidget;
 class DListViewPrivate : public DObjectPrivate
 {
     DListViewPrivate(DListView *qq);
@@ -34,6 +35,12 @@ class DListViewPrivate : public DObjectPrivate
     /// contain widget QModelIndex row number list.
     QMap<int, QWidget*> indexToWidgetMap;
     DListItemCreator *creator = nullptr;
+
+    DBoxWidget *headerLayout = nullptr;
+    DBoxWidget *footerLayout = nullptr;
+
+    QList<QWidget*> headerList;
+    QList<QWidget*> footerList;
 
     D_DECLARE_PUBLIC(DListView)
 };
