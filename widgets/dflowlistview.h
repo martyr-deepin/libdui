@@ -97,7 +97,8 @@ Q_SIGNALS:
     void countChanged(int count);
 
 protected:
-    void resizeEvent(QResizeEvent *size) Q_DECL_OVERRIDE;
+    void paintEvent(QPaintEvent *event) Q_DECL_OVERRIDE;
+
     void dataChanged(const QModelIndex &topLeft,
                      const QModelIndex &bottomRight,
                      const QVector<int> &roles = QVector<int>()) Q_DECL_OVERRIDE;
@@ -107,6 +108,7 @@ protected:
 private:
     D_DECLARE_PRIVATE(DFlowListView)
     Q_PRIVATE_SLOT(d_func(), void _q_updateIndexWidget())
+    Q_PRIVATE_SLOT(d_func(), void _q_delayUpdateIndexWidget())
     Q_PRIVATE_SLOT(d_func(), void _q_onItemPaint(const QStyleOptionViewItem&, const QModelIndex&))
 };
 

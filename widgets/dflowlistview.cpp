@@ -1,5 +1,6 @@
 #include <QDebug>
 #include <QScrollBar>
+#include <QTimer>
 
 #include "dthememanager.h"
 #include "dscrollbar.h"
@@ -213,33 +214,26 @@ void DFlowListViewPrivate::init()
     creator = new DFlowListItemCreator;
     creator->view = q;
 
+    updateWidgetTimer = new QTimer(q);
+    updateWidgetTimer->setSingleShot(true);
+
+    q->connect(updateWidgetTimer, SIGNAL(timeout()),
+               q, SLOT(_q_updateIndexWidget()));
+
     q->setFlow(QListView::LeftToRight);
     q->setWrapping(true);
     q->setHorizontalScrollMode(QAbstractItemView::ScrollPerPixel);
     q->setVerticalScrollMode(QAbstractItemView::ScrollPerPixel);
-
-    q->connect(q->verticalScrollBar(), SIGNAL(valueChanged(int)),
-               q, SLOT(_q_updateIndexWidget()));
-    q->connect(q->horizontalScrollBar(), SIGNAL(valueChanged(int)),
-               q, SLOT(_q_updateIndexWidget()));
 }
 
 void DFlowListViewPrivate::onRowsInserted(const QModelIndex &parent,
                                              int first, int last)
 {
     Q_UNUSED(parent);
+    Q_UNUSED(first);
+    Q_UNUSED(last);
     Q_ASSERT(creator);
     D_Q(DFlowListView);
-
-    for(int i = first; i <= last; ++i) {
-        const QModelIndex &index = q->model()->index(i, 0, parent);
-
-        QWidget *widget = q->indexWidget(index);
-
-        if(widget) {
-            creator->setWidgetData(widget, index);
-        }
-    }
 }
 
 void DFlowListViewPrivate::onRowsAboutToBeRemoved(const QModelIndex &parent,
@@ -275,22 +269,7 @@ void DFlowListViewPrivate::_q_updateIndexWidget()
 {
     D_Q(DFlowListView);
 
-    QScrollBar *vbar = q->verticalScrollBar();
-    QScrollBar *hbar = q->horizontalScrollBar();
-
-    if((vbar->maximum() <= vbar->minimum())
-            && (hbar->maximum() <= hbar->minimum()))
-        return;
-
-    QRect rect = q->viewport()->geometry();
-
-    if(q->verticalScrollMode() == QAbstractItemView::ScrollPerPixel)
-        rect.moveTop(vbar->value() + rect.top());
-
-    if(q->horizontalScrollMode() == QAbstractItemView::ScrollPerPixel)
-        rect.moveLeft(hbar->value() + rect.left());
-
-    const QList<int> indexList = indexToWidgetMap.keys();
+    const QList<int> &indexList = indexToWidgetMap.keys();
 
     for(int i : indexList) {
         const QModelIndex &index = q->model()->index(i, 0, q->rootIndex());
@@ -304,28 +283,67 @@ void DFlowListViewPrivate::_q_updateIndexWidget()
             q->setIndexWidget(index, 0);
         }
     }
+
+    for(int i = startIndex; i <= endIndex; ++i) {
+        const QModelIndex &index = q->model()->index(i, 0, q->rootIndex());
+        const QRect &rect = q->visualRect(index);
+        QWidget *widget = q->indexWidget(index);
+
+        if(!index.isValid()) {
+            continue;
+        }
+
+        if(q->isActiveRect(rect)) {
+            if(!widget) {
+                QStyleOptionViewItem option;
+
+                option.rect = rect;
+                widget = creator->creatWidget(option, index);
+                q->setIndexWidget(index, widget);
+            } else {
+                creator->setWidgetData(widget, index);
+            }
+
+            if(!widget)
+                continue;
+
+            if(q->isVisualRect(rect)) {
+                QStyleOptionViewItem option;
+
+                option.rect = rect;
+                creator->updateWidgetGeometry(widget, option, index);
+                widget->show();
+            }
+
+            indexWidgetUpdated = true;
+        } else if(widget) {
+            creator->destroyWidget(widget);
+            q->setIndexWidget(index, 0);
+        }
+    }
+
+    startIndex = INT_MAX;
+    endIndex = -1;
+}
+
+void DFlowListViewPrivate::_q_delayUpdateIndexWidget()
+{
+    if(updateWidgetTimer->isActive()) {
+        return;
+    }
+
+    updateWidgetTimer->start(0);
 }
 
 void DFlowListViewPrivate::_q_onItemPaint(const QStyleOptionViewItem &option,
                                           const QModelIndex &index)
 {
-    D_Q(DFlowListView);
+    Q_UNUSED(option);
 
-    if(q->isActiveRect(option.rect)) {
-        QWidget *widget = q->indexWidget(index);
-
-        if(!widget) {
-            widget = creator->creatWidget(option, index);
-            q->setIndexWidget(index, widget);
-        } else {
-            creator->setWidgetData(widget, index);
-        }
-
-        if(q->isVisualRect(option.rect) && widget) {
-            creator->updateWidgetGeometry(widget, option, index);
-            widget->show();
-        }
-    }
+    if(index.row() < startIndex)
+        startIndex = index.row();
+    else if(index.row() > endIndex)
+        endIndex = index.row();
 }
 
 DFlowListView::DFlowListView(QWidget *parent) :
@@ -341,13 +359,14 @@ void DFlowListView::setRootIndex(const QModelIndex &index)
     if(!index.isValid())
         return;
 
-    int count = model()->rowCount(index);
     const QList<int> &indexList = d->indexToWidgetMap.keys();
 
     for(int i : indexList) {
-        if(i > count)
-            d->creator->destroyWidget(d->indexToWidgetMap.take(i));
+        d->creator->destroyWidget(d->indexToWidgetMap.take(i));
     }
+
+    d->startIndex = INT_MAX;
+    d->endIndex = -1;
 
     DListView::setRootIndex(index);
 }
@@ -409,7 +428,7 @@ bool DFlowListView::isVisualRect(const QRect &rect) const
 {
     D_DC(DFlowListView);
 
-    QRect area = viewport()->geometry();
+    const QRect &area = viewport()->geometry();
 
     return area.intersects(rect);
 }
@@ -421,7 +440,7 @@ int DFlowListView::cacheBuffer() const
 
 int DFlowListView::count() const
 {
-    return model()->rowCount();
+    return model()->rowCount(rootIndex());
 }
 
 void DFlowListView::setIndexWidget(const QModelIndex &index, QWidget *widget)
@@ -499,11 +518,17 @@ void DFlowListView::setCacheBuffer(int cacheBuffer)
     emit cacheBufferChanged(cacheBuffer);
 }
 
-void DFlowListView::resizeEvent(QResizeEvent *size)
+void DFlowListView::paintEvent(QPaintEvent *event)
 {
-    QListView::resizeEvent(size);
+    DListView::paintEvent(event);
 
-    d_func()->_q_updateIndexWidget();
+    D_D(DFlowListView);
+
+    if(d->indexWidgetUpdated) {
+        d->indexWidgetUpdated = false;
+    } else {
+        d->_q_delayUpdateIndexWidget();
+    }
 }
 
 void DFlowListView::dataChanged(const QModelIndex &topLeft,
