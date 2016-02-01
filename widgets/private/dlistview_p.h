@@ -6,14 +6,35 @@
 
 DUI_BEGIN_NAMESPACE
 
+class DListItemCreator;
 class DListViewPrivate : public DObjectPrivate
 {
-protected:
     DListViewPrivate(DListView *qq);
+    ~DListViewPrivate();
 
     void init();
 
-private:
+    void onRowsInserted(const QModelIndex & parent, int first, int last);
+    void onRowsAboutToBeRemoved(const QModelIndex & parent, int first, int last);
+    void onDataChanged(const QModelIndex & topLeft, const QModelIndex & bottomRight,
+                          const QVector<int> & roles = QVector<int> ());
+    void _q_updateIndexWidget();
+    void _q_onItemPaint(const QStyleOptionViewItem &option, const QModelIndex &index);
+
+    int cacheBuffer = 0;
+    int cacheCount = 0;
+
+    /// Will be updated within the geometry QModelIndex.
+    int startIndex = INT_MAX;
+    int endIndex = -1;
+
+    /// prevent q::paintEvent and _q_delayUpdateIndexWidget loop calls
+    bool indexWidgetUpdated = false;
+
+    /// contain widget QModelIndex row number list.
+    QMap<int, QWidget*> indexToWidgetMap;
+    DListItemCreator *creator = nullptr;
+
     D_DECLARE_PUBLIC(DListView)
 };
 

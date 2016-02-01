@@ -67,7 +67,6 @@ HEADERS += $$PWD/dslider.h\
     $$PWD/doption.h \
     $$PWD/dpicturesequenceview.h \
     $$PWD/dflowlayout.h \
-    $$PWD/dflowlistview.h \
     $$PWD/dlistview.h \
     $$PWD/denhancedwidget.h
 
@@ -128,7 +127,6 @@ SOURCES += $$PWD/dslider.cpp \
     $$PWD/doption.cpp \
     $$PWD/dpicturesequenceview.cpp \
     $$PWD/dflowlayout.cpp \
-    $$PWD/dflowlistview.cpp \
     $$PWD/dlistview.cpp \
     $$PWD/denhancedwidget.cpp
 

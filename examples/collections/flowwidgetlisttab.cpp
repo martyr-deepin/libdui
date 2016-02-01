@@ -9,7 +9,7 @@
 #include "flowwidgetlisttab.h"
 #include "dflowlayout.h"
 #include "anchors.h"
-#include "dflowlistview.h"
+#include "dlistview.h"
 #include "dboxwidget.h"
 
 class IconItem : public DUI::DVBoxWidget
@@ -32,10 +32,10 @@ public:
     QLabel *label;
 };
 
-class ItemDelegate : public DUI::DFlowListItemDelegate
+class ItemDelegate : public DUI::DListItemDelegate
 {
 public:
-    ItemDelegate(QObject *parent = 0) : DUI::DFlowListItemDelegate(parent)
+    ItemDelegate(QObject *parent = 0) : DUI::DListItemDelegate(parent)
     {}
 
     void paint(QPainter *painter,
@@ -43,7 +43,7 @@ public:
                const QModelIndex &index) const Q_DECL_OVERRIDE
     {
         if(viewIsWrapping)
-            DUI::DFlowListItemDelegate::paint(painter, option, index);
+            DUI::DListItemDelegate::paint(painter, option, index);
         else
             QStyledItemDelegate::paint(painter, option, index);
     }
@@ -52,7 +52,7 @@ public:
                    const QModelIndex &index) const Q_DECL_OVERRIDE
     {
         if(!viewIsWrapping)
-            return DUI::DFlowListItemDelegate::sizeHint(option, index);
+            return DUI::DListItemDelegate::sizeHint(option, index);
 
         Q_UNUSED(option);
         Q_UNUSED(index);
@@ -117,7 +117,7 @@ public:
 
 FlowWidgetListTab::FlowWidgetListTab(QWidget *parent) : QWidget(parent)
 {
-    DUI::DFlowListView *listView = new DUI::DFlowListView(this);
+    DUI::DListView *listView = new DUI::DListView(this);
     QFileSystemModel *model = new QFileSystemModel(this);
 
     ItemDelegate *delegate = new ItemDelegate(listView);
@@ -127,11 +127,13 @@ FlowWidgetListTab::FlowWidgetListTab(QWidget *parent) : QWidget(parent)
     listView->setResizeMode(QListView::Adjust);
     listView->setCacheBuffer(50);
     listView->setModel(model);
+    listView->setFlow(QListView::LeftToRight);
+    listView->setWrapping(true);
 
     model->setRootPath("/");
     listView->setRootIndex(model->index("/"));
 
-    connect(listView, &DUI::DFlowListView::doubleClicked,
+    connect(listView, &DUI::DListView::doubleClicked,
             this, [listView](const QModelIndex &index) {
         listView->setRootIndex(index);
     });
