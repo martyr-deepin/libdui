@@ -22,11 +22,7 @@ CameraForm::CameraForm(QWidget *parent) :
     viewfinder->setAspectRatioMode(Qt::KeepAspectRatioByExpanding);
 
     viewfinder->move(ui->widget->width()/2-viewfinder->width()/2, ui->widget->height()/2-viewfinder->height()/2);
-
-    if(camera){
-        viewfinder->setSource(camera);
-        camera->start();
-    }
+    viewfinder->setSource(camera);
 }
 
 CameraForm::~CameraForm()
@@ -53,4 +49,15 @@ void CameraForm::on_pushButton_2_clicked()
 void CameraForm::on_pushButton_3_clicked()
 {
     viewfinder->setRound(!viewfinder->round());
+}
+
+void CameraForm::on_pushButton_4_clicked()
+{
+    if(camera->status() == QCamera::ActiveStatus) {
+        camera->stop();
+        ui->pushButton_4->setText("start");
+    } else {
+        camera->start();
+        ui->pushButton_4->setText("stop");
+    }
 }
