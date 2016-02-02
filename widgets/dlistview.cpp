@@ -224,7 +224,6 @@ void DListViewPrivate::onRowsInserted(const QModelIndex &parent,
     Q_UNUSED(first);
     Q_UNUSED(last);
     Q_ASSERT(creator);
-    D_Q(DListView);
 }
 
 void DListViewPrivate::onRowsAboutToBeRemoved(const QModelIndex &parent,
@@ -467,8 +466,6 @@ bool DListView::isActiveRect(const QRect &rect) const
 
 bool DListView::isVisualRect(const QRect &rect) const
 {
-    D_DC(DListView);
-
     const QRect &area = viewport()->geometry();
 
     return area.intersects(rect);
@@ -740,6 +737,32 @@ void DListView::setCacheBuffer(int cacheBuffer)
     d->cacheBuffer = cacheBuffer;
     emit cacheBufferChanged(cacheBuffer);
 }
+
+#if(QT_VERSION < 0x050500)
+void DListView::setViewportMargins(int left, int top, int right, int bottom)
+{
+    D_D(DListView);
+
+    d->left = left;
+    d->top = top;
+    d->right = right;
+    d->bottom = bottom;
+
+    QListView::setViewportMargins(left, top, right, bottom);
+}
+
+void DListView::setViewportMargins(const QMargins &margins)
+{
+    setViewportMargins(margins.left(), margins.top(), margins.right(), margins.bottom());
+}
+
+QMargins DListView::viewportMargins() const
+{
+    D_DC(DListView);
+
+    return QMargins(d->left, d->top, d->right, d->bottom);
+}
+#endif
 
 void DListView::paintEvent(QPaintEvent *event)
 {

@@ -43,6 +43,10 @@ class DListViewPrivate : public DObjectPrivate
     QList<QWidget*> headerList;
     QList<QWidget*> footerList;
 
+#if(QT_VERSION < 0x050500)
+    int left = 0, top = 0, right = 0, bottom = 0; // viewport margin
+#endif
+
     D_DECLARE_PUBLIC(DListView)
 };
 

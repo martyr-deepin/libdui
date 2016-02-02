@@ -114,6 +114,12 @@ Q_SIGNALS:
     void orientationChanged(Qt::Orientation orientation);
 
 protected:
+#if(QT_VERSION < 0x050500)
+    void setViewportMargins(int left, int top, int right, int bottom);
+    void setViewportMargins(const QMargins &margins);
+    QMargins viewportMargins() const;
+#endif
+
     void paintEvent(QPaintEvent *event) Q_DECL_OVERRIDE;
     void resizeEvent(QResizeEvent *event) Q_DECL_OVERRIDE;
 
