@@ -1,0 +1,4 @@
+DUI--DImageButton:disabled {
+    border: none;
+    background: transparent;
+}
