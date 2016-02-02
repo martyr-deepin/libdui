@@ -19,6 +19,8 @@ class DListViewPrivate : public DObjectPrivate
     void onRowsAboutToBeRemoved(const QModelIndex & parent, int first, int last);
     void onDataChanged(const QModelIndex & topLeft, const QModelIndex & bottomRight,
                           const QVector<int> & roles = QVector<int> ());
+    void onOrientationChanged();
+
     void _q_updateIndexWidget();
     void _q_onItemPaint(const QStyleOptionViewItem &option, const QModelIndex &index);
 
@@ -35,7 +37,6 @@ class DListViewPrivate : public DObjectPrivate
     /// contain widget QModelIndex row number list.
     QMap<int, QWidget*> indexToWidgetMap;
     DListItemCreator *creator = nullptr;
-
     DBoxWidget *headerLayout = nullptr;
     DBoxWidget *footerLayout = nullptr;
 

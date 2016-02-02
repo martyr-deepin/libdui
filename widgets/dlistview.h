@@ -59,6 +59,8 @@ class LIBDUISHARED_EXPORT DListView : public QListView, public DObject
     Q_PROPERTY(int cacheBuffer READ cacheBuffer WRITE setCacheBuffer NOTIFY cacheBufferChanged)
     /// item count.
     Q_PROPERTY(int count READ count NOTIFY countChanged)
+    /// list layout orientation
+    Q_PROPERTY(Qt::Orientation orientation READ orientation NOTIFY orientationChanged)
 
 public:
     explicit DListView(QWidget *parent = 0);
@@ -83,6 +85,8 @@ public:
     int cacheBuffer() const;
     int count() const;
 
+    Qt::Orientation orientation() const;
+
 public Q_SLOTS:
     void setIndexWidget(const QModelIndex &index, QWidget *widget);
 
@@ -101,11 +105,13 @@ public Q_SLOTS:
     void removeFooterWidget(int index);
     QWidget *takeFooterWidget(int index);
 
+    void setOrientation(QListView::Flow flow, bool wrapping);
     void setCacheBuffer(int cacheBuffer);
 
 Q_SIGNALS:
     void cacheBufferChanged(int cacheBuffer);
     void countChanged(int count);
+    void orientationChanged(Qt::Orientation orientation);
 
 protected:
     void paintEvent(QPaintEvent *event) Q_DECL_OVERRIDE;
@@ -118,6 +124,9 @@ protected:
     void rowsAboutToBeRemoved(const QModelIndex &parent, int start, int end) Q_DECL_OVERRIDE;
 
 private:
+    void setFlow(QListView::Flow flow);
+    void setWrapping(bool enable);
+
     D_DECLARE_PRIVATE(DListView)
     Q_PRIVATE_SLOT(d_func(), void _q_updateIndexWidget())
     Q_PRIVATE_SLOT(d_func(), void _q_onItemPaint(const QStyleOptionViewItem&, const QModelIndex&))

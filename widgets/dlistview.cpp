@@ -256,6 +256,42 @@ void DListViewPrivate::onDataChanged(const QModelIndex &topLeft,
     }
 }
 
+void DListViewPrivate::onOrientationChanged()
+{
+    D_Q(DListView);
+
+    bool isVerticalLayout = (q->orientation() == Qt::Vertical);
+
+    if(headerLayout) {
+        headerLayout->setDirection(isVerticalLayout
+                                   ? QBoxLayout::TopToBottom
+                                   : QBoxLayout::LeftToRight);
+        if(isVerticalLayout) {
+            headerLayout->resize(q->width(), headerLayout->sizeHint().height());
+        } else {
+            headerLayout->resize(headerLayout->sizeHint().width(), q->height());
+        }
+
+        headerLayout->layout()->update();
+    }
+
+    if(footerLayout) {
+        footerLayout->setDirection(isVerticalLayout
+                                   ? QBoxLayout::TopToBottom
+                                   : QBoxLayout::LeftToRight);
+
+        if(isVerticalLayout) {
+            footerLayout->resize(q->width(), footerLayout->sizeHint().height());
+            footerLayout->move(0, q->height() - footerLayout->height());
+        } else {
+            footerLayout->resize(footerLayout->sizeHint().width(), q->height());
+            footerLayout->move(q->width() - footerLayout->width(), 0);
+        }
+
+        footerLayout->layout()->update();
+    }
+}
+
 void DListViewPrivate::_q_updateIndexWidget()
 {
     D_Q(DListView);
@@ -376,6 +412,16 @@ void DListView::setItemDelegate(DListItemDelegate *delegate)
                 this, SLOT(_q_onItemPaint(QStyleOptionViewItem,QModelIndex)));
 }
 
+void DListView::setFlow(QListView::Flow flow)
+{
+    QListView::setFlow(flow);
+}
+
+void DListView::setWrapping(bool enable)
+{
+    QListView::setWrapping(enable);
+}
+
 QWidget *DListView::getWidget(int index) const
 {
     D_DC(DListView);
@@ -436,6 +482,15 @@ int DListView::cacheBuffer() const
 int DListView::count() const
 {
     return model()->rowCount(rootIndex());
+}
+
+Qt::Orientation DListView::orientation() const
+{
+    bool isVerticalLayout = isWrapping()
+                            ? flow() == QListView::LeftToRight
+                            : flow() == QListView::TopToBottom;
+
+    return isVerticalLayout ? Qt::Vertical : Qt::Horizontal;
 }
 
 void DListView::setIndexWidget(const QModelIndex &index, QWidget *widget)
@@ -512,21 +567,21 @@ int DListView::addHeaderWidget(QWidget *widget)
         return index;
 
     if(!d->headerLayout) {
-        bool isVerticalLayout = isWrapping()
-                                ? flow() == QListView::LeftToRight
-                                : flow() == QListView::TopToBottom;
+        bool isVerticalLayout = (orientation() == Qt::Vertical);
 
         d->headerLayout = new DBoxWidget(isVerticalLayout
                                          ? QBoxLayout::TopToBottom
                                          : QBoxLayout::LeftToRight, this);
 
         if(isVerticalLayout)
-            d->headerLayout->setFixedWidth(width());
+            d->headerLayout->resize(width(), d->headerLayout->height());
         else
-            d->headerLayout->setFixedHeight(height());
+            d->headerLayout->resize(d->headerLayout->width(), height());
 
         connect(d->headerLayout, &DBoxWidget::sizeChanged,
-                this, [this, isVerticalLayout](const QSize &size) {
+                this, [this](const QSize &size) {
+            bool isVerticalLayout = (orientation() == Qt::Vertical);
+
             QMargins margins = this->viewportMargins();
 
             if(isVerticalLayout)
@@ -578,21 +633,21 @@ int DListView::addFooterWidget(QWidget *widget)
         return index;
 
     if(!d->footerLayout) {
-        bool isVerticalLayout = isWrapping()
-                                ? flow() == QListView::LeftToRight
-                                : flow() == QListView::TopToBottom;
+        bool isVerticalLayout = (orientation() == Qt::Vertical);
 
         d->footerLayout = new DBoxWidget(isVerticalLayout
                                          ? QBoxLayout::TopToBottom
                                          : QBoxLayout::LeftToRight, this);
 
         if(isVerticalLayout)
-            d->footerLayout->setFixedWidth(width());
+            d->footerLayout->resize(width(), d->footerLayout->height());
         else
-            d->footerLayout->setFixedHeight(height());
+            d->footerLayout->resize(d->footerLayout->width(), height());
 
         connect(d->footerLayout, &DBoxWidget::sizeChanged,
-                this, [this, isVerticalLayout](const QSize &size) {
+                this, [this](const QSize &size) {
+            bool isVerticalLayout = (orientation() == Qt::Vertical);
+
             QMargins margins = this->viewportMargins();
 
             D_D(DListView);
@@ -639,6 +694,42 @@ QWidget *DListView::takeFooterWidget(int index)
     return widget;
 }
 
+void DListView::setOrientation(QListView::Flow flow, bool wrapping)
+{
+    Qt::Orientation old_orientation = this->orientation();
+
+    setFlow(flow);
+    setWrapping(wrapping);
+
+    Qt::Orientation orientation = this->orientation();
+
+    if(old_orientation != orientation) {
+        D_D(DListView);
+
+        QMargins margins = viewportMargins();
+
+        if(old_orientation == Qt::Vertical) {
+            if(d->headerLayout)
+                margins.setTop(0);
+
+            if(d->footerLayout)
+                margins.setBottom(0);
+        } else {
+            if(d->headerLayout)
+                margins.setLeft(0);
+
+            if(d->footerLayout)
+                margins.setRight(0);
+        }
+
+        setViewportMargins(margins);
+
+        d->onOrientationChanged();
+
+        emit orientationChanged(orientation);
+    }
+}
+
 void DListView::setCacheBuffer(int cacheBuffer)
 {
     D_D(DListView);
@@ -669,23 +760,21 @@ void DListView::resizeEvent(QResizeEvent *event)
 
     D_D(DListView);
 
-    bool isVerticalLayout = isWrapping()
-                            ? flow() == QListView::LeftToRight
-                            : flow() == QListView::TopToBottom;
+    bool isVerticalLayout = (orientation() == Qt::Vertical);
 
     if(d->headerLayout) {
         if(isVerticalLayout)
-            d->headerLayout->setFixedWidth(width());
+            d->headerLayout->resize(width(), d->headerLayout->height());
         else
-            d->headerLayout->setFixedHeight(height());
+            d->headerLayout->resize(d->headerLayout->width(), height());
     }
 
     if(d->footerLayout) {
         if(isVerticalLayout) {
-            d->footerLayout->setFixedWidth(width());
+            d->footerLayout->resize(width(), d->footerLayout->height());
             d->footerLayout->move(0, height() - d->footerLayout->height());
         } else {
-            d->footerLayout->setFixedHeight(height());
+            d->footerLayout->resize(d->footerLayout->width(), height());
             d->footerLayout->move(width() - d->footerLayout->width(), 0);
         }
     }

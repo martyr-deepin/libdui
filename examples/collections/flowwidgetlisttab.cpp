@@ -127,8 +127,7 @@ FlowWidgetListTab::FlowWidgetListTab(QWidget *parent) : QWidget(parent)
     listView->setResizeMode(QListView::Adjust);
     listView->setCacheBuffer(50);
     listView->setModel(model);
-    listView->setFlow(QListView::LeftToRight);
-    listView->setWrapping(true);
+    listView->setOrientation(QListView::LeftToRight, true);
 
     model->setRootPath("/");
     listView->setRootIndex(model->index("/"));
@@ -150,12 +149,10 @@ FlowWidgetListTab::FlowWidgetListTab(QWidget *parent) : QWidget(parent)
     connect(button_switch, &QPushButton::clicked,
             button_switch, [listView, delegate] {
         if(listView->isWrapping()) {
-            listView->setFlow(QListView::TopToBottom);
-            listView->setWrapping(false);
+            listView->setOrientation(QListView::TopToBottom, false);
             listView->clear();
         } else {
-            listView->setFlow(QListView::LeftToRight);
-            listView->setWrapping(true);
+            listView->setOrientation(QListView::LeftToRight, true);
         }
 
         delegate->viewIsWrapping = listView->isWrapping();
