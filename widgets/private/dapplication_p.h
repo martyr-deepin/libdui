@@ -7,31 +7,34 @@
  * (at your option) any later version.
  **/
 
-#ifndef DAPPLICATION_H
-#define DAPPLICATION_H
+#ifndef DAPPLICATION_P_H
+#define DAPPLICATION_P_H
 
-#include <QApplication>
+#include "dobject_p.h"
+#include "dapplication.h"
 
-#include "libdui_global.h"
-#include "dobject.h"
+#include <QLocalServer>
 
 DUI_BEGIN_NAMESPACE
 
-class DApplicationPrivate;
-class LIBDUISHARED_EXPORT DApplication : public QApplication, public DObject
+class DApplicationPrivate : public DObjectPrivate
 {
-    Q_OBJECT
-    D_DECLARE_PRIVATE(DApplication)
+    D_DECLARE_PUBLIC(DApplication)
 
 public:
-    DApplication(int &argc, char **argv);
+    DApplicationPrivate(DApplication *q);
+    ~DApplicationPrivate();
 
     QString theme() const;
-    void setTheme(const QString &theme);
+    void setTheme(const QString & theme);
 
     bool setSingleInstance(const QString &key);
+
+public:
+//    int m_pidLockFD = 0;
+    QLocalServer *m_socketLock = nullptr;
 };
 
 DUI_END_NAMESPACE
 
-#endif // DAPPLICATION_H
+#endif // DAPPLICATION_P_H
