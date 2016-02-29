@@ -32,7 +32,7 @@ public:
 
 public:
 //    int m_pidLockFD = 0;
-    QLocalServer *m_socketLock = nullptr;
+    QLocalServer *m_localServer = nullptr;
 };
 
 DUI_END_NAMESPACE

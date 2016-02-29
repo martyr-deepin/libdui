@@ -8,6 +8,7 @@
  **/
 
 #include <QDebug>
+#include <QLocalSocket>
 
 #include "dapplication.h"
 #include "dthememanager.h"
@@ -26,8 +27,8 @@ DApplicationPrivate::DApplicationPrivate(DApplication *q) :
 
 DApplicationPrivate::~DApplicationPrivate()
 {
-//    if (m_pidLockFD)
-//        close(m_pidLockFD);
+    if (m_localServer)
+        m_localServer->close();
 }
 
 QString DApplicationPrivate::theme() const
@@ -43,27 +44,26 @@ void DApplicationPrivate::setTheme(const QString &theme)
 
 bool DApplicationPrivate::setSingleInstance(const QString &key)
 {
-//    const QString file = QString("/run/user/%1/deepin/%2.pid").arg(getuid())
-//                                                              .arg(key);
-
-
-//    m_pidLockFD = open(file.toStdString().c_str(), O_CREAT | O_RDWR, 0600);
-//    int rc = flock(m_pidLockFD, LOCK_EX | LOCK_NB);
-
-//    // another instance is running
-//    if (rc) {
-//        m_pidLockFD = 0;
-//        return false;
-//    }
-
-//    return true;
-
     D_Q(DApplication);
 
-    if (!m_socketLock)
-        m_socketLock = new QLocalServer(q);
+    if (m_localServer)
+        return m_localServer->isListening();
 
-    return m_socketLock->listen(key);
+    QLocalSocket *localSocket = new QLocalSocket;
+    localSocket->connectToServer(key);
+
+    // if connect success, another instance is running.
+    bool result = localSocket->waitForConnected(1000);
+    localSocket->deleteLater();
+
+    if (result)
+        return false;
+
+    // create local server
+    m_localServer = new QLocalServer(q);
+    m_localServer->removeServer(key);
+
+    return m_localServer->listen(key);
 }
 
 DApplication::DApplication(int &argc, char **argv) :

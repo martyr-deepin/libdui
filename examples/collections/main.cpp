@@ -19,7 +19,7 @@ int main(int argc, char *argv[])
 {
     DApplication a(argc, argv);
     a.setTheme("dark");
-    if (!a.setSingleInstance("libdui-example"))
+    if (!a.setSingleInstance("libdui-examples"))
         qDebug() << "another instance is running!!";
 
     MainWindow w;
